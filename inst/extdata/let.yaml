@@ -1,0 +1,20 @@
+ID:
+TIME: [ Actual elapsed time, round: 2, h]   # value of first record of each subject is always 0
+TAD: [ Actual time after last dose, h ]
+EVID: [ Event ID, [ observation: 0, dose: 1, other: 2 ]]
+ROUTE: [ Route of administration, [ IV: 1, PO: 2, SC: 3, IM: 4 ]]
+AMT: [ Dose amount, mg ]   # AMT = 0 for non-dosing records
+CMT: [ Compartment number, [ gut: 1, central: 2, peripheral: 3 ]]
+DV: [ Dependent variable, ng/mL ]   # DV=0 for dosing records
+LNDV: Natural log of DV   # LNDV=0 for dosing records
+MDV: [ Missing dependent variable, [ nonmissing: 0, missing: 1 ]]
+DOSE: [ Dose level , mg ]   # value is the same for observation and dosing records
+AGE: [ Age, 'y' ]
+SEX: [ Sex, [ female: 0, male: 1 ]]
+WT: [ Weight, kg ]
+BMI: [ Body mass index, kg/m2 ]
+RACE: [ Race, [ white: 1, black: 2, asian: 3, 4, ? other ]]
+STUDY: Study number
+EXFLG: [ label: Exclusion flag, guide: [ included: 0, no doses: 1 ]]
+DATETIME: [ Date and time, '%Y-%m-%dT%H:%M' ]
+_keys: [LABEL, GUIDE]
