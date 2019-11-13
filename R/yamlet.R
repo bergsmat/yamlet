@@ -1,19 +1,21 @@
 #' Convert Stored YAML to Intermediate Form
 #'
-#' Converts stored YAML to intermediate form by acquiring
+#' Converts stored YAML to intermediate form by
 #' importing the data and determining the default keys.
 #'
 #' @param file passed to \code{\link[yaml]{read_yaml}}
 #' @param as.named.list enforced as TRUE
 #' @param ... passed to \code{\link[yaml]{read_yaml}}
 #' @export
+#' @importFrom yaml read_yaml
 #' @family yamlet
 #' @return a named list
 #' @examples
-#' as_dyamlet(system.file('extdata','let.yaml'))
+#' as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
 #'
-as_dyamlet <- function(
+as_yam <- function(
   file,
+  as.named.list,
   ...
 ){
   y <- read_yaml(file, ...) # as.named.list TRUE by default
@@ -29,7 +31,7 @@ as_dyamlet <- function(
   #   }
   # }
 
-  y[] <- lapply(y, reduce)
+  y[] <- lapply(y, collapse)
   y[] <- lapply(y, as.list)
 
   if('_keys' %in% names(y)){
@@ -37,44 +39,106 @@ as_dyamlet <- function(
     y <- y[names(y) != '_keys']
     attr(y,'keys') <- k
   }
-  class(y) <- 'dyamlet'
+  class(y) <- 'yam'
   y
 }
 
-read_yaml('inst/extdata/let.yaml')
-as_dyamlet('inst/extdata/let.yaml')
+#' Collapse Uninformative Levels
+#'
+#' Collapses uninformative levels of nested lists.
+#' If any element of a list (recursively) is a list
+#' with one member, that member replaces the element,
+#' combining the element's name (if any) with the
+#' member's name (if any).
+#'
+#' @param x object
+#' @export
+#' @keywords internal
+#' @family collapse
+#' @examples
+#' collapse(yaml::yaml.load('[foo: 1, bar: 3]'))
+collapse <- function(x)UseMethod('collapse')
+
+#' Collapse Uninformative Levels by Default
+#'
+#' The default collapse() method returns the unmodified object.
+#'
+#' @param x object
+#' @export
+#' @keywords internal
+#' @family collapse
+#' @examples
+#' collapse(yaml::yaml.load('ITEM:'))
+collapse.default <- function(x)x
+
+
+#' Collapse Uninformative Levels of a List
+#'
+#' The list method for collapse() recursively
+#' ascends a nested list, removing uninformative levels.
+#'
+#' @param x list
+#' @export
+#' @keywords internal
+#' @family collapse
+#' @return list
+#' @examples
+#' collapse(yaml::yaml.load('ITEM: [ label: sunshine, [foo: 1, bar: 3]]'))
+collapse.list <- function(x){
+  # I am a list, possibly with names
+  my_names <- names(x)
+  if(is.null(my_names)) my_names <- rep('',length(x))
+  # Now I have explicit names
+  # I have child elements, possibly with names.
+  # First, I collapse them.
+  their_names <- lapply(x, names)
+  their_lengths <- lapply(x, length)
+  x[] <- lapply(x, collapse)
+  # Then, for those that are length one lists,
+  # I replace them with their first elements,
+  # retaining the name
+  for(i in seq_along(x)){
+    if(their_lengths[[i]] == 1){
+      x[i] <- list(x[[i]][[1]])
+      my_names[[i]] <- paste0(my_names[[i]], their_names[[i]])
+    }
+  }
+  # Now I update my own names
+  names(x) <- my_names
+  x
+}
 
 #' Convert To yamlet Format
 #'
 #' Converts something to yamlet format. If the object
 #' or user specifies default keys, these are applied,
-#' with the former having priority.  See \code{\link[as_yamlet.character]}.
+#' with the former having priority.  See \code{\link{as_yamlet.character}}.
 #'
 #' @param x object
 #' @param ... passed arguments
 #' @export
 #' @family yamlet
 #' @examples
-#' as.yamlet(as_dyamlet(system.file('extdata','let.yaml')))
+#' as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml')))
 #'
 as_yamlet <- function(x, ...)UseMethod('as_yamlet')
 
-#' Convert dyamlet To yamlet Format
+#' Convert yam To yamlet Format
 #'
-#' Converts something to yamlet format. If the object
+#' Converts yam to yamlet format. If the object
 #' or user specifies default keys, these are applied,
-#' with the former having priority.  See \code{\link[as_yamlet.character]}.
+#' with the former having priority.  See \code{\link{as_yamlet.character}}.
 #'
-#' @param x passed to \code{\link[yaml]{read_yaml}}
-#' @param default_keys character: default keys for anonymous members of each element
+#' @param x a yam object; see \code{\link{as_yam}}
+#' @param default_keys character: default keys for the first n anonymous members of each element
 #' @param ... passed arguments
 #' @export
 #' @family yamlet
 #' @return yamlet: a named list with default keys applied
 #' @examples
-#' as.yamlet(as_dyamlet(system.file('extdata','let.yaml')))
+#' as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml')))
 #'
-as_yamlet.dyamlet <- function(x, default_keys = list('label','guide'), ...){
+as_yamlet.yam <- function(x, default_keys = list('label','guide'), ...){
   k <- attr(x,'keys')
   if(is.null(k))k <- default_keys
   stopifnot(length(k) == length(unlist(k)))
@@ -87,15 +151,6 @@ as_yamlet.dyamlet <- function(x, default_keys = list('label','guide'), ...){
   class(x) <- 'yamlet'
   x
 }
-
-reduce <- function(x){ # an item (list)
-  nonames1 <- is.null(names(x))
-  nonames2 <- all(sapply(x, function(foo)is.null(names(foo))))
-  if(nonames1 & nonames2)x[] <- lapply(x, unlist, recursive = F)
-  if(nonames1 & !nonames2)x <- unlist(x, recursive = F)
-  x
-}
-
 
 resolve <- function(x, keys){ # an item
   nms <- names(x)
@@ -110,8 +165,175 @@ resolve <- function(x, keys){ # an item
   x
 }
 
-read_yaml('inst/extdata/let.yaml')
-as_dyamlet('inst/extdata/let.yaml')
-as_yamlet(as_dyamlet('inst/extdata/let.yaml'))
+
+#' Convert Character To yamlet Format
+#'
+#' Converts character to yamlet format.
+#' Length-one character is understood as a file path.
+#' The file is a mapping of (nested) sequences,
+#' where map keys are data item names, and
+#' sequences represent data item attributes.
+#' Attributes may be named or anonymous.
+#' A map key '_keys' identifies a sequence of
+#' key names that over-ride \code{default_keys}.
+#'
+#'
+#' @param x a file path
+#' @param default_keys character: default keys for the first n anonymous members of each element
+#' @param ... passed arguments
+#' @export
+#' @family yamlet
+#' @return yamlet: a named list with default keys applied
+#' @examples
+#' as_yamlet(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+#'
+as_yamlet.character <- function(x, default_keys = list('label','guide'), ...){
+  stopifnot(length(x) == 1)
+  if(!file.exists(x))stop('could not find ', file)
+  as_yamlet(as_yam(x, ...), default_keys = default_keys, ...)
+}
+
+#' Decorate a List-like Object
+#'
+#' Decorates a list-like object. Generic.  See \code{link{decorate.character}}.
+
+#'
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @family decorate
+#' @examples
+#' library(csv)
+#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' x <- decorate(as.csv(file))
+#' sapply(x, attr, 'label')
+#'
+decorate <- function(x,...)UseMethod('decorate')
+
+#' Decorate Character
+#'
+#' Treats \code{x} as a csv file path. By default,
+#' metadata is sought from a file with the same
+#' base but the 'yaml' extension.
+
+#'
+#' @param x file path for csv
+#' @param meta file path for corresponding yaml metadata, or a yamlet
+#' @param ... passed arguments
+#' @importFrom csv as.csv
+#' @export
+#' @family decorate
+#' @examples
+#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' x <- decorate(file)
+#' sapply(x, attr, 'label')
+#'
+decorate.character <- function(
+  x,
+  meta = NULL,
+  ...
+){
+  stopifnot(length(x) == 1)
+  if(!file.exists(x))stop('could not find ', file)
+  y <- as.csv(x,...)
+  if(is.null(meta)) meta <- sub('\\.csv$','.yaml',x)
+  if(is.character(meta) & length(meta) == 1){
+    meta <- try(as_yamlet(meta,...))
+  }
+  if(class(meta) != 'yamlet') stop('could not interpret ', meta)
+  decorate(y, meta = meta, ... )
+}
+
+#' Decorate List
+#'
+#' Decorates a List-like object. Expects metadata with labels and guides,
+#' where guides are units, factor levels and labels (codes, decodes), or
+#' datetime formatting strings. For guides that are lists, the corresponding
+#' data element may optionally be coerced to factor.
+
+#'
+#' @param x object inheriting from \code{list}
+#' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
+#' @param factorize whether to coerce elements to factors where appropriate
+#' @param ... passed arguments
+#' @export
+#' @family decorate
+#' @examples
+#' example(decorate.data.frame)
+#'
+decorate.list <- function(
+  x,
+  meta = NULL,
+  factorize = FALSE,
+  ...
+){
+  if(is.null(meta)) meta <- attr(x, 'source')
+  if(is.null(meta)) stop('could not guess metadata location; supply meta')
+  if(is.character(meta) & length(meta) == 1){
+    meta <- sub('\\.csv$','.yaml',meta)
+    meta <- try(as_yamlet(meta, ...))
+  }
+  if(class(meta) != 'yamlet') stop('could not interpret meta: ', meta)
+
+  for(item in names(x)){
+    if(item %in% names(meta)){
+      val <- meta[[item]]
+      for(attrb in names(val)){
+        attr(x[[item]], attrb) <- val[[attrb]]
+        if(attrb == 'guide'){
+          guide <- val[[attrb]]
+          if(is.list(guide)){
+            if(factorize){
+              if(any(sapply(guide,function(i)is.null(i)))){
+                warning('guide for ', item, ' contains NULL')
+              }else{
+                labs <- names(guide)
+                levs <- unlist(guide)
+                if(any(labs == '')){
+                  warning('guide for ',item,' contains unlabeled levels')
+                }else{
+                  try(x[[item]] <- factor(x[[item]], levels = levs, labels = labs))
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  x
+}
 
 
+#' Decorate Data Frame
+#'
+#' Decorates a data.frame. Expects metadata with labels and guides,
+#' where guides are units, factor levels and labels (codes, decodes), or
+#' datetime formatting strings. For guides that are lists, the corresponding
+#' data element may optionally be coerced to factor.
+
+#'
+#' @param x object inheriting from \code{list}
+#' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
+#' @param factorize whether to coerce elements to factors where appropriate
+#' @param ... passed arguments
+#' @export
+#' @family decorate
+#' @examples
+#' library(csv)
+#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' x <- decorate(as.csv(file))
+#' x <- decorate(as.csv(file), meta = as_yamlet(meta))
+#' x <- decorate(as.csv(file), meta = meta)
+#' x <- decorate(as.csv(file), meta = file)
+#' x <- decorate(as.csv(file), factorize = TRUE)
+#' sapply(x, attr, 'label')
+#'
+decorate.data.frame <- function(
+  x,
+  meta = NULL,
+  factorize = FALSE,
+  ...
+)decorate.list(x, meta = meta, factorize = factorize, ...)

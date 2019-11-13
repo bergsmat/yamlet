@@ -5,15 +5,15 @@ Version: 0.1.0
 Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>
 Description: A data specification is useful both for developing
- and documenting a data table.  \pkg{yamlet} checks whether a
- table-like object matches a YAML description, and optionally
- applies YAML metadata as data item attributes. Data and metadata
+ and documenting data.  \pkg{yamlet} reads YAML-formatted metadata 
+ and applies it as data item attributes. Data and metadata
  are stored independently and optionally associated by naming
  conventions.  For compact representation, keys 'label' and 'guide' 
  are assigned by default to the first two anonymous values for 
  each named item. Defaults can be over-ridden by stored metadata
- or by function arguments.
+ or by function arguments. See '?decorate.data.frame'.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: yaml
+Imports: yaml, csv
+RoxygenNote: 6.1.1
