@@ -4,19 +4,19 @@
 \alias{decorate.list}
 \title{Decorate List}
 \usage{
-\method{decorate}{list}(x, meta = NULL, factorize = FALSE, ...)
+\method{decorate}{list}(x, meta = NULL, coerce = FALSE, ...)
 }
 \arguments{
 \item{x}{object inheriting from \code{list}}
 
 \item{meta}{file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute}
 
-\item{factorize}{whether to coerce elements to factors where appropriate}
+\item{coerce}{whether to coerce to factor where guide is a list}
 
 \item{...}{passed arguments}
 }
 \description{
-Decorates a List-like object. Expects metadata with labels and guides,
+Decorates a list-like object. Expects metadata with labels and guides,
 where guides are units, factor levels and labels (codes, decodes), or
 datetime formatting strings. For guides that are lists, the corresponding
 data element may optionally be coerced to factor.

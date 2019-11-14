@@ -4,14 +4,14 @@
 \alias{decorate.data.frame}
 \title{Decorate Data Frame}
 \usage{
-\method{decorate}{data.frame}(x, meta = NULL, factorize = FALSE, ...)
+\method{decorate}{data.frame}(x, meta = NULL, coerce = FALSE, ...)
 }
 \arguments{
-\item{x}{object inheriting from \code{list}}
+\item{x}{data.frame}
 
 \item{meta}{file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute}
 
-\item{factorize}{whether to coerce elements to factors where appropriate}
+\item{coerce}{whether to coerce to factor where guide is a list}
 
 \item{...}{passed arguments}
 }
@@ -29,7 +29,7 @@ x <- decorate(as.csv(file))
 x <- decorate(as.csv(file), meta = as_yamlet(meta))
 x <- decorate(as.csv(file), meta = meta)
 x <- decorate(as.csv(file), meta = file)
-x <- decorate(as.csv(file), factorize = TRUE)
+x <- decorate(as.csv(file), coerce = TRUE)
 sapply(x, attr, 'label')
 
 }

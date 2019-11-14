@@ -1,0 +1,87 @@
+#' yamlet: Store Data Specification as YAML
+#'
+#' The \pkg{yamlet} package supports storage and retrieval of data
+#' specifications in YAML format.  The most important function
+#' is \code{\link{decorate.character}}: it lets you 'decorate'
+#' your data by attaching attributes retrieved from a file in
+#' YAML format.  Typically your data will be of class
+#' 'data.frame', but it could be anything that is essentially
+#' a named list.
+#'
+#' @section Storage Format:
+#'
+#' Storage format for 'yamlet' is a text file containing
+#' well-formed yaml.  Technically, it is a map of sequences.
+#' Though well formed, it is need not be complete, and therefore
+#' has utility over a longer life cycle of data development.
+#'
+#' In the simplest case, you simply list the column names
+#' your data does have or will have, followed by semicolons.
+#' Perhaps you only have one column:
+#'
+#' \code{mpg:}
+#'
+#' or maybe several:
+#'
+#' \preformatted{
+#' mpg:
+#' cyl:
+#' disp:
+#' }
+#'
+#' If you know descriptive labels for your columns, provide them
+#' (skip a space after the column).
+#'
+#' \preformatted{
+#' mpg: fuel economy
+#' cyl: number of cylinders
+#' disp: displacement
+#' }
+#'
+#' If you know units, create a sequence with square brackets.
+#'
+#' \preformatted{
+#' mpg: [ fuel economy, miles/gallon ]
+#' cyl: number of cylinders
+#' disp: [ displacement , in^3 ]
+#' }
+#'
+#' If you are going to give units, you probably should give a
+#' key first, since the first anonymous element is 'label'
+#' by default, and the second is 'guide'.  (A guide can be
+#' units for numeric variables, factor levels/labels for
+#' categorical variables, or a format string for dates, times,
+#' and datetimes.)  You could give just the units
+#' but you would have to be specific:
+#'
+#' \code{mpg: [unit: miles/gallon]}
+#'
+#' You can over-ride default keys by providing them in your data:
+#'
+#' \preformatted{
+#' mpg: [unit: miles/gallon]
+#' _keys: [label, unit]
+#' }
+#'
+#' Notice that stored yamlet can be informationally defective
+#' while syntactically correct. If you don't know an item
+#' key at the time of data authoring, you can omit it:
+#'
+#' \code{race: [race, [white: 0, black: 1, 2, asian: 3 ]]}
+#'
+#' Or perhaps you know the key but not the value:
+#'
+#' \code{race: [race, [white: 0, black: 1, asian: 2, ? other ]]}
+#'
+#' Notice that \code{race} is factor-like; the factor sequence
+#' is nested within the attribute sequence. Equivalently:
+#'
+#' \code{race: [label: race, guide: [white: 0, black: 1, asian: 2, ? other ]]}
+#'
+#' To get started using yamlet, see \code{?as_yamlet.character} and
+#' examples there. See also \code{?decorate} which adds yamlet
+#' values to corresponding items in your data.
+#'
+#' @docType package
+#' @name yamlet
+NULL

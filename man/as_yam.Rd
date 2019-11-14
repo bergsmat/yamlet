@@ -2,30 +2,20 @@
 % Please edit documentation in R/yamlet.R
 \name{as_yam}
 \alias{as_yam}
-\title{Convert Stored YAML to Intermediate Form}
+\title{Coerce to yam}
 \usage{
-as_yam(file, as.named.list, ...)
+as_yam(x, ...)
 }
 \arguments{
-\item{file}{passed to \code{\link[yaml]{read_yaml}}}
+\item{x}{object}
 
-\item{as.named.list}{enforced as TRUE}
-
-\item{...}{passed to \code{\link[yaml]{read_yaml}}}
-}
-\value{
-a named list
+\item{...}{passed arguments}
 }
 \description{
-Converts stored YAML to intermediate form by
-importing the data and determining the default keys.
-}
-\examples{
-as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
-
+Coerce to yam, a precursor to yamlet.  Generic, with character
+method: \code{\link{as_yam.character}}.
 }
 \seealso{
-Other yamlet: \code{\link{as_yamlet.character}},
-  \code{\link{as_yamlet.yam}}, \code{\link{as_yamlet}}
+Other yam: \code{\link{as_yam.character}}
 }
-\concept{yamlet}
+\concept{yam}

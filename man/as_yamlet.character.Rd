@@ -8,7 +8,7 @@
   ...)
 }
 \arguments{
-\item{x}{a file path}
+\item{x}{length-one filepath or actual data}
 
 \item{default_keys}{character: default keys for the first n anonymous members of each element}
 
@@ -19,7 +19,8 @@ yamlet: a named list with default keys applied
 }
 \description{
 Converts character to yamlet format.
-Length-one character is understood as a file path.
+Length-one character is understood as a file path
+if the file exists.  Otherwise, it is treated as data.
 The file is a mapping of (nested) sequences,
 where map keys are data item names, and
 sequences represent data item attributes.
@@ -29,10 +30,13 @@ key names that over-ride \code{default_keys}.
 }
 \examples{
 as_yamlet(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+as_yamlet('ID: subject identifier')
+as_yamlet(c('id: subject','amt: dose'))
+as_yamlet(c('id: subject\\namt: dose'))
 
 }
 \seealso{
 Other yamlet: \code{\link{as_yamlet.yam}},
-  \code{\link{as_yamlet}}, \code{\link{as_yam}}
+  \code{\link{as_yamlet}}
 }
 \concept{yamlet}

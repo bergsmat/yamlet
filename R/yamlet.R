@@ -1,35 +1,51 @@
-#' Convert Stored YAML to Intermediate Form
+#' Coerce to yam
 #'
-#' Converts stored YAML to intermediate form by
+#' Coerce to yam, a precursor to yamlet.  Generic, with character
+#' method: \code{\link{as_yam.character}}.
+#' @param x object
+#' @param ... passed arguments
+#' @family yam
+#' @export
+as_yam <- function(x, ...)UseMethod('as_yam')
+
+#' Coerce Character to yam
+#'
+#' Coerces character to yam.  Length-one character can be
+#' a filepath, otherwise treated as data.  Proceeds by
 #' importing the data and determining the default keys.
 #'
-#' @param file passed to \code{\link[yaml]{read_yaml}}
+#' @param x length-one filepath or actual data
 #' @param as.named.list enforced as TRUE
 #' @param ... passed to \code{\link[yaml]{read_yaml}}
 #' @export
-#' @importFrom yaml read_yaml
-#' @family yamlet
+#' @importFrom yaml read_yaml yaml.load
+#' @family yam
 #' @return a named list
 #' @examples
 #' as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+#' as_yam(c('ID:','TIME:'))
+#' as_yam('ID:\nTIME:')
 #'
-as_yam <- function(
-  file,
+as_yam.character <- function(
+  x,
   as.named.list,
   ...
 ){
-  y <- read_yaml(file, ...) # as.named.list TRUE by default
-  # result must be a list
-  if(!is.list(y))stop('yamlet expects a map')
+  if(length(x) == 1 & file.exists(x[[1]])){
+    y <- read_yaml(x, ...) # as.named.list TRUE by default
+  }else{
+    y <- try(yaml.load(paste(x, collapse = '\n')))
+  }
+  if(!inherits(y, 'list')){
+    if(length(x) == 1){
+      stop('x is not YAML or path to YAML')
+    }else{
+      stop('x is not YAML')
+    }
+  }
+
   # each member of y must be a list
   for(m in seq_along(y)) y[[m]] <- as.list(y[[m]])
-
-  # # each element of each member of y must be a (length-one) list
-  # for(m in seq_along(y)){
-  #   for(e in seq_along(y[[m]])){
-  #      y[[m]][[e]] <- as.list(y[[m]][[e]])
-  #   }
-  # }
 
   y[] <- lapply(y, collapse)
   y[] <- lapply(y, as.list)
@@ -108,9 +124,9 @@ collapse.list <- function(x){
   x
 }
 
-#' Convert To yamlet Format
+#' Coerce to yamlet
 #'
-#' Converts something to yamlet format. If the object
+#' Coerces something to yamlet format. If the object
 #' or user specifies default keys, these are applied,
 #' with the former having priority.  See \code{\link{as_yamlet.character}}.
 #'
@@ -169,7 +185,8 @@ resolve <- function(x, keys){ # an item
 #' Convert Character To yamlet Format
 #'
 #' Converts character to yamlet format.
-#' Length-one character is understood as a file path.
+#' Length-one character is understood as a file path
+#' if the file exists.  Otherwise, it is treated as data.
 #' The file is a mapping of (nested) sequences,
 #' where map keys are data item names, and
 #' sequences represent data item attributes.
@@ -178,7 +195,7 @@ resolve <- function(x, keys){ # an item
 #' key names that over-ride \code{default_keys}.
 #'
 #'
-#' @param x a file path
+#' @param x length-one filepath or actual data
 #' @param default_keys character: default keys for the first n anonymous members of each element
 #' @param ... passed arguments
 #' @export
@@ -186,10 +203,11 @@ resolve <- function(x, keys){ # an item
 #' @return yamlet: a named list with default keys applied
 #' @examples
 #' as_yamlet(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+#' as_yamlet('ID: subject identifier')
+#' as_yamlet(c('id: subject','amt: dose'))
+#' as_yamlet(c('id: subject\namt: dose'))
 #'
 as_yamlet.character <- function(x, default_keys = list('label','guide'), ...){
-  stopifnot(length(x) == 1)
-  if(!file.exists(x))stop('could not find ', file)
   as_yamlet(as_yam(x, ...), default_keys = default_keys, ...)
 }
 
@@ -247,7 +265,7 @@ decorate.character <- function(
 
 #' Decorate List
 #'
-#' Decorates a List-like object. Expects metadata with labels and guides,
+#' Decorates a list-like object. Expects metadata with labels and guides,
 #' where guides are units, factor levels and labels (codes, decodes), or
 #' datetime formatting strings. For guides that are lists, the corresponding
 #' data element may optionally be coerced to factor.
@@ -255,7 +273,7 @@ decorate.character <- function(
 #'
 #' @param x object inheriting from \code{list}
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
-#' @param factorize whether to coerce elements to factors where appropriate
+#' @param coerce whether to coerce to factor where guide is a list
 #' @param ... passed arguments
 #' @export
 #' @family decorate
@@ -265,7 +283,7 @@ decorate.character <- function(
 decorate.list <- function(
   x,
   meta = NULL,
-  factorize = FALSE,
+  coerce = FALSE,
   ...
 ){
   if(is.null(meta)) meta <- attr(x, 'source')
@@ -284,7 +302,7 @@ decorate.list <- function(
         if(attrb == 'guide'){
           guide <- val[[attrb]]
           if(is.list(guide)){
-            if(factorize){
+            if(coerce){
               if(any(sapply(guide,function(i)is.null(i)))){
                 warning('guide for ', item, ' contains NULL')
               }else{
@@ -314,9 +332,9 @@ decorate.list <- function(
 #' data element may optionally be coerced to factor.
 
 #'
-#' @param x object inheriting from \code{list}
+#' @param x data.frame
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
-#' @param factorize whether to coerce elements to factors where appropriate
+#' @param coerce whether to coerce to factor where guide is a list
 #' @param ... passed arguments
 #' @export
 #' @family decorate
@@ -328,12 +346,12 @@ decorate.list <- function(
 #' x <- decorate(as.csv(file), meta = as_yamlet(meta))
 #' x <- decorate(as.csv(file), meta = meta)
 #' x <- decorate(as.csv(file), meta = file)
-#' x <- decorate(as.csv(file), factorize = TRUE)
+#' x <- decorate(as.csv(file), coerce = TRUE)
 #' sapply(x, attr, 'label')
 #'
 decorate.data.frame <- function(
   x,
   meta = NULL,
-  factorize = FALSE,
+  coerce = FALSE,
   ...
-)decorate.list(x, meta = meta, factorize = factorize, ...)
+)decorate.list(x, meta = meta, coerce = coerce, ...)

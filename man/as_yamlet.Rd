@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{as_yamlet}
 \alias{as_yamlet}
-\title{Convert To yamlet Format}
+\title{Coerce to yamlet}
 \usage{
 as_yamlet(x, ...)
 }
@@ -12,7 +12,7 @@ as_yamlet(x, ...)
 \item{...}{passed arguments}
 }
 \description{
-Converts something to yamlet format. If the object
+Coerces something to yamlet format. If the object
 or user specifies default keys, these are applied,
 with the former having priority.  See \code{\link{as_yamlet.character}}.
 }
@@ -22,6 +22,6 @@ as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml')))
 }
 \seealso{
 Other yamlet: \code{\link{as_yamlet.character}},
-  \code{\link{as_yamlet.yam}}, \code{\link{as_yam}}
+  \code{\link{as_yamlet.yam}}
 }
 \concept{yamlet}
