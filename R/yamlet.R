@@ -383,6 +383,7 @@ decorate.data.frame <- function(
 #' @keywords internal
 #' @family encode
 #' @importFrom encode encoded
+#' @importFrom encode encode
 #' @examples
 #' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
 #' meta <- as_yamlet(meta)
@@ -456,6 +457,7 @@ encode::encode
 #'
 #' Subsets yamlet. Preserves class, since a subset of yamlet is still yamlet.
 #'
+#' @param x object to subset
 #' @param ... passed to next method
 #' @return yamlet
 #' @export
@@ -466,7 +468,7 @@ encode::encode
 #' meta <- as_yamlet(meta)
 #' class(meta)
 #' stopifnot(inherits(meta[1:2],'yamlet'))
-`[.yamlet` <- function(...){
+`[.yamlet` <- function(x, ...){
   x <- NextMethod()
   class(x) <- 'yamlet'
   x

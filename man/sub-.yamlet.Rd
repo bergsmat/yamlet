@@ -4,9 +4,11 @@
 \alias{[.yamlet}
 \title{Subset yamelet}
 \usage{
-\method{[}{yamlet}(...)
+\method{[}{yamlet}(x, ...)
 }
 \arguments{
+\item{x}{object to subset}
+
 \item{...}{passed to next method}
 }
 \value{
