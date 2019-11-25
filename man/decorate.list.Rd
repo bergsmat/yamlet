@@ -15,6 +15,9 @@
 
 \item{...}{passed arguments}
 }
+\value{
+list, possibly with member attributes
+}
 \description{
 Decorates a list-like object. Expects metadata with labels and guides,
 where guides are units, factor levels and labels (codes, decodes), or

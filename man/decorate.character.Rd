@@ -4,14 +4,19 @@
 \alias{decorate.character}
 \title{Decorate Character}
 \usage{
-\method{decorate}{character}(x, meta = NULL, ...)
+\method{decorate}{character}(x, meta = NULL, coerce = FALSE, ...)
 }
 \arguments{
 \item{x}{file path for csv}
 
 \item{meta}{file path for corresponding yaml metadata, or a yamlet}
 
+\item{coerce}{whether to coerce to factor where guide is a list}
+
 \item{...}{passed arguments}
+}
+\value{
+data.frame
 }
 \description{
 Treats \code{x} as a csv file path. By default,
@@ -22,6 +27,8 @@ base but the 'yaml' extension.
 file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
 meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
 x <- decorate(file)
+x <- decorate(file, coerce = TRUE)
+x <- decorate(file, meta = meta)
 sapply(x, attr, 'label')
 
 }

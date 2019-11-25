@@ -11,8 +11,11 @@ decorate(x, ...)
 
 \item{...}{passed arguments}
 }
+\value{
+a list-like object, typically data.frame
+}
 \description{
-Decorates a list-like object. Generic.  See \code{link{decorate.character}}.
+Decorates a list-like object. Generic.  See \code{\link{decorate.character}}.
 }
 \examples{
 library(csv)

@@ -11,6 +11,9 @@ as_yam(x, ...)
 
 \item{...}{passed arguments}
 }
+\value{
+list
+}
 \description{
 Coerce to yam, a precursor to yamlet.  Generic, with character
 method: \code{\link{as_yam.character}}.

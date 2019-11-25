@@ -4,6 +4,7 @@
 #' method: \code{\link{as_yam.character}}.
 #' @param x object
 #' @param ... passed arguments
+#' @return list
 #' @family yam
 #' @export
 as_yam <- function(x, ...)UseMethod('as_yam')
@@ -47,7 +48,7 @@ as_yam.character <- function(
   # each member of y must be a list
   for(m in seq_along(y)) y[[m]] <- as.list(y[[m]])
 
-  y[] <- lapply(y, collapse)
+  y[] <- lapply(y, deflate)
   y[] <- lapply(y, as.list)
 
   if('_keys' %in% names(y)){
@@ -68,39 +69,42 @@ as_yam.character <- function(
 #' member's name (if any).
 #'
 #' @param x object
+#' @return list
 #' @export
 #' @keywords internal
-#' @family collapse
+#' @family deflate
 #' @examples
-#' collapse(yaml::yaml.load('[foo: 1, bar: 3]'))
-collapse <- function(x)UseMethod('collapse')
+#' deflate(yaml::yaml.load('[foo: 1, bar: 3]'))
+deflate <- function(x)UseMethod('deflate')
 
 #' Collapse Uninformative Levels by Default
 #'
-#' The default collapse() method returns the unmodified object.
+#' The default deflate() method returns the unmodified object.
 #'
 #' @param x object
+#' @return list
 #' @export
 #' @keywords internal
-#' @family collapse
+#' @family deflate
 #' @examples
-#' collapse(yaml::yaml.load('ITEM:'))
-collapse.default <- function(x)x
+#' deflate(yaml::yaml.load('ITEM:'))
+deflate.default <- function(x)x
 
 
 #' Collapse Uninformative Levels of a List
 #'
-#' The list method for collapse() recursively
+#' The list method for deflate() recursively
 #' ascends a nested list, removing uninformative levels.
 #'
 #' @param x list
+#' @return list
 #' @export
 #' @keywords internal
-#' @family collapse
+#' @family deflate
 #' @return list
 #' @examples
-#' collapse(yaml::yaml.load('ITEM: [ label: sunshine, [foo: 1, bar: 3]]'))
-collapse.list <- function(x){
+#' deflate(yaml::yaml.load('ITEM: [ label: sunshine, [foo: 1, bar: 3]]'))
+deflate.list <- function(x){
   # I am a list, possibly with names
   my_names <- names(x)
   if(is.null(my_names)) my_names <- rep('',length(x))
@@ -109,7 +113,7 @@ collapse.list <- function(x){
   # First, I collapse them.
   their_names <- lapply(x, names)
   their_lengths <- lapply(x, length)
-  x[] <- lapply(x, collapse)
+  x[] <- lapply(x, deflate)
   # Then, for those that are length one lists,
   # I replace them with their first elements,
   # retaining the name
@@ -132,6 +136,7 @@ collapse.list <- function(x){
 #'
 #' @param x object
 #' @param ... passed arguments
+#' @return a named list
 #' @export
 #' @family yamlet
 #' @examples
@@ -213,13 +218,14 @@ as_yamlet.character <- function(x, default_keys = list('label','guide'), ...){
 
 #' Decorate a List-like Object
 #'
-#' Decorates a list-like object. Generic.  See \code{link{decorate.character}}.
+#' Decorates a list-like object. Generic.  See \code{\link{decorate.character}}.
 
 #'
 #' @param x object
 #' @param ... passed arguments
 #' @export
 #' @family decorate
+#' @return a list-like object, typically data.frame
 #' @examples
 #' library(csv)
 #' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
@@ -237,7 +243,9 @@ decorate <- function(x,...)UseMethod('decorate')
 #'
 #' @param x file path for csv
 #' @param meta file path for corresponding yaml metadata, or a yamlet
+#' @param coerce whether to coerce to factor where guide is a list
 #' @param ... passed arguments
+#' @return data.frame
 #' @importFrom csv as.csv
 #' @export
 #' @family decorate
@@ -245,11 +253,14 @@ decorate <- function(x,...)UseMethod('decorate')
 #' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
 #' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
 #' x <- decorate(file)
+#' x <- decorate(file, coerce = TRUE)
+#' x <- decorate(file, meta = meta)
 #' sapply(x, attr, 'label')
 #'
 decorate.character <- function(
   x,
   meta = NULL,
+  coerce = FALSE,
   ...
 ){
   stopifnot(length(x) == 1)
@@ -259,8 +270,8 @@ decorate.character <- function(
   if(is.character(meta) & length(meta) == 1){
     meta <- try(as_yamlet(meta,...))
   }
-  if(class(meta) != 'yamlet') stop('could not interpret ', meta)
-  decorate(y, meta = meta, ... )
+  if(class(meta) != 'yamlet') stop('could not interpret meta: ', meta)
+  decorate(y, meta = meta, coerce = coerce, ... )
 }
 
 #' Decorate List
@@ -275,6 +286,7 @@ decorate.character <- function(
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
 #' @param coerce whether to coerce to factor where guide is a list
 #' @param ... passed arguments
+#' @return list, possibly with member attributes
 #' @export
 #' @family decorate
 #' @examples
@@ -336,12 +348,14 @@ decorate.list <- function(
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
 #' @param coerce whether to coerce to factor where guide is a list
 #' @param ... passed arguments
+#' @return data.frame
 #' @export
 #' @family decorate
 #' @examples
 #' library(csv)
 #' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
 #' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' x <- decorate(as.csv(file))
 #' x <- decorate(as.csv(file))
 #' x <- decorate(as.csv(file), meta = as_yamlet(meta))
 #' x <- decorate(as.csv(file), meta = meta)
@@ -355,3 +369,106 @@ decorate.data.frame <- function(
   coerce = FALSE,
   ...
 )decorate.list(x, meta = meta, coerce = coerce, ...)
+
+#' Coerce List to Encoding
+#'
+#' Tries to coerce a list to an encoding.  Names are
+#' understood as decodes, and list values as codes.
+#' On failure, the list is returned unchanged.
+#'
+#' @param x list
+#' @param ... ignored
+#' @return an encoding (length-one character), or original list if error occurs
+#' @export
+#' @keywords internal
+#' @family encode
+#' @importFrom encode encoded
+#' @examples
+#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' meta <- as_yamlet(meta)
+#' list2encoding(meta$ROUTE$guide)
+list2encoding <- function(x, ...){
+  # empty strings are effectively zero-length character
+  for(i in seq_along(x)){
+    if(length(x[[i]] == 1)){
+      if(x[[i]] == ''){
+         x[[i]] <- character(0)
+      }
+    }
+  }
+  drop <- x[lapply(x,length) == 0 ]
+  if(length(drop)){
+    warning(
+      'dropping ',length(drop),
+      ' zero-length level(s) including labels: ',
+      paste(names(drop), collapse = ', ')
+    )
+    x <- x[lapply(x,length) != 0]
+  }
+  out <- unlist(x)
+  nms <- names(out)
+  out <- try(encode(out, labels = nms))
+  if(length(out) != 1) return(x)
+  if(inherits(out, 'try-error')) return(x)
+  if(!encoded(out)) return(x)
+  out
+}
+
+#' Encode yamelet
+#'
+#' Encodes yamlet.  Each 'guide' element that is a list
+#' is converted to an encoding, if possible.
+#'
+#' @param x yamlet
+#' @param target attribute to encode
+#' @param ... ignored
+#' @return yamlet, with guide elements possibly transformed to encodings
+#' @export
+#' @family encode
+#' @examples
+#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' meta <- as_yamlet(meta)
+#' meta <- encode(meta)
+encode.yamlet <- function(x, target = 'guide', ...){
+  for(i in seq_along(x)){
+    t <- x[[i]][[target]]
+    if(!is.null(t)){
+      if(is.list(t)){
+        try <- list2encoding(t)
+        if(class(try) == 'character'){
+          if(length(try) == 1){
+            if(encoded(try)){
+              x[[i]][[target]] <- try
+            }
+          }
+        }
+      }
+    }
+  }
+  x
+}
+
+#' @importFrom encode encode
+#' @export
+encode::encode
+
+#' Subset yamelet
+#'
+#' Subsets yamlet. Preserves class, since a subset of yamlet is still yamlet.
+#'
+#' @param ... passed to next method
+#' @return yamlet
+#' @export
+#' @keywords internal
+#' @family encode
+#' @examples
+#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' meta <- as_yamlet(meta)
+#' class(meta)
+#' stopifnot(inherits(meta[1:2],'yamlet'))
+`[.yamlet` <- function(...){
+  x <- NextMethod()
+  class(x) <- 'yamlet'
+  x
+}
+

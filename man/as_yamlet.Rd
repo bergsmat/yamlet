@@ -11,6 +11,9 @@ as_yamlet(x, ...)
 
 \item{...}{passed arguments}
 }
+\value{
+a named list
+}
 \description{
 Coerces something to yamlet format. If the object
 or user specifies default keys, these are applied,

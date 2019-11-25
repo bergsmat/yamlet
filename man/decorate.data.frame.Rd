@@ -15,6 +15,9 @@
 
 \item{...}{passed arguments}
 }
+\value{
+data.frame
+}
 \description{
 Decorates a data.frame. Expects metadata with labels and guides,
 where guides are units, factor levels and labels (codes, decodes), or
@@ -25,6 +28,7 @@ data element may optionally be coerced to factor.
 library(csv)
 file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
 meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+x <- decorate(as.csv(file))
 x <- decorate(as.csv(file))
 x <- decorate(as.csv(file), meta = as_yamlet(meta))
 x <- decorate(as.csv(file), meta = meta)

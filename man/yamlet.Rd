@@ -19,11 +19,11 @@ a named list.
 
 Storage format for 'yamlet' is a text file containing
 well-formed yaml.  Technically, it is a map of sequences.
-Though well formed, it is need not be complete, and therefore
+Though well formed, it need not be complete, and therefore
 has utility over a longer life cycle of data development.
 
-In the simplest case, you simply list the column names
-your data does have or will have, followed by semicolons.
+In the simplest case, the data specification constists
+of a list of column (item) names, followed by semicolons.
 Perhaps you only have one column:
 
 \code{mpg:}
@@ -37,7 +37,7 @@ disp:
 }
 
 If you know descriptive labels for your columns, provide them
-(skip a space after the column).
+(skip a space after the colon).
 
 \preformatted{
 mpg: fuel economy
