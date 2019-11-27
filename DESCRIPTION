@@ -1,7 +1,7 @@
 Package: yamlet
 Type: Package
 Title: Store Data Specification as YAML
-Version: 0.1.3
+Version: 0.1.4
 Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>
 Description: A data specification is useful both for developing
@@ -15,5 +15,5 @@ Description: A data specification is useful both for developing
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: yaml, csv, encode
+Imports: yaml, csv, encode, ggplot2
 RoxygenNote: 6.1.1
