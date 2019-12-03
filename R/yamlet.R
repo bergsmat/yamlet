@@ -370,6 +370,241 @@ decorate.data.frame <- function(
   ...
 )decorate.list(x, meta = meta, coerce = coerce, ...)
 
+#' Retrieve Decorations
+#'
+#' Retrieve the decorations of something. Generic, with method for data.frame.
+#'
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @family decorate
+#' @return see methods
+#' @examples
+#' library(csv)
+#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' x <- decorate(as.csv(file))
+#' decorations(x)
+
+decorations <- function(x,...)UseMethod('decorations')
+
+#' Retrieve Decorations for Data.frame
+#'
+#' Retrieve the decorations of a data.frame; i.e., the metadata
+#' used to decorate it. Returns a list with same names as the data.frame.
+#'
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @family decorate
+#' @return named list
+#' @examples
+#' library(csv)
+#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' x <- decorate(as.csv(file))
+#' decorations(x)
+
+decorations.data.frame <- function(x,...){
+  lapply(x, attributes)
+}
+
+#' Coerce Data.frame to Yamlet
+#'
+#' Coerces data.frame to yamlet. Assigns class 'yamlet' do a data.frame's decorations.
+#'
+#' @param x data.frame
+#' @param... passed arguments
+#' @family as_yamlet
+#' @export
+#' @return yamlet
+#' @examples
+#' library(csv)
+#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' x <- decorate(as.csv(file))
+#' as_yamlet(x)
+as_yamlet.data.frame <- function(x, ...){
+  out <- decorations(x,...)
+  class(out) <- 'yamlet'
+  out
+}
+
+#' Coerce yamlet to yam
+#'
+#' Coerces class yamlet to yam, negotiating the default keys.
+#' For each member of x, names of sub-members will be dropped
+#' if all previous such have been dropped.  I.e., attribute
+#' order is preserved, and 'guide' (by default) will not be
+#' made implicit unless 'label' has already been encountered
+#' (and made implicit).  Default keys are attached as the 'keys'
+#' attribute of the result.
+#'
+#' @param x yamlet
+#' @param default_keys names that may be omitted in left subsets
+#' @param ... passed arguments
+#' @export
+#' @return yam
+#' @family yam
+#' @examples
+#' as_yam(as_yamlet(c('id: subject','amt: dose')))
+#' as_yam(as_yamlet(c('amt: [ dose, mg ]')))
+#' as_yam(as_yamlet(c('amt: [ guide: mg, label: dose ]')))
+#'
+as_yam.yamlet <- function(x, default_keys = list('label','guide'), ...){
+  for(nm in names(x)){
+    candidates <- unlist(default_keys)
+    nms <- names(x[[nm]])
+    for(i in seq_along(nms)){
+      if(length(candidates)){
+        if(identical(nms[[i]], candidates[[1]])){
+          names(x[[nm]])[[i]] <- ''
+          candidates <- candidates[-1]
+        }
+      }
+    }
+  }
+  attr(x, 'keys') <- default_keys
+  x
+}
+
+#' Coerce yam to Character
+#'
+#' Coerces class yam to character.  Forms the basis for a
+#' yamlet emitter.
+#'
+#' @param x yam
+#' @param ... passed arguments
+#' @export
+#' @family yam
+#' @return character
+#' @examples
+#' as.character(as_yam(as_yamlet(c('id: subject','amt: dose'))))
+#' as.character(
+#' as_yam(
+#' as_yamlet(
+#' 'race: [label: race, guide: [ white: 0, black: 1, asian: 2 ], multiple: [yes: 1, no: 0]]'
+#' )))
+#'
+as.character.yam <- function(x, ...){
+    k <- attr(x, 'keys')
+  if(!identical(k, list('label','guide'))){
+    x <- c(x, list(`_keys` = k))
+  }
+  out <- paste0(names(x), ': ', sapply(x, to_yamlet))
+}
+
+#' Coerce to yamlet Storage Format
+#'
+#' Coerces to yamlet storage format. Generic, with methods
+#' for null, character and list.
+#' Always returns length-one character, possibly the empty string.
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @return length-one character
+#' @family to_yamlet
+#' @examples
+#' to_yamlet(as_yamlet(
+#' 'race: [label: race, guide: [ white: 0, black: 1, asian: 2 ], multiple: [yes: 1, no: 0]]'
+#' ))
+to_yamlet <- function(x, ...)UseMethod('to_yamlet')
+
+#' Coerce Default to yamlet Storage Format
+#'
+#' Coerces to yamlet storage format by default conversion to character.
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @return length-one character
+#' @family to_yamlet
+#' @examples
+#' to_yamlet(3)
+#' to_yamlet(c(a = 4,b = 5.8))
+to_yamlet.default <- function(x,...)to_yamlet(as.character(x))
+
+
+
+#'
+#' Coerce character to yamlet Storage Format
+#'
+#' Coerces character to yamlet storage format. Named character is processed as a named list.
+#' @param x character
+#' @param ... passed arguments
+#' @export
+#' @return length-one character
+#' @family to_yamlet
+#' @examples
+#' to_yamlet('foo')
+#' to_yamlet(c(a = 'a',b = 'b'))
+
+to_yamlet.character <- function(x, ...){
+  if(!is.null(names(x))){
+    x <- as.list(x)
+    return(to_yamlet(x))
+  }
+  # quote strings beginning with ' " [] {} > | * & ! % # ` @ ,. ? : -
+  # quote yes, no, y, n
+  index <- grepl("^'", x)
+  x[index] <- paste0('"',x[index], '"')
+  index <- grepl('^[][{}>|*&!%#`@,.?:-]', x)
+  x[index] <- paste0("'",x[index],"'")
+  index <- x %in% c('yes','no','y','n')
+  x[index] <- paste0("'",x[index],"'")
+  if(length(x) == 1) return(x)
+  x <- paste(x, collapse = ', ')
+  x <- paste('[', x, ']')
+  x
+}
+
+#' Coerce null to yamlet Storage Format
+#'
+#' Coerces null to yamlet storage format (returns empty string).
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @return length-one character
+#' @family to_yamlet
+#' @examples
+#' to_yamlet(NULL)
+to_yamlet.NULL <- function(x, ...)''
+
+#' Coerce list to yamlet Storage Format
+#'
+#' Coerces list to yamlet storage format. Operates recursively on list members.
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @return length-one character
+#' @family to_yamlet
+#' @examples
+#' to_yamlet('foo')
+#' to_yamlet(c(a = 'a',b = 'b'))
+#' to_yamlet(list(a = 'a', b = 'b'))
+#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' meta <- as_yamlet(meta)
+#' to_yamlet(meta)
+
+to_yamlet.list <- function(x, ...){
+  # convert each member to yamlet
+  nms <- names(x)
+  out <- lapply(x, to_yamlet)
+  # if member not null (''), attach name using colon-space, else using ? name
+  # if name is '', do not attach
+  for(i in seq_along(nms)){
+    if(nms[[i]] != ''){
+      if(out[[i]] != ''){
+        out[[i]] <- paste(nms[[i]], out[[i]], sep = ': ')
+      }else{
+        out[[i]] <- paste0('? ', nms[[i]])
+      }
+    }
+  }
+  # separate members with commas
+  out <- unlist(out)
+  out <- paste(out, collapse = ', ')
+  # enclose members in brackets
+  out <- paste0('[ ', out, ' ]')
+  out
+}
+
 #' Coerce List to Encoding
 #'
 #' Tries to coerce a list to an encoding.  Names are

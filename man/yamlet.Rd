@@ -3,7 +3,6 @@
 \docType{package}
 \name{yamlet}
 \alias{yamlet}
-\alias{yamlet-package}
 \title{yamlet: Store Data Specification as YAML}
 \description{
 The \pkg{yamlet} package supports storage and retrieval of data

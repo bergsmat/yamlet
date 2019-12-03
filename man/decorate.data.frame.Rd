@@ -38,7 +38,11 @@ sapply(x, attr, 'label')
 
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.list}}, \code{\link{decorate}}
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.list}()},
+\code{\link{decorate}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations}()}
 }
 \concept{decorate}

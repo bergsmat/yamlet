@@ -23,8 +23,9 @@ member's name (if any).
 deflate(yaml::yaml.load('[foo: 1, bar: 3]'))
 }
 \seealso{
-Other deflate: \code{\link{deflate.default}},
-  \code{\link{deflate.list}}
+Other deflate: 
+\code{\link{deflate.default}()},
+\code{\link{deflate.list}()}
 }
 \concept{deflate}
 \keyword{internal}

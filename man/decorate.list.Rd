@@ -29,7 +29,11 @@ example(decorate.data.frame)
 
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}}, \code{\link{decorate}}
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{decorate}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations}()}
 }
 \concept{decorate}

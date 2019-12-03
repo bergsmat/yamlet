@@ -4,8 +4,7 @@
 \alias{as_yamlet.character}
 \title{Convert Character To yamlet Format}
 \usage{
-\method{as_yamlet}{character}(x, default_keys = list("label", "guide"),
-  ...)
+\method{as_yamlet}{character}(x, default_keys = list("label", "guide"), ...)
 }
 \arguments{
 \item{x}{length-one filepath or actual data}
@@ -32,11 +31,12 @@ key names that over-ride \code{default_keys}.
 as_yamlet(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
 as_yamlet('ID: subject identifier')
 as_yamlet(c('id: subject','amt: dose'))
-as_yamlet(c('id: subject\\namt: dose'))
+as_yamlet(c('id: subject\namt: dose'))
 
 }
 \seealso{
-Other yamlet: \code{\link{as_yamlet.yam}},
-  \code{\link{as_yamlet}}
+Other yamlet: 
+\code{\link{as_yamlet.yam}()},
+\code{\link{as_yamlet}()}
 }
 \concept{yamlet}

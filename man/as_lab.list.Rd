@@ -4,8 +4,13 @@
 \alias{as_lab.list}
 \title{Coerce List to Axis Label}
 \usage{
-\method{as_lab}{list}(x, default, collapse = "\\n",
-  enclose = getOption("enclose", default = c("(", ")")), ...)
+\method{as_lab}{list}(
+  x,
+  default,
+  collapse = "\\n",
+  enclose = getOption("enclose", default = c("(", ")")),
+  ...
+)
 }
 \arguments{
 \item{x}{list, such as returned by \code{\link{attributes}}.}
@@ -30,7 +35,9 @@ x <- decorate(meta)
 as_lab(attributes(x$TIME), 'TIME', enclose = c('[',']'))
 }
 \seealso{
-Other lab: \code{\link{agplot}}, \code{\link{as_lab}},
-  \code{\link{print.ag}}
+Other lab: 
+\code{\link{agplot}()},
+\code{\link{as_lab}()},
+\code{\link{print.ag}()}
 }
 \concept{lab}

@@ -19,8 +19,9 @@ The default deflate() method returns the unmodified object.
 deflate(yaml::yaml.load('ITEM:'))
 }
 \seealso{
-Other deflate: \code{\link{deflate.list}},
-  \code{\link{deflate}}
+Other deflate: 
+\code{\link{deflate.list}()},
+\code{\link{deflate}()}
 }
 \concept{deflate}
 \keyword{internal}

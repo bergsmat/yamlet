@@ -24,8 +24,9 @@ class(meta)
 stopifnot(inherits(meta[1:2],'yamlet'))
 }
 \seealso{
-Other encode: \code{\link{encode.yamlet}},
-  \code{\link{list2encoding}}
+Other encode: 
+\code{\link{encode.yamlet}()},
+\code{\link{list2encoding}()}
 }
 \concept{encode}
 \keyword{internal}
