@@ -4,7 +4,8 @@
 \alias{decorate.character}
 \title{Decorate Character}
 \usage{
-\method{decorate}{character}(x, meta = NULL, coerce = getOption("coerce", FALSE), ...)
+\method{decorate}{character}(x, meta = NULL,
+  coerce = getOption("coerce", FALSE), ...)
 }
 \arguments{
 \item{x}{file path for csv}
@@ -33,11 +34,9 @@ sapply(x, attr, 'label')
 
 }
 \seealso{
-Other decorate: 
-\code{\link{decorate.data.frame}()},
-\code{\link{decorate.list}()},
-\code{\link{decorate}()},
-\code{\link{decorations.data.frame}()},
-\code{\link{decorations}()}
+Other decorate: \code{\link{decorate.data.frame}},
+  \code{\link{decorate.list}}, \code{\link{decorate}},
+  \code{\link{decorations.data.frame}},
+  \code{\link{decorations}}
 }
 \concept{decorate}

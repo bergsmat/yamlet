@@ -11,8 +11,6 @@
 }
 \value{
 list
-
-list
 }
 \description{
 The list method for deflate() recursively
@@ -22,9 +20,8 @@ ascends a nested list, removing uninformative levels.
 deflate(yaml::yaml.load('ITEM: [ label: sunshine, [foo: 1, bar: 3]]'))
 }
 \seealso{
-Other deflate: 
-\code{\link{deflate.default}()},
-\code{\link{deflate}()}
+Other deflate: \code{\link{deflate.default}},
+  \code{\link{deflate}}
 }
 \concept{deflate}
 \keyword{internal}

@@ -97,7 +97,6 @@ deflate.default <- function(x)x
 #' ascends a nested list, removing uninformative levels.
 #'
 #' @param x list
-#' @return list
 #' @export
 #' @keywords internal
 #' @family deflate

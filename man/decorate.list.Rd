@@ -4,7 +4,8 @@
 \alias{decorate.list}
 \title{Decorate List}
 \usage{
-\method{decorate}{list}(x, meta = NULL, coerce = getOption("coerce", FALSE), ...)
+\method{decorate}{list}(x, meta = NULL, coerce = getOption("coerce",
+  FALSE), ...)
 }
 \arguments{
 \item{x}{object inheriting from \code{list}}
@@ -29,11 +30,10 @@ example(decorate.data.frame)
 
 }
 \seealso{
-Other decorate: 
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
-\code{\link{decorate}()},
-\code{\link{decorations.data.frame}()},
-\code{\link{decorations}()}
+Other decorate: \code{\link{decorate.character}},
+  \code{\link{decorate.data.frame}},
+  \code{\link{decorate}},
+  \code{\link{decorations.data.frame}},
+  \code{\link{decorations}}
 }
 \concept{decorate}

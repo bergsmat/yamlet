@@ -19,9 +19,8 @@ Coerce to yam, a precursor to yamlet.  Generic, with character
 method: \code{\link{as_yam.character}}.
 }
 \seealso{
-Other yam: 
-\code{\link{as.character.yam}()},
-\code{\link{as_yam.character}()},
-\code{\link{as_yam.yamlet}()}
+Other yam: \code{\link{as.character.yam}},
+  \code{\link{as_yam.character}},
+  \code{\link{as_yam.yamlet}}
 }
 \concept{yam}

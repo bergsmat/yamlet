@@ -1,7 +1,7 @@
 Package: yamlet
 Type: Package
 Title: Store Data Specification as YAML
-Version: 0.2.0
+Version: 0.2.1
 Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>
 Description: A data specification is useful both for 
@@ -12,8 +12,8 @@ Description: A data specification is useful both for
  compact representation, keys label and guide are assigned 
  by default to the first two anonymous values for  each 
  named item. Defaults can be over-ridden by stored metadata
- or by function arguments. See 'package?yamlet ' and 
- '?decorate.data.frame'.
+ or by function arguments. See package?yamlet and 
+ ?decorate.data.frame.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

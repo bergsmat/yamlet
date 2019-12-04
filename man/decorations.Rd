@@ -24,11 +24,9 @@ x <- decorate(as.csv(file))
 decorations(x)
 }
 \seealso{
-Other decorate: 
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
-\code{\link{decorate.list}()},
-\code{\link{decorate}()},
-\code{\link{decorations.data.frame}()}
+Other decorate: \code{\link{decorate.character}},
+  \code{\link{decorate.data.frame}},
+  \code{\link{decorate.list}}, \code{\link{decorate}},
+  \code{\link{decorations.data.frame}}
 }
 \concept{decorate}

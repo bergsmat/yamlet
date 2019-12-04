@@ -24,7 +24,6 @@ x <- decorate(as.csv(file))
 as_yamlet(x)
 }
 \seealso{
-Other as_yamlet: 
-\code{\link{as.character.yamlet}()}
+Other as_yamlet: \code{\link{as.character.yamlet}}
 }
 \concept{as_yamlet}

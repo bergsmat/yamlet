@@ -4,7 +4,8 @@
 \alias{decorate.data.frame}
 \title{Decorate Data Frame}
 \usage{
-\method{decorate}{data.frame}(x, meta = NULL, coerce = getOption("coerce", FALSE), ...)
+\method{decorate}{data.frame}(x, meta = NULL,
+  coerce = getOption("coerce", FALSE), ...)
 }
 \arguments{
 \item{x}{data.frame}
@@ -38,11 +39,9 @@ sapply(x, attr, 'label')
 
 }
 \seealso{
-Other decorate: 
-\code{\link{decorate.character}()},
-\code{\link{decorate.list}()},
-\code{\link{decorate}()},
-\code{\link{decorations.data.frame}()},
-\code{\link{decorations}()}
+Other decorate: \code{\link{decorate.character}},
+  \code{\link{decorate.list}}, \code{\link{decorate}},
+  \code{\link{decorations.data.frame}},
+  \code{\link{decorations}}
 }
 \concept{decorate}

@@ -25,11 +25,10 @@ sapply(x, attr, 'label')
 
 }
 \seealso{
-Other decorate: 
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
-\code{\link{decorate.list}()},
-\code{\link{decorations.data.frame}()},
-\code{\link{decorations}()}
+Other decorate: \code{\link{decorate.character}},
+  \code{\link{decorate.data.frame}},
+  \code{\link{decorate.list}},
+  \code{\link{decorations.data.frame}},
+  \code{\link{decorations}}
 }
 \concept{decorate}

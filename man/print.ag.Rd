@@ -4,7 +4,8 @@
 \alias{print.ag}
 \title{Print Automatic Labels and Units for ggplot}
 \usage{
-\method{print}{ag}(x, labeller = getOption("labeller", default = as_lab), ...)
+\method{print}{ag}(x, labeller = getOption("labeller", default = as_lab),
+  ...)
 }
 \arguments{
 \item{x}{class 'ag' from \code{\link{agplot}}}
@@ -34,9 +35,7 @@ options(enclose = c('[',']'))
 agplot(data = x) + geom_path(aes(x = TIME, y = DV))
 }
 \seealso{
-Other lab: 
-\code{\link{agplot}()},
-\code{\link{as_lab.list}()},
-\code{\link{as_lab}()}
+Other lab: \code{\link{agplot}}, \code{\link{as_lab.list}},
+  \code{\link{as_lab}}
 }
 \concept{lab}

@@ -24,13 +24,11 @@ importing the data and determining the default keys.
 \examples{
 as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
 as_yam(c('ID:','TIME:'))
-as_yam('ID:\nTIME:')
+as_yam('ID:\\nTIME:')
 
 }
 \seealso{
-Other yam: 
-\code{\link{as.character.yam}()},
-\code{\link{as_yam.yamlet}()},
-\code{\link{as_yam}()}
+Other yam: \code{\link{as.character.yam}},
+  \code{\link{as_yam.yamlet}}, \code{\link{as_yam}}
 }
 \concept{yam}

@@ -27,9 +27,7 @@ class(agplot(data = x) + geom_path(aes(x = TIME, y = DV)))
 class(agplot(data = x, aes(x = TIME, y = DV)) + geom_path())
 }
 \seealso{
-Other lab: 
-\code{\link{as_lab.list}()},
-\code{\link{as_lab}()},
-\code{\link{print.ag}()}
+Other lab: \code{\link{as_lab.list}}, \code{\link{as_lab}},
+  \code{\link{print.ag}}
 }
 \concept{lab}

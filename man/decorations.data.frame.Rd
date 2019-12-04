@@ -4,7 +4,8 @@
 \alias{decorations.data.frame}
 \title{Retrieve Decorations for Data Frame}
 \usage{
-\method{decorations}{data.frame}(x, coerce = getOption("coerce", FALSE), ...)
+\method{decorations}{data.frame}(x, coerce = getOption("coerce", FALSE),
+  ...)
 }
 \arguments{
 \item{x}{data.frame}
@@ -33,11 +34,9 @@ as.character(as_yamlet(decorate(as.csv(file))))
 options(coerce = old)
 }
 \seealso{
-Other decorate: 
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
-\code{\link{decorate.list}()},
-\code{\link{decorate}()},
-\code{\link{decorations}()}
+Other decorate: \code{\link{decorate.character}},
+  \code{\link{decorate.data.frame}},
+  \code{\link{decorate.list}}, \code{\link{decorate}},
+  \code{\link{decorations}}
 }
 \concept{decorate}

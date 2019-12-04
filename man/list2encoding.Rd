@@ -25,9 +25,8 @@ meta <- as_yamlet(meta)
 list2encoding(meta$ROUTE$guide)
 }
 \seealso{
-Other encode: 
-\code{\link{[.yamlet}()},
-\code{\link{encode.yamlet}()}
+Other encode: \code{\link{[.yamlet}},
+  \code{\link{encode.yamlet}}
 }
 \concept{encode}
 \keyword{internal}

@@ -18,9 +18,7 @@ see methods; typically length-one character
 Converts to axis label. Generic, with method \code{\link{as_lab.list}}.
 }
 \seealso{
-Other lab: 
-\code{\link{agplot}()},
-\code{\link{as_lab.list}()},
-\code{\link{print.ag}()}
+Other lab: \code{\link{agplot}}, \code{\link{as_lab.list}},
+  \code{\link{print.ag}}
 }
 \concept{lab}
