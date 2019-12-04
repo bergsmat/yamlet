@@ -2,6 +2,7 @@
 
 S3method("[",yamlet)
 S3method(as.character,yam)
+S3method(as.character,yamlet)
 S3method(as_lab,list)
 S3method(as_yam,character)
 S3method(as_yam,yamlet)

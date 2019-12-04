@@ -1,17 +1,19 @@
 Package: yamlet
 Type: Package
 Title: Store Data Specification as YAML
-Version: 0.1.5
+Version: 0.2.0
 Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>
-Description: A data specification is useful both for developing
- and documenting data.  The 'yamlet' package reads YAML-formatted metadata 
- and applies it as data item attributes. Data and metadata
- are stored independently and optionally associated by naming
- conventions.  For compact representation, keys label and guide 
- are assigned by default to the first two anonymous values for 
- each named item. Defaults can be over-ridden by stored metadata
- or by function arguments. See 'package?yamlet ' and '?decorate.data.frame'.
+Description: A data specification is useful both for 
+ developing and documenting data.  The 'yamlet' package 
+ reads YAML-formatted metadata and applies it as data 
+ item attributes. Data and metadata are stored independently
+ and optionally associated by naming conventions.  For 
+ compact representation, keys label and guide are assigned 
+ by default to the first two anonymous values for  each 
+ named item. Defaults can be over-ridden by stored metadata
+ or by function arguments. See 'package?yamlet ' and 
+ '?decorate.data.frame'.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{as_yamlet.character}
 \alias{as_yamlet.character}
-\title{Convert Character To yamlet Format}
+\title{Coerce Character To Yamlet Format}
 \usage{
 \method{as_yamlet}{character}(x, default_keys = list("label", "guide"), ...)
 }
@@ -17,7 +17,7 @@
 yamlet: a named list with default keys applied
 }
 \description{
-Converts character to yamlet format.
+Coerces character to yamlet format.
 Length-one character is understood as a file path
 if the file exists.  Otherwise, it is treated as data.
 The file is a mapping of (nested) sequences,

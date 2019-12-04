@@ -18,8 +18,9 @@ length-one character
 Coerces list to yamlet storage format. Operates recursively on list members.
 }
 \examples{
-to_yamlet('foo')
-to_yamlet(c(a = 'a',b = 'b'))
+to_yamlet(list())
+to_yamlet(list(a = 1, b = 2, c = NULL))
+to_yamlet(list(a = 1, b = list(c = 3, d = list(e = 4, f = 'g', 'h'))))
 }
 \seealso{
 Other to_yamlet: 

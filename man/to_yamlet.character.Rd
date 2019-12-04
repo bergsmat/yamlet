@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{to_yamlet.character}
 \alias{to_yamlet.character}
-\title{Coerce character to yamlet Storage Format}
+\title{Coerce Character to Yamlet Storage Format}
 \usage{
 \method{to_yamlet}{character}(x, ...)
 }
@@ -19,6 +19,7 @@ Coerces character to yamlet storage format. Named character is processed as a na
 }
 \examples{
 to_yamlet('foo')
+to_yamlet(c('a','b'))
 to_yamlet(c(a = 'a',b = 'b'))
 }
 \seealso{

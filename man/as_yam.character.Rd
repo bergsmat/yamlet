@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{as_yam.character}
 \alias{as_yam.character}
-\title{Coerce Character to yam}
+\title{Coerce Character to Yam}
 \usage{
 \method{as_yam}{character}(x, as.named.list, ...)
 }

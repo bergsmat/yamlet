@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{as_yam}
 \alias{as_yam}
-\title{Coerce to yam}
+\title{Coerce to Yam}
 \usage{
 as_yam(x, ...)
 }

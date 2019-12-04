@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{[.yamlet}
 \alias{[.yamlet}
-\title{Subset yamelet}
+\title{Subset Yamlet}
 \usage{
 \method{[}{yamlet}(x, ...)
 }

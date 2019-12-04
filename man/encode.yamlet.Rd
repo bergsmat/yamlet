@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{encode.yamlet}
 \alias{encode.yamlet}
-\title{Encode yamelet}
+\title{Encode Yamlet}
 \usage{
 \method{encode}{yamlet}(x, target = "guide", ...)
 }

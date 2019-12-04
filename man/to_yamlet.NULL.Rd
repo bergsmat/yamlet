@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{to_yamlet.NULL}
 \alias{to_yamlet.NULL}
-\title{Coerce null to yamlet Storage Format}
+\title{Coerce Null to Yamlet Storage Format}
 \usage{
 \method{to_yamlet}{`NULL`}(x, ...)
 }

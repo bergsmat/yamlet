@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{as.character.yam}
 \alias{as.character.yam}
-\title{Coerce yam to Character}
+\title{Coerce Yam to Character}
 \usage{
 \method{as.character}{yam}(x, ...)
 }
@@ -19,7 +19,11 @@ Coerces class yam to character.  Forms the basis for a
 yamlet emitter.
 }
 \examples{
-as.character(as_yam(as_yamlet(c('id: subject','amt: dose'))))
+foo <- as_yamlet(c('id: subject','amt: dose'))
+class(foo)
+bar <- as_yam(foo)
+class(bar)
+as.character(bar)
 as.character(
 as_yam(
 as_yamlet(

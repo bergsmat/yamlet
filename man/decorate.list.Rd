@@ -4,7 +4,7 @@
 \alias{decorate.list}
 \title{Decorate List}
 \usage{
-\method{decorate}{list}(x, meta = NULL, coerce = FALSE, ...)
+\method{decorate}{list}(x, meta = NULL, coerce = getOption("coerce", FALSE), ...)
 }
 \arguments{
 \item{x}{object inheriting from \code{list}}

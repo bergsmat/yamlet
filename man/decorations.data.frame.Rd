@@ -2,12 +2,14 @@
 % Please edit documentation in R/yamlet.R
 \name{decorations.data.frame}
 \alias{decorations.data.frame}
-\title{Retrieve Decorations for Data.frame}
+\title{Retrieve Decorations for Data Frame}
 \usage{
-\method{decorations}{data.frame}(x, ...)
+\method{decorations}{data.frame}(x, coerce = getOption("coerce", FALSE), ...)
 }
 \arguments{
-\item{x}{object}
+\item{x}{data.frame}
+
+\item{coerce}{logical whether to coerce factor levels to guide; alternatively, a key for the levels}
 
 \item{...}{passed arguments}
 }
@@ -22,7 +24,13 @@ used to decorate it. Returns a list with same names as the data.frame.
 library(csv)
 file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
 x <- decorate(as.csv(file))
-decorations(x)
+decorations(x[,1:7])
+decorations(decorate(as.csv(file), coerce = TRUE)[,1:7])
+decorations(decorate(as.csv(file), coerce = TRUE)[,1:7], coerce = TRUE)
+old <- getOption('coerce')
+options(coerce = TRUE)
+as.character(as_yamlet(decorate(as.csv(file))))
+options(coerce = old)
 }
 \seealso{
 Other decorate: 

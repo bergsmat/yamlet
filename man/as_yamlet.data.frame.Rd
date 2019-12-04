@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{as_yamlet.data.frame}
 \alias{as_yamlet.data.frame}
-\title{Coerce Data.frame to Yamlet}
+\title{Coerce Data Frame to Yamlet}
 \usage{
 \method{as_yamlet}{data.frame}(x, ...)
 }
@@ -15,12 +15,16 @@
 yamlet
 }
 \description{
-Coerces data.frame to yamlet. Assigns class 'yamlet' do a data.frame's decorations.
+Coerces data.frame to yamlet. Assigns class 'yamlet' to adata.frame's decorations.
 }
 \examples{
 library(csv)
 file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
 x <- decorate(as.csv(file))
 as_yamlet(x)
+}
+\seealso{
+Other as_yamlet: 
+\code{\link{as.character.yamlet}()}
 }
 \concept{as_yamlet}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{to_yamlet.default}
 \alias{to_yamlet.default}
-\title{Coerce Default to yamlet Storage Format}
+\title{Coerce Default to Yamlet Storage Format}
 \usage{
 \method{to_yamlet}{default}(x, ...)
 }
@@ -20,6 +20,7 @@ Coerces to yamlet storage format by default conversion to character.
 \examples{
 to_yamlet(3)
 to_yamlet(c(a = 4,b = 5.8))
+to_yamlet(TRUE)
 }
 \seealso{
 Other to_yamlet: 

@@ -4,7 +4,7 @@
 \alias{decorate.character}
 \title{Decorate Character}
 \usage{
-\method{decorate}{character}(x, meta = NULL, coerce = FALSE, ...)
+\method{decorate}{character}(x, meta = NULL, coerce = getOption("coerce", FALSE), ...)
 }
 \arguments{
 \item{x}{file path for csv}

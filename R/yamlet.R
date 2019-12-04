@@ -1,4 +1,4 @@
-#' Coerce to yam
+#' Coerce to Yam
 #'
 #' Coerce to yam, a precursor to yamlet.  Generic, with character
 #' method: \code{\link{as_yam.character}}.
@@ -9,7 +9,7 @@
 #' @export
 as_yam <- function(x, ...)UseMethod('as_yam')
 
-#' Coerce Character to yam
+#' Coerce Character to Yam
 #'
 #' Coerces character to yam.  Length-one character can be
 #' a filepath, otherwise treated as data.  Proceeds by
@@ -128,7 +128,7 @@ deflate.list <- function(x){
   x
 }
 
-#' Coerce to yamlet
+#' Coerce to Yamlet
 #'
 #' Coerces something to yamlet format. If the object
 #' or user specifies default keys, these are applied,
@@ -144,9 +144,9 @@ deflate.list <- function(x){
 #'
 as_yamlet <- function(x, ...)UseMethod('as_yamlet')
 
-#' Convert yam To yamlet Format
+#' Coerce Yam To Yamlet Format
 #'
-#' Converts yam to yamlet format. If the object
+#' Coerces yam to yamlet format. If the object
 #' or user specifies default keys, these are applied,
 #' with the former having priority.  See \code{\link{as_yamlet.character}}.
 #'
@@ -187,9 +187,9 @@ resolve <- function(x, keys){ # an item
 }
 
 
-#' Convert Character To yamlet Format
+#' Coerce Character To Yamlet Format
 #'
-#' Converts character to yamlet format.
+#' Coerces character to yamlet format.
 #' Length-one character is understood as a file path
 #' if the file exists.  Otherwise, it is treated as data.
 #' The file is a mapping of (nested) sequences,
@@ -260,7 +260,7 @@ decorate <- function(x,...)UseMethod('decorate')
 decorate.character <- function(
   x,
   meta = NULL,
-  coerce = FALSE,
+  coerce = getOption('coerce',FALSE),
   ...
 ){
   stopifnot(length(x) == 1)
@@ -295,7 +295,7 @@ decorate.character <- function(
 decorate.list <- function(
   x,
   meta = NULL,
-  coerce = FALSE,
+  coerce = getOption('coerce',FALSE),
   ...
 ){
   if(is.null(meta)) meta <- attr(x, 'source')
@@ -323,7 +323,10 @@ decorate.list <- function(
                 if(any(labs == '')){
                   warning('guide for ',item,' contains unlabeled levels')
                 }else{
+                  reserve <- attributes(x[[item]])
+                  reserve$guide <- NULL
                   try(x[[item]] <- factor(x[[item]], levels = levs, labels = labs))
+                  if(is.factor(x[[item]])) attributes(x[[item]]) <- c(reserve, attributes(x[[item]]))
                 }
               }
             }
@@ -366,7 +369,7 @@ decorate.list <- function(
 decorate.data.frame <- function(
   x,
   meta = NULL,
-  coerce = FALSE,
+  coerce = getOption('coerce',FALSE),
   ...
 )decorate.list(x, meta = meta, coerce = coerce, ...)
 
@@ -387,12 +390,13 @@ decorate.data.frame <- function(
 
 decorations <- function(x,...)UseMethod('decorations')
 
-#' Retrieve Decorations for Data.frame
+#' Retrieve Decorations for Data Frame
 #'
 #' Retrieve the decorations of a data.frame; i.e., the metadata
 #' used to decorate it. Returns a list with same names as the data.frame.
 #'
-#' @param x object
+#' @param x data.frame
+#' @param coerce logical whether to coerce factor levels to guide; alternatively, a key for the levels
 #' @param ... passed arguments
 #' @export
 #' @family decorate
@@ -401,15 +405,44 @@ decorations <- function(x,...)UseMethod('decorations')
 #' library(csv)
 #' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
 #' x <- decorate(as.csv(file))
-#' decorations(x)
+#' decorations(x[,1:7])
+#' decorations(decorate(as.csv(file), coerce = TRUE)[,1:7])
+#' decorations(decorate(as.csv(file), coerce = TRUE)[,1:7], coerce = TRUE)
+#' old <- getOption('coerce')
+#' options(coerce = TRUE)
+#' as.character(as_yamlet(decorate(as.csv(file))))
+#' options(coerce = old)
 
-decorations.data.frame <- function(x,...){
-  lapply(x, attributes)
+decorations.data.frame <- function(x, coerce = getOption('coerce', FALSE),...){
+  out <- lapply(x, attributes)
+  levs_key <- 'guide'
+  if(!is.logical(coerce)){
+    if(is.character(coerce))
+      if(length(coerce) == 1){
+        levs_key <- coerce
+        coerce <- TRUE
+      }
+  }
+  if(!is.logical(coerce)){
+    warning('coerce value not logical')
+  }else{
+    if(coerce){
+      for(i in seq_along(out)){
+        if('class' %in% names(out[[i]])){
+          if(out[[i]]$class == 'factor'){
+            out[[i]]$class <- NULL
+            names(out[[i]])[names(out[[i]]) == 'levels'] <- levs_key
+          }
+        }
+      }
+    }
+  }
+  out
 }
 
-#' Coerce Data.frame to Yamlet
+#' Coerce Data Frame to Yamlet
 #'
-#' Coerces data.frame to yamlet. Assigns class 'yamlet' do a data.frame's decorations.
+#' Coerces data.frame to yamlet. Assigns class 'yamlet' to adata.frame's decorations.
 #'
 #' @param x data.frame
 #' @param... passed arguments
@@ -427,7 +460,7 @@ as_yamlet.data.frame <- function(x, ...){
   out
 }
 
-#' Coerce yamlet to yam
+#' Coerce Yamlet to Yam
 #'
 #' Coerces class yamlet to yam, negotiating the default keys.
 #' For each member of x, names of sub-members will be dropped
@@ -462,10 +495,11 @@ as_yam.yamlet <- function(x, default_keys = list('label','guide'), ...){
     }
   }
   attr(x, 'keys') <- default_keys
+  class(x) <- 'yam'
   x
 }
 
-#' Coerce yam to Character
+#' Coerce Yam to Character
 #'
 #' Coerces class yam to character.  Forms the basis for a
 #' yamlet emitter.
@@ -476,7 +510,11 @@ as_yam.yamlet <- function(x, default_keys = list('label','guide'), ...){
 #' @family yam
 #' @return character
 #' @examples
-#' as.character(as_yam(as_yamlet(c('id: subject','amt: dose'))))
+#' foo <- as_yamlet(c('id: subject','amt: dose'))
+#' class(foo)
+#' bar <- as_yam(foo)
+#' class(bar)
+#' as.character(bar)
 #' as.character(
 #' as_yam(
 #' as_yamlet(
@@ -491,7 +529,7 @@ as.character.yam <- function(x, ...){
   out <- paste0(names(x), ': ', sapply(x, to_yamlet))
 }
 
-#' Coerce to yamlet Storage Format
+#' Coerce to Yamlet Storage Format
 #'
 #' Coerces to yamlet storage format. Generic, with methods
 #' for null, character and list.
@@ -501,13 +539,9 @@ as.character.yam <- function(x, ...){
 #' @export
 #' @return length-one character
 #' @family to_yamlet
-#' @examples
-#' to_yamlet(as_yamlet(
-#' 'race: [label: race, guide: [ white: 0, black: 1, asian: 2 ], multiple: [yes: 1, no: 0]]'
-#' ))
 to_yamlet <- function(x, ...)UseMethod('to_yamlet')
 
-#' Coerce Default to yamlet Storage Format
+#' Coerce Default to Yamlet Storage Format
 #'
 #' Coerces to yamlet storage format by default conversion to character.
 #' @param x object
@@ -518,12 +552,11 @@ to_yamlet <- function(x, ...)UseMethod('to_yamlet')
 #' @examples
 #' to_yamlet(3)
 #' to_yamlet(c(a = 4,b = 5.8))
+#' to_yamlet(TRUE)
 to_yamlet.default <- function(x,...)to_yamlet(as.character(x))
 
-
-
 #'
-#' Coerce character to yamlet Storage Format
+#' Coerce Character to Yamlet Storage Format
 #'
 #' Coerces character to yamlet storage format. Named character is processed as a named list.
 #' @param x character
@@ -533,6 +566,7 @@ to_yamlet.default <- function(x,...)to_yamlet(as.character(x))
 #' @family to_yamlet
 #' @examples
 #' to_yamlet('foo')
+#' to_yamlet(c('a','b'))
 #' to_yamlet(c(a = 'a',b = 'b'))
 
 to_yamlet.character <- function(x, ...){
@@ -554,7 +588,7 @@ to_yamlet.character <- function(x, ...){
   x
 }
 
-#' Coerce null to yamlet Storage Format
+#' Coerce Null to Yamlet Storage Format
 #'
 #' Coerces null to yamlet storage format (returns empty string).
 #' @param x object
@@ -575,18 +609,18 @@ to_yamlet.NULL <- function(x, ...)''
 #' @return length-one character
 #' @family to_yamlet
 #' @examples
-#' to_yamlet('foo')
-#' to_yamlet(c(a = 'a',b = 'b'))
-#' to_yamlet(list(a = 'a', b = 'b'))
-#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
-#' meta <- as_yamlet(meta)
-#' to_yamlet(meta)
+#' to_yamlet(list())
+#' to_yamlet(list(a = 1, b = 2, c = NULL))
+#' to_yamlet(list(a = 1, b = list(c = 3, d = list(e = 4, f = 'g', 'h'))))
+
 
 to_yamlet.list <- function(x, ...){
   # convert each member to yamlet
+  if(length(x) == 0) x <- list(NULL)
   nms <- names(x)
   out <- lapply(x, to_yamlet)
-  # if member not null (''), attach name using colon-space, else using ? name
+  # if member not null (''), attach name using colon-space,
+  # else using ? name
   # if name is '', do not attach
   for(i in seq_along(nms)){
     if(nms[[i]] != ''){
@@ -598,12 +632,43 @@ to_yamlet.list <- function(x, ...){
     }
   }
   # separate members with commas
-  out <- unlist(out)
-  out <- paste(out, collapse = ', ')
-  # enclose members in brackets
-  out <- paste0('[ ', out, ' ]')
+  out <- unlist(out) # converts empty list to NULL
+  if(is.null(out)) out <- ''
+  if(length(out) > 1){
+    out <- paste(out, collapse = ', ')
+    # enclose members in brackets
+    out <- paste0('[ ', out, ' ]')
+  }
+  out <- gsub('] ',']', out)
   out
 }
+
+#' Coerce Yamlet to Character
+#'
+#' Coerces yamlet to character.  See also \code{\link{as_yamlet.character}}.
+#'
+#' @param x yamlet
+#' @param ... passed arguments
+#' @export
+#' @family as_yamlet
+#' @return character
+#' @examples
+#'
+#' as.character(as_yamlet('ID: subject identifier'))
+#' as.character(as_yamlet(c('id: subject','amt: dose')))
+#' as.character(as_yamlet(c('id: subject\namt: dose')))
+#' foo <- as_yamlet(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+#' class(foo)
+#' writeLines(as.character(foo))
+#'
+#' file <- system.file(package = 'yamlet','extdata','yamlet.csv')
+#' file
+#' foo <- decorate(file, coerce = TRUE)
+#' as.character(as_yamlet(foo))
+#'
+#'
+as.character.yamlet <- function(x,...)as.character(as_yam(x,...),...)
+
 
 #' Coerce List to Encoding
 #'
@@ -650,7 +715,7 @@ list2encoding <- function(x, ...){
   out
 }
 
-#' Encode yamelet
+#' Encode Yamlet
 #'
 #' Encodes yamlet.  Each 'guide' element that is a list
 #' is converted to an encoding, if possible.
@@ -688,7 +753,7 @@ encode.yamlet <- function(x, target = 'guide', ...){
 #' @export
 encode::encode
 
-#' Subset yamelet
+#' Subset Yamlet
 #'
 #' Subsets yamlet. Preserves class, since a subset of yamlet is still yamlet.
 #'
@@ -800,7 +865,6 @@ agplot <- function(data, ...){
 #' meta <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
 #' x <- decorate(meta)
 #' library(ggplot2)
-#' agplot(data = x) + geom_path(aes(x = TIME, y = DV))
 #' agplot(data = x) + geom_path(aes(x = TIME, y = DV))
 #' agplot(data = x, aes(x = TIME, y = DV)) + geom_path()
 #' agplot(data = x) + geom_path(aes(x = TIME, y = DV)) + xlab('the time (hours)')

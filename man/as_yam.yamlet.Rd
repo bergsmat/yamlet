@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{as_yam.yamlet}
 \alias{as_yam.yamlet}
-\title{Coerce yamlet to yam}
+\title{Coerce Yamlet to Yam}
 \usage{
 \method{as_yam}{yamlet}(x, default_keys = list("label", "guide"), ...)
 }

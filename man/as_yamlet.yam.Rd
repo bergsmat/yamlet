@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{as_yamlet.yam}
 \alias{as_yamlet.yam}
-\title{Convert yam To yamlet Format}
+\title{Coerce Yam To Yamlet Format}
 \usage{
 \method{as_yamlet}{yam}(x, default_keys = list("label", "guide"), ...)
 }
@@ -17,7 +17,7 @@
 yamlet: a named list with default keys applied
 }
 \description{
-Converts yam to yamlet format. If the object
+Coerces yam to yamlet format. If the object
 or user specifies default keys, these are applied,
 with the former having priority.  See \code{\link{as_yamlet.character}}.
 }

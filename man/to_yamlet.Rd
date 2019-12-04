@@ -2,7 +2,7 @@
 % Please edit documentation in R/yamlet.R
 \name{to_yamlet}
 \alias{to_yamlet}
-\title{Coerce to yamlet Storage Format}
+\title{Coerce to Yamlet Storage Format}
 \usage{
 to_yamlet(x, ...)
 }
@@ -18,11 +18,6 @@ length-one character
 Coerces to yamlet storage format. Generic, with methods
 for null, character and list.
 Always returns length-one character, possibly the empty string.
-}
-\examples{
-to_yamlet(as_yamlet(
-'race: [label: race, guide: [ white: 0, black: 1, asian: 2 ], multiple: [yes: 1, no: 0]]'
-))
 }
 \seealso{
 Other to_yamlet: 
