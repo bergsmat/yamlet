@@ -1,7 +1,7 @@
-#' yamlet: Store Data Specification as YAML
+#' yamlet: Versatile Curation of Table Metadata
 #'
-#' The \pkg{yamlet} package supports storage and retrieval of data
-#' specifications in YAML format.  The most important function
+#' The \pkg{yamlet} package supports storage and retrieval of table
+#' metadata in YAML format.  The most important function
 #' is \code{\link{decorate.character}}: it lets you 'decorate'
 #' your data by attaching attributes retrieved from a file in
 #' YAML format.  Typically your data will be of class
@@ -15,7 +15,7 @@
 #' Though well formed, it need not be complete, and therefore
 #' has utility over a longer life cycle of data development.
 #'
-#' In the simplest case, the data specification constists
+#' In the simplest case, the data specification consists
 #' of a list of column (item) names, followed by semicolons.
 #' Perhaps you only have one column:
 #'

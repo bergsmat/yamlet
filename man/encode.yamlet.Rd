@@ -17,16 +17,17 @@
 yamlet, with guide elements possibly transformed to encodings
 }
 \description{
-Encodes yamlet.  Each 'guide' element that is a list
+Encodes yamlet.  Each 'guide' element with length > 1
 is converted to an encoding, if possible.
 }
 \examples{
-meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 meta <- as_yamlet(meta)
 meta <- encode(meta)
 }
 \seealso{
-Other encode: \code{\link{[.yamlet}},
-  \code{\link{list2encoding}}
+Other encode: 
+\code{\link{[.yamlet}()},
+\code{\link{list2encoding}()}
 }
 \concept{encode}

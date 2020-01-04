@@ -11,7 +11,7 @@
 
 \item{as.named.list}{enforced as TRUE}
 
-\item{...}{passed to \code{\link[yaml]{read_yaml}}}
+\item{...}{passed to \code{\link[yaml]{read_yaml}} and \code{\link[yaml]{yaml.load}} if supported}
 }
 \value{
 a named list
@@ -22,13 +22,16 @@ a filepath, otherwise treated as data.  Proceeds by
 importing the data and determining the default keys.
 }
 \examples{
-as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml'))
 as_yam(c('ID:','TIME:'))
-as_yam('ID:\\nTIME:')
+as_yam('ID:\nTIME:')
 
 }
 \seealso{
-Other yam: \code{\link{as.character.yam}},
-  \code{\link{as_yam.yamlet}}, \code{\link{as_yam}}
+Other yam: 
+\code{\link{as.character.yam}()},
+\code{\link{as_yam.yamlet}()},
+\code{\link{as_yam}()}
 }
 \concept{yam}
+\keyword{internal}

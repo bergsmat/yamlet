@@ -4,8 +4,7 @@
 \alias{decorate.data.frame}
 \title{Decorate Data Frame}
 \usage{
-\method{decorate}{data.frame}(x, meta = NULL,
-  coerce = getOption("coerce", FALSE), ...)
+\method{decorate}{data.frame}(x, meta = NULL, coerce = getOption("coerce", FALSE), ...)
 }
 \arguments{
 \item{x}{data.frame}
@@ -22,26 +21,31 @@ data.frame
 \description{
 Decorates a data.frame. Expects metadata with labels and guides,
 where guides are units, factor levels and labels (codes, decodes), or
-datetime formatting strings. For guides that are lists, the corresponding
+datetime formatting strings. For guides with length > 1, the corresponding
 data element may optionally be coerced to factor.
 }
 \examples{
 library(csv)
-file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
-meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
-x <- decorate(as.csv(file))
-x <- decorate(as.csv(file))
-x <- decorate(as.csv(file), meta = as_yamlet(meta))
-x <- decorate(as.csv(file), meta = meta)
-x <- decorate(as.csv(file), meta = file)
-x <- decorate(as.csv(file), coerce = TRUE)
-sapply(x, attr, 'label')
-
+file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+a <- decorate(as.csv(file))
+b <- decorate(as.csv(file), meta = as_yamlet(meta))
+c <- decorate(as.csv(file), meta = meta)
+d <- decorate(as.csv(file), meta = file)
+e <- decorate(as.csv(file), coerce = TRUE)
+identical(a, b)
+identical(a, c)
+identical(a, d)
+identical(a, e)
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.list}}, \code{\link{decorate}},
-  \code{\link{decorations.data.frame}},
-  \code{\link{decorations}}
+decorate.list
+
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.list}()},
+\code{\link{decorate}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations}()}
 }
 \concept{decorate}

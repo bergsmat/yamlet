@@ -19,12 +19,15 @@ Coerces to yamlet storage format by default conversion to character.
 }
 \examples{
 to_yamlet(3)
+to_yamlet(c(a = '4',b = '5.8'))
 to_yamlet(c(a = 4,b = 5.8))
 to_yamlet(TRUE)
 }
 \seealso{
-Other to_yamlet: \code{\link{to_yamlet.NULL}},
-  \code{\link{to_yamlet.character}},
-  \code{\link{to_yamlet.list}}, \code{\link{to_yamlet}}
+Other to_yamlet: 
+\code{\link{to_yamlet.NULL}()},
+\code{\link{to_yamlet.character}()},
+\code{\link{to_yamlet.list}()},
+\code{\link{to_yamlet}()}
 }
 \concept{to_yamlet}

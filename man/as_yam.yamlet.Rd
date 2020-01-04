@@ -32,7 +32,10 @@ as_yam(as_yamlet(c('amt: [ guide: mg, label: dose ]')))
 
 }
 \seealso{
-Other yam: \code{\link{as.character.yam}},
-  \code{\link{as_yam.character}}, \code{\link{as_yam}}
+Other yam: 
+\code{\link{as.character.yam}()},
+\code{\link{as_yam.character}()},
+\code{\link{as_yam}()}
 }
 \concept{yam}
+\keyword{internal}

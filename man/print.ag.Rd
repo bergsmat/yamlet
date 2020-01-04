@@ -4,8 +4,7 @@
 \alias{print.ag}
 \title{Print Automatic Labels and Units for ggplot}
 \usage{
-\method{print}{ag}(x, labeller = getOption("labeller", default = as_lab),
-  ...)
+\method{print}{ag}(x, labeller = getOption("labeller", default = as_lab), ...)
 }
 \arguments{
 \item{x}{class 'ag' from \code{\link{agplot}}}
@@ -25,17 +24,19 @@ receive existing labels one at a time
 and corresponding attributes(if any) from data.
 }
 \examples{
-meta <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
-x <- decorate(meta)
+meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+x <- decorate(meta, coerce = TRUE )
 library(ggplot2)
-agplot(data = x) + geom_path(aes(x = TIME, y = DV))
-agplot(data = x, aes(x = TIME, y = DV)) + geom_path()
-agplot(data = x) + geom_path(aes(x = TIME, y = DV)) + xlab('the time (hours)')
+agplot(data = x) + geom_point(aes(x = time, y = conc, color = Heart))
+agplot(data = x, aes(x = time, y = conc)) + geom_point()
+agplot(data = x) + geom_point(aes(x = time, y = conc)) + xlab('the time (hours)')
 options(enclose = c('[',']'))
-agplot(data = x) + geom_path(aes(x = TIME, y = DV))
+agplot(data = x) + geom_point(aes(x = time, y = conc, color = Creatinine))
 }
 \seealso{
-Other lab: \code{\link{agplot}}, \code{\link{as_lab.list}},
-  \code{\link{as_lab}}
+Other lab: 
+\code{\link{agplot}()},
+\code{\link{as_lab.list}()},
+\code{\link{as_lab}()}
 }
 \concept{lab}

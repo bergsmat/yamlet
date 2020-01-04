@@ -19,11 +19,12 @@ Coerces data.frame to yamlet. Assigns class 'yamlet' to adata.frame's decoration
 }
 \examples{
 library(csv)
-file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(as.csv(file))
 as_yamlet(x)
 }
 \seealso{
-Other as_yamlet: \code{\link{as.character.yamlet}}
+Other as_yamlet: 
+\code{\link{as.character.yamlet}()}
 }
 \concept{as_yamlet}

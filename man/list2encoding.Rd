@@ -20,13 +20,14 @@ understood as decodes, and list values as codes.
 On failure, the list is returned unchanged.
 }
 \examples{
-meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 meta <- as_yamlet(meta)
-list2encoding(meta$ROUTE$guide)
+list2encoding(meta$Creatinine$guide)
 }
 \seealso{
-Other encode: \code{\link{[.yamlet}},
-  \code{\link{encode.yamlet}}
+Other encode: 
+\code{\link{[.yamlet}()},
+\code{\link{encode.yamlet}()}
 }
 \concept{encode}
 \keyword{internal}

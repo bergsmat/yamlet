@@ -3,11 +3,10 @@
 \docType{package}
 \name{yamlet}
 \alias{yamlet}
-\alias{yamlet-package}
-\title{yamlet: Store Data Specification as YAML}
+\title{yamlet: Versatile Curation of Table Metadata}
 \description{
-The \pkg{yamlet} package supports storage and retrieval of data
-specifications in YAML format.  The most important function
+The \pkg{yamlet} package supports storage and retrieval of table
+metadata in YAML format.  The most important function
 is \code{\link{decorate.character}}: it lets you 'decorate'
 your data by attaching attributes retrieved from a file in
 YAML format.  Typically your data will be of class
@@ -22,7 +21,7 @@ well-formed yaml.  Technically, it is a map of sequences.
 Though well formed, it need not be complete, and therefore
 has utility over a longer life cycle of data development.
 
-In the simplest case, the data specification constists
+In the simplest case, the data specification consists
 of a list of column (item) names, followed by semicolons.
 Perhaps you only have one column:
 

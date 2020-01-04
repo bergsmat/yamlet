@@ -21,12 +21,13 @@ Coerces yamlet to character.  See also \code{\link{as_yamlet.character}}.
 
 as.character(as_yamlet('ID: subject identifier'))
 as.character(as_yamlet(c('id: subject','amt: dose')))
-as.character(as_yamlet(c('id: subject\\namt: dose')))
-foo <- as_yamlet(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+as.character(as_yamlet(c('id: subject\namt: dose')))
+foo <- as_yamlet(system.file(package = 'yamlet', 'extdata','quinidine.yaml'))
 class(foo)
 writeLines(as.character(foo))
-
-file <- system.file(package = 'yamlet','extdata','yamlet.csv')
+identical(foo, as_yamlet(as.character(foo)))
+identical(as.character(foo), as.character(as_yamlet(as.character(foo))))
+file <- system.file(package = 'yamlet','extdata','quinidine.csv')
 file
 foo <- decorate(file, coerce = TRUE)
 as.character(as_yamlet(foo))
@@ -34,6 +35,7 @@ as.character(as_yamlet(foo))
 
 }
 \seealso{
-Other as_yamlet: \code{\link{as_yamlet.data.frame}}
+Other as_yamlet: 
+\code{\link{as_yamlet.data.frame}()}
 }
 \concept{as_yamlet}

@@ -7,6 +7,7 @@
 #' @return list
 #' @family yam
 #' @export
+#' @keywords internal
 as_yam <- function(x, ...)UseMethod('as_yam')
 
 #' Coerce Character to Yam
@@ -17,13 +18,14 @@ as_yam <- function(x, ...)UseMethod('as_yam')
 #'
 #' @param x length-one filepath or actual data
 #' @param as.named.list enforced as TRUE
-#' @param ... passed to \code{\link[yaml]{read_yaml}}
+#' @param ... passed to \code{\link[yaml]{read_yaml}} and \code{\link[yaml]{yaml.load}} if supported
 #' @export
 #' @importFrom yaml read_yaml yaml.load
 #' @family yam
+#' @keywords internal
 #' @return a named list
 #' @examples
-#' as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+#' as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml'))
 #' as_yam(c('ID:','TIME:'))
 #' as_yam('ID:\nTIME:')
 #'
@@ -33,7 +35,11 @@ as_yam.character <- function(
   ...
 ){
   if(length(x) == 1 & file.exists(x[[1]])){
-    y <- read_yaml(x, ...) # as.named.list TRUE by default
+    allowed <- c(names(formals(read_yaml)), names(formals(yaml.load)))
+    args <- list(...)
+    args <- args[names(args) %in% allowed ]
+    args <- c(list(x), args)
+    y <- do.call(read_yaml, args) # as.named.list TRUE by default
   }else{
     y <- try(yaml.load(paste(x, collapse = '\n')))
   }
@@ -48,7 +54,7 @@ as_yam.character <- function(
   # each member of y must be a list
   for(m in seq_along(y)) y[[m]] <- as.list(y[[m]])
 
-  y[] <- lapply(y, deflate)
+  y[] <- lapply(y, unnest)
   y[] <- lapply(y, as.list)
 
   if('_keys' %in% names(y)){
@@ -62,68 +68,95 @@ as_yam.character <- function(
 
 #' Collapse Uninformative Levels
 #'
+#' Each element of a list that is itself a list
+#' and does not have a name but has exactly one element
+#' that DOES have a name should become that element
+#' and have that name (recursively, from depth).
 #' Collapses uninformative levels of nested lists.
-#' If any element of a list (recursively) is a list
-#' with one member, that member replaces the element,
-#' combining the element's name (if any) with the
-#' member's name (if any).
 #'
 #' @param x object
-#' @return list
+#' @return named list
 #' @export
 #' @keywords internal
-#' @family deflate
+#' @family unnest
 #' @examples
-#' deflate(yaml::yaml.load('[foo: 1, bar: 3]'))
-deflate <- function(x)UseMethod('deflate')
+#' unnest(yaml::yaml.load('[foo: 1, bar: 3]'))
+unnest <- function(x,...)UseMethod('unnest')
+
 
 #' Collapse Uninformative Levels by Default
 #'
-#' The default deflate() method returns the unmodified object.
+#' The default unnest() method returns the unmodified object.
 #'
 #' @param x object
 #' @return list
 #' @export
 #' @keywords internal
-#' @family deflate
+#' @family unnest
 #' @examples
-#' deflate(yaml::yaml.load('ITEM:'))
-deflate.default <- function(x)x
+#' unnest(yaml::yaml.load('ITEM:'))
+unnest.default <- function(x, ...)x
 
 
 #' Collapse Uninformative Levels of a List
 #'
-#' The list method for deflate() recursively
+#' The list method for unnest() recursively
 #' ascends a nested list, removing uninformative levels.
 #'
 #' @param x list
 #' @export
 #' @keywords internal
-#' @family deflate
+#' @family unnest
 #' @return list
 #' @examples
-#' deflate(yaml::yaml.load('ITEM: [ label: sunshine, [foo: 1, bar: 3]]'))
-deflate.list <- function(x){
-  # I am a list, possibly with names
-  my_names <- names(x)
-  if(is.null(my_names)) my_names <- rep('',length(x))
-  # Now I have explicit names
-  # I have child elements, possibly with names.
-  # First, I collapse them.
-  their_names <- lapply(x, names)
-  their_lengths <- lapply(x, length)
-  x[] <- lapply(x, deflate)
-  # Then, for those that are length one lists,
-  # I replace them with their first elements,
-  # retaining the name
+#' unnest(yaml::yaml.load('ITEM: [ label: sunshine, [foo: 1, bar: 3]]'))
+#' as_yamlet('ITEM: [ label: sunshine, [foo: 1, bar: 3]]')
+# unnest.list <- function(x){
+#   # I am a list, possibly with names
+#   my_names <- names(x)
+#   if(is.null(my_names)) my_names <- rep('',length(x))
+#   # Now I have explicit names
+#   # I have child elements, possibly with names.
+#   # First, I collapse them.
+#   their_names <- lapply(x, names)
+#   their_lengths <- lapply(x, length)
+#   x[] <- lapply(x, deflate)
+#   # Then, for those that are length one lists,
+#   # I replace them with their first elements,
+#   # retaining the name
+#   for(i in seq_along(x)){
+#     if(their_lengths[[i]] == 1){
+#       x[i] <- list(x[[i]][[1]])
+#       my_names[[i]] <- paste0(my_names[[i]], their_names[[i]])
+#     }
+#   }
+#   # Now I update my own names
+#   names(x) <- my_names
+#   x
+# }
+unnest.list <- function(x,...){
+  # make names explicit
+  if(is.null(names(x))) names(x) <- rep('',length(x))
+  # unnest members
+  x[] <- lapply(x, unnest) # for atomics
+  # if I reached here, I am a list
+  # and all my members are unnested.
+  # process each element:
   for(i in seq_along(x)){
-    if(their_lengths[[i]] == 1){
-      x[i] <- list(x[[i]][[1]])
-      my_names[[i]] <- paste0(my_names[[i]], their_names[[i]])
+    this <- x[[i]]                    # element i
+    nm <- names(x)[[i]]               # name of element i
+    len <- length(this)               # length one?
+    isList <- is.list(this)           # list?
+    nms <- setdiff(names(this),'')    # good names
+    if(
+      isList &                        # each element that is a list
+      nm == '' &                      # and does not have a name
+      len == 1 &                      # but has exactly one element
+      length(nms)                     # that is named
+    ){
+      x <- append(x, this, after = i)[-i] # should be that element and have that name
     }
   }
-  # Now I update my own names
-  names(x) <- my_names
   x
 }
 
@@ -139,7 +172,7 @@ deflate.list <- function(x){
 #' @export
 #' @family yamlet
 #' @examples
-#' as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml')))
+#' as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml')))
 #'
 as_yamlet <- function(x, ...)UseMethod('as_yamlet')
 
@@ -154,9 +187,10 @@ as_yamlet <- function(x, ...)UseMethod('as_yamlet')
 #' @param ... passed arguments
 #' @export
 #' @family yamlet
+#' @keywords internal
 #' @return yamlet: a named list with default keys applied
 #' @examples
-#' as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml')))
+#' as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml')))
 #'
 as_yamlet.yam <- function(x, default_keys = list('label','guide'), ...){
   k <- attr(x,'keys')
@@ -176,9 +210,13 @@ resolve <- function(x, keys){ # an item
   nms <- names(x)
   if(is.null(nms)) nms <- rep('',length(x))
   for(i in seq_along(nms)){
-    if(nms[[i]] == '' & length(keys)){
-      nms[[i]] <- keys[[1]]
-      keys[[1]] <- NULL
+    if(length(keys)){ # if we have unused defaults
+      if(nms[[i]] == ''){
+        nms[[i]] <- keys[[1]]
+        keys[[1]] <- NULL
+      }else{
+        keys <- setdiff(keys, nms[[i]]) # if a default is given, it is used
+      }
     }
   }
   names(x) <- nms
@@ -206,7 +244,7 @@ resolve <- function(x, keys){ # an item
 #' @family yamlet
 #' @return yamlet: a named list with default keys applied
 #' @examples
-#' as_yamlet(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+#' as_yamlet(system.file(package = 'yamlet', 'extdata','quinidine.yaml'))
 #' as_yamlet('ID: subject identifier')
 #' as_yamlet(c('id: subject','amt: dose'))
 #' as_yamlet(c('id: subject\namt: dose'))
@@ -227,7 +265,7 @@ as_yamlet.character <- function(x, default_keys = list('label','guide'), ...){
 #' @return a list-like object, typically data.frame
 #' @examples
 #' library(csv)
-#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(as.csv(file))
 #' sapply(x, attr, 'label')
 #'
@@ -235,37 +273,87 @@ decorate <- function(x,...)UseMethod('decorate')
 
 #' Decorate Character
 #'
-#' Treats \code{x} as a csv file path. By default,
+#' Treats \code{x} as a file path. By default,
 #' metadata is sought from a file with the same
 #' base but the 'yaml' extension.
 
 #'
-#' @param x file path for csv
-#' @param meta file path for corresponding yaml metadata, or a yamlet
-#' @param coerce whether to coerce to factor where guide is a list
-#' @param ... passed arguments
+#' @param x file path for table data
+#' @param meta file path for corresponding yamlet metadata, or a yamlet object
+#' @param fun function or function name for reading x
+#' @param ext file extension for metadata file, if relevant
+#' @param coerce whether to coerce to factor where guide has length > 1
+#' @param ... passed to fun
 #' @return data.frame
 #' @importFrom csv as.csv
 #' @export
 #' @family decorate
 #' @examples
-#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
-#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
-#' x <- decorate(file)
-#' x <- decorate(file, coerce = TRUE)
-#' x <- decorate(file, meta = meta)
-#' sapply(x, attr, 'label')
-#'
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' identical(
+#'   decorate(file),
+#'   decorate(file, meta = meta)
+#' )
+#' identical(
+#'   decorate(file, meta = as_yamlet(meta)),
+#'   decorate(file, meta = meta)
+#' )
+#' a <- decorate(file)
+#' b <- decorate(file, coerce = TRUE)
+#' c <- decorate(
+#'   file,
+#'   fun = read.table,
+#'   quote = "",
+#'   as.is = FALSE,
+#'   sep = ',',
+#'   header = TRUE,
+#'   na.strings = c('', '\\s', '.','NA'),
+#'   strip.white = TRUE,
+#'   check.names = FALSE,
+#'   coerce = TRUE
+#' )
+#' d <- decorate(
+#'   file,
+#'   fun = read.table,
+#'   quote = "",
+#'   as.is = FALSE,
+#'   sep = ',',
+#'   header = TRUE,
+#'   na.strings = c('', '\\s', '.','NA'),
+#'   strip.white = TRUE,
+#'   check.names = FALSE,
+#'   coerce = FALSE
+#' )
+#' cbind(
+#'   `as.is/!coerce`   = sapply(a, class),
+#'   `as.is/coerce`    = sapply(b, class),
+#'   `!as.is/coerce`   = sapply(c, class),
+#'   `!as.is/!coerce`  = sapply(d, class)
+#' )
+#' str(a$Smoke)
+#' str(b$Smoke)
+#' str(c$Smoke)
+#' str(d$Smoke)
+#' levels(c$Creatinine)
+#' levels(d$Creatinine)
+
 decorate.character <- function(
   x,
   meta = NULL,
+  fun  = getOption('import_fun', as.csv),
+  ext  = getOption('yaml_ext', '.yaml'),
   coerce = getOption('coerce',FALSE),
   ...
 ){
   stopifnot(length(x) == 1)
-  if(!file.exists(x))stop('could not find ', file)
-  y <- as.csv(x,...)
-  if(is.null(meta)) meta <- sub('\\.csv$','.yaml',x)
+  if(!file.exists(x))stop('could not find file ', x)
+  fun <- match.fun(fun)
+  y <- fun(x,...)
+  if(is.null(meta)){
+    meta <- sub('\\.[^.]*$','',x) # remove last dot and any trailing chars
+    meta <- paste0(meta, ext)
+  }
   if(is.character(meta) & length(meta) == 1){
     meta <- try(as_yamlet(meta,...))
   }
@@ -277,13 +365,14 @@ decorate.character <- function(
 #'
 #' Decorates a list-like object. Expects metadata with labels and guides,
 #' where guides are units, factor levels and labels (codes, decodes), or
-#' datetime formatting strings. For guides that are lists, the corresponding
+#' datetime formatting strings. For guides with length > 1, the corresponding
 #' data element may optionally be coerced to factor.
 
 #'
 #' @param x object inheriting from \code{list}
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
-#' @param coerce whether to coerce to factor where guide is a list
+#' @param ext file extension for metadata file, if relevant
+#' @param coerce whether to coerce to factor where guide has length > 1
 #' @param ... passed arguments
 #' @return list, possibly with member attributes
 #' @export
@@ -294,14 +383,17 @@ decorate.character <- function(
 decorate.list <- function(
   x,
   meta = NULL,
+  ext = getOption('yaml_ext', '.yaml'),
   coerce = getOption('coerce',FALSE),
   ...
 ){
   if(is.null(meta)) meta <- attr(x, 'source')
   if(is.null(meta)) stop('could not guess metadata location; supply meta')
   if(is.character(meta) & length(meta) == 1){
-    meta <- sub('\\.csv$','.yaml',meta)
+    meta <- sub('\\.[^.]*$','',meta) # remove last dot and any trailing chars
+    meta <- paste0(meta, ext)
     meta <- try(as_yamlet(meta, ...))
+
   }
   if(class(meta) != 'yamlet') stop('could not interpret meta: ', meta)
 
@@ -312,21 +404,23 @@ decorate.list <- function(
         attr(x[[item]], attrb) <- val[[attrb]]
         if(attrb == 'guide'){
           guide <- val[[attrb]]
-          if(is.list(guide)){
-            if(coerce){
+          # if(is.list(guide)){
+          if(length(guide) > 1){
+              if(coerce){
               if(any(sapply(guide,function(i)is.null(i)))){
                 warning('guide for ', item, ' contains NULL')
               }else{
                 labs <- names(guide)
+                if(is.null(labs))labs <- rep('',length(guide))
                 levs <- unlist(guide)
                 if(any(labs == '')){
-                  warning('guide for ',item,' contains unlabeled levels')
-                }else{
-                  reserve <- attributes(x[[item]])
-                  reserve$guide <- NULL
-                  try(x[[item]] <- factor(x[[item]], levels = levs, labels = labs))
-                  if(is.factor(x[[item]])) attributes(x[[item]]) <- c(reserve, attributes(x[[item]]))
+                  # warning('guide for ',item,' contains unlabeled level(s); using level itself')
+                  labs[labs == ''] <- levs[labs == '']
                 }
+                reserve <- attributes(x[[item]])
+                reserve$guide <- NULL
+                try(x[[item]] <- factor(x[[item]], levels = levs, labels = labs))
+                if(is.factor(x[[item]])) attributes(x[[item]]) <- c(reserve, attributes(x[[item]]))
               }
             }
           }
@@ -342,7 +436,7 @@ decorate.list <- function(
 #'
 #' Decorates a data.frame. Expects metadata with labels and guides,
 #' where guides are units, factor levels and labels (codes, decodes), or
-#' datetime formatting strings. For guides that are lists, the corresponding
+#' datetime formatting strings. For guides with length > 1, the corresponding
 #' data element may optionally be coerced to factor.
 
 #'
@@ -353,18 +447,21 @@ decorate.list <- function(
 #' @return data.frame
 #' @export
 #' @family decorate
+#' @seealso decorate.list
 #' @examples
 #' library(csv)
-#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
-#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
-#' x <- decorate(as.csv(file))
-#' x <- decorate(as.csv(file))
-#' x <- decorate(as.csv(file), meta = as_yamlet(meta))
-#' x <- decorate(as.csv(file), meta = meta)
-#' x <- decorate(as.csv(file), meta = file)
-#' x <- decorate(as.csv(file), coerce = TRUE)
-#' sapply(x, attr, 'label')
-#'
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' a <- decorate(as.csv(file))
+#' b <- decorate(as.csv(file), meta = as_yamlet(meta))
+#' c <- decorate(as.csv(file), meta = meta)
+#' d <- decorate(as.csv(file), meta = file)
+
+#' e <- decorate(as.csv(file), coerce = TRUE)
+#' identical(a, b)
+#' identical(a, c)
+#' identical(a, d)
+#' identical(a, e)
 decorate.data.frame <- function(
   x,
   meta = NULL,
@@ -383,7 +480,7 @@ decorate.data.frame <- function(
 #' @return see methods
 #' @examples
 #' library(csv)
-#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(as.csv(file))
 #' decorations(x)
 
@@ -402,7 +499,7 @@ decorations <- function(x,...)UseMethod('decorations')
 #' @return named list
 #' @examples
 #' library(csv)
-#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(as.csv(file))
 #' decorations(x[,1:7])
 #' decorations(decorate(as.csv(file), coerce = TRUE)[,1:7])
@@ -412,7 +509,11 @@ decorations <- function(x,...)UseMethod('decorations')
 #' as.character(as_yamlet(decorate(as.csv(file))))
 #' options(coerce = old)
 
-decorations.data.frame <- function(x, coerce = getOption('coerce', FALSE),...){
+decorations.data.frame <- function(
+  x,
+  coerce = getOption('coerce', FALSE),
+  ...
+){
   out <- lapply(x, attributes)
   levs_key <- 'guide'
   if(!is.logical(coerce)){
@@ -450,7 +551,7 @@ decorations.data.frame <- function(x, coerce = getOption('coerce', FALSE),...){
 #' @return yamlet
 #' @examples
 #' library(csv)
-#' file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(as.csv(file))
 #' as_yamlet(x)
 as_yamlet.data.frame <- function(x, ...){
@@ -475,6 +576,7 @@ as_yamlet.data.frame <- function(x, ...){
 #' @export
 #' @return yam
 #' @family yam
+#' @keywords internal
 #' @examples
 #' as_yam(as_yamlet(c('id: subject','amt: dose')))
 #' as_yam(as_yamlet(c('amt: [ dose, mg ]')))
@@ -507,6 +609,7 @@ as_yam.yamlet <- function(x, default_keys = list('label','guide'), ...){
 #' @param ... passed arguments
 #' @export
 #' @family yam
+#' @keywords internal
 #' @return character
 #' @examples
 #' foo <- as_yamlet(c('id: subject','amt: dose'))
@@ -550,9 +653,10 @@ to_yamlet <- function(x, ...)UseMethod('to_yamlet')
 #' @family to_yamlet
 #' @examples
 #' to_yamlet(3)
+#' to_yamlet(c(a = '4',b = '5.8'))
 #' to_yamlet(c(a = 4,b = 5.8))
 #' to_yamlet(TRUE)
-to_yamlet.default <- function(x,...)to_yamlet(as.character(x))
+to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
 
 #'
 #' Coerce Character to Yamlet Storage Format
@@ -582,8 +686,10 @@ to_yamlet.character <- function(x, ...){
   index <- x %in% c('yes','no','y','n')
   x[index] <- paste0("'",x[index],"'")
   if(length(x) == 1) return(x)
+  # multiples get [,,]
   x <- paste(x, collapse = ', ')
   x <- paste('[', x, ']')
+  names(x) <- NULL # should not have names
   x
 }
 
@@ -617,6 +723,7 @@ to_yamlet.list <- function(x, ...){
   # convert each member to yamlet
   if(length(x) == 0) x <- list(NULL)
   nms <- names(x)
+  nms <- sapply(nms, to_yamlet) # assures individual treatment
   out <- lapply(x, to_yamlet)
   # if member not null (''), attach name using colon-space,
   # else using ? name
@@ -639,6 +746,7 @@ to_yamlet.list <- function(x, ...){
     out <- paste0('[ ', out, ' ]')
   }
   out <- gsub('] ',']', out)
+  names(out) <- NULL # should not have names
   out
 }
 
@@ -656,11 +764,13 @@ to_yamlet.list <- function(x, ...){
 #' as.character(as_yamlet('ID: subject identifier'))
 #' as.character(as_yamlet(c('id: subject','amt: dose')))
 #' as.character(as_yamlet(c('id: subject\namt: dose')))
-#' foo <- as_yamlet(system.file(package = 'yamlet', 'extdata','yamlet.yaml'))
+#' foo <- as_yamlet(system.file(package = 'yamlet', 'extdata','quinidine.yaml'))
 #' class(foo)
 #' writeLines(as.character(foo))
-#'
-#' file <- system.file(package = 'yamlet','extdata','yamlet.csv')
+#' identical(foo, as_yamlet(as.character(foo)))
+#' identical(as.character(foo), as.character(as_yamlet(as.character(foo))))
+
+#' file <- system.file(package = 'yamlet','extdata','quinidine.csv')
 #' file
 #' foo <- decorate(file, coerce = TRUE)
 #' as.character(as_yamlet(foo))
@@ -684,9 +794,9 @@ as.character.yamlet <- function(x,...)as.character(as_yam(x,...),...)
 #' @importFrom encode encoded
 #' @importFrom encode encode
 #' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 #' meta <- as_yamlet(meta)
-#' list2encoding(meta$ROUTE$guide)
+#' list2encoding(meta$Creatinine$guide)
 list2encoding <- function(x, ...){
   # empty strings are effectively zero-length character
   for(i in seq_along(x)){
@@ -716,7 +826,7 @@ list2encoding <- function(x, ...){
 
 #' Encode Yamlet
 #'
-#' Encodes yamlet.  Each 'guide' element that is a list
+#' Encodes yamlet.  Each 'guide' element with length > 1
 #' is converted to an encoding, if possible.
 #'
 #' @param x yamlet
@@ -726,15 +836,15 @@ list2encoding <- function(x, ...){
 #' @export
 #' @family encode
 #' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 #' meta <- as_yamlet(meta)
 #' meta <- encode(meta)
 encode.yamlet <- function(x, target = 'guide', ...){
   for(i in seq_along(x)){
     t <- x[[i]][[target]]
     if(!is.null(t)){
-      if(is.list(t)){
-        try <- list2encoding(t)
+      if(length(t) > 1){ # prime criterion
+        try <- list2encoding(as.list(t))
         if(class(try) == 'character'){
           if(length(try) == 1){
             if(encoded(try)){
@@ -763,7 +873,7 @@ encode::encode
 #' @keywords internal
 #' @family encode
 #' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 #' meta <- as_yamlet(meta)
 #' class(meta)
 #' stopifnot(inherits(meta[1:2],'yamlet'))
@@ -796,9 +906,9 @@ as_lab <- function(x,...)UseMethod('as_lab')
 #' @export
 #' @family lab
 #' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(meta)
-#' as_lab(attributes(x$TIME), 'TIME', enclose = c('[',']'))
+#' as_lab(attributes(x$time), 'time', enclose = c('[',']'))
 as_lab.list <- function(
   x,
   default,
@@ -835,11 +945,12 @@ as_lab.list <- function(
 #' @importFrom ggplot2 ggplot
 #' @family lab
 #' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(meta)
 #' library(ggplot2)
-#' class(agplot(data = x) + geom_path(aes(x = TIME, y = DV)))
-#' class(agplot(data = x, aes(x = TIME, y = DV)) + geom_path())
+#' class(agplot(data = x) + geom_path(aes(x = time, y = conc)))
+#' class(agplot(data = x, aes(x = time, y = conc)) + geom_path())
+#' example(print.ag)
 
 agplot <- function(data, ...){
   p <- ggplot(data = data, ...)
@@ -861,14 +972,15 @@ agplot <- function(data, ...){
 #' @export
 #' @family lab
 #' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
-#' x <- decorate(meta)
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+#' x <- decorate(meta, coerce = TRUE )
 #' library(ggplot2)
-#' agplot(data = x) + geom_path(aes(x = TIME, y = DV))
-#' agplot(data = x, aes(x = TIME, y = DV)) + geom_path()
-#' agplot(data = x) + geom_path(aes(x = TIME, y = DV)) + xlab('the time (hours)')
+#' agplot(data = x) + geom_point(aes(x = time, y = conc, color = Heart))
+#' agplot(data = x, aes(x = time, y = conc)) + geom_point()
+#' agplot(data = x) + geom_point(aes(x = time, y = conc)) + xlab('the time (hours)')
 #' options(enclose = c('[',']'))
-#' agplot(data = x) + geom_path(aes(x = TIME, y = DV))
+#' agplot(data = x) + geom_point(aes(x = time, y = conc, color = Creatinine))
+
 
 print.ag <- function(x, labeller = getOption('labeller', default = as_lab), ...){
   fun <- match.fun(labeller)

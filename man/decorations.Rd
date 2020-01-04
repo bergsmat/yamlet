@@ -19,14 +19,16 @@ Retrieve the decorations of something. Generic, with method for data.frame.
 }
 \examples{
 library(csv)
-file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(as.csv(file))
 decorations(x)
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{decorate.list}}, \code{\link{decorate}},
-  \code{\link{decorations.data.frame}}
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{decorate.list}()},
+\code{\link{decorate}()},
+\code{\link{decorations.data.frame}()}
 }
 \concept{decorate}

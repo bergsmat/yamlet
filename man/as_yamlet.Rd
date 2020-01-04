@@ -20,11 +20,12 @@ or user specifies default keys, these are applied,
 with the former having priority.  See \code{\link{as_yamlet.character}}.
 }
 \examples{
-as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','yamlet.yaml')))
+as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml')))
 
 }
 \seealso{
-Other yamlet: \code{\link{as_yamlet.character}},
-  \code{\link{as_yamlet.yam}}
+Other yamlet: 
+\code{\link{as_yamlet.character}()},
+\code{\link{as_yamlet.yam}()}
 }
 \concept{yamlet}

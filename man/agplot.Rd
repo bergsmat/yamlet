@@ -20,14 +20,17 @@ Simply subclasses the output of ggplot, in
 expectation of associated print method \code{\link{print.ag}}.
 }
 \examples{
-meta <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(meta)
 library(ggplot2)
-class(agplot(data = x) + geom_path(aes(x = TIME, y = DV)))
-class(agplot(data = x, aes(x = TIME, y = DV)) + geom_path())
+class(agplot(data = x) + geom_path(aes(x = time, y = conc)))
+class(agplot(data = x, aes(x = time, y = conc)) + geom_path())
+example(print.ag)
 }
 \seealso{
-Other lab: \code{\link{as_lab.list}}, \code{\link{as_lab}},
-  \code{\link{print.ag}}
+Other lab: 
+\code{\link{as_lab.list}()},
+\code{\link{as_lab}()},
+\code{\link{print.ag}()}
 }
 \concept{lab}

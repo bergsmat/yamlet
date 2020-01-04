@@ -18,14 +18,15 @@ yamlet
 Subsets yamlet. Preserves class, since a subset of yamlet is still yamlet.
 }
 \examples{
-meta <- system.file(package = 'yamlet', 'extdata','yamlet.yaml')
+meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 meta <- as_yamlet(meta)
 class(meta)
 stopifnot(inherits(meta[1:2],'yamlet'))
 }
 \seealso{
-Other encode: \code{\link{encode.yamlet}},
-  \code{\link{list2encoding}}
+Other encode: 
+\code{\link{encode.yamlet}()},
+\code{\link{list2encoding}()}
 }
 \concept{encode}
 \keyword{internal}

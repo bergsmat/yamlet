@@ -19,16 +19,17 @@ Decorates a list-like object. Generic.  See \code{\link{decorate.character}}.
 }
 \examples{
 library(csv)
-file <- system.file(package = 'yamlet', 'extdata','yamlet.csv')
+file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(as.csv(file))
 sapply(x, attr, 'label')
 
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{decorate.list}},
-  \code{\link{decorations.data.frame}},
-  \code{\link{decorations}}
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{decorate.list}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations}()}
 }
 \concept{decorate}

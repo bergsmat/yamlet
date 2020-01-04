@@ -4,15 +4,22 @@
 \alias{decorate.list}
 \title{Decorate List}
 \usage{
-\method{decorate}{list}(x, meta = NULL, coerce = getOption("coerce",
-  FALSE), ...)
+\method{decorate}{list}(
+  x,
+  meta = NULL,
+  ext = getOption("yaml_ext", ".yaml"),
+  coerce = getOption("coerce", FALSE),
+  ...
+)
 }
 \arguments{
 \item{x}{object inheriting from \code{list}}
 
 \item{meta}{file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute}
 
-\item{coerce}{whether to coerce to factor where guide is a list}
+\item{ext}{file extension for metadata file, if relevant}
+
+\item{coerce}{whether to coerce to factor where guide has length > 1}
 
 \item{...}{passed arguments}
 }
@@ -22,7 +29,7 @@ list, possibly with member attributes
 \description{
 Decorates a list-like object. Expects metadata with labels and guides,
 where guides are units, factor levels and labels (codes, decodes), or
-datetime formatting strings. For guides that are lists, the corresponding
+datetime formatting strings. For guides with length > 1, the corresponding
 data element may optionally be coerced to factor.
 }
 \examples{
@@ -30,10 +37,11 @@ example(decorate.data.frame)
 
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{decorate}},
-  \code{\link{decorations.data.frame}},
-  \code{\link{decorations}}
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{decorate}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations}()}
 }
 \concept{decorate}
