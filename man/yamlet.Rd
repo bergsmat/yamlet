@@ -6,10 +6,10 @@
 \title{yamlet: Versatile Curation of Table Metadata}
 \description{
 The \pkg{yamlet} package supports storage and retrieval of table
-metadata in YAML format.  The most important function
+metadata in yaml format.  The most important function
 is \code{\link{decorate.character}}: it lets you 'decorate'
 your data by attaching attributes retrieved from a file in
-YAML format.  Typically your data will be of class
+yaml format.  Typically your data will be of class
 'data.frame', but it could be anything that is essentially
 a named list.
 }

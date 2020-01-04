@@ -21,7 +21,7 @@ Retrieve the decorations of something. Generic, with method for data.frame.
 library(csv)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(as.csv(file))
-decorations(x)
+decorations(x) # prefer as_yamlet(x)
 }
 \seealso{
 Other decorate: 

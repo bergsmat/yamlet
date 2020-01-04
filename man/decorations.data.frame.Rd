@@ -31,6 +31,7 @@ old <- getOption('coerce')
 options(coerce = TRUE)
 as.character(as_yamlet(decorate(as.csv(file))))
 options(coerce = old)
+
 }
 \seealso{
 Other decorate: 

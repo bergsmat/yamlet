@@ -71,18 +71,20 @@ d <- decorate(
   check.names = FALSE,
   coerce = FALSE
 )
+
+# Importantly, b and c are identical with respect to factors
 cbind(
-  `as.is/!coerce`   = sapply(a, class),
-  `as.is/coerce`    = sapply(b, class),
-  `!as.is/coerce`   = sapply(c, class),
-  `!as.is/!coerce`  = sapply(d, class)
+  `as.is/!coerce`   = sapply(a, class), # no factors
+  `as.is/coerce`    = sapply(b, class), # factors made during decoration
+  `!as.is/coerce`   = sapply(c, class), # factors made twice!
+  `!as.is/!coerce`  = sapply(d, class)  # factors made during read
 )
 str(a$Smoke)
 str(b$Smoke)
 str(c$Smoke)
 str(d$Smoke)
 levels(c$Creatinine)
-levels(d$Creatinine)
+levels(d$Creatinine) # level detail retained as 'guide'
 }
 \seealso{
 Other decorate: 

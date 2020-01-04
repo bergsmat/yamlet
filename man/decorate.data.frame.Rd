@@ -33,6 +33,8 @@ b <- decorate(as.csv(file), meta = as_yamlet(meta))
 c <- decorate(as.csv(file), meta = meta)
 d <- decorate(as.csv(file), meta = file)
 e <- decorate(as.csv(file), coerce = TRUE)
+
+# Most import methods are equivalent.
 identical(a, b)
 identical(a, c)
 identical(a, d)

@@ -22,8 +22,16 @@ a filepath, otherwise treated as data.  Proceeds by
 importing the data and determining the default keys.
 }
 \examples{
-as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml'))
+
+# Read sample data from file.
+file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+file
+as_yam(file)
+
+# Read yamlet directly from character vector.
 as_yam(c('ID:','TIME:'))
+
+# Read from length-one character (same result).
 as_yam('ID:\nTIME:')
 
 }

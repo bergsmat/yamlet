@@ -4,7 +4,11 @@
 \alias{as_yamlet.yam}
 \title{Coerce Yam To Yamlet Format}
 \usage{
-\method{as_yamlet}{yam}(x, default_keys = list("label", "guide"), ...)
+\method{as_yamlet}{yam}(
+  x,
+  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
+  ...
+)
 }
 \arguments{
 \item{x}{a yam object; see \code{\link{as_yam}}}
@@ -18,17 +22,20 @@ yamlet: a named list with default keys applied
 }
 \description{
 Coerces yam to yamlet format. If the object
-or user specifies default keys, these are applied,
-with the former having priority.  See \code{\link{as_yamlet.character}}.
+or user specifies default keys, these are applied
+See \code{\link{as_yamlet.character}}.
 }
 \examples{
-as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml')))
+file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+file
+as_yamlet(as_yam(file))
 
 }
 \seealso{
 Other yamlet: 
 \code{\link{as_yamlet.character}()},
-\code{\link{as_yamlet}()}
+\code{\link{as_yamlet}()},
+\code{\link{print.yamlet}()}
 }
 \concept{yamlet}
 \keyword{internal}

@@ -2,7 +2,7 @@ Subject: patient identifier
 time: [ time since start of study, h ]
 conc: [ quinidine serum concentration, mg/L ]
 dose: [ quinidine administered dose, mg ]
-interval: [inter-dose interval, h ]
+interval: [ inter-dose interval, h ]
 Age: [ baseline subject age, 'y' ]
 Height: [ baseline subject height, in ]
 Weight: [ subject body weight, kg ]

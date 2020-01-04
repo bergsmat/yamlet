@@ -27,7 +27,7 @@ as.character(bar)
 as.character(
 as_yam(
 as_yamlet(
-'race: [label: race, guide: [ white: 0, black: 1, asian: 2 ], multiple: [yes: 1, no: 0]]'
+"race: [label: race, guide: [ white: 0, black: 1, asian: 2 ], multiple: ['yes': 1, 'no': 0]]"
 )))
 
 }

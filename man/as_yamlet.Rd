@@ -16,16 +16,22 @@ a named list
 }
 \description{
 Coerces something to yamlet format. If the object
-or user specifies default keys, these are applied,
-with the former having priority.  See \code{\link{as_yamlet.character}}.
+or user specifies default keys, these are applied.
+See \code{\link{as_yamlet.character}}.
 }
 \examples{
-as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml')))
+file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+file
+identical(as_yamlet(as_yam(file)), as_yamlet(file))
+
+# Read yamlet from storage and apply default keys.
+as_yamlet(file)
 
 }
 \seealso{
 Other yamlet: 
 \code{\link{as_yamlet.character}()},
-\code{\link{as_yamlet.yam}()}
+\code{\link{as_yamlet.yam}()},
+\code{\link{print.yamlet}()}
 }
 \concept{yamlet}

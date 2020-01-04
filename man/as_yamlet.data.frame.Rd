@@ -15,7 +15,7 @@
 yamlet
 }
 \description{
-Coerces data.frame to yamlet. Assigns class 'yamlet' to adata.frame's decorations.
+Coerces data.frame to yamlet. Assigns class 'yamlet' to a data.frame's decorations.
 }
 \examples{
 library(csv)

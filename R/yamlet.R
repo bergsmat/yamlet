@@ -25,8 +25,16 @@ as_yam <- function(x, ...)UseMethod('as_yam')
 #' @keywords internal
 #' @return a named list
 #' @examples
-#' as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml'))
+#'
+#' # Read sample data from file.
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' file
+#' as_yam(file)
+#'
+#' # Read yamlet directly from character vector.
 #' as_yam(c('ID:','TIME:'))
+#'
+#' # Read from length-one character (same result).
 #' as_yam('ID:\nTIME:')
 #'
 as_yam.character <- function(
@@ -80,7 +88,12 @@ as_yam.character <- function(
 #' @keywords internal
 #' @family unnest
 #' @examples
-#' unnest(yaml::yaml.load('[foo: 1, bar: 3]'))
+#'
+#' # yaml.load reads this as a list of two un-named lists whose elements are named.
+#' str(yaml::yaml.load('[foo: 1, bar: 3]'))
+#'
+#' # yamlet treats it as a list of two named integers.
+#' str(unnest(yaml::yaml.load('[foo: 1, bar: 3]')))
 unnest <- function(x,...)UseMethod('unnest')
 
 
@@ -109,31 +122,18 @@ unnest.default <- function(x, ...)x
 #' @family unnest
 #' @return list
 #' @examples
-#' unnest(yaml::yaml.load('ITEM: [ label: sunshine, [foo: 1, bar: 3]]'))
-#' as_yamlet('ITEM: [ label: sunshine, [foo: 1, bar: 3]]')
-# unnest.list <- function(x){
-#   # I am a list, possibly with names
-#   my_names <- names(x)
-#   if(is.null(my_names)) my_names <- rep('',length(x))
-#   # Now I have explicit names
-#   # I have child elements, possibly with names.
-#   # First, I collapse them.
-#   their_names <- lapply(x, names)
-#   their_lengths <- lapply(x, length)
-#   x[] <- lapply(x, deflate)
-#   # Then, for those that are length one lists,
-#   # I replace them with their first elements,
-#   # retaining the name
-#   for(i in seq_along(x)){
-#     if(their_lengths[[i]] == 1){
-#       x[i] <- list(x[[i]][[1]])
-#       my_names[[i]] <- paste0(my_names[[i]], their_names[[i]])
-#     }
-#   }
-#   # Now I update my own names
-#   names(x) <- my_names
-#   x
-# }
+#'
+#' a <- 'ITEM: [ label: sunshine, [foo: 1, bar: 3]]'
+#'
+#' #  yaml.load() sees label nested one-deep, and foo nested two-deep:
+#' yaml::yaml.load(a)
+#'
+#' # unnest() sees label nested zero-deep, and foo nested one-deep:
+#' unnest(yaml::yaml.load(a))
+#'
+#' # as_yamlet() provides explicit name (default key) for second element of ITEM:
+#' as_yamlet(a)
+
 unnest.list <- function(x,...){
   # make names explicit
   if(is.null(names(x))) names(x) <- rep('',length(x))
@@ -163,8 +163,8 @@ unnest.list <- function(x,...){
 #' Coerce to Yamlet
 #'
 #' Coerces something to yamlet format. If the object
-#' or user specifies default keys, these are applied,
-#' with the former having priority.  See \code{\link{as_yamlet.character}}.
+#' or user specifies default keys, these are applied.
+#' See \code{\link{as_yamlet.character}}.
 #'
 #' @param x object
 #' @param ... passed arguments
@@ -172,15 +172,20 @@ unnest.list <- function(x,...){
 #' @export
 #' @family yamlet
 #' @examples
-#' as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml')))
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' file
+#' identical(as_yamlet(as_yam(file)), as_yamlet(file))
+#'
+#' # Read yamlet from storage and apply default keys.
+#' as_yamlet(file)
 #'
 as_yamlet <- function(x, ...)UseMethod('as_yamlet')
 
 #' Coerce Yam To Yamlet Format
 #'
 #' Coerces yam to yamlet format. If the object
-#' or user specifies default keys, these are applied,
-#' with the former having priority.  See \code{\link{as_yamlet.character}}.
+#' or user specifies default keys, these are applied
+#' See \code{\link{as_yamlet.character}}.
 #'
 #' @param x a yam object; see \code{\link{as_yam}}
 #' @param default_keys character: default keys for the first n anonymous members of each element
@@ -190,11 +195,14 @@ as_yamlet <- function(x, ...)UseMethod('as_yamlet')
 #' @keywords internal
 #' @return yamlet: a named list with default keys applied
 #' @examples
-#' as_yamlet(as_yam(system.file(package = 'yamlet', 'extdata','quinidine.yaml')))
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' file
+#' as_yamlet(as_yam(file))
 #'
-as_yamlet.yam <- function(x, default_keys = list('label','guide'), ...){
+as_yamlet.yam <- function(x, default_keys = getOption('yamlet_default_keys',list('label','guide')), ...){
+  default_keys <- as.list(default_keys)
   k <- attr(x,'keys')
-  if(is.null(k))k <- default_keys
+  if(is.null(k))k <- as.list(default_keys)
   stopifnot(length(k) == length(unlist(k)))
   if(!is.character(unlist(k))){
     warning('default keys do not appear to be character: ignoring')
@@ -202,6 +210,8 @@ as_yamlet.yam <- function(x, default_keys = list('label','guide'), ...){
   }
   attr(x,'keys') <- NULL
   x[] <- lapply(x, resolve, keys = k)
+  unresolved <- which(sapply(x, function(i)any(names(i) == '')))
+  if(length(unresolved))warning('missing key(s) for element(s) ', paste(unresolved, collapse = ', '))
   class(x) <- 'yamlet'
   x
 }
@@ -233,8 +243,16 @@ resolve <- function(x, keys){ # an item
 #' where map keys are data item names, and
 #' sequences represent data item attributes.
 #' Attributes may be named or anonymous.
-#' A map key '_keys' identifies a sequence of
+#'
+#' If an attribute is anonymous, an attempt
+#' is made to name it using available defaults.
+#' A special item named '_keys' if present identifies a sequence of
 #' key names that over-ride \code{default_keys}.
+#' Attribute names are sought first in the explicit yaml,
+#' then in the special item named '_keys',
+#' then in the \code{default_keys} argument passed to as.yamlet(),
+#' then in \code{options()$yamlet_default_keys},
+#' then in the defaults for argument \code{default_keys}.
 #'
 #'
 #' @param x length-one filepath or actual data
@@ -244,18 +262,20 @@ resolve <- function(x, keys){ # an item
 #' @family yamlet
 #' @return yamlet: a named list with default keys applied
 #' @examples
-#' as_yamlet(system.file(package = 'yamlet', 'extdata','quinidine.yaml'))
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' as_yamlet(file)
 #' as_yamlet('ID: subject identifier')
 #' as_yamlet(c('id: subject','amt: dose'))
 #' as_yamlet(c('id: subject\namt: dose'))
 #'
-as_yamlet.character <- function(x, default_keys = list('label','guide'), ...){
+as_yamlet.character <- function(x, default_keys = getOption('yamlet_default_keys', list('label','guide')), ...){
   as_yamlet(as_yam(x, ...), default_keys = default_keys, ...)
 }
 
 #' Decorate a List-like Object
 #'
-#' Decorates a list-like object. Generic.  See \code{\link{decorate.character}}.
+#' Decorates a list-like object. Generic.
+#' See \code{\link{decorate.character}}.
 
 #'
 #' @param x object
@@ -267,7 +287,9 @@ as_yamlet.character <- function(x, default_keys = list('label','guide'), ...){
 #' library(csv)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(as.csv(file))
-#' sapply(x, attr, 'label')
+#' identical(decorate(as.csv(file)), decorate(file))
+#' decorations(x) # but prefer as_yamlet(x)
+#'
 #'
 decorate <- function(x,...)UseMethod('decorate')
 
@@ -325,18 +347,20 @@ decorate <- function(x,...)UseMethod('decorate')
 #'   check.names = FALSE,
 #'   coerce = FALSE
 #' )
+#'
+#' # Importantly, b and c are identical with respect to factors
 #' cbind(
-#'   `as.is/!coerce`   = sapply(a, class),
-#'   `as.is/coerce`    = sapply(b, class),
-#'   `!as.is/coerce`   = sapply(c, class),
-#'   `!as.is/!coerce`  = sapply(d, class)
+#'   `as.is/!coerce`   = sapply(a, class), # no factors
+#'   `as.is/coerce`    = sapply(b, class), # factors made during decoration
+#'   `!as.is/coerce`   = sapply(c, class), # factors made twice!
+#'   `!as.is/!coerce`  = sapply(d, class)  # factors made during read
 #' )
 #' str(a$Smoke)
 #' str(b$Smoke)
 #' str(c$Smoke)
 #' str(d$Smoke)
 #' levels(c$Creatinine)
-#' levels(d$Creatinine)
+#' levels(d$Creatinine) # level detail retained as 'guide'
 
 decorate.character <- function(
   x,
@@ -456,8 +480,9 @@ decorate.list <- function(
 #' b <- decorate(as.csv(file), meta = as_yamlet(meta))
 #' c <- decorate(as.csv(file), meta = meta)
 #' d <- decorate(as.csv(file), meta = file)
-
 #' e <- decorate(as.csv(file), coerce = TRUE)
+#'
+#' # Most import methods are equivalent.
 #' identical(a, b)
 #' identical(a, c)
 #' identical(a, d)
@@ -482,7 +507,7 @@ decorate.data.frame <- function(
 #' library(csv)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(as.csv(file))
-#' decorations(x)
+#' decorations(x) # prefer as_yamlet(x)
 
 decorations <- function(x,...)UseMethod('decorations')
 
@@ -508,6 +533,7 @@ decorations <- function(x,...)UseMethod('decorations')
 #' options(coerce = TRUE)
 #' as.character(as_yamlet(decorate(as.csv(file))))
 #' options(coerce = old)
+#'
 
 decorations.data.frame <- function(
   x,
@@ -542,7 +568,7 @@ decorations.data.frame <- function(
 
 #' Coerce Data Frame to Yamlet
 #'
-#' Coerces data.frame to yamlet. Assigns class 'yamlet' to adata.frame's decorations.
+#' Coerces data.frame to yamlet. Assigns class 'yamlet' to a data.frame's decorations.
 #'
 #' @param x data.frame
 #' @param... passed arguments
@@ -582,7 +608,8 @@ as_yamlet.data.frame <- function(x, ...){
 #' as_yam(as_yamlet(c('amt: [ dose, mg ]')))
 #' as_yam(as_yamlet(c('amt: [ guide: mg, label: dose ]')))
 #'
-as_yam.yamlet <- function(x, default_keys = list('label','guide'), ...){
+as_yam.yamlet <- function(x, default_keys = getOption('yamlet_default_keys', list('label','guide')), ...){
+  default_keys <- as.list(default_keys)
   for(nm in names(x)){
     candidates <- unlist(default_keys)
     nms <- names(x[[nm]])
@@ -620,7 +647,7 @@ as_yam.yamlet <- function(x, default_keys = list('label','guide'), ...){
 #' as.character(
 #' as_yam(
 #' as_yamlet(
-#' 'race: [label: race, guide: [ white: 0, black: 1, asian: 2 ], multiple: [yes: 1, no: 0]]'
+#' "race: [label: race, guide: [ white: 0, black: 1, asian: 2 ], multiple: ['yes': 1, 'no': 0]]"
 #' )))
 #'
 as.character.yam <- function(x, ...){
@@ -656,6 +683,7 @@ to_yamlet <- function(x, ...)UseMethod('to_yamlet')
 #' to_yamlet(c(a = '4',b = '5.8'))
 #' to_yamlet(c(a = 4,b = 5.8))
 #' to_yamlet(TRUE)
+
 to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
 
 #'
@@ -671,6 +699,7 @@ to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
 #' to_yamlet('foo')
 #' to_yamlet(c('a','b'))
 #' to_yamlet(c(a = 'a',b = 'b'))
+#' to_yamlet(c(no = 'n', yes = 'y'))
 
 to_yamlet.character <- function(x, ...){
   if(!is.null(names(x))){
@@ -909,6 +938,7 @@ as_lab <- function(x,...)UseMethod('as_lab')
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(meta)
 #' as_lab(attributes(x$time), 'time', enclose = c('[',']'))
+#' as_lab(attributes(x$time), 'time', enclose = c('[ ',' ]'))
 as_lab.list <- function(
   x,
   default,
@@ -997,4 +1027,44 @@ print.ag <- function(x, labeller = getOption('labeller', default = as_lab), ...)
   NextMethod()
 }
 
+#' Print a Yamlet
+#'
+#' Prints a yamlet object for interactive inspection.
+#'
+#' @param x yamlet
+#' @param ... ignored
+#' @export
+#' @method print yamlet
+#' @family yamlet
+#' @return invisible(x)
+#' @examples
+#' as_yamlet('mpg: [efficiency, mi/gallon]\nvs: [Engine, [V-shaped: 0, straight: 1]]')
 
+print.yamlet <- function(x, ...){
+  render <- function(x, ...)UseMethod('render')
+  render.list <- function(x, indent = 0, name = NULL, ...){
+    margin <-  paste(rep(' ',indent), collapse = '')
+    leader <- paste0(margin, '- ',name)
+    writeLines(leader)
+    for(i in seq_along(x)){
+      render(x[[i]], indent = indent + 1, name = names(x)[[i]])
+    }
+  }
+  render.default <- function(x, indent = 0, name = NULL, ...){
+    margin <-  paste(rep(' ',indent), collapse = '')
+    leader <- paste0(margin, '- ',name)
+    data = paste(x, collapse = ', ')
+    msg = paste0(leader,': ', data)
+    writeLines(msg)
+  }
+  if(!length(x)){
+    writeLines('0 length object of class yamlet')
+    invisible(x)
+  }
+  # x has length
+  nms <- names(x)
+  if(!length(nms))stop('yamlet must have names')
+  # x has names
+  lapply(seq_along(x), function(i)render(x[[i]], name = nms[[i]]))
+  invisible(x)
+}

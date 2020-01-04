@@ -17,8 +17,17 @@ The list method for unnest() recursively
 ascends a nested list, removing uninformative levels.
 }
 \examples{
-unnest(yaml::yaml.load('ITEM: [ label: sunshine, [foo: 1, bar: 3]]'))
-as_yamlet('ITEM: [ label: sunshine, [foo: 1, bar: 3]]')
+
+a <- 'ITEM: [ label: sunshine, [foo: 1, bar: 3]]'
+
+#  yaml.load() sees label nested one-deep, and foo nested two-deep:
+yaml::yaml.load(a)
+
+# unnest() sees label nested zero-deep, and foo nested one-deep:
+unnest(yaml::yaml.load(a))
+
+# as_yamlet() provides explicit name (default key) for second element of ITEM:
+as_yamlet(a)
 }
 \seealso{
 Other unnest: 

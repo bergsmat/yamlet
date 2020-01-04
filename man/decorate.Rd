@@ -15,13 +15,16 @@ decorate(x, ...)
 a list-like object, typically data.frame
 }
 \description{
-Decorates a list-like object. Generic.  See \code{\link{decorate.character}}.
+Decorates a list-like object. Generic.
+See \code{\link{decorate.character}}.
 }
 \examples{
 library(csv)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(as.csv(file))
-sapply(x, attr, 'label')
+identical(decorate(as.csv(file)), decorate(file))
+decorations(x) # but prefer as_yamlet(x)
+
 
 }
 \seealso{

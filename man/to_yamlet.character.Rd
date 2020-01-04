@@ -21,6 +21,7 @@ Coerces character to yamlet storage format. Named character is processed as a na
 to_yamlet('foo')
 to_yamlet(c('a','b'))
 to_yamlet(c(a = 'a',b = 'b'))
+to_yamlet(c(no = 'n', yes = 'y'))
 }
 \seealso{
 Other to_yamlet: 

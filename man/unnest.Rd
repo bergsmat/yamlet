@@ -20,7 +20,12 @@ and have that name (recursively, from depth).
 Collapses uninformative levels of nested lists.
 }
 \examples{
-unnest(yaml::yaml.load('[foo: 1, bar: 3]'))
+
+# yaml.load reads this as a list of two un-named lists whose elements are named.
+str(yaml::yaml.load('[foo: 1, bar: 3]'))
+
+# yamlet treats it as a list of two named integers.
+str(unnest(yaml::yaml.load('[foo: 1, bar: 3]')))
 }
 \seealso{
 Other unnest: 

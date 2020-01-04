@@ -33,6 +33,7 @@ Coerces list to axis label.
 meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(meta)
 as_lab(attributes(x$time), 'time', enclose = c('[',']'))
+as_lab(attributes(x$time), 'time', enclose = c('[ ',' ]'))
 }
 \seealso{
 Other lab: 

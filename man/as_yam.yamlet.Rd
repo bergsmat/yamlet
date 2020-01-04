@@ -4,7 +4,11 @@
 \alias{as_yam.yamlet}
 \title{Coerce Yamlet to Yam}
 \usage{
-\method{as_yam}{yamlet}(x, default_keys = list("label", "guide"), ...)
+\method{as_yam}{yamlet}(
+  x,
+  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
+  ...
+)
 }
 \arguments{
 \item{x}{yamlet}
