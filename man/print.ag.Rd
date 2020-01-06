@@ -24,8 +24,8 @@ receive existing labels one at a time
 and corresponding attributes(if any) from data.
 }
 \examples{
-meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-x <- decorate(meta, coerce = TRUE )
+file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+x <- decorate(file, coerce = TRUE )
 library(ggplot2)
 agplot(data = x) + geom_point(aes(x = time, y = conc, color = Heart))
 agplot(data = x, aes(x = time, y = conc)) + geom_point()

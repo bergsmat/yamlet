@@ -36,7 +36,7 @@ A special item named '_keys' if present identifies a sequence of
 key names that over-ride \code{default_keys}.
 Attribute names are sought first in the explicit yaml,
 then in the special item named '_keys',
-then in the \code{default_keys} argument passed to as.yamlet(),
+then in the \code{default_keys} argument passed to as_yamlet(),
 then in \code{options()$yamlet_default_keys},
 then in the defaults for argument \code{default_keys}.
 }

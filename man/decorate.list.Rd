@@ -7,8 +7,9 @@
 \method{decorate}{list}(
   x,
   meta = NULL,
-  ext = getOption("yaml_ext", ".yaml"),
-  coerce = getOption("coerce", FALSE),
+  ext = getOption("yamlet_extension", ".yaml"),
+  coerce = getOption("yamlet_coerce", FALSE),
+  overwrite = getOption("yamlet_overwrite", FALSE),
   ...
 )
 }
@@ -20,6 +21,8 @@
 \item{ext}{file extension for metadata file, if relevant}
 
 \item{coerce}{whether to coerce to factor where guide has length > 1}
+
+\item{overwrite}{whether to overwrite attributes that are already present (else give warning)}
 
 \item{...}{passed arguments}
 }
@@ -43,5 +46,10 @@ Other decorate:
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
 \code{\link{decorations}()}
+
+Other interface: 
+\code{\link{read_yamlet}()},
+\code{\link{write_yamlet}()}
 }
 \concept{decorate}
+\concept{interface}

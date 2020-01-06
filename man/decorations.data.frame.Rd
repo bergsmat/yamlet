@@ -4,7 +4,7 @@
 \alias{decorations.data.frame}
 \title{Retrieve Decorations for Data Frame}
 \usage{
-\method{decorations}{data.frame}(x, coerce = getOption("coerce", FALSE), ...)
+\method{decorations}{data.frame}(x, coerce = getOption("yamlet_coerce_decorations", FALSE), ...)
 }
 \arguments{
 \item{x}{data.frame}
@@ -27,7 +27,7 @@ x <- decorate(as.csv(file))
 decorations(x[,1:7])
 decorations(decorate(as.csv(file), coerce = TRUE)[,1:7])
 decorations(decorate(as.csv(file), coerce = TRUE)[,1:7], coerce = TRUE)
-old <- getOption('coerce')
+old <- getOption('yamlet_coerce')
 options(coerce = TRUE)
 as.character(as_yamlet(decorate(as.csv(file))))
 options(coerce = old)

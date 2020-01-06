@@ -7,9 +7,9 @@
 \method{decorate}{character}(
   x,
   meta = NULL,
-  fun = getOption("import_fun", as.csv),
-  ext = getOption("yaml_ext", ".yaml"),
-  coerce = getOption("coerce", FALSE),
+  fun = getOption("yamlet_import", as.csv),
+  ext = getOption("yamlet_extension", ".yaml"),
+  coerce = getOption("yamlet_coerce", FALSE),
   ...
 )
 }

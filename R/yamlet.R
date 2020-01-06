@@ -250,7 +250,7 @@ resolve <- function(x, keys){ # an item
 #' key names that over-ride \code{default_keys}.
 #' Attribute names are sought first in the explicit yaml,
 #' then in the special item named '_keys',
-#' then in the \code{default_keys} argument passed to as.yamlet(),
+#' then in the \code{default_keys} argument passed to as_yamlet(),
 #' then in \code{options()$yamlet_default_keys},
 #' then in the defaults for argument \code{default_keys}.
 #'
@@ -365,9 +365,9 @@ decorate <- function(x,...)UseMethod('decorate')
 decorate.character <- function(
   x,
   meta = NULL,
-  fun  = getOption('import_fun', as.csv),
-  ext  = getOption('yaml_ext', '.yaml'),
-  coerce = getOption('coerce',FALSE),
+  fun  = getOption('yamlet_import', as.csv),
+  ext  = getOption('yamlet_extension', '.yaml'),
+  coerce = getOption('yamlet_coerce',FALSE),
   ...
 ){
   stopifnot(length(x) == 1)
@@ -397,18 +397,21 @@ decorate.character <- function(
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
 #' @param ext file extension for metadata file, if relevant
 #' @param coerce whether to coerce to factor where guide has length > 1
+#' @param overwrite whether to overwrite attributes that are already present (else give warning)
 #' @param ... passed arguments
 #' @return list, possibly with member attributes
 #' @export
 #' @family decorate
+#' @family interface
 #' @examples
 #' example(decorate.data.frame)
 #'
 decorate.list <- function(
   x,
   meta = NULL,
-  ext = getOption('yaml_ext', '.yaml'),
-  coerce = getOption('coerce',FALSE),
+  ext = getOption('yamlet_extension', '.yaml'),
+  coerce = getOption('yamlet_coerce',FALSE),
+  overwrite = getOption('yamlet_overwrite', FALSE),
   ...
 ){
   if(is.null(meta)) meta <- attr(x, 'source')
@@ -425,6 +428,16 @@ decorate.list <- function(
     if(item %in% names(meta)){
       val <- meta[[item]]
       for(attrb in names(val)){
+        if(attrb == ''){
+          warning('ignoring anonymous attribute for ', item)
+          next
+        }
+        if(attrb %in% names(attributes(x[[item]]))){
+          if(!overwrite){
+            warning('not overwriting ', attrb, ' attribute of ', item)
+            next
+          }
+        }
         attr(x[[item]], attrb) <- val[[attrb]]
         if(attrb == 'guide'){
           guide <- val[[attrb]]
@@ -490,7 +503,7 @@ decorate.list <- function(
 decorate.data.frame <- function(
   x,
   meta = NULL,
-  coerce = getOption('coerce',FALSE),
+  coerce = getOption('yamlet_coerce',FALSE),
   ...
 )decorate.list(x, meta = meta, coerce = coerce, ...)
 
@@ -529,7 +542,7 @@ decorations <- function(x,...)UseMethod('decorations')
 #' decorations(x[,1:7])
 #' decorations(decorate(as.csv(file), coerce = TRUE)[,1:7])
 #' decorations(decorate(as.csv(file), coerce = TRUE)[,1:7], coerce = TRUE)
-#' old <- getOption('coerce')
+#' old <- getOption('yamlet_coerce')
 #' options(coerce = TRUE)
 #' as.character(as_yamlet(decorate(as.csv(file))))
 #' options(coerce = old)
@@ -537,7 +550,7 @@ decorations <- function(x,...)UseMethod('decorations')
 
 decorations.data.frame <- function(
   x,
-  coerce = getOption('coerce', FALSE),
+  coerce = getOption('yamlet_coerce_decorations', FALSE),
   ...
 ){
   out <- lapply(x, attributes)
@@ -585,6 +598,20 @@ as_yamlet.data.frame <- function(x, ...){
   class(out) <- 'yamlet'
   out
 }
+#' Coerce Yamlet to Yamlet
+#'
+#' Coerces yamlet to yamlet. A non-operation.
+#'
+#' @param x yamlet
+#' @param... ignored
+#' @family as_yamlet
+#' @export
+#' @return yamlet
+#' @examples
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' x <- as_yamlet(meta)
+#' as_yamlet(x)
+as_yamlet.yamlet<- function(x, ...)x
 
 #' Coerce Yamlet to Yam
 #'
@@ -1002,8 +1029,8 @@ agplot <- function(data, ...){
 #' @export
 #' @family lab
 #' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-#' x <- decorate(meta, coerce = TRUE )
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+#' x <- decorate(file, coerce = TRUE )
 #' library(ggplot2)
 #' agplot(data = x) + geom_point(aes(x = time, y = conc, color = Heart))
 #' agplot(data = x, aes(x = time, y = conc)) + geom_point()
@@ -1067,4 +1094,77 @@ print.yamlet <- function(x, ...){
   # x has names
   lapply(seq_along(x), function(i)render(x[[i]], name = nms[[i]]))
   invisible(x)
+}
+
+#' Read Yamlet
+#'
+#' Reads yamlet. See examples.  See \code{?yamlet}.  See vignette.
+#'
+#' @param x file path for yamlet, or vector of yamlet in storage syntax
+#' @param default_keys character: default keys for the first n anonymous members of each element
+#' @param ... passed to \code{\link{as_yamlet}}
+#' @export
+#' @family interface
+#' @seealso \code{\link{decorate.list}}
+#' @return yamlet: a named list with default keys applied
+#' @examples
+#' library(csv)
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' x <- as.csv(file)
+#' y <- read_yamlet(meta)
+#' x <- decorate(x, meta = y)
+#' identical(x, decorate(file))
+read_yamlet <- function(
+  x,
+  default_keys = getOption(
+    'yamlet_default_keys',
+    list('label','guide')
+  ),
+  ...
+){
+  stopifnot(is.character(x))
+  as_yamlet(x, default_keys = default_keys, ...)
+}
+#' Write Yamlet
+#'
+#' Writes yamlet. See examples.  See \code{?yamlet}.  See vignette.
+#'
+#' @param x something that can be coerced to class 'yamlet', like a yamlet object or a decorated data.frame
+#' @param con passed to \code{\link{writeLines}}
+#' @param sep passed to \code{\link{writeLines}}
+#' @param useBytes passed to \code{\link{writeLines}}
+#' @param default_keys character: default keys for the first n anonymous members of each element
+#' @param ... passed to \code{\link{as_yamlet}}
+#' @export
+#' @family interface
+#' @seealso \code{\link{decorate.list}}
+#' @return invisible character representation of yamlet (storage syntax)
+#' @examples
+#' library(csv)
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' x <- as.csv(file)
+#' y <- read_yamlet(meta)
+#' x <- decorate(x, meta = y)
+#' identical(x, decorate(file))
+#' tmp <- tempfile()
+#' write_yamlet(x, tmp)
+#' identical(read_yamlet(meta), read_yamlet(tmp))
+#'
+write_yamlet <- function(
+  x,
+  con = stdout(),
+  sep = "\n",
+  useBytes = FALSE,
+  default_keys = getOption(
+    'yamlet_default_keys',
+    list('label','guide')
+  ),
+  ...
+){
+  x <- as_yamlet(x)
+  y <- as.character(x, default_keys = default_keys, ...)
+  writeLines(text = y, con = con, sep = sep, useBytes = useBytes)
+  invisible(y)
 }

@@ -4,7 +4,7 @@
 \alias{decorate.data.frame}
 \title{Decorate Data Frame}
 \usage{
-\method{decorate}{data.frame}(x, meta = NULL, coerce = getOption("coerce", FALSE), ...)
+\method{decorate}{data.frame}(x, meta = NULL, coerce = getOption("yamlet_coerce", FALSE), ...)
 }
 \arguments{
 \item{x}{data.frame}
