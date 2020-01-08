@@ -189,7 +189,7 @@ as_yamlet <- function(x, ...)UseMethod('as_yamlet')
 #'
 #' @param x a yam object; see \code{\link{as_yam}}
 #' @param default_keys character: default keys for the first n anonymous members of each element
-#' @param ... passed arguments
+#' @param ... ignored
 #' @export
 #' @family yamlet
 #' @keywords internal
@@ -257,7 +257,7 @@ resolve <- function(x, keys){ # an item
 #'
 #' @param x length-one filepath or actual data
 #' @param default_keys character: default keys for the first n anonymous members of each element
-#' @param ... passed arguments
+#' @param ... passed to \code{\link{as_yam.character}} and \code{\link{as_yamlet.yam}}
 #' @export
 #' @family yamlet
 #' @return yamlet: a named list with default keys applied
@@ -305,7 +305,7 @@ decorate <- function(x,...)UseMethod('decorate')
 #' @param fun function or function name for reading x
 #' @param ext file extension for metadata file, if relevant
 #' @param coerce whether to coerce to factor where guide has length > 1
-#' @param ... passed to fun
+#' @param ... passed to fun and to \code{\link{as_yamlet.character}}
 #' @return data.frame
 #' @importFrom csv as.csv
 #' @export
@@ -398,7 +398,7 @@ decorate.character <- function(
 #' @param ext file extension for metadata file, if relevant
 #' @param coerce whether to coerce to factor where guide has length > 1
 #' @param overwrite whether to overwrite attributes that are already present (else give warning)
-#' @param ... passed arguments
+#' @param ... passed to \code{\link{as_yamlet.character}} (by method dispatch)
 #' @return list, possibly with member attributes
 #' @export
 #' @family decorate
@@ -424,11 +424,11 @@ decorate.list <- function(
   }
   if(class(meta) != 'yamlet') stop('could not interpret meta: ', meta)
 
-  for(item in names(x)){
-    if(item %in% names(meta)){
+  for(item in names(x)){ # if list has no names, nothing happens
+    if(item %in% names(meta)){ # if list has names, name '' should not be reached
       val <- meta[[item]]
       for(attrb in names(val)){
-        if(attrb == ''){
+        if(attrb == ''){ # warn if name is ''
           warning('ignoring anonymous attribute for ', item)
           next
         }
@@ -480,7 +480,7 @@ decorate.list <- function(
 #' @param x data.frame
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
 #' @param coerce whether to coerce to factor where guide is a list
-#' @param ... passed arguments
+#' @param ... passed to \code{\link{decorate.list}}
 #' @return data.frame
 #' @export
 #' @family decorate
@@ -530,8 +530,9 @@ decorations <- function(x,...)UseMethod('decorations')
 #' used to decorate it. Returns a list with same names as the data.frame.
 #'
 #' @param x data.frame
-#' @param coerce logical whether to coerce factor levels to guide; alternatively, a key for the levels
-#' @param ... passed arguments
+#' @param coerce logical: whether to coerce factor levels to guide; alternatively, a key for the levels
+#' @param exclude_attr attributes to remove from the result
+#' @param ... ignored
 #' @export
 #' @family decorate
 #' @return named list
@@ -551,6 +552,7 @@ decorations <- function(x,...)UseMethod('decorations')
 decorations.data.frame <- function(
   x,
   coerce = getOption('yamlet_coerce_decorations', FALSE),
+  exclude_attr = getOption('yamlet_exclude_attr', character(0)),
   ...
 ){
   out <- lapply(x, attributes)
@@ -568,12 +570,17 @@ decorations.data.frame <- function(
     if(coerce){
       for(i in seq_along(out)){
         if('class' %in% names(out[[i]])){
-          if(out[[i]]$class == 'factor'){
+          if(any(out[[i]]$class == 'factor')){ # factor or ordered factor
             out[[i]]$class <- NULL
             names(out[[i]])[names(out[[i]]) == 'levels'] <- levs_key
           }
         }
       }
+    }
+  }
+  for(i in exclude_attr){
+    for(j in names(out)){
+      if(i %in% names(out[[j]])) out[[j]][[i]] <- NULL
     }
   }
   out
@@ -625,7 +632,7 @@ as_yamlet.yamlet<- function(x, ...)x
 #'
 #' @param x yamlet
 #' @param default_keys names that may be omitted in left subsets
-#' @param ... passed arguments
+#' @param ... ignored
 #' @export
 #' @return yam
 #' @family yam
@@ -660,7 +667,7 @@ as_yam.yamlet <- function(x, default_keys = getOption('yamlet_default_keys', lis
 #' yamlet emitter.
 #'
 #' @param x yam
-#' @param ... passed arguments
+#' @param ... ignored; keys is an attribute of yam
 #' @export
 #' @family yam
 #' @keywords internal
@@ -691,7 +698,7 @@ as.character.yam <- function(x, ...){
 #' for null, character and list.
 #' Always returns length-one character, possibly the empty string.
 #' @param x object
-#' @param ... passed arguments
+#' @param ... ignored
 #' @export
 #' @return length-one character
 #' @family to_yamlet
@@ -701,7 +708,7 @@ to_yamlet <- function(x, ...)UseMethod('to_yamlet')
 #'
 #' Coerces to yamlet storage format by default conversion to character.
 #' @param x object
-#' @param ... passed arguments
+#' @param ... ignored
 #' @export
 #' @return length-one character
 #' @family to_yamlet
@@ -718,7 +725,7 @@ to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
 #'
 #' Coerces character to yamlet storage format. Named character is processed as a named list.
 #' @param x character
-#' @param ... passed arguments
+#' @param ... ignored
 #' @export
 #' @return length-one character
 #' @family to_yamlet
@@ -753,7 +760,7 @@ to_yamlet.character <- function(x, ...){
 #'
 #' Coerces null to yamlet storage format (returns empty string).
 #' @param x object
-#' @param ... passed arguments
+#' @param ... ignored
 #' @export
 #' @return length-one character
 #' @family to_yamlet
@@ -765,7 +772,7 @@ to_yamlet.NULL <- function(x, ...)''
 #'
 #' Coerces list to yamlet storage format. Operates recursively on list members.
 #' @param x object
-#' @param ... passed arguments
+#' @param ... ignored
 #' @export
 #' @return length-one character
 #' @family to_yamlet
@@ -796,9 +803,15 @@ to_yamlet.list <- function(x, ...){
   # separate members with commas
   out <- unlist(out) # converts empty list to NULL
   if(is.null(out)) out <- ''
-  if(length(out) > 1){
+  if(length(out) == 1){ # a singlet
+    if(length(names(out))){ # not all singlets have names
+      if(names(out) != ''){ # a singlet may have an empty name
+        out <-paste0('[ ', out, ' ]') # named singlets need brackets
+      }
+    }
+  }
+  if(length(out) > 1){ # sequences need brackets
     out <- paste(out, collapse = ', ')
-    # enclose members in brackets
     out <- paste0('[ ', out, ' ]')
   }
   out <- gsub('] ',']', out)
@@ -811,7 +824,7 @@ to_yamlet.list <- function(x, ...){
 #' Coerces yamlet to character.  See also \code{\link{as_yamlet.character}}.
 #'
 #' @param x yamlet
-#' @param ... passed arguments
+#' @param ... passed to \code{\link{as.character.yam}} and \code{\link{as_yam.yamlet}}
 #' @export
 #' @family as_yamlet
 #' @return character
@@ -832,7 +845,11 @@ to_yamlet.list <- function(x, ...){
 #' as.character(as_yamlet(foo))
 #'
 #'
-as.character.yamlet <- function(x,...)as.character(as_yam(x,...),...)
+as.character.yamlet <- function(x,...){
+  y <- as_yam(x,...)
+  z <- as.character(y, ...)
+  z
+}
 
 
 #' Coerce List to Encoding
@@ -939,120 +956,6 @@ encode::encode
   x
 }
 
-#' Coerce to Axis Label
-#'
-#' Converts to axis label. Generic, with method \code{\link{as_lab.list}}.
-#' @param x object
-#' @param ... passed arguments
-#' @return see methods; typically length-one character
-#' @export
-#' @family lab
-as_lab <- function(x,...)UseMethod('as_lab')
-
-#' Coerce List to Axis Label
-#'
-#' Coerces list to axis label.
-#'
-#' @param x list, such as returned by \code{\link{attributes}}.
-#' @param default a value to return by default
-#' @param collapse character: separator for collapsing multi-line units
-#' @param enclose length-two character for enclosing unit
-#' @param ... ignored
-#' @return length-one character
-#' @export
-#' @family lab
-#' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-#' x <- decorate(meta)
-#' as_lab(attributes(x$time), 'time', enclose = c('[',']'))
-#' as_lab(attributes(x$time), 'time', enclose = c('[ ',' ]'))
-as_lab.list <- function(
-  x,
-  default,
-  collapse = '\n',
-  enclose = getOption('enclose', default = c('(',')')),
-  ...
-){
-  stopifnot(length(default) == 1, is.character(default))
-  stopifnot(length(enclose) == 2, is.character(enclose))
-  out <- default
-  if('label' %in% names(x)) out <- x$label
-  more <- character(0)
-  if('units' %in% names(x)) more <- x$units
-  if('unit' %in% names(x)) more <- x$unit
-  if('guide' %in% names(x)){
-    if(length(x$guide) == 1) more <- x$guide
-  }
-  if(length(more) > 1) more <- paste(more, collapse = collapse)
-  if(length(more)) more <- paste0(enclose[[1]], more, enclose[[2]])
-  out <- paste(out, more)
-  out
-}
-
-#' Request Automatic Labels and Units for ggplot
-#'
-#' Requests automatic labels and units for ggplot.
-#' Simply subclasses the output of ggplot, in
-#' expectation of associated print method \code{\link{print.ag}}.
-#'
-#' @param data data.frame or similar
-#' @param ... passed to \code{\link[ggplot2]{ggplot}}
-#' @return return value like \code{\link[ggplot2]{ggplot}}
-#' @export
-#' @importFrom ggplot2 ggplot
-#' @family lab
-#' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-#' x <- decorate(meta)
-#' library(ggplot2)
-#' class(agplot(data = x) + geom_path(aes(x = time, y = conc)))
-#' class(agplot(data = x, aes(x = time, y = conc)) + geom_path())
-#' example(print.ag)
-
-agplot <- function(data, ...){
-  p <- ggplot(data = data, ...)
-  class(p) <- c('ag',class(p))
-  p
-}
-#' Print Automatic Labels and Units for ggplot
-#'
-#' Prints automatic labels and units for ggplot.
-#' Reworks the labels as a function of attributes
-#' in corresponding data. \code{labeller} will
-#' receive existing labels one at a time
-#' and corresponding attributes(if any) from data.
-#'
-#' @param x class 'ag' from \code{\link{agplot}}
-#' @param labeller a function (or its name) like \code{\link{as_lab}} to generate axis labels
-#' @param ... passed arguments
-#' @return used for side effects
-#' @export
-#' @family lab
-#' @examples
-#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-#' x <- decorate(file, coerce = TRUE )
-#' library(ggplot2)
-#' agplot(data = x) + geom_point(aes(x = time, y = conc, color = Heart))
-#' agplot(data = x, aes(x = time, y = conc)) + geom_point()
-#' agplot(data = x) + geom_point(aes(x = time, y = conc)) + xlab('the time (hours)')
-#' options(enclose = c('[',']'))
-#' agplot(data = x) + geom_point(aes(x = time, y = conc, color = Creatinine))
-
-
-print.ag <- function(x, labeller = getOption('labeller', default = as_lab), ...){
-  fun <- match.fun(labeller)
-  for(i in seq_along(x$labels)){
-    lab <- x$labels[[i]]
-    if(lab %in% names(x$data)){
-      attr <- attributes(x$data[[lab]])
-      if(!is.null(attr)){
-        val <- fun(x = attr, default = lab, ...)
-        x$labels[[i]] <- val
-      }
-    }
-  }
-  NextMethod()
-}
 
 #' Print a Yamlet
 #'
@@ -1132,9 +1035,10 @@ read_yamlet <- function(
 #'
 #' @param x something that can be coerced to class 'yamlet', like a yamlet object or a decorated data.frame
 #' @param con passed to \code{\link{writeLines}}
-#' @param sep passed to \code{\link{writeLines}}
+#' @param eol end-of-line; passed to \code{\link{writeLines}} as \code{sep}
 #' @param useBytes passed to \code{\link{writeLines}}
 #' @param default_keys character: default keys for the first n anonymous members of each element
+#' @param fileEncoding if \code{con} is character, passed to \code{\link{file}} as \code{encoding}
 #' @param ... passed to \code{\link{as_yamlet}}
 #' @export
 #' @family interface
@@ -1155,16 +1059,21 @@ read_yamlet <- function(
 write_yamlet <- function(
   x,
   con = stdout(),
-  sep = "\n",
+  eol = "\n",
   useBytes = FALSE,
   default_keys = getOption(
     'yamlet_default_keys',
     list('label','guide')
   ),
+  fileEncoding = getOption('encoding'),
   ...
 ){
-  x <- as_yamlet(x)
+  x <- as_yamlet(x, default_keys = default_keys)
   y <- as.character(x, default_keys = default_keys, ...)
-  writeLines(text = y, con = con, sep = sep, useBytes = useBytes)
+  if(is.character(con)){
+    con <- file(con, 'w', encoding = fileEncoding)
+    on.exit(close(con))
+  }
+  writeLines(text = y, con = con, sep = eol, useBytes = useBytes)
   invisible(y)
 }

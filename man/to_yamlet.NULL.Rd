@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{object}
 
-\item{...}{passed arguments}
+\item{...}{ignored}
 }
 \value{
 length-one character

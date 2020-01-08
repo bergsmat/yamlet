@@ -13,7 +13,7 @@
 
 \item{coerce}{whether to coerce to factor where guide is a list}
 
-\item{...}{passed arguments}
+\item{...}{passed to \code{\link{decorate.list}}}
 }
 \value{
 data.frame

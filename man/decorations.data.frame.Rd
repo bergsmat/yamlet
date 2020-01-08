@@ -4,14 +4,21 @@
 \alias{decorations.data.frame}
 \title{Retrieve Decorations for Data Frame}
 \usage{
-\method{decorations}{data.frame}(x, coerce = getOption("yamlet_coerce_decorations", FALSE), ...)
+\method{decorations}{data.frame}(
+  x,
+  coerce = getOption("yamlet_coerce_decorations", FALSE),
+  exclude_attr = getOption("yamlet_exclude_attr", character(0)),
+  ...
+)
 }
 \arguments{
 \item{x}{data.frame}
 
-\item{coerce}{logical whether to coerce factor levels to guide; alternatively, a key for the levels}
+\item{coerce}{logical: whether to coerce factor levels to guide; alternatively, a key for the levels}
 
-\item{...}{passed arguments}
+\item{exclude_attr}{attributes to remove from the result}
+
+\item{...}{ignored}
 }
 \value{
 named list

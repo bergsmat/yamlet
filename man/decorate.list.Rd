@@ -24,7 +24,7 @@
 
 \item{overwrite}{whether to overwrite attributes that are already present (else give warning)}
 
-\item{...}{passed arguments}
+\item{...}{passed to \code{\link{as_yamlet.character}} (by method dispatch)}
 }
 \value{
 list, possibly with member attributes
@@ -48,6 +48,16 @@ Other decorate:
 \code{\link{decorations}()}
 
 Other interface: 
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_csv}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_table}()},
+\code{\link{io_yamlet.character}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{io_yamlet.yamlet}()},
+\code{\link{io_yamlet}()},
 \code{\link{read_yamlet}()},
 \code{\link{write_yamlet}()}
 }

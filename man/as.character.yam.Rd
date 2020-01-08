@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{yam}
 
-\item{...}{passed arguments}
+\item{...}{ignored; keys is an attribute of yam}
 }
 \value{
 character

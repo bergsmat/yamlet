@@ -15,7 +15,7 @@
 
 \item{default_keys}{character: default keys for the first n anonymous members of each element}
 
-\item{...}{passed arguments}
+\item{...}{passed to \code{\link{as_yam.character}} and \code{\link{as_yamlet.yam}}}
 }
 \value{
 yamlet: a named list with default keys applied

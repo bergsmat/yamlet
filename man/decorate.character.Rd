@@ -24,7 +24,7 @@
 
 \item{coerce}{whether to coerce to factor where guide has length > 1}
 
-\item{...}{passed to fun}
+\item{...}{passed to fun and to \code{\link{as_yamlet.character}}}
 }
 \value{
 data.frame

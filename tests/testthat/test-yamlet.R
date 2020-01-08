@@ -164,3 +164,91 @@ test_that('decorate ignores anonymous attributes',{
   expect_warning(meta <- as_yamlet('time: [ a, b, c]'))
   expect_warning(decorate(x, meta = meta))
 })
+
+test_that('io_yamlet methods are reciprocal with default or modified arguments',{
+  foo <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+  out <- file.path(tempdir(), 'out.yaml')
+  x <- io_yamlet(foo)
+  expect_identical(x,io_yamlet(io_yamlet(x, out)))
+  expect_identical(
+    x,
+    io_yamlet(
+      fileEncoding = 'UTF-8', # read
+      eol = '\n',
+      #default_keys = c('foo','bar'),
+      io_yamlet(
+        fileEncoding = 'UTF-8', # write
+        eol = '\r',
+        default_keys = c('foo','bar'),
+        x,
+        out
+      )
+    )
+  )
+})
+test_that('io_table methods are reciprocal with default or modified arguments',{
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  out <- file.path(tempdir(), 'out.tab')
+  foo <- io_table(x, out)
+  expect_identical(out, foo)
+  y <- io_table(foo, as.is = TRUE)
+  attr(x, 'source') <- NULL
+  rownames(x) <- NULL
+  rownames(y) <- NULL
+  expect_identical(x, y) # lossless 'round-trip'
+
+  io_table(x, out, sep = ',' , na = '.', fileEncoding = 'UTF-16')
+  y <- io_table(out, as.is = TRUE, sep = ',', na.strings = '.', fileEncoding = 'UTF-16')
+  rownames(y) <- NULL
+  expect_identical(x, y) # lossless 'round-trip'
+})
+test_that('io_csv methods are reciprocal with default or modified arguments',{
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  attr(x, 'source') <- NULL
+  out <- file.path(tempdir(), 'out.tab')
+  foo <- io_csv(x, out)
+  expect_identical(out, foo)
+  expect_identical(readLines(file), readLines(out))
+  y <- io_csv(out)
+  rownames(x) <- NULL
+  rownames(y) <- NULL
+  attr(x, 'source') <- NULL
+  attr(y, 'source') <- NULL
+  expect_identical(x, y) # lossless 'round-trip'
+
+  io_csv(x, out, quote = TRUE, na = 'NA', eol = '\r', fileEncoding = 'UTF-16')
+  y <- io_csv(out, na.strings = 'NA', fileEncoding = 'UTF-16')
+  attr(y, 'source') <- NULL
+  expect_identical(x, y) # lossless 'round-trip'
+
+})
+test_that('class attributes are excluded from storage on request',{
+  expect_false('class' %in% decorations(Theoph, exclude_attr = 'class')$Subject)
+})
+test_that('yamlet package writes proper yaml with non-default keys',{
+  out <- file.path(tempdir(), 'out.yaml')
+  expect_silent(write_yamlet('ID: identifier', out))
+  expect_silent(write_yamlet('ID: identifier', out, default_keys = c('foo','bar')))
+  expect_warning(write_yamlet('ID: identifier', out, default_keys = character(0)))
+
+  foo <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+  x <- io_yamlet(foo) # read
+  y <- as_yam(x[1], default_keys = c('foo','bar'))
+  io_yamlet(x, out, default_keys = c('foo','bar')) # write
+  expect_silent(io_yamlet(out)) # read
+
+  z <- as_yamlet('ID: identifier')
+  expect_identical(as.character(z), 'ID: identifier')
+  expect_identical(
+    as.character(z, default_keys = c('foo','bar'))[[1]],
+    'ID: [ label: identifier ]'
+  )
+})
+test_that('ag.print treats variable as categorical if guide has length > 1',{
+
+})
+test_that('ag.print uses conditional labels and guides',{
+
+})

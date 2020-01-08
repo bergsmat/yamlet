@@ -15,7 +15,7 @@
 
 \item{default_keys}{names that may be omitted in left subsets}
 
-\item{...}{passed arguments}
+\item{...}{ignored}
 }
 \value{
 yam

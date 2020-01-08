@@ -15,7 +15,7 @@
 
 \item{default_keys}{character: default keys for the first n anonymous members of each element}
 
-\item{...}{passed arguments}
+\item{...}{ignored}
 }
 \value{
 yamlet: a named list with default keys applied

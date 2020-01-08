@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{yamlet}
 
-\item{...}{passed arguments}
+\item{...}{passed to \code{\link{as.character.yam}} and \code{\link{as_yam.yamlet}}}
 }
 \value{
 character
