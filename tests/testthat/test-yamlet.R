@@ -246,9 +246,18 @@ test_that('yamlet package writes proper yaml with non-default keys',{
     'ID: [ label: identifier ]'
   )
 })
-test_that('ag.print treats variable as categorical if guide has length > 1',{
+test_that('dplyr filter does not drop attributes',{
+ # not okay in 3.6.1: filter drops label on factors
+  head(Theoph)
+  attr(Theoph$Dose, 'label') <- 'DOSE'
+  attr(Theoph$Dose, 'levels') <- unique(Theoph$Dose)
+  str(Theoph$Dose)
+  str(Theoph[Theoph$Subject == 1,]$Dose)
 
 })
+test_that('ag.print treats variable as categorical if guide has length > 1',{
+ # see example(ag.print)
+})
 test_that('ag.print uses conditional labels and guides',{
-
+ # see example(ag.print)
 })
