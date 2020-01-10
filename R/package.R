@@ -83,6 +83,10 @@
 #' values to corresponding items in your data. See also \code{?print.ag}
 #' which uses labels and guides to autogenerate axis labels.
 #'
+#' Note: the quinidine and phenobarb datasets in the examples
+#' are borrowed from \pkg{nlme} (\code{?Quinidine}, \code{?Phenobarb}),
+#' with some reorganization.
+#'
 #' @docType package
 #' @name yamlet
 NULL

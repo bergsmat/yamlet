@@ -3,19 +3,17 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+knitr::opts_chunk$set(package.startup.message = FALSE)
 
-
-## -----------------------------------------------------------------------------
+## ---- package.startup.message = FALSE-----------------------------------------
+suppressMessages(library(dplyr))
+library(magrittr)
+library(yamlet)
 x <- data.frame(
   ID = 1, 
   CONC = 1,
   RACE = 1
 )
-library(dplyr)
-library(magrittr)
-library(yamlet)
 
 x$ID %<>% structure(label = 'subject identifier')
 x$CONC %<>% structure(label = 'concentration', guide = 'ng/mL')
@@ -38,7 +36,7 @@ x <- decorate(x, meta)
 str(x)
 
 ## -----------------------------------------------------------------------------
-decorations(x) # just a list
+# decorations(x) # just a list
 as_yamlet(x) # a list with class 'yamlet' (special print method)
 
 ## -----------------------------------------------------------------------------
@@ -48,9 +46,10 @@ file %>% readLines %>% writeLines
 
 ## -----------------------------------------------------------------------------
 library(csv)
+# see ?Quinidine in package nlme
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 a <- decorate(file)
-as_yamlet(a)
+as_yamlet(a)[1:3]
 
 ## -----------------------------------------------------------------------------
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -66,16 +65,27 @@ meta <- sub('csv','yaml', out)
 file.exists(meta)
 meta %>% readLines %>% head %>% writeLines
 
-## ---- fig.width = 5.46, fig.height = 3.52, fig.cap = 'Automatic axis labels and legends using curated metadata as column attributes'----
-library(ggplot2)
+## ---- fig.width = 5.46, fig.height = 3.52, fig.cap = 'Automatic axis labels and legends using curated metadata as column attributes.'----
+suppressWarnings(library(ggplot2))
 library(dplyr)
 library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 
-(file %>% 
+file %>% 
   decorate %>% 
   filter(!is.na(conc)) %>%
   agplot(aes(x = time, y = conc, color = Heart)) + 
-  geom_point()) 
+  geom_point()
 
+
+## -----------------------------------------------------------------------------
+suppressMessages(library(table1))
+options(yamlet_overwrite = TRUE)
+file %>%
+  as.csv %>%
+  decorate(coerce = TRUE) %>% # factor if length(guide) > 1
+  decorate(default = c('label','units')) %>% # code guide as units
+  group_by(Subject) %>%
+  slice(1) %>%
+  table1(~ Age + Weight + Race | Heart, .)
 
