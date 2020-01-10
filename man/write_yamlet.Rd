@@ -33,7 +33,8 @@ write_yamlet(
 invisible character representation of yamlet (storage syntax)
 }
 \description{
-Writes yamlet. See examples.  See \code{?yamlet}.  See vignette.
+Writes yamlet to file. Similar to \code{\link{io_yamlet.data.frame}}
+but returns invisible storage format instead of invisible storage location.
 }
 \examples{
 library(csv)
@@ -52,7 +53,9 @@ identical(read_yamlet(meta), read_yamlet(tmp))
 \code{\link{decorate.list}}
 
 Other interface: 
+\code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
+\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},

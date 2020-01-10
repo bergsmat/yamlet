@@ -250,7 +250,7 @@ resolve <- function(x, keys){ # an item
 #' key names that over-ride \code{default_keys}.
 #' Attribute names are sought first in the explicit yaml,
 #' then in the special item named '_keys',
-#' then in the \code{default_keys} argument passed to as_yamlet(),
+#' then in the \code{default_keys} argument passed to \code{\link{as_yamlet}},
 #' then in \code{options()$yamlet_default_keys},
 #' then in the defaults for argument \code{default_keys}.
 #'
@@ -282,6 +282,7 @@ as_yamlet.character <- function(x, default_keys = getOption('yamlet_default_keys
 #' @param ... passed arguments
 #' @export
 #' @family decorate
+#' @family interface
 #' @return a list-like object, typically data.frame
 #' @examples
 #' library(csv)
@@ -310,6 +311,7 @@ decorate <- function(x,...)UseMethod('decorate')
 #' @importFrom csv as.csv
 #' @export
 #' @family decorate
+#' @family interface
 #' @examples
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
@@ -394,7 +396,7 @@ decorate.character <- function(
 
 #'
 #' @param x object inheriting from \code{list}
-#' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
+#' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute (as for \code{\link[csv]{as.csv}})
 #' @param ext file extension for metadata file, if relevant
 #' @param coerce whether to coerce to factor where guide has length > 1
 #' @param overwrite whether to overwrite attributes that are already present (else give warning)
@@ -607,7 +609,7 @@ as_yamlet.data.frame <- function(x, ...){
 }
 #' Coerce Yamlet to Yamlet
 #'
-#' Coerces yamlet to yamlet. A non-operation.
+#' Coerces yamlet to yamlet. Currently a non-operation.
 #'
 #' @param x yamlet
 #' @param... ignored
@@ -695,8 +697,10 @@ as.character.yam <- function(x, ...){
 #' Coerce to Yamlet Storage Format
 #'
 #' Coerces to yamlet storage format. Generic, with methods
-#' for null, character and list.
+#' for default, null, character and list which together
+#' implement the yamlet storage syntax.
 #' Always returns length-one character, possibly the empty string.
+#'
 #' @param x object
 #' @param ... ignored
 #' @export
@@ -944,7 +948,7 @@ encode::encode
 #' @return yamlet
 #' @export
 #' @keywords internal
-#' @family encode
+#' @family as_yamlet
 #' @examples
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 #' meta <- as_yamlet(meta)
@@ -1001,7 +1005,9 @@ print.yamlet <- function(x, ...){
 
 #' Read Yamlet
 #'
-#' Reads yamlet. See examples.  See \code{?yamlet}.  See vignette.
+#' Reads yamlet from file.
+#' Similar to \code{\link{io_yamlet.character}}
+#' but also reads text fragments.
 #'
 #' @param x file path for yamlet, or vector of yamlet in storage syntax
 #' @param default_keys character: default keys for the first n anonymous members of each element
@@ -1031,7 +1037,8 @@ read_yamlet <- function(
 }
 #' Write Yamlet
 #'
-#' Writes yamlet. See examples.  See \code{?yamlet}.  See vignette.
+#' Writes yamlet to file. Similar to \code{\link{io_yamlet.data.frame}}
+#' but returns invisible storage format instead of invisible storage location.
 #'
 #' @param x something that can be coerced to class 'yamlet', like a yamlet object or a decorated data.frame
 #' @param con passed to \code{\link{writeLines}}

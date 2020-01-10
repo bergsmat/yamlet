@@ -1,7 +1,7 @@
 #' Import and Export Documented Tables
 #'
 #' Imports or exports documented tables.  Generic, with methods
-#' that extend read.table() and write.table().
+#' that extend \code{\link{read.table}} and \code{\link{write.table}}.
 
 #'@param x object
 #'@param ... passed arguments

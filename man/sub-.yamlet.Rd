@@ -24,9 +24,10 @@ class(meta)
 stopifnot(inherits(meta[1:2],'yamlet'))
 }
 \seealso{
-Other encode: 
-\code{\link{encode.yamlet}()},
-\code{\link{list2encoding}()}
+Other as_yamlet: 
+\code{\link{as.character.yamlet}()},
+\code{\link{as_yamlet.data.frame}()},
+\code{\link{as_yamlet.yamlet}()}
 }
-\concept{encode}
+\concept{as_yamlet}
 \keyword{internal}

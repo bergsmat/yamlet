@@ -16,7 +16,8 @@ length-one character
 }
 \description{
 Coerces to yamlet storage format. Generic, with methods
-for null, character and list.
+for default, null, character and list which together
+implement the yamlet storage syntax.
 Always returns length-one character, possibly the empty string.
 }
 \seealso{

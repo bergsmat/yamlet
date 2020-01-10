@@ -26,7 +26,6 @@ list2encoding(meta$Creatinine$guide)
 }
 \seealso{
 Other encode: 
-\code{\link{[.yamlet}()},
 \code{\link{encode.yamlet}()}
 }
 \concept{encode}

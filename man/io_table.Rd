@@ -16,7 +16,7 @@ See methods.
 }
 \description{
 Imports or exports documented tables.  Generic, with methods
-that extend read.table() and write.table().
+that extend \code{\link{read.table}} and \code{\link{write.table}}.
 }
 \examples{
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -43,7 +43,9 @@ Other io:
 \code{\link{io_yamlet}()}
 
 Other interface: 
+\code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
+\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},

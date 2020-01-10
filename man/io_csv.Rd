@@ -16,7 +16,7 @@ See methods.
 }
 \description{
 Imports or exports documented tables as comma-separated variable.
-Generic, with methods that extend as.csv().
+Generic, with methods that extend \code{\link[csv]{as.csv}}.
 }
 \examples{
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -26,6 +26,7 @@ foo <- io_csv(x, out)
 identical(out, foo)
 y <- io_csv(foo)
 attr(x, 'source') <- NULL
+attr(y, 'source') <- NULL
 identical(x, y) # lossless 'round-trip'
 }
 \seealso{
@@ -41,7 +42,9 @@ Other io:
 \code{\link{io_yamlet}()}
 
 Other interface: 
+\code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
+\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_table.character}()},

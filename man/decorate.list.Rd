@@ -16,7 +16,7 @@
 \arguments{
 \item{x}{object inheriting from \code{list}}
 
-\item{meta}{file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute}
+\item{meta}{file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute (as for \code{\link[csv]{as.csv}})}
 
 \item{ext}{file extension for metadata file, if relevant}
 
@@ -48,6 +48,8 @@ Other decorate:
 \code{\link{decorations}()}
 
 Other interface: 
+\code{\link{decorate.character}()},
+\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},

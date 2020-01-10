@@ -21,7 +21,9 @@ read_yamlet(
 yamlet: a named list with default keys applied
 }
 \description{
-Reads yamlet. See examples.  See \code{?yamlet}.  See vignette.
+Reads yamlet from file.
+Similar to \code{\link{io_yamlet.character}}
+but also reads text fragments.
 }
 \examples{
 library(csv)
@@ -36,7 +38,9 @@ identical(x, decorate(file))
 \code{\link{decorate.list}}
 
 Other interface: 
+\code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
+\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},

@@ -25,6 +25,7 @@ as_yamlet(x)
 }
 \seealso{
 Other as_yamlet: 
+\code{\link{[.yamlet}()},
 \code{\link{as.character.yamlet}()},
 \code{\link{as_yamlet.yamlet}()}
 }

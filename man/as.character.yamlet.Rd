@@ -36,6 +36,7 @@ as.character(as_yamlet(foo))
 }
 \seealso{
 Other as_yamlet: 
+\code{\link{[.yamlet}()},
 \code{\link{as_yamlet.data.frame}()},
 \code{\link{as_yamlet.yamlet}()}
 }

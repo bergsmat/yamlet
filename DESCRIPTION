@@ -1,7 +1,7 @@
 Package: yamlet
 Type: Package
 Title: Versatile Curation of Table Metadata
-Version: 0.2.8
+Version: 0.2.9
 Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>
 Description: The 'yamlet' package implements a file-based
@@ -12,8 +12,8 @@ Description: The 'yamlet' package implements a file-based
  different extensions.  The 'yamlet' dialect is valid yaml,
  but some conventions are chosen to improve readability. 
  Defaults and conventions can be over-ridden by the user. 
- See package?yamlet and ?decorate.data.frame.
- See ?read_yamlet and ?write_yamlet.
+ See ?yamlet and ?decorate.data.frame.
+ See ?read_yamlet ?write_yamlet, and ?io_csv.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

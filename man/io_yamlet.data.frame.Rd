@@ -35,7 +35,7 @@ invisible character representation of yamlet (storage syntax)
 \description{
 Writes data.frame attributes as yamlet.
 The data.frame method for \code{\link{io_yamlet}}.
-Similar to \code{\link{write_yamlet}}, but returns \code{con}.
+Similar to \code{\link{write_yamlet}}, but returns (description of) \code{con}.
 }
 \examples{
 library(csv)
@@ -48,7 +48,9 @@ io_yamlet(out)
 }
 \seealso{
 Other interface: 
+\code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
+\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},

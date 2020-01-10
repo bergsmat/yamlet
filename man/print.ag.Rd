@@ -4,7 +4,7 @@
 \alias{print.ag}
 \title{Print Automatic Labels and Units for ggplot}
 \usage{
-\method{print}{ag}(x, labeller = getOption("labeller", default = as_lab), ...)
+\method{print}{ag}(x, labeller = getOption("yamlet_labeller", default = as_lab), ...)
 }
 \arguments{
 \item{x}{class 'ag' from \code{\link{agplot}}}
@@ -22,7 +22,7 @@ Reworks the labels as a function of attributes
 in corresponding data. Default for \code{labeller}
 (\code{\link{as_lab}}) will
 receive existing labels one at a time
-and corresponding attributes(if any) from data.
+and corresponding attributes (if any) from data.
 }
 \examples{
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')

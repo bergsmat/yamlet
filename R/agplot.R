@@ -10,7 +10,16 @@ as_lab <- function(x,...)UseMethod('as_lab')
 
 #' Coerce List to Axis Label
 #'
-#' Coerces list to axis label.
+#' Coerces list to axis label. Accepts a default label
+#' and returns that if nothing better can be done.
+#' If the attribute list has one named 'label', it
+#' is chosen as a substitute.  But if that attribute
+#' is itself a list of values, an attempt is made
+#' to identify a single relevant value by treating
+#' the value names as conditions to evaluate on
+#' the supplied data. If a suitable value is
+#' found, it is chosen as a substitute.  See
+#' \code{\link{singularity}} for search logic.
 #'
 #' @param x list, such as returned by \code{\link{attributes}}.
 #' @param default a value to return by default
@@ -30,7 +39,7 @@ as_lab.list <- function(
   x,
   default,
   collapse = '\n',
-  enclose = getOption('enclose', default = c('(',')')),
+  enclose = getOption('yamlet_enclose', default = c('(',')')),
   data,
   ...
 ){
@@ -179,7 +188,7 @@ agplot <- function(data, ...){
 #' in corresponding data. Default for \code{labeller}
 #' (\code{\link{as_lab}}) will
 #' receive existing labels one at a time
-#' and corresponding attributes(if any) from data.
+#' and corresponding attributes (if any) from data.
 #'
 #' @param x class 'ag' from \code{\link{agplot}}
 #' @param labeller a function (or its name) like \code{\link{as_lab}} to generate axis labels
@@ -241,7 +250,7 @@ agplot <- function(data, ...){
 # facet_wrap(~ event, scales = 'free_y')
 
 
-print.ag <- function(x, labeller = getOption('labeller', default = as_lab), ...){
+print.ag <- function(x, labeller = getOption('yamlet_labeller', default = as_lab), ...){
   fun <- match.fun(labeller)
   for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
     lab <- x$labels[[i]]                   # deal with one label
@@ -350,8 +359,8 @@ isLevels.default <- function(x, table, ...)isLevels(as.character(x), table, ...)
 #'
 #' Tests whether character value is levels.
 #' Looks for any matches to vector.
-#' Uses intersect(), which is fairly flexible
-#' respecting underlying data types (character 0 can match integer 0).
+#' Uses \code{\link{intersect}}, which is fairly flexible
+#' respecting underlying data types (character 0 can match integer 0, etc.).
 #' @param x default
 #' @param table lookup vector
 #' @param ... passed arguments

@@ -19,8 +19,8 @@ logical
 \description{
 Tests whether character value is levels.
 Looks for any matches to vector.
-Uses intersect(), which is fairly flexible
-respecting underlying data types (character 0 can match integer 0).
+Uses \code{\link{intersect}}, which is fairly flexible
+respecting underlying data types (character 0 can match integer 0, etc.).
 }
 \seealso{
 Other levels: 

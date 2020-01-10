@@ -8,7 +8,7 @@
   x,
   default,
   collapse = "\\n",
-  enclose = getOption("enclose", default = c("(", ")")),
+  enclose = getOption("yamlet_enclose", default = c("(", ")")),
   data,
   ...
 )
@@ -30,7 +30,16 @@
 length-one character
 }
 \description{
-Coerces list to axis label.
+Coerces list to axis label. Accepts a default label
+and returns that if nothing better can be done.
+If the attribute list has one named 'label', it
+is chosen as a substitute.  But if that attribute
+is itself a list of values, an attempt is made
+to identify a single relevant value by treating
+the value names as conditions to evaluate on
+the supplied data. If a suitable value is
+found, it is chosen as a substitute.  See
+\code{\link{singularity}} for search logic.
 }
 \examples{
 meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')

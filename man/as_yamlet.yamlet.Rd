@@ -15,7 +15,7 @@
 yamlet
 }
 \description{
-Coerces yamlet to yamlet. A non-operation.
+Coerces yamlet to yamlet. Currently a non-operation.
 }
 \examples{
 meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
@@ -24,6 +24,7 @@ as_yamlet(x)
 }
 \seealso{
 Other as_yamlet: 
+\code{\link{[.yamlet}()},
 \code{\link{as.character.yamlet}()},
 \code{\link{as_yamlet.data.frame}()}
 }

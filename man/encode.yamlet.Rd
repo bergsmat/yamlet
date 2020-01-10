@@ -27,7 +27,6 @@ meta <- encode(meta)
 }
 \seealso{
 Other encode: 
-\code{\link{[.yamlet}()},
 \code{\link{list2encoding}()}
 }
 \concept{encode}

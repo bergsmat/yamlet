@@ -1,7 +1,7 @@
 #' Import and Export Documented Tables as CSV
 #'
 #' Imports or exports documented tables as comma-separated variable.
-#' Generic, with methods that extend as.csv().
+#' Generic, with methods that extend \code{\link[csv]{as.csv}}.
 
 #'@param x object
 #'@param ... passed arguments
@@ -17,6 +17,7 @@
 #' identical(out, foo)
 #' y <- io_csv(foo)
 #' attr(x, 'source') <- NULL
+#' attr(y, 'source') <- NULL
 #' identical(x, y) # lossless 'round-trip'
 io_csv <- function(x, ...)UseMethod('io_csv')
 

@@ -34,5 +34,22 @@ Other decorate:
 \code{\link{decorate.list}()},
 \code{\link{decorations.data.frame}()},
 \code{\link{decorations}()}
+
+Other interface: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.list}()},
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_csv}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_table}()},
+\code{\link{io_yamlet.character}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{io_yamlet.yamlet}()},
+\code{\link{io_yamlet}()},
+\code{\link{read_yamlet}()},
+\code{\link{write_yamlet}()}
 }
 \concept{decorate}
+\concept{interface}

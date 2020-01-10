@@ -1,7 +1,9 @@
 #' Import and Export Yamlet
 #'
 #' Imports and exports yamlet.
-#' Generic, with a read method for character and a write method for data.frame.
+#' Generic, with a read method \code{\link{read_yaml}}
+#' for character and a write method \code{\link{write_yaml}}
+#' for data.frame.
 #'
 #' @param x object
 #' @param ... passed arguments
@@ -99,7 +101,7 @@ io_yamlet.yamlet <- function(
 #'
 #' Writes data.frame attributes as yamlet.
 #' The data.frame method for \code{\link{io_yamlet}}.
-#' Similar to \code{\link{write_yamlet}}, but returns \code{con}.
+#' Similar to \code{\link{write_yamlet}}, but returns (description of) \code{con}.
 #'
 #' @param x data.frame
 #' @param con passed to \code{\link{writeLines}}
