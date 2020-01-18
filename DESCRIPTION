@@ -6,10 +6,10 @@ Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>
 Description: The 'yamlet' package implements a file-based
  mechanism for documenting datasets. It reads and writes
- yaml-formatted metadata and applies it as data 
+ YAML-formatted metadata and applies it as data 
  item attributes. Data and metadata are stored independently
  but can be coordinated by using similar file paths with
- different extensions.  The 'yamlet' dialect is valid yaml,
+ different extensions.  The 'yamlet' dialect is valid 'YAML',
  but some conventions are chosen to improve readability. 
  Defaults and conventions can be over-ridden by the user. 
  See ?yamlet and ?decorate.data.frame.
