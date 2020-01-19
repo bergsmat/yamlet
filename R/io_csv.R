@@ -69,7 +69,7 @@ io_csv.character <- function(
 #' @param con passed to \code{\link{io_yamlet}}
 #' @param useBytes passed to \code{\link{io_yamlet}}
 #' @param default_keys passed to \code{\link{io_yamlet}}
-#' @param ... passed to \code{\link{write.table}} and to \code{\link{io_yamlet}}
+#' @param ... passed to \code{\link{as.csv}} and to \code{\link{io_yamlet}}
 #' @export
 #' @importFrom csv as.csv
 #' @family io

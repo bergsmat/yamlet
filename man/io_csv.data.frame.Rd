@@ -30,7 +30,7 @@
 
 \item{default_keys}{passed to \code{\link{io_yamlet}}}
 
-\item{...}{passed to \code{\link{write.table}} and to \code{\link{io_yamlet}}}
+\item{...}{passed to \code{\link{as.csv}} and to \code{\link{io_yamlet}}}
 }
 \value{
 invisible(file)

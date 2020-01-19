@@ -18,7 +18,7 @@
 
 \item{coerce}{whether to coerce to factor where guide is a list; passed to \code{\link{decorate.data.frame}}}
 
-\item{...}{passed to \code{\link{read.table}} and to \code{\link{decorate}}}
+\item{...}{passed to \code{\link{read.table}} (if accepted) and to \code{\link{decorate}}}
 }
 \value{
 data.frame

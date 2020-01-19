@@ -303,10 +303,10 @@ decorate <- function(x,...)UseMethod('decorate')
 #'
 #' @param x file path for table data
 #' @param meta file path for corresponding yamlet metadata, or a yamlet object
-#' @param fun function or function name for reading x
+#' @param read function or function name for reading x
 #' @param ext file extension for metadata file, if relevant
 #' @param coerce whether to coerce to factor where guide has length > 1
-#' @param ... passed to fun and to \code{\link{as_yamlet.character}}
+#' @param ... passed to read (if accepted) and to \code{\link{as_yamlet.character}}
 #' @return data.frame
 #' @importFrom csv as.csv
 #' @export
@@ -327,7 +327,7 @@ decorate <- function(x,...)UseMethod('decorate')
 #' b <- decorate(file, coerce = TRUE)
 #' c <- decorate(
 #'   file,
-#'   fun = read.table,
+#'   read = read.table,
 #'   quote = "",
 #'   as.is = FALSE,
 #'   sep = ',',
@@ -339,7 +339,7 @@ decorate <- function(x,...)UseMethod('decorate')
 #' )
 #' d <- decorate(
 #'   file,
-#'   fun = read.table,
+#'   read = read.table,
 #'   quote = "",
 #'   as.is = FALSE,
 #'   sep = ',',
@@ -367,15 +367,18 @@ decorate <- function(x,...)UseMethod('decorate')
 decorate.character <- function(
   x,
   meta = NULL,
-  fun  = getOption('yamlet_import', as.csv),
+  read  = getOption('yamlet_import', as.csv),
   ext  = getOption('yamlet_extension', '.yaml'),
   coerce = getOption('yamlet_coerce',FALSE),
   ...
 ){
   stopifnot(length(x) == 1)
   if(!file.exists(x))stop('could not find file ', x)
-  fun <- match.fun(fun)
-  y <- fun(x,...)
+  read <- match.fun(read)
+  args <- list(...)
+  args <- args[names(args) %in% names(formals(read))]
+  args <- c(list(x),args)
+  y <- do.call(read, args)
   if(is.null(meta)){
     meta <- sub('\\.[^.]*$','',x) # remove last dot and any trailing chars
     meta <- paste0(meta, ext)
@@ -391,9 +394,9 @@ decorate.character <- function(
 #'
 #' Decorates a list-like object. Expects metadata with labels and guides,
 #' where guides are units, factor levels and labels (codes, decodes), or
-#' datetime formatting strings. For guides with length > 1, the corresponding
-#' data element may optionally be coerced to factor.
-
+#' datetime formatting strings, or encodings. For guides with length > 1,
+#' the corresponding data element may optionally be coerced to factor.
+#'
 #'
 #' @param x object inheriting from \code{list}
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute (as for \code{\link[csv]{as.csv}})
@@ -412,7 +415,7 @@ decorate.list <- function(
   x,
   meta = NULL,
   ext = getOption('yamlet_extension', '.yaml'),
-  coerce = getOption('yamlet_coerce',FALSE),
+  coerce = getOption('yamlet_coerce', FALSE),
   overwrite = getOption('yamlet_overwrite', FALSE),
   ...
 ){
@@ -422,7 +425,6 @@ decorate.list <- function(
     meta <- sub('\\.[^.]*$','',meta) # remove last dot and any trailing chars
     meta <- paste0(meta, ext)
     meta <- try(as_yamlet(meta, ...))
-
   }
   if(class(meta) != 'yamlet') stop('could not interpret meta: ', meta)
 

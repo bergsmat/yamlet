@@ -7,7 +7,7 @@
 \method{decorate}{character}(
   x,
   meta = NULL,
-  fun = getOption("yamlet_import", as.csv),
+  read = getOption("yamlet_import", as.csv),
   ext = getOption("yamlet_extension", ".yaml"),
   coerce = getOption("yamlet_coerce", FALSE),
   ...
@@ -18,13 +18,13 @@
 
 \item{meta}{file path for corresponding yamlet metadata, or a yamlet object}
 
-\item{fun}{function or function name for reading x}
+\item{read}{function or function name for reading x}
 
 \item{ext}{file extension for metadata file, if relevant}
 
 \item{coerce}{whether to coerce to factor where guide has length > 1}
 
-\item{...}{passed to fun and to \code{\link{as_yamlet.character}}}
+\item{...}{passed to read (if accepted) and to \code{\link{as_yamlet.character}}}
 }
 \value{
 data.frame
@@ -49,7 +49,7 @@ a <- decorate(file)
 b <- decorate(file, coerce = TRUE)
 c <- decorate(
   file,
-  fun = read.table,
+  read = read.table,
   quote = "",
   as.is = FALSE,
   sep = ',',
@@ -61,7 +61,7 @@ c <- decorate(
 )
 d <- decorate(
   file,
-  fun = read.table,
+  read = read.table,
   quote = "",
   as.is = FALSE,
   sep = ',',

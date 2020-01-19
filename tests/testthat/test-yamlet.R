@@ -253,11 +253,25 @@ test_that('dplyr filter does not drop attributes',{
   attr(Theoph$Dose, 'levels') <- unique(Theoph$Dose)
   str(Theoph$Dose)
   str(Theoph[Theoph$Subject == 1,]$Dose)
-
 })
 test_that('ag.print treats variable as categorical if guide has length > 1',{
  # see example(ag.print)
 })
 test_that('ag.print uses conditional labels and guides',{
  # see example(ag.print)
+})
+
+test_that('io_table accepts nuisance arguments without error',{
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  out <- file.path(tempdir(), 'out.tab')
+  expect_success(foo <- io_table(x, out, foo = 'bar'))
+  expect_success(y <- io_table(foo, as.is = TRUE, foo = 'bar'))
+})
+test_that('io_csv accepts nuisance arguments without error',{
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  out <- file.path(tempdir(), 'out.csv')
+  expect_success(foo <- io_csv(x, out, foo = 'bar'))
+  expect_success(y <- io_csv(foo, as.is = TRUE, foo = 'bar'))
 })

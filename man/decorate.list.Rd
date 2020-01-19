@@ -32,8 +32,8 @@ list, possibly with member attributes
 \description{
 Decorates a list-like object. Expects metadata with labels and guides,
 where guides are units, factor levels and labels (codes, decodes), or
-datetime formatting strings. For guides with length > 1, the corresponding
-data element may optionally be coerced to factor.
+datetime formatting strings, or encodings. For guides with length > 1,
+the corresponding data element may optionally be coerced to factor.
 }
 \examples{
 example(decorate.data.frame)

@@ -52,13 +52,12 @@ a <- decorate(file)
 as_yamlet(a)[1:3]
 
 ## -----------------------------------------------------------------------------
+options(csv_source = FALSE) # see ?as.csv
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
 out <- file.path(tempdir(), 'out.csv')
 io_csv(x, out)
 y <- io_csv(out)
-attr(x, 'source') <- NULL
-attr(y, 'source') <- NULL
 identical(x, y) # lossless 'round-trip'
 file.exists(out)
 meta <- sub('csv','yaml', out)
@@ -81,8 +80,8 @@ file %>%
 ## -----------------------------------------------------------------------------
 suppressMessages(library(table1))
 options(yamlet_overwrite = TRUE)
+options(csv_source = TRUE) # as.csv adds a source attribute
 file %>%
-  as.csv %>%
   decorate(coerce = TRUE) %>% # factor if length(guide) > 1
   decorate(default = c('label','units')) %>% # code guide as units
   group_by(Subject) %>%
