@@ -307,3 +307,14 @@ test_that('explicit_guide recognizes encodings, units, formats, and codelists',{
    c('label','label','units','label','codelist','label','codelist','label','format')
  )
 })
+test_that('factorize_codelist creates class factor and removes attribute codelist',{
+ library(magrittr)
+ file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+ x <- decorate(file)
+ x %<>% explicit_guide %>% factorize_codelist %>% as_yamlet
+ expect_identical(
+   x$Creatinine %>% names,
+   c('label','levels','class')
+ )
+ expect_identical(x$Heart$class, 'factor')
+})
