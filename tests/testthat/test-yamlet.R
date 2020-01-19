@@ -275,3 +275,35 @@ test_that('io_csv accepts nuisance arguments without error',{
   expect_success(foo <- io_csv(x, out, foo = 'bar'))
   expect_success(y <- io_csv(foo, as.is = TRUE, foo = 'bar'))
 })
+test_that('explicit_guide recognizes encodings, units, formats, and codelists',{
+  library(magrittr)
+  a <- 'CONC: [ concentration, ng/mL ]' %>% as_yamlet %>% explicit_guide
+  b <- 'RACE: [ subject race, [ Caucasian, Latin, Black ]]' %>% as_yamlet %>% explicit_guide
+  c <- 'RACE: [ subject race, //Caucasian//Latin//Black// ]' %>% as_yamlet %>% explicit_guide
+  d <- 'DATE: [ date, "%Y-%m-%d" ]' %>% as_yamlet %>% explicit_guide
+  e <- c(
+    names(a[[1]])[[2]],
+    names(b[[1]])[[2]],
+    names(c[[1]])[[2]],
+    names(d[[1]])[[2]]
+  )
+  expect_identical(e, c('units','codelist','encoding','format'))
+
+ x <- data.frame(
+  ID = 1,
+  CONC = 1,
+  RACE = 1,
+  SEX = 1,
+  DATE = 1
+ )
+
+ x$ID   %<>% structure(label = 'subject identifier')
+ x$CONC %<>% structure(label = 'concentration', guide = 'ng/mL')
+ x$RACE %<>% structure(label = 'race', guide = list(white = 0, black = 1, asian = 2))
+ x$SEX  %<>% structure(label = 'sex', guide = list(female = 0, male = 1))
+ x$DATE %<>% structure(label = 'date', guide = '%Y-%m-%d')
+ expect_identical(
+   x %>% explicit_guide %>% as_yamlet %>% lapply(names) %>% unlist %>% as.character,
+   c('label','label','units','label','codelist','label','codelist','label','format')
+ )
+})
