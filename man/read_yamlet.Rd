@@ -51,6 +51,7 @@ Other interface:
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{io_yamlet.yamlet}()},
 \code{\link{io_yamlet}()},
+\code{\link{resolve.data.frame}()},
 \code{\link{write_yamlet}()}
 }
 \concept{interface}

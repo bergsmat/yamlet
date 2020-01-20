@@ -209,14 +209,14 @@ as_yamlet.yam <- function(x, default_keys = getOption('yamlet_default_keys',list
     k <- list()
   }
   attr(x,'keys') <- NULL
-  x[] <- lapply(x, resolve, keys = k)
+  x[] <- lapply(x, .resolve, keys = k)
   unresolved <- which(sapply(x, function(i)any(names(i) == '')))
   if(length(unresolved))warning('missing key(s) for element(s) ', paste(unresolved, collapse = ', '))
   class(x) <- 'yamlet'
   x
 }
 
-resolve <- function(x, keys){ # an item
+.resolve <- function(x, keys){ # an item
   nms <- names(x)
   if(is.null(nms)) nms <- rep('',length(x))
   for(i in seq_along(nms)){
@@ -376,7 +376,7 @@ decorate.character <- function(
   if(!file.exists(x))stop('could not find file ', x)
   read <- match.fun(read)
   args <- list(...)
-  args <- args[names(args) %in% names(formals(read))]
+  # args <- args[names(args) %in% names(formals(read))] # debilitating
   args <- c(list(x),args)
   y <- do.call(read, args)
   if(is.null(meta)){

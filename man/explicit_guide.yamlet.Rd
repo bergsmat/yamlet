@@ -4,10 +4,14 @@
 \alias{explicit_guide.yamlet}
 \title{Coerce Yamlet Guide to Something More Explicit}
 \usage{
-\method{explicit_guide}{yamlet}(x, ...)
+\method{explicit_guide}{yamlet}(x, default = "units", data = NULL, ...)
 }
 \arguments{
 \item{x}{yamlet}
+
+\item{default}{length-one character: the default key}
+
+\item{data}{optional data.frame for testing guides with length > 1}
 
 \item{...}{ignored arguments}
 }
@@ -23,11 +27,16 @@ explicit in case required downstream.
 }
 \details{
 The logic is as follows.  If value of 'guide' is of length greater than
-one, it is assumed to be a 'codelist' (and this value replaces 'guide').
+one (and data is not supplied), it is assumed to be a 'codelist' (and this value replaces 'guide').
 If, however, it is (\code{\link[encode]{encoded}}), the valued becomes
 'encoding'. Failing those tests, two or more % signs will flag
 it as a 'format' string, i.e. for a date or time class. Otherwise
-'guide' will be replaced with 'units'.
+'guide' will be replaced with 'units' by default.
+
+If \code{data} is supplied, guides with length greater than one
+are checked to see if they evaluate to conditions in data context.
+If so, inferences are based on the first guide element rather
+than the guide as a whole.
 }
 \examples{
 library(magrittr)

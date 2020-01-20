@@ -22,13 +22,21 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' explicit in case required downstream.
 #'
 #' The logic is as follows.  If value of 'guide' is of length greater than
-#' one, it is assumed to be a 'codelist' (and this value replaces 'guide').
+#' one (and data is not supplied), it is assumed to be a 'codelist' (and this value replaces 'guide').
 #' If, however, it is (\code{\link[encode]{encoded}}), the valued becomes
 #' 'encoding'. Failing those tests, two or more % signs will flag
 #' it as a 'format' string, i.e. for a date or time class. Otherwise
-#' 'guide' will be replaced with 'units'.
+#' 'guide' will be replaced with 'units' by default.
+#'
+#' If \code{data} is supplied, guides with length greater than one
+#' are checked to see if they evaluate to conditions in data context.
+#' If so, inferences are based on the first guide element rather
+#' than the guide as a whole.
+#'
 #'
 #' @param x yamlet
+#' @param default length-one character: the default key
+#' @param data optional data.frame for testing guides with length > 1
 #' @param ... ignored arguments
 #' @export
 #' @importFrom dplyr case_when
@@ -41,18 +49,27 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' 'RACE: [ subject race, [ Caucasian, Latin, Black ]]' %>% as_yamlet %>% explicit_guide
 #' 'RACE: [ subject race, //Caucasian//Latin//Black// ]' %>% as_yamlet %>% explicit_guide
 #' 'DATE: [ date, "%Y-%m-%d" ]' %>% as_yamlet %>% explicit_guide
-explicit_guide.yamlet <- function(x,...){
+explicit_guide.yamlet <- function(x, default = 'units', data = NULL, ...){
+  stopifnot(is.character(default), length(default) == 1)
+  if(!is.null(data))stopifnot(is.list(data))
   for(i in seq_along(x)){
     nms <- names(x[[i]])
     for(j in seq_along(x[[i]])){
       if(length(nms) >= j){
         if(nms[[j]] == 'guide'){
           val <- x[[i]][[j]]
+          if(length(val) > 1){ # may be a conditional
+            if(!is.null(data)){
+              if(!isConditional(val, data)){
+                val <- val[[1]] # just test the first element
+              }
+            }
+          }
           explicit <- case_when(
             length(val) > 1 ~ 'codelist',
             encoded(val) ~ 'encoding',
             length(gregexpr(pattern = '%', val)[[1]]) > 1 ~ 'format',
-            TRUE ~ 'units'
+            TRUE ~ default
           )
           explicit <- unique(explicit)
           names(x[[i]])[[j]] <- explicit
@@ -102,7 +119,7 @@ explicit_guide.yamlet <- function(x,...){
 #' x %>% explicit_guide %>% as_yamlet
 explicit_guide.data.frame <- function(x, overwrite = TRUE, ...){
   y <- as_yamlet(x,...)
-  y <- explicit_guide(y,...)
+  y <- explicit_guide(y, data = x, ...)
   for(nm in names(x)){
     attr(x[[nm]], 'guide') <- NULL
   }

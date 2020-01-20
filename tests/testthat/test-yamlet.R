@@ -54,17 +54,17 @@ test_that('unnest result is stable',{
 # recursively, starting at depth
 expect_equal_to_reference(file = '040.rds', to_yamlet(unnest(yaml::yaml.load('1'))))
 expect_equal_to_reference(file = '041.rds', to_yamlet(unnest(yaml::yaml.load('a'))))
-expect_equal_to_reference(file = '042.rds', to_yamlet(unnest(yaml::yaml.load('a:'))))
-expect_equal_to_reference(file = '043.rds', to_yamlet(unnest(yaml::yaml.load('a: '))))
-expect_equal_to_reference(file = '044.rds', to_yamlet(unnest(yaml::yaml.load('? a'))))
+expect_equal_to_reference(file = '042.rds', to_yamlet(unnest(yaml::yaml.load('a:')))) #
+expect_equal_to_reference(file = '043.rds', to_yamlet(unnest(yaml::yaml.load('a: ')))) #
+expect_equal_to_reference(file = '044.rds', to_yamlet(unnest(yaml::yaml.load('? a')))) #
 expect_equal_to_reference(file = '045.rds', to_yamlet(unnest(yaml::yaml.load('[ 0]'))))
 expect_equal_to_reference(file = '046.rds', to_yamlet(unnest(yaml::yaml.load('[ 0, 1]'))))
-expect_equal_to_reference(file = '047.rds', to_yamlet(unnest(yaml::yaml.load('a: 0'))))
-expect_equal_to_reference(file = '048.rds', to_yamlet(unnest(yaml::yaml.load('[a: 0]'))))
+expect_equal_to_reference(file = '047.rds', to_yamlet(unnest(yaml::yaml.load('a: 0')))) #
+expect_equal_to_reference(file = '048.rds', to_yamlet(unnest(yaml::yaml.load('[a: 0]')))) #
 expect_equal_to_reference(file = '049.rds', to_yamlet(unnest(yaml::yaml.load('[a: 0, b: 1]'))))
 expect_equal_to_reference(file = '050.rds', to_yamlet(unnest(yaml::yaml.load('[a: [0,1,2], b: 1]'))))
 expect_equal_to_reference(file = '051.rds', to_yamlet(unnest(yaml::yaml.load('[a: [0,1,2], 5 ]') )))
-expect_equal_to_reference(file = '052.rds', to_yamlet(unnest(yaml::yaml.load('[ [ [ [d: [0, 1, 2]]]]]'))))
+expect_equal_to_reference(file = '052.rds', to_yamlet(unnest(yaml::yaml.load('[ [ [ [d: [0, 1, 2]]]]]')))) #
 })
 
 test_that('more elements than keys gives warning',{
@@ -99,11 +99,10 @@ test_that('default decorations are equivalent to explicit requests',{
 
 test_that('non-default import is equivalent',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-  b <- decorate(file, coerce = TRUE)
-  attr(b, 'source') <- NULL
+  b <- decorate(file, coerce = TRUE, source = FALSE)
   c <- decorate(
     file,
-    fun = read.table,
+    read = read.table,
     quote = "",
     as.is = TRUE,
     sep = ',',
@@ -248,11 +247,12 @@ test_that('yamlet package writes proper yaml with non-default keys',{
 })
 test_that('dplyr filter does not drop attributes',{
  # not okay in 3.6.1: filter drops label on factors
-  head(Theoph)
-  attr(Theoph$Dose, 'label') <- 'DOSE'
-  attr(Theoph$Dose, 'levels') <- unique(Theoph$Dose)
-  str(Theoph$Dose)
-  str(Theoph[Theoph$Subject == 1,]$Dose)
+  library(dplyr)
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- file %>% decorate(coerce = TRUE)
+  x %$% Heart %>% attributes %>% names
+  x %>% filter(!is.na(conc)) %$% Heart %>% attributes %>% names
 })
 test_that('ag.print treats variable as categorical if guide has length > 1',{
  # see example(ag.print)
@@ -265,15 +265,15 @@ test_that('io_table accepts nuisance arguments without error',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
   out <- file.path(tempdir(), 'out.tab')
-  expect_success(foo <- io_table(x, out, foo = 'bar'))
-  expect_success(y <- io_table(foo, as.is = TRUE, foo = 'bar'))
+  expect_silent(foo <- io_table(x, out, foo = 'bar'))
+  expect_silent(y <- io_table(foo, as.is = TRUE, foo = 'bar'))
 })
 test_that('io_csv accepts nuisance arguments without error',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
   out <- file.path(tempdir(), 'out.csv')
-  expect_success(foo <- io_csv(x, out, foo = 'bar'))
-  expect_success(y <- io_csv(foo, as.is = TRUE, foo = 'bar'))
+  expect_silent(foo <- io_csv(x, out, foo = 'bar'))
+  expect_silent(y <- io_csv(foo, as.is = TRUE, foo = 'bar'))
 })
 test_that('explicit_guide recognizes encodings, units, formats, and codelists',{
   library(magrittr)
@@ -317,4 +317,14 @@ test_that('factorize_codelist creates class factor and removes attribute codelis
    c('label','levels','class')
  )
  expect_identical(x$Heart$class, 'factor')
+})
+test_that('user can specify unit instead of units',{
+  a <- 'CONC: [ concentration, ng/mL ]' %>% as_yamlet %>% explicit_guide(default = 'unit')
+  expect_identical(names(a$CONC), c('label','unit'))
+})
+test_that('resolve correctly classifies conditional elements',{
+  file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+  x <- decorate(file)
+  a <- x %>% resolve %>% as_yamlet
+  identical(names(a$value), c('label','units'))
 })
