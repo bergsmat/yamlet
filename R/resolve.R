@@ -24,6 +24,7 @@ resolve <- function(x, ...)UseMethod('resolve')
 #' @family resolve
 #' @family interface
 #' @examples
+#' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)
 #' x %>% resolve(default = 'unit') %>% as_yamlet

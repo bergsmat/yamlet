@@ -71,7 +71,7 @@ library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 
 file %>% 
-  decorate %>% 
+  decorate %>%
   filter(!is.na(conc)) %>%
   agplot(aes(x = time, y = conc, color = Heart)) + 
   geom_point()
@@ -82,8 +82,8 @@ suppressMessages(library(table1))
 options(yamlet_overwrite = TRUE)
 options(csv_source = TRUE) # as.csv adds a source attribute
 file %>%
-  decorate(coerce = TRUE) %>% # factor if length(guide) > 1
-  decorate(default = c('label','units')) %>% # code guide as units
+  decorate %>% 
+  resolve %>% 
   group_by(Subject) %>%
   slice(1) %>%
   table1(~ Age + Weight + Race | Heart, .)

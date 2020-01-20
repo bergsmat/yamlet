@@ -21,6 +21,7 @@ Simply calls \code{\link{explicit_guide}}
 followed by \code{\link{factorize_codelist}}.
 }
 \examples{
+library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
 x \%>\% resolve(default = 'unit') \%>\% as_yamlet

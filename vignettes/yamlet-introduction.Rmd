@@ -309,7 +309,7 @@ library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 
 file %>% 
-  decorate %>% 
+  decorate %>%
   filter(!is.na(conc)) %>%
   agplot(aes(x = time, y = conc, color = Heart)) + 
   geom_point()
@@ -320,18 +320,16 @@ file %>%
 
 The **table1** package uses labels and units stored
 as attributes to enrich table output. In the example
-below, we read attributes twice: once to get 'guide'
-as 'guide' so that `coerce` will factorize 'Heart',
-and again to get 'guide' as 'units' (technically wrong
-for categorical items) which is what `table1()` needs.
+below, we use `resolve()` to re-implement guides
+as units and factor levels, which is what `table1()` needs.
 
 ```{r}
 suppressMessages(library(table1))
 options(yamlet_overwrite = TRUE)
 options(csv_source = TRUE) # as.csv adds a source attribute
 file %>%
-  decorate(coerce = TRUE) %>% # factor if length(guide) > 1
-  decorate(default = c('label','units')) %>% # code guide as units
+  decorate %>% 
+  resolve %>% 
   group_by(Subject) %>%
   slice(1) %>%
   table1(~ Age + Weight + Race | Heart, .)

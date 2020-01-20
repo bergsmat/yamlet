@@ -69,6 +69,7 @@ factorize_codelist.character <- function(x,...){
 #' @return data.frame
 #' @family factorize_codelist
 #' @examples
+#' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)
 #' x %>% explicit_guide %>% as_yamlet

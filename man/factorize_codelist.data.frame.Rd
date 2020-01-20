@@ -18,6 +18,7 @@ data.frame
 Coerces items in data.frame with codelist attribute to factor.
 }
 \examples{
+library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
 x \%>\% explicit_guide \%>\% as_yamlet

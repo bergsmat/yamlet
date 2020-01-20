@@ -25,7 +25,7 @@ explicit in case required downstream.
 }
 \details{
 This method pulls the 'decorations' off of the data.frame,
-converts to yamlet, applies \code{\link{explict_guide.yamlet}},
+converts to yamlet, applies \code{\link{explicit_guide.yamlet}},
 purges 'guide' attributes from the data.frame,
 and then re-decorates using \code{overwrite = TRUE}.
 }

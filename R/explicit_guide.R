@@ -60,7 +60,7 @@ explicit_guide.yamlet <- function(x, default = 'units', data = NULL, ...){
           val <- x[[i]][[j]]
           if(length(val) > 1){ # may be a conditional
             if(!is.null(data)){
-              if(!isConditional(val, data)){
+              if(isConditional(val, data)){
                 val <- val[[1]] # just test the first element
               }
             }
@@ -89,7 +89,7 @@ explicit_guide.yamlet <- function(x, default = 'units', data = NULL, ...){
 #' explicit in case required downstream.
 #'
 #' This method pulls the 'decorations' off of the data.frame,
-#' converts to yamlet, applies \code{\link{explict_guide.yamlet}},
+#' converts to yamlet, applies \code{\link{explicit_guide.yamlet}},
 #' purges 'guide' attributes from the data.frame,
 #' and then re-decorates using \code{overwrite = TRUE}.
 #'

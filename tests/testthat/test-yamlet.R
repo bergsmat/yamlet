@@ -328,3 +328,8 @@ test_that('resolve correctly classifies conditional elements',{
   a <- x %>% resolve %>% as_yamlet
   identical(names(a$value), c('label','units'))
 })
+test_that('resolve correctly classifies factors',{
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  expect_identical(file %>% decorate %>% resolve %$% Heart %>% class, 'factor')
+})
