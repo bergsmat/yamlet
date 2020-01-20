@@ -307,7 +307,7 @@ decorate <- function(x,...)UseMethod('decorate')
 #' @param ext file extension for metadata file, if relevant
 #' @param coerce whether to coerce to factor where guide has length > 1
 #' @param ... passed to read (if accepted) and to \code{\link{as_yamlet.character}}
-#' @return data.frame
+#' @return class 'decorated' 'data.frame'
 #' @importFrom csv as.csv
 #' @export
 #' @family decorate
@@ -404,7 +404,7 @@ decorate.character <- function(
 #' @param coerce whether to coerce to factor where guide has length > 1
 #' @param overwrite whether to overwrite attributes that are already present (else give warning)
 #' @param ... passed to \code{\link{as_yamlet.character}} (by method dispatch)
-#' @return list, possibly with member attributes
+#' @return like x but with 'decorated' as first class element
 #' @export
 #' @family decorate
 #' @family interface
@@ -469,6 +469,7 @@ decorate.list <- function(
       }
     }
   }
+  class(x) <- union('decorated', class(x))
   x
 }
 
@@ -485,7 +486,7 @@ decorate.list <- function(
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
 #' @param coerce whether to coerce to factor where guide is a list
 #' @param ... passed to \code{\link{decorate.list}}
-#' @return data.frame
+#' @return class 'decorated' 'data.frame'
 #' @export
 #' @family decorate
 #' @seealso decorate.list

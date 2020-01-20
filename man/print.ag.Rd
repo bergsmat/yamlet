@@ -7,7 +7,7 @@
 \method{print}{ag}(x, labeller = getOption("yamlet_labeller", default = as_lab), ...)
 }
 \arguments{
-\item{x}{class 'ag' from \code{\link{agplot}}}
+\item{x}{class 'ag' from \code{\link{ggplot.decorated}}}
 
 \item{labeller}{a function (or its name) like \code{\link{as_lab}} to generate axis labels}
 
@@ -34,13 +34,13 @@ options(enclose = c('[ ',' ]'))
 
 # Filter() strips 'label' from factors (see legend), but not vectors:
 
-file \%>\% decorate(coerce = TRUE) \%>\% filter(!is.na(conc)) \%>\%
-agplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+file \%>\% decorate \%>\% resolve \%>\% filter(!is.na(conc)) \%>\%
+ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 
 # No factors created here, but print.ag promotes to factor if it can:
 
 file \%>\% decorate \%>\% filter(!is.na(conc)) \%>\%
-agplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 
 # Here we try a dataset with conditional labels and units.
 
@@ -53,7 +53,7 @@ file \%>\% decorate \%>\% as_yamlet
 # for a factor.  However, the keys evaluate to logical on the data.frame.
 # Seeing that, we test for one of them being all true, and if so we select it.
 
-file \%>\% decorate \%>\% agplot(aes(x = time, y = value, color = event)) + geom_point()
+file \%>\% decorate \%>\% ggplot(aes(x = time, y = value, color = event)) + geom_point()
 
 # In the above example, we are plotting doses and concentrations, which have
 # different labels and units, so we can't improve on the y axis label.
@@ -62,11 +62,11 @@ file \%>\% decorate \%>\% agplot(aes(x = time, y = value, color = event)) + geom
 
 file \%>\% decorate \%>\%
 filter(event == 'conc') \%>\%
-agplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
+ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
 
 file \%>\% decorate \%>\%
 filter(event == 'dose') \%>\%
-agplot(aes(x = time, y = value, color = Wt)) +
+ggplot(aes(x = time, y = value, color = Wt)) +
 geom_point() +
 scale_y_log10() +
 scale_color_gradientn(colours = rainbow(4))
@@ -74,9 +74,9 @@ scale_color_gradientn(colours = rainbow(4))
 }
 \seealso{
 Other lab: 
-\code{\link{agplot}()},
 \code{\link{as_lab.list}()},
 \code{\link{as_lab}()},
+\code{\link{ggplot.decorated}()},
 \code{\link{singularity}()}
 }
 \concept{lab}

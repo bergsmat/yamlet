@@ -156,11 +156,14 @@ singularity <- function(x, data, ...){
 }
 
 
-#' Request Automatic Labels and Units for ggplot
+#' Create a New ggplot for a Decorated Data Frame
 #'
-#' Requests automatic labels and units for ggplot.
-#' Simply subclasses the output of ggplot, in
-#' expectation of associated print method \code{\link{print.ag}}.
+#' Creates a new ggplot object for a decorated data.frame.
+#' This is the ggplot() method for class 'decorated';
+#' it tries to implement automatic labels and units in axes and legends
+#' in association with \code{\link{print.ag}}.
+#' Use \code{ggplot(as.data.frame(x))} to get default
+#' ggplot() behavior.
 #'
 #' @param data data.frame or similar
 #' @param ... passed to \code{\link[ggplot2]{ggplot}}
@@ -172,11 +175,12 @@ singularity <- function(x, data, ...){
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(meta)
 #' library(ggplot2)
-#' class(agplot(data = x) + geom_path(aes(x = time, y = conc)))
-#' class(agplot(data = x, aes(x = time, y = conc)) + geom_path())
+#' class(ggplot(data = x) + geom_path(aes(x = time, y = conc)))
+#' class(ggplot(data = x, aes(x = time, y = conc)) + geom_path())
 #' example(print.ag)
 
-agplot <- function(data, ...){
+ggplot.decorated <- function(data, ...){
+  class(data) <- setdiff(class(data), 'decorated')
   p <- ggplot(data = data, ...)
   class(p) <- c('ag',class(p))
   p
@@ -190,7 +194,7 @@ agplot <- function(data, ...){
 #' receive existing labels one at a time
 #' and corresponding attributes (if any) from data.
 #'
-#' @param x class 'ag' from \code{\link{agplot}}
+#' @param x class 'ag' from \code{\link{ggplot.decorated}}
 #' @param labeller a function (or its name) like \code{\link{as_lab}} to generate axis labels
 #' @param ... passed arguments
 #' @return used for side effects
@@ -206,13 +210,13 @@ agplot <- function(data, ...){
 #'
 #' # Filter() strips 'label' from factors (see legend), but not vectors:
 #'
-#' file %>% decorate(coerce = TRUE) %>% filter(!is.na(conc)) %>%
-#' agplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+#' file %>% decorate %>% resolve %>% filter(!is.na(conc)) %>%
+#' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 #'
 #' # No factors created here, but print.ag promotes to factor if it can:
 #'
 #' file %>% decorate %>% filter(!is.na(conc)) %>%
-#' agplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+#' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 #'
 #' # Here we try a dataset with conditional labels and units.
 #'
@@ -226,7 +230,7 @@ agplot <- function(data, ...){
 #' # for a factor.  However, the keys evaluate to logical on the data.frame.
 #' # Seeing that, we test for one of them being all true, and if so we select it.
 #'
-#' file %>% decorate %>% agplot(aes(x = time, y = value, color = event)) + geom_point()
+#' file %>% decorate %>% ggplot(aes(x = time, y = value, color = event)) + geom_point()
 #'
 #' # In the above example, we are plotting doses and concentrations, which have
 #' # different labels and units, so we can't improve on the y axis label.
@@ -235,17 +239,17 @@ agplot <- function(data, ...){
 #'
 #' file %>% decorate %>%
 #' filter(event == 'conc') %>%
-#' agplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
+#' ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
 #'
 #' file %>% decorate %>%
 #' filter(event == 'dose') %>%
-#' agplot(aes(x = time, y = value, color = Wt)) +
+#' ggplot(aes(x = time, y = value, color = Wt)) +
 #' geom_point() +
 #' scale_y_log10() +
 #' scale_color_gradientn(colours = rainbow(4))
 #'
 # file %>% decorate %>%
-# agplot(aes(x = time, y = value, color = event)) +
+# ggplot(aes(x = time, y = value, color = event)) +
 # geom_point() +
 # facet_wrap(~ event, scales = 'free_y')
 
@@ -372,3 +376,5 @@ isLevels.default <- function(x, table, ...)isLevels(as.character(x), table, ...)
 isLevels.character <- function(x, table,  ...){
   as.logical(length(intersect(x,table)) >= 1)
 }
+
+

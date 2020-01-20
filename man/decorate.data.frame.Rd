@@ -16,7 +16,7 @@
 \item{...}{passed to \code{\link{decorate.list}}}
 }
 \value{
-data.frame
+class 'decorated' 'data.frame'
 }
 \description{
 Decorates a data.frame. Expects metadata with labels and guides,

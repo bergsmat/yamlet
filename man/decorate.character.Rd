@@ -27,7 +27,7 @@
 \item{...}{passed to read (if accepted) and to \code{\link{as_yamlet.character}}}
 }
 \value{
-data.frame
+class 'decorated' 'data.frame'
 }
 \description{
 Treats \code{x} as a file path. By default,

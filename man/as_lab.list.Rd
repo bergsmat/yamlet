@@ -49,8 +49,8 @@ as_lab(attributes(x$time), 'time', enclose = c('[ ',' ]'))
 }
 \seealso{
 Other lab: 
-\code{\link{agplot}()},
 \code{\link{as_lab}()},
+\code{\link{ggplot.decorated}()},
 \code{\link{print.ag}()},
 \code{\link{singularity}()}
 }

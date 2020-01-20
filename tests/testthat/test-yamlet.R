@@ -254,11 +254,11 @@ test_that('dplyr filter does not drop attributes',{
   x %$% Heart %>% attributes %>% names
   x %>% filter(!is.na(conc)) %$% Heart %>% attributes %>% names
 })
-test_that('ag.print treats variable as categorical if guide has length > 1',{
- # see example(ag.print)
+test_that('print.ag treats variable as categorical if guide has length > 1',{
+ # see example(print.ag)
 })
-test_that('ag.print uses conditional labels and guides',{
- # see example(ag.print)
+test_that('print.ag uses conditional labels and guides',{
+ # see example(print.ag)
 })
 
 test_that('io_table accepts nuisance arguments without error',{

@@ -27,7 +27,7 @@
 \item{...}{passed to \code{\link{as_yamlet.character}} (by method dispatch)}
 }
 \value{
-list, possibly with member attributes
+like x but with 'decorated' as first class element
 }
 \description{
 Decorates a list-like object. Expects metadata with labels and guides,
