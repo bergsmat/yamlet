@@ -305,7 +305,7 @@ decorate <- function(x,...)UseMethod('decorate')
 #' @param meta file path for corresponding yamlet metadata, or a yamlet object
 #' @param read function or function name for reading x
 #' @param ext file extension for metadata file, if relevant
-#' @param coerce whether to coerce to factor where guide has length > 1
+# @param coerce whether to coerce to factor where guide has length > 1
 #' @param ... passed to read (if accepted) and to \code{\link{as_yamlet.character}}
 #' @return class 'decorated' 'data.frame'
 #' @importFrom csv as.csv
@@ -324,7 +324,7 @@ decorate <- function(x,...)UseMethod('decorate')
 #'   decorate(file, meta = meta)
 #' )
 #' a <- decorate(file)
-#' b <- decorate(file, coerce = TRUE)
+#' b <- decorate(file) %>% resolve
 #' c <- decorate(
 #'   file,
 #'   read = read.table,
@@ -334,9 +334,8 @@ decorate <- function(x,...)UseMethod('decorate')
 #'   header = TRUE,
 #'   na.strings = c('', '\\s', '.','NA'),
 #'   strip.white = TRUE,
-#'   check.names = FALSE,
-#'   coerce = TRUE
-#' )
+#'   check.names = FALSE
+#' ) %>% resolve
 #' d <- decorate(
 #'   file,
 #'   read = read.table,
@@ -346,16 +345,15 @@ decorate <- function(x,...)UseMethod('decorate')
 #'   header = TRUE,
 #'   na.strings = c('', '\\s', '.','NA'),
 #'   strip.white = TRUE,
-#'   check.names = FALSE,
-#'   coerce = FALSE
+#'   check.names = FALSE
 #' )
 #'
 #' # Importantly, b and c are identical with respect to factors
 #' cbind(
-#'   `as.is/!coerce`   = sapply(a, class), # no factors
-#'   `as.is/coerce`    = sapply(b, class), # factors made during decoration
-#'   `!as.is/coerce`   = sapply(c, class), # factors made twice!
-#'   `!as.is/!coerce`  = sapply(d, class)  # factors made during read
+#'   `as.is/!resolve`   = sapply(a, class), # no factors
+#'   `as.is/resolve`    = sapply(b, class), # factors made during decoration
+#'   `!as.is/resolve`   = sapply(c, class), # factors made twice!
+#'   `!as.is/!resolve`  = sapply(d, class)  # factors made during read
 #' )
 #' str(a$Smoke)
 #' str(b$Smoke)
@@ -369,7 +367,7 @@ decorate.character <- function(
   meta = NULL,
   read  = getOption('yamlet_import', as.csv),
   ext  = getOption('yamlet_extension', '.yaml'),
-  coerce = getOption('yamlet_coerce',FALSE),
+  # coerce = getOption('yamlet_coerce',FALSE),
   ...
 ){
   stopifnot(length(x) == 1)
@@ -387,21 +385,25 @@ decorate.character <- function(
     meta <- try(as_yamlet(meta,...))
   }
   if(class(meta) != 'yamlet') stop('could not interpret meta: ', meta)
-  decorate(y, meta = meta, coerce = coerce, ... )
+  decorate(
+    y,
+    meta = meta,
+    # coerce = coerce,
+    ...
+  )
 }
 
 #' Decorate List
 #'
-#' Decorates a list-like object. Expects metadata with labels and guides,
-#' where guides are units, factor levels and labels (codes, decodes), or
-#' datetime formatting strings, or encodings. For guides with length > 1,
-#' the corresponding data element may optionally be coerced to factor.
+#' Decorates a list-like object. Takes metadata
+#' in yamlet format and loads it onto corresponding
+#' list elements as attributes.
 #'
 #'
 #' @param x object inheriting from \code{list}
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute (as for \code{\link[csv]{as.csv}})
 #' @param ext file extension for metadata file, if relevant
-#' @param coerce whether to coerce to factor where guide has length > 1
+# @param coerce whether to coerce to factor where guide has length > 1
 #' @param overwrite whether to overwrite attributes that are already present (else give warning)
 #' @param ... passed to \code{\link{as_yamlet.character}} (by method dispatch)
 #' @return like x but with 'decorated' as first class element
@@ -415,7 +417,7 @@ decorate.list <- function(
   x,
   meta = NULL,
   ext = getOption('yamlet_extension', '.yaml'),
-  coerce = getOption('yamlet_coerce', FALSE),
+  #coerce = getOption('yamlet_coerce', FALSE),
   overwrite = getOption('yamlet_overwrite', FALSE),
   ...
 ){
@@ -443,29 +445,29 @@ decorate.list <- function(
           }
         }
         attr(x[[item]], attrb) <- val[[attrb]]
-        if(attrb == 'guide'){
-          guide <- val[[attrb]]
-          # if(is.list(guide)){
-          if(length(guide) > 1){
-              if(coerce){
-              if(any(sapply(guide,function(i)is.null(i)))){
-                warning('guide for ', item, ' contains NULL')
-              }else{
-                labs <- names(guide)
-                if(is.null(labs))labs <- rep('',length(guide))
-                levs <- unlist(guide)
-                if(any(labs == '')){
-                  # warning('guide for ',item,' contains unlabeled level(s); using level itself')
-                  labs[labs == ''] <- levs[labs == '']
-                }
-                reserve <- attributes(x[[item]])
-                reserve$guide <- NULL
-                try(x[[item]] <- factor(x[[item]], levels = levs, labels = labs))
-                if(is.factor(x[[item]])) attributes(x[[item]]) <- c(reserve, attributes(x[[item]]))
-              }
-            }
-          }
-        }
+        # if(attrb == 'guide'){
+        #   guide <- val[[attrb]]
+        #   # if(is.list(guide)){
+        #   if(length(guide) > 1){
+        #       if(coerce){
+        #       if(any(sapply(guide,function(i)is.null(i)))){
+        #         warning('guide for ', item, ' contains NULL')
+        #       }else{
+        #         labs <- names(guide)
+        #         if(is.null(labs))labs <- rep('',length(guide))
+        #         levs <- unlist(guide)
+        #         if(any(labs == '')){
+        #           # warning('guide for ',item,' contains unlabeled level(s); using level itself')
+        #           labs[labs == ''] <- levs[labs == '']
+        #         }
+        #         reserve <- attributes(x[[item]])
+        #         reserve$guide <- NULL
+        #         try(x[[item]] <- factor(x[[item]], levels = levs, labels = labs))
+        #         if(is.factor(x[[item]])) attributes(x[[item]]) <- c(reserve, attributes(x[[item]]))
+        #       }
+        #     }
+        #   }
+        # }
       }
     }
   }
@@ -476,15 +478,13 @@ decorate.list <- function(
 
 #' Decorate Data Frame
 #'
-#' Decorates a data.frame. Expects metadata with labels and guides,
-#' where guides are units, factor levels and labels (codes, decodes), or
-#' datetime formatting strings. For guides with length > 1, the corresponding
-#' data element may optionally be coerced to factor.
+#' Decorates a data.frame. Expects metadata in yamlet
+#' format, and loads it onto columns as attributes.
 
 #'
 #' @param x data.frame
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
-#' @param coerce whether to coerce to factor where guide is a list
+# @param coerce whether to coerce to factor where guide is a list
 #' @param ... passed to \code{\link{decorate.list}}
 #' @return class 'decorated' 'data.frame'
 #' @export
@@ -498,7 +498,7 @@ decorate.list <- function(
 #' b <- decorate(as.csv(file), meta = as_yamlet(meta))
 #' c <- decorate(as.csv(file), meta = meta)
 #' d <- decorate(as.csv(file), meta = file)
-#' e <- decorate(as.csv(file), coerce = TRUE)
+#' e <- decorate(as.csv(file)) %>% resolve
 #'
 #' # Most import methods are equivalent.
 #' identical(a, b)
@@ -508,9 +508,14 @@ decorate.list <- function(
 decorate.data.frame <- function(
   x,
   meta = NULL,
-  coerce = getOption('yamlet_coerce',FALSE),
+  # coerce = getOption('yamlet_coerce',FALSE),
   ...
-)decorate.list(x, meta = meta, coerce = coerce, ...)
+)decorate.list(
+  x,
+  meta = meta,
+  #coerce = coerce,
+  ...
+)
 
 #' Retrieve Decorations
 #'
@@ -543,16 +548,15 @@ decorations <- function(x,...)UseMethod('decorations')
 #' @return named list
 #' @examples
 #' library(csv)
+#' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-#' x <- decorate(as.csv(file))
-#' decorations(x[,1:7])
-#' decorations(decorate(as.csv(file), coerce = TRUE)[,1:7])
-#' decorations(decorate(as.csv(file), coerce = TRUE)[,1:7], coerce = TRUE)
-#' old <- getOption('yamlet_coerce')
-#' options(coerce = TRUE)
-#' as.character(as_yamlet(decorate(as.csv(file))))
-#' options(coerce = old)
-#'
+#' x <- decorate(as.csv(file))[,c('conc','Race')]
+#' y <- decorate(as.csv(file))[,c('conc','Race')] %>% resolve
+#' decorations(x)
+#' decorations(y)
+#' decorations(y, coerce = TRUE)
+#' decorations(y, coerce = 'codelist')
+#' decorations(y, exclude_attr = 'class')
 
 decorations.data.frame <- function(
   x,
@@ -848,9 +852,9 @@ to_yamlet.list <- function(x, ...){
 
 #' file <- system.file(package = 'yamlet','extdata','quinidine.csv')
 #' file
-#' foo <- decorate(file, coerce = TRUE)
+#' foo <- resolve(decorate(file))
 #' as.character(as_yamlet(foo))
-#'
+#' as.character(as_yamlet(foo, exclude_attr = 'class'))
 #'
 as.character.yamlet <- function(x,...){
   y <- as_yam(x,...)

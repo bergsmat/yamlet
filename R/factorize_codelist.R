@@ -24,6 +24,24 @@ factorize_codelist.default <- function(x,...){
   attributes(y) <- attributes(x)
   factorize_codelist(y,...)
 }
+#' Coerce Codelist to Factor for Factor
+#'
+#' Coerces Codelist to Factor for Factors.
+#' Coerces to character and calls next method.
+#'
+#' @param x presumably vector-like or factor
+#' @param ... passed arguments
+#' @export
+#' @return factor
+#' @family factorize_codelist
+factorize_codelist.factor <- function(x,...){
+  # stopifnot(is.vector(x) || is.factor(x))
+  y <- as.character(x)
+  attr(x, 'levels') <- NULL
+  attr(x, 'class') <- NULL
+  attributes(y) <- attributes(x) # non-factor attributes
+  factorize_codelist(y,...)
+}
 
 #' Coerce Character with Codelist to Factor
 #'

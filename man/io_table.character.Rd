@@ -4,19 +4,12 @@
 \alias{io_table.character}
 \title{Import Documented Table}
 \usage{
-\method{io_table}{character}(
-  x,
-  ext = getOption("yamlet_extension", ".yaml"),
-  coerce = getOption("yamlet_coerce", FALSE),
-  ...
-)
+\method{io_table}{character}(x, ext = getOption("yamlet_extension", ".yaml"), ...)
 }
 \arguments{
 \item{x}{character file path; passed to \code{\link{read.table}}}
 
 \item{ext}{extension for metadata equivalent of x}
-
-\item{coerce}{whether to coerce to factor where guide is a list; passed to \code{\link{decorate.data.frame}}}
 
 \item{...}{passed to \code{\link{read.table}} (if accepted) and to \code{\link{decorate}}}
 }

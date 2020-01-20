@@ -31,7 +31,7 @@ io_table <- function(x, ...)UseMethod('io_table')
 #'
 #' @param x character file path; passed to \code{\link{read.table}}
 #' @param ext extension for metadata equivalent of x
-#' @param coerce whether to coerce to factor where guide is a list; passed to \code{\link{decorate.data.frame}}
+# @param coerce whether to coerce to factor where guide is a list; passed to \code{\link{decorate.data.frame}}
 #' @param ... passed to \code{\link{read.table}} (if accepted) and to \code{\link{decorate}}
 #' @export
 #' @family io
@@ -42,7 +42,7 @@ io_table <- function(x, ...)UseMethod('io_table')
 io_table.character <- function(
   x,
   ext = getOption('yamlet_extension', '.yaml'),
-  coerce = getOption('yamlet_coerce', FALSE),
+  #coerce = getOption('yamlet_coerce', FALSE),
   ...
 ){
   args <- list(...)
@@ -54,7 +54,12 @@ io_table.character <- function(
   if(!file.exists(meta)){
     message('did not find ', meta)
   }else{
-    d <- decorate(d, meta = meta, coerce = coerce, ...)
+    d <- decorate(
+      d,
+      meta = meta,
+     # coerce = coerce,
+      ...
+    )
   }
   d
 }

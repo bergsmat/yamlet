@@ -73,7 +73,7 @@ file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 file %>% 
   decorate %>%
   filter(!is.na(conc)) %>%
-  agplot(aes(x = time, y = conc, color = Heart)) + 
+  ggplot(aes(x = time, y = conc, color = Heart)) + 
   geom_point()
 
 

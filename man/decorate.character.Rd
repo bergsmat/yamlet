@@ -22,8 +22,6 @@
 
 \item{ext}{file extension for metadata file, if relevant}
 
-\item{coerce}{whether to coerce to factor where guide has length > 1}
-
 \item{...}{passed to read (if accepted) and to \code{\link{as_yamlet.character}}}
 }
 \value{
@@ -46,7 +44,7 @@ identical(
   decorate(file, meta = meta)
 )
 a <- decorate(file)
-b <- decorate(file, coerce = TRUE)
+b <- decorate(file) \%>\% resolve
 c <- decorate(
   file,
   read = read.table,
@@ -56,9 +54,8 @@ c <- decorate(
   header = TRUE,
   na.strings = c('', '\\\\s', '.','NA'),
   strip.white = TRUE,
-  check.names = FALSE,
-  coerce = TRUE
-)
+  check.names = FALSE
+)# \%>\% resolve
 d <- decorate(
   file,
   read = read.table,

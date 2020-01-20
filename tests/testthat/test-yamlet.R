@@ -98,8 +98,9 @@ test_that('default decorations are equivalent to explicit requests',{
 })
 
 test_that('non-default import is equivalent',{
+  library(magrittr)
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-  b <- decorate(file, coerce = TRUE, source = FALSE)
+  b <- decorate(file, source = FALSE) %>% resolve
   c <- decorate(
     file,
     read = read.table,
@@ -109,9 +110,8 @@ test_that('non-default import is equivalent',{
     header = TRUE,
     na.strings = c('', '\\s', '.','NA'),
     strip.white = TRUE,
-    check.names = FALSE,
-    coerce = TRUE
-  )
+    check.names = FALSE
+  ) %>% resolve
   expect_identical(b, c)
 })
 
@@ -250,7 +250,7 @@ test_that('dplyr filter does not drop attributes',{
   library(dplyr)
   library(magrittr)
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-  x <- file %>% decorate(coerce = TRUE)
+  x <- file %>% decorate %>% resolve
   x %$% Heart %>% attributes %>% names
   x %>% filter(!is.na(conc)) %$% Heart %>% attributes %>% names
 })

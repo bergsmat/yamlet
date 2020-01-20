@@ -21,6 +21,7 @@ Coerces codelist to factor.  Generic, with default and data.frame methods.
 Other factorize_codelist: 
 \code{\link{factorize_codelist.character}()},
 \code{\link{factorize_codelist.data.frame}()},
-\code{\link{factorize_codelist.default}()}
+\code{\link{factorize_codelist.default}()},
+\code{\link{factorize_codelist.factor}()}
 }
 \concept{factorize_codelist}

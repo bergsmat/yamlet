@@ -24,6 +24,7 @@ example(factorize_codelist.data.fame)
 Other factorize_codelist: 
 \code{\link{factorize_codelist.data.frame}()},
 \code{\link{factorize_codelist.default}()},
+\code{\link{factorize_codelist.factor}()},
 \code{\link{factorize_codelist}()}
 }
 \concept{factorize_codelist}
