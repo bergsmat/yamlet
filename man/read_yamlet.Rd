@@ -35,12 +35,11 @@ x <- decorate(x, meta = y)
 identical(x, decorate(file))
 }
 \seealso{
-\code{\link{decorate.list}}
+\code{\link{decorate.data.frame}}
 
 Other interface: 
 \code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
-\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},

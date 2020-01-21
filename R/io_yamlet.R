@@ -32,6 +32,7 @@ io_yamlet <- function(x, ...)UseMethod('io_yamlet')
 #' @param default_keys character: default keys for the first n anonymous members of each element
 #' @param ... passed to \code{\link{as_yamlet}}
 #' @export
+#' @keywords internal
 #' @family io
 #' @family interface
 #' @seealso \code{\link{decorate.list}}
@@ -64,6 +65,7 @@ io_yamlet.character <- function(
 #' @param fileEncoding if \code{con} is character, passed to \code{\link{file}} as \code{encoding}
 #' @param ... passed to \code{\link{as_yamlet}}
 #' @export
+#' @keywords internal
 #' @family interface
 #' @family io
 #' @return invisible description of con: i.e., a file path
@@ -111,6 +113,7 @@ io_yamlet.yamlet <- function(
 #' @param fileEncoding if \code{con} is character, passed to \code{\link{file}} as \code{encoding}
 #' @param ... passed to \code{\link{as_yamlet}}
 #' @export
+#' @keywords internal
 #' @family interface
 #' @family io
 #' @return invisible character representation of yamlet (storage syntax)

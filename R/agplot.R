@@ -29,6 +29,7 @@ as_lab <- function(x,...)UseMethod('as_lab')
 #' @param ... ignored
 #' @return length-one character
 #' @export
+#' @keywords internal
 #' @family lab
 #' @examples
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -106,6 +107,7 @@ as_lab.list <- function(
 #' @param data data.frame
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @return integer, possibly NA
 #' @family lab
 #' @examples

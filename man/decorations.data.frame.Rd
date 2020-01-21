@@ -29,16 +29,15 @@ used to decorate it. Returns a list with same names as the data.frame.
 }
 \examples{
 library(csv)
+library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-x <- decorate(as.csv(file))
-decorations(x[,1:7])
-decorations(decorate(as.csv(file), coerce = TRUE)[,1:7])
-decorations(decorate(as.csv(file), coerce = TRUE)[,1:7], coerce = TRUE)
-old <- getOption('yamlet_coerce')
-options(coerce = TRUE)
-as.character(as_yamlet(decorate(as.csv(file))))
-options(coerce = old)
-
+x <- decorate(as.csv(file))[,c('conc','Race')]
+y <- decorate(as.csv(file))[,c('conc','Race')] \%>\% resolve
+decorations(x)
+decorations(y)
+decorations(y, coerce = TRUE)
+decorations(y, coerce = 'codelist')
+decorations(y, exclude_attr = 'class')
 }
 \seealso{
 Other decorate: 

@@ -34,6 +34,7 @@ io_table <- function(x, ...)UseMethod('io_table')
 # @param coerce whether to coerce to factor where guide is a list; passed to \code{\link{decorate.data.frame}}
 #' @param ... passed to \code{\link{read.table}} (if accepted) and to \code{\link{decorate}}
 #' @export
+#' @keywords internal
 #' @family io
 #' @family interface
 #' @return data.frame
@@ -78,6 +79,7 @@ io_table.character <- function(
 #' @param default_keys passed to \code{\link{io_yamlet}}
 #' @param ... passed to \code{\link{write.table}} (if accepted) and to \code{\link{io_yamlet}}
 #' @export
+#' @keywords internal
 #' @family io
 #' @family interface
 #' @return invisible(file)

@@ -4,12 +4,14 @@
 \alias{encode.yamlet}
 \title{Encode Yamlet}
 \usage{
-\method{encode}{yamlet}(x, target = "guide", ...)
+\method{encode}{yamlet}(x, target = "guide", data = NULL, ...)
 }
 \arguments{
 \item{x}{yamlet}
 
 \item{target}{attribute to encode}
+
+\item{data}{optional data.frame for guide context}
 
 \item{...}{ignored}
 }
@@ -18,7 +20,8 @@ yamlet, with guide elements possibly transformed to encodings
 }
 \description{
 Encodes yamlet.  Each 'guide' element with length > 1
-is converted to an encoding, if possible.
+is converted to an encoding, if possible. If \code{data}
+is supplied, conditional guides will be ignored.
 }
 \examples{
 meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')

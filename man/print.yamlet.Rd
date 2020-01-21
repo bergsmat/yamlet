@@ -27,3 +27,4 @@ Other yamlet:
 \code{\link{as_yamlet}()}
 }
 \concept{yamlet}
+\keyword{internal}

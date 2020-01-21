@@ -28,3 +28,4 @@ Other to_yamlet:
 \code{\link{to_yamlet}()}
 }
 \concept{to_yamlet}
+\keyword{internal}

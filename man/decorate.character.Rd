@@ -9,7 +9,6 @@
   meta = NULL,
   read = getOption("yamlet_import", as.csv),
   ext = getOption("yamlet_extension", ".yaml"),
-  coerce = getOption("yamlet_coerce", FALSE),
   ...
 )
 }
@@ -44,8 +43,8 @@ identical(
   decorate(file, meta = meta)
 )
 a <- decorate(file)
-b <- decorate(file) \%>\% resolve
-c <- decorate(
+b <- resolve(decorate(file))
+c <- resolve(decorate(
   file,
   read = read.table,
   quote = "",
@@ -55,7 +54,7 @@ c <- decorate(
   na.strings = c('', '\\\\s', '.','NA'),
   strip.white = TRUE,
   check.names = FALSE
-)# \%>\% resolve
+))
 d <- decorate(
   file,
   read = read.table,
@@ -65,16 +64,15 @@ d <- decorate(
   header = TRUE,
   na.strings = c('', '\\\\s', '.','NA'),
   strip.white = TRUE,
-  check.names = FALSE,
-  coerce = FALSE
+  check.names = FALSE
 )
 
 # Importantly, b and c are identical with respect to factors
 cbind(
-  `as.is/!coerce`   = sapply(a, class), # no factors
-  `as.is/coerce`    = sapply(b, class), # factors made during decoration
-  `!as.is/coerce`   = sapply(c, class), # factors made twice!
-  `!as.is/!coerce`  = sapply(d, class)  # factors made during read
+  `as.is/!resolve`   = sapply(a, class), # no factors
+  `as.is/resolve`    = sapply(b, class), # factors made during decoration
+  `!as.is/resolve`   = sapply(c, class), # factors made twice!
+  `!as.is/!resolve`  = sapply(d, class)  # factors made during read
 )
 str(a$Smoke)
 str(b$Smoke)
@@ -93,7 +91,6 @@ Other decorate:
 
 Other interface: 
 \code{\link{decorate.list}()},
-\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},

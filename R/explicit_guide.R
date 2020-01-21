@@ -39,6 +39,7 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' @param data optional data.frame for testing guides with length > 1
 #' @param ... ignored arguments
 #' @export
+#' @keywords internal
 #' @importFrom dplyr case_when
 #' @importFrom encode encoded
 #' @return yamlet
@@ -97,6 +98,7 @@ explicit_guide.yamlet <- function(x, default = 'units', data = NULL, ...){
 #' @param overwrite passed as TRUE
 #' @param ... passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}
 #' @export
+#' @keywords internal
 #' @importFrom dplyr case_when
 #' @importFrom encode encoded
 #' @return yamlet

@@ -33,6 +33,7 @@ io_csv <- function(x, ...)UseMethod('io_csv')
 # @param coerce whether to coerce to factor where guide is a list; passed to \code{\link{decorate.data.frame}}
 #' @param ... passed to \code{\link[csv]{as.csv.character}} and to \code{\link{decorate}}
 #' @export
+#' @keywords internal
 #' @importFrom csv as.csv
 #' @family io
 #' @family interface
@@ -75,6 +76,7 @@ io_csv.character <- function(
 #' @param default_keys passed to \code{\link{io_yamlet}}
 #' @param ... passed to \code{\link{as.csv}} and to \code{\link{io_yamlet}}
 #' @export
+#' @keywords internal
 #' @importFrom csv as.csv
 #' @family io
 #' @family interface

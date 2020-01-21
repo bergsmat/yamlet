@@ -16,6 +16,7 @@ factorize_codelist <- function(x,...){UseMethod('factorize_codelist')}
 #' @param x presumably vector-like or factor
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @return factor
 #' @family factorize_codelist
 factorize_codelist.default <- function(x,...){
@@ -32,6 +33,7 @@ factorize_codelist.default <- function(x,...){
 #' @param x presumably vector-like or factor
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @return factor
 #' @family factorize_codelist
 factorize_codelist.factor <- function(x,...){
@@ -50,6 +52,7 @@ factorize_codelist.factor <- function(x,...){
 #' @param x character
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @return factor
 #' @family factorize_codelist
 #' @examples
@@ -84,6 +87,7 @@ factorize_codelist.character <- function(x,...){
 #' @param x data.frame
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @return data.frame
 #' @family factorize_codelist
 #' @examples

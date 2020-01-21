@@ -55,3 +55,4 @@ Other lab:
 \code{\link{singularity}()}
 }
 \concept{lab}
+\keyword{internal}

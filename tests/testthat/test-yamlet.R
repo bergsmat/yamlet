@@ -333,3 +333,41 @@ test_that('resolve correctly classifies factors',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   expect_identical(file %>% decorate %>% resolve %$% Heart %>% class, 'factor')
 })
+test_that('filter, select, mutate, group_by, arrange, summarize and [ do not drop subclass decorated',{
+  library(dplyr)
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  expect_identical('decorated', x %>% class %>% `[[`(1))
+  expect_identical('decorated', x %>% filter(!is.na(conc)) %>% class %>% `[[`(1))
+  expect_identical(
+    'decorated',
+    x %>%
+      group_by(Subject) %>%
+      mutate(mxt = max(time)) %>%
+      class %>% `[[`(1)
+  )
+  expect_identical(
+    'decorated',
+    x %>%
+      select(Subject:interval) %>%
+      class %>% `[[`(1)
+  )
+  expect_identical(
+    'decorated',
+    x %>%
+      summarize(mx = max(time)) %>%
+      class %>% `[[`(1)
+  )
+  expect_identical(
+    'decorated',
+    x %>%
+      arrange(Subject,time) %>%
+      class %>% `[[`(1)
+  )
+  expect_identical(
+    'decorated',
+    class(x[1:5, 1:3])[[1]]
+  )
+
+})

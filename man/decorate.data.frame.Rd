@@ -4,14 +4,12 @@
 \alias{decorate.data.frame}
 \title{Decorate Data Frame}
 \usage{
-\method{decorate}{data.frame}(x, meta = NULL, coerce = getOption("yamlet_coerce", FALSE), ...)
+\method{decorate}{data.frame}(x, meta = NULL, ...)
 }
 \arguments{
 \item{x}{data.frame}
 
 \item{meta}{file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute}
-
-\item{coerce}{whether to coerce to factor where guide is a list}
 
 \item{...}{passed to \code{\link{decorate.list}}}
 }
@@ -19,10 +17,8 @@
 class 'decorated' 'data.frame'
 }
 \description{
-Decorates a data.frame. Expects metadata with labels and guides,
-where guides are units, factor levels and labels (codes, decodes), or
-datetime formatting strings. For guides with length > 1, the corresponding
-data element may optionally be coerced to factor.
+Decorates a data.frame. Expects metadata in yamlet
+format, and loads it onto columns as attributes.
 }
 \examples{
 library(csv)
@@ -32,7 +28,7 @@ a <- decorate(as.csv(file))
 b <- decorate(as.csv(file), meta = as_yamlet(meta))
 c <- decorate(as.csv(file), meta = meta)
 d <- decorate(as.csv(file), meta = file)
-e <- decorate(as.csv(file), coerce = TRUE)
+e <- resolve(decorate(as.csv(file)))
 
 # Most import methods are equivalent.
 identical(a, b)

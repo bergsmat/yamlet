@@ -20,6 +20,7 @@ as_yam <- function(x, ...)UseMethod('as_yam')
 #' @param as.named.list enforced as TRUE
 #' @param ... passed to \code{\link[yaml]{read_yaml}} and \code{\link[yaml]{yaml.load}} if supported
 #' @export
+#' @keywords internal
 #' @importFrom yaml read_yaml yaml.load
 #' @family yam
 #' @keywords internal
@@ -259,6 +260,7 @@ as_yamlet.yam <- function(x, default_keys = getOption('yamlet_default_keys',list
 #' @param default_keys character: default keys for the first n anonymous members of each element
 #' @param ... passed to \code{\link{as_yam.character}} and \code{\link{as_yamlet.yam}}
 #' @export
+#' @keywords internal
 #' @family yamlet
 #' @return yamlet: a named list with default keys applied
 #' @examples
@@ -281,8 +283,8 @@ as_yamlet.character <- function(x, default_keys = getOption('yamlet_default_keys
 #' @param x object
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @family decorate
-#' @family interface
 #' @return a list-like object, typically data.frame
 #' @examples
 #' library(csv)
@@ -324,8 +326,8 @@ decorate <- function(x,...)UseMethod('decorate')
 #'   decorate(file, meta = meta)
 #' )
 #' a <- decorate(file)
-#' b <- decorate(file) %>% resolve
-#' c <- decorate(
+#' b <- resolve(decorate(file))
+#' c <- resolve(decorate(
 #'   file,
 #'   read = read.table,
 #'   quote = "",
@@ -335,7 +337,7 @@ decorate <- function(x,...)UseMethod('decorate')
 #'   na.strings = c('', '\\s', '.','NA'),
 #'   strip.white = TRUE,
 #'   check.names = FALSE
-#' ) %>% resolve
+#' ))
 #' d <- decorate(
 #'   file,
 #'   read = read.table,
@@ -408,6 +410,7 @@ decorate.character <- function(
 #' @param ... passed to \code{\link{as_yamlet.character}} (by method dispatch)
 #' @return like x but with 'decorated' as first class element
 #' @export
+#' @keywords internal
 #' @family decorate
 #' @family interface
 #' @examples
@@ -498,7 +501,7 @@ decorate.list <- function(
 #' b <- decorate(as.csv(file), meta = as_yamlet(meta))
 #' c <- decorate(as.csv(file), meta = meta)
 #' d <- decorate(as.csv(file), meta = file)
-#' e <- decorate(as.csv(file)) %>% resolve
+#' e <- resolve(decorate(as.csv(file)))
 #'
 #' # Most import methods are equivalent.
 #' identical(a, b)
@@ -524,6 +527,7 @@ decorate.data.frame <- function(
 #' @param x object
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @family decorate
 #' @return see methods
 #' @examples
@@ -603,6 +607,7 @@ decorations.data.frame <- function(
 #' @param... passed arguments
 #' @family as_yamlet
 #' @export
+#' @keywords internal
 #' @return yamlet
 #' @examples
 #' library(csv)
@@ -622,6 +627,7 @@ as_yamlet.data.frame <- function(x, ...){
 #' @param... ignored
 #' @family as_yamlet
 #' @export
+#' @keywords internal
 #' @return yamlet
 #' @examples
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
@@ -643,6 +649,7 @@ as_yamlet.yamlet<- function(x, ...)x
 #' @param default_keys names that may be omitted in left subsets
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @return yam
 #' @family yam
 #' @keywords internal
@@ -678,6 +685,7 @@ as_yam.yamlet <- function(x, default_keys = getOption('yamlet_default_keys', lis
 #' @param x yam
 #' @param ... ignored; keys is an attribute of yam
 #' @export
+#' @keywords internal
 #' @family yam
 #' @keywords internal
 #' @return character
@@ -721,6 +729,7 @@ to_yamlet <- function(x, ...)UseMethod('to_yamlet')
 #' @param x object
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @return length-one character
 #' @family to_yamlet
 #' @examples
@@ -738,6 +747,7 @@ to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
 #' @param x character
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @return length-one character
 #' @family to_yamlet
 #' @examples
@@ -773,6 +783,7 @@ to_yamlet.character <- function(x, ...){
 #' @param x object
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @return length-one character
 #' @family to_yamlet
 #' @examples
@@ -785,6 +796,7 @@ to_yamlet.NULL <- function(x, ...)''
 #' @param x object
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @return length-one character
 #' @family to_yamlet
 #' @examples
@@ -837,6 +849,7 @@ to_yamlet.list <- function(x, ...){
 #' @param x yamlet
 #' @param ... passed to \code{\link{as.character.yam}} and \code{\link{as_yam.yamlet}}
 #' @export
+#' @keywords internal
 #' @family as_yamlet
 #' @return character
 #' @examples
@@ -911,10 +924,12 @@ list2encoding <- function(x, ...){
 #' Encode Yamlet
 #'
 #' Encodes yamlet.  Each 'guide' element with length > 1
-#' is converted to an encoding, if possible.
+#' is converted to an encoding, if possible. If \code{data}
+#' is supplied, conditional guides will be ignored.
 #'
 #' @param x yamlet
 #' @param target attribute to encode
+#' @param data optional data.frame for guide context
 #' @param ... ignored
 #' @return yamlet, with guide elements possibly transformed to encodings
 #' @export
@@ -923,11 +938,16 @@ list2encoding <- function(x, ...){
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 #' meta <- as_yamlet(meta)
 #' meta <- encode(meta)
-encode.yamlet <- function(x, target = 'guide', ...){
+encode.yamlet <- function(x, target = 'guide', data = NULL, ...){
   for(i in seq_along(x)){
     t <- x[[i]][[target]]
     if(!is.null(t)){
       if(length(t) > 1){ # prime criterion
+        if(!is.null(data)){
+          if(isConditional(t,data)){
+            next
+          }
+        }
         try <- list2encoding(as.list(t))
         if(class(try) == 'character'){
           if(length(try) == 1){
@@ -975,6 +995,7 @@ encode::encode
 #' @param x yamlet
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @method print yamlet
 #' @family yamlet
 #' @return invisible(x)
@@ -1021,7 +1042,7 @@ print.yamlet <- function(x, ...){
 #' @param ... passed to \code{\link{as_yamlet}}
 #' @export
 #' @family interface
-#' @seealso \code{\link{decorate.list}}
+#' @seealso \code{\link{decorate.data.frame}}
 #' @return yamlet: a named list with default keys applied
 #' @examples
 #' library(csv)

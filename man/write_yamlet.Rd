@@ -55,7 +55,6 @@ identical(read_yamlet(meta), read_yamlet(tmp))
 Other interface: 
 \code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
-\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},

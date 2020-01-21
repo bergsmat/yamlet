@@ -29,3 +29,4 @@ Other as_yamlet:
 \code{\link{as_yamlet.data.frame}()}
 }
 \concept{as_yamlet}
+\keyword{internal}

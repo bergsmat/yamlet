@@ -26,3 +26,4 @@ Other factorize_codelist:
 \code{\link{factorize_codelist}()}
 }
 \concept{factorize_codelist}
+\keyword{internal}

@@ -8,7 +8,6 @@
   x,
   meta = NULL,
   ext = getOption("yamlet_extension", ".yaml"),
-  coerce = getOption("yamlet_coerce", FALSE),
   overwrite = getOption("yamlet_overwrite", FALSE),
   ...
 )
@@ -20,8 +19,6 @@
 
 \item{ext}{file extension for metadata file, if relevant}
 
-\item{coerce}{whether to coerce to factor where guide has length > 1}
-
 \item{overwrite}{whether to overwrite attributes that are already present (else give warning)}
 
 \item{...}{passed to \code{\link{as_yamlet.character}} (by method dispatch)}
@@ -30,10 +27,9 @@
 like x but with 'decorated' as first class element
 }
 \description{
-Decorates a list-like object. Expects metadata with labels and guides,
-where guides are units, factor levels and labels (codes, decodes), or
-datetime formatting strings, or encodings. For guides with length > 1,
-the corresponding data element may optionally be coerced to factor.
+Decorates a list-like object. Takes metadata
+in yamlet format and loads it onto corresponding
+list elements as attributes.
 }
 \examples{
 example(decorate.data.frame)
@@ -49,7 +45,6 @@ Other decorate:
 
 Other interface: 
 \code{\link{decorate.character}()},
-\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},
@@ -66,3 +61,4 @@ Other interface:
 }
 \concept{decorate}
 \concept{interface}
+\keyword{internal}

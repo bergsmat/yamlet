@@ -30,3 +30,4 @@ Other as_yamlet:
 \code{\link{as_yamlet.yamlet}()}
 }
 \concept{as_yamlet}
+\keyword{internal}

@@ -58,7 +58,6 @@ Other io:
 Other interface: 
 \code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
-\code{\link{decorate}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv}()},
 \code{\link{io_table.character}()},
@@ -74,3 +73,4 @@ Other interface:
 }
 \concept{interface}
 \concept{io}
+\keyword{internal}

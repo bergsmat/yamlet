@@ -52,3 +52,4 @@ Other explicit_guide:
 \code{\link{explicit_guide}()}
 }
 \concept{explicit_guide}
+\keyword{internal}

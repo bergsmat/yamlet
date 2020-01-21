@@ -29,9 +29,9 @@ identical(foo, as_yamlet(as.character(foo)))
 identical(as.character(foo), as.character(as_yamlet(as.character(foo))))
 file <- system.file(package = 'yamlet','extdata','quinidine.csv')
 file
-foo <- decorate(file, coerce = TRUE)
+foo <- resolve(decorate(file))
 as.character(as_yamlet(foo))
-
+as.character(as_yamlet(foo, exclude_attr = 'class'))
 
 }
 \seealso{
@@ -41,3 +41,4 @@ Other as_yamlet:
 \code{\link{as_yamlet.yamlet}()}
 }
 \concept{as_yamlet}
+\keyword{internal}

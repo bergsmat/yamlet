@@ -58,3 +58,4 @@ Other lab:
 \code{\link{print.ag}()}
 }
 \concept{lab}
+\keyword{internal}

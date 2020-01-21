@@ -32,3 +32,4 @@ Other decorate:
 \code{\link{decorations.data.frame}()}
 }
 \concept{decorate}
+\keyword{internal}
