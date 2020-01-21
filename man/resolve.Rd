@@ -26,3 +26,4 @@ Other resolve:
 \code{\link{resolve.data.frame}()}
 }
 \concept{resolve}
+\keyword{internal}

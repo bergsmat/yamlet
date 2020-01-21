@@ -37,7 +37,7 @@ options(enclose = c('[ ',' ]'))
 file \%>\% decorate \%>\% resolve \%>\% filter(!is.na(conc)) \%>\%
 ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 
-# No factors created here, but print.ag promotes to factor if it can:
+# No factors created here, but print.ag promotes guide to factor if it can:
 
 file \%>\% decorate \%>\% filter(!is.na(conc)) \%>\%
 ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()

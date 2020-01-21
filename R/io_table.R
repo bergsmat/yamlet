@@ -8,7 +8,6 @@
 #'@export
 #'@return See methods.
 #'@family io
-#'@family interface
 #'@examples
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)

@@ -223,8 +223,8 @@ test_that('io_csv methods are reciprocal with default or modified arguments',{
   expect_identical(x, y) # lossless 'round-trip'
 
 })
-test_that('class attributes are excluded from storage on request',{
-  expect_false('class' %in% decorations(Theoph, exclude_attr = 'class')$Subject)
+test_that('class attributes are excluded from storage by default',{
+  expect_false('class' %in% decorations(Theoph)$Subject)
 })
 test_that('yamlet package writes proper yaml with non-default keys',{
   out <- file.path(tempdir(), 'out.yaml')
@@ -255,12 +255,19 @@ test_that('dplyr filter does not drop attributes',{
   x %>% filter(!is.na(conc)) %$% Heart %>% attributes %>% names
 })
 test_that('print.ag treats variable as categorical if guide has length > 1',{
- # see example(print.ag)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  library(ggplot2)
+  library(dplyr)
+  library(magrittr)
+  file %>% decorate %>% filter(!is.na(conc)) %>%
+  ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 })
 test_that('print.ag uses conditional labels and guides',{
- # see example(print.ag)
+  file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+  file %>% decorate %>%
+  filter(event == 'conc') %>%
+  ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
 })
-
 test_that('io_table accepts nuisance arguments without error',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
@@ -311,7 +318,7 @@ test_that('factorize_codelist creates class factor and removes attribute codelis
  library(magrittr)
  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
  x <- decorate(file)
- x %<>% explicit_guide %>% factorize_codelist %>% as_yamlet
+ x %<>% explicit_guide %>% factorize_codelist %>% as_yamlet(exclude_attr = NULL)
  expect_identical(
    x$Creatinine %>% names,
    c('label','levels','class')
@@ -325,6 +332,9 @@ test_that('user can specify unit instead of units',{
 test_that('resolve correctly classifies conditional elements',{
   file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
   x <- decorate(file)
+  x %>% as_yamlet
+  x %>% explicit_guide %>% as_yamlet
+  x %>% explicit_guide %>% factorize_codelist %>% as_yamlet
   a <- x %>% resolve %>% as_yamlet
   identical(names(a$value), c('label','units'))
 })
@@ -371,3 +381,60 @@ test_that('filter, select, mutate, group_by, arrange, summarize and [ do not dro
   )
 
 })
+test_that('conditionalize errors on mixed quotes',{
+  library(dplyr)
+  library(magrittr)
+  x <- data.frame(column = 'foo', test = "can't\"", value = 1)
+  expect_error(
+    x %>% conditionalize(column, label, test, value) %>% as_yamlet
+  )
+})
+
+test_that('conditionalize alternates single and double quotes',{
+  library(dplyr)
+  library(magrittr)
+  x <- data.frame(
+    stringsAsFactors = FALSE,
+    column = 'foo',
+    test = c('"cant"',"can't"),
+    value = 1
+  )
+  expect_identical(
+    x %>% conditionalize(column, label, test, value) %>%
+      as_yamlet %$% column %$% label %>% names,
+    c( "test == '\"cant\"'", "test == \"can't\"")
+  )
+})
+test_that('conditionalize does not quote numerics',{
+  library(dplyr)
+  library(magrittr)
+  x <- data.frame(
+    column = 1,
+    test = 2,
+    value = 3
+  )
+  expect_identical(
+    x %>% conditionalize(column, label, test, value) %>%
+      as_yamlet %$% column %$% label %>% names,
+    "test == 2"
+  )
+})
+test_that('conitionalize handles factors like character',{
+  library(dplyr)
+  library(magrittr)
+  x <- data.frame(
+    stringsAsFactors = TRUE,
+    column = 'foo',
+    test = c('"cant"',"can't"),
+    value = 1
+  )
+  expect_identical(
+    x %>% conditionalize(column, label, test, value) %>%
+      as_yamlet %$% column %$% label %>% names,
+    c( "test == '\"cant\"'", "test == \"can't\"")
+  )
+})
+
+
+
+

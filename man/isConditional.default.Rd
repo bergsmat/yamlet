@@ -2,7 +2,7 @@
 % Please edit documentation in R/agplot.R
 \name{isConditional.default}
 \alias{isConditional.default}
-\title{Test Default Expression is Conditional}
+\title{Test Object is Conditional by Default}
 \usage{
 \method{isConditional}{default}(x, ...)
 }
@@ -15,11 +15,11 @@
 logical
 }
 \description{
-Tests whether expression is conditional by default. Coerces to character.
+Tests whether object is conditional by default. Coerces to list.
 }
 \seealso{
 Other conditional: 
-\code{\link{isConditional.character}()},
+\code{\link{isConditional.list}()},
 \code{\link{isConditional}()}
 }
 \concept{conditional}

@@ -5,6 +5,7 @@
 #' @param x object
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @return see methods
 #' @family resolve
 #' @examples
@@ -20,7 +21,6 @@ resolve <- function(x, ...)UseMethod('resolve')
 #' @param x object
 #' @param ... passed arguments
 #' @export
-#' @keywords internal
 #' @return data.frame
 #' @family resolve
 #' @family interface

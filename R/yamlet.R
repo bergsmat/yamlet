@@ -412,7 +412,6 @@ decorate.character <- function(
 #' @export
 #' @keywords internal
 #' @family decorate
-#' @family interface
 #' @examples
 #' example(decorate.data.frame)
 #'
@@ -491,6 +490,7 @@ decorate.list <- function(
 #' @param ... passed to \code{\link{decorate.list}}
 #' @return class 'decorated' 'data.frame'
 #' @export
+#' @family interface
 #' @family decorate
 #' @seealso decorate.list
 #' @examples
@@ -522,7 +522,8 @@ decorate.data.frame <- function(
 
 #' Retrieve Decorations
 #'
-#' Retrieve the decorations of something. Generic, with method for data.frame.
+#' Retrieve the decorations of something.
+#' Generic, with method for data.frame.
 #'
 #' @param x object
 #' @param ... passed arguments
@@ -542,6 +543,11 @@ decorations <- function(x,...)UseMethod('decorations')
 #'
 #' Retrieve the decorations of a data.frame; i.e., the metadata
 #' used to decorate it. Returns a list with same names as the data.frame.
+#' By default, \code{class} attributes are excluded from the result,
+#' as this is an attribute you likely don't want to manipulate independently.
+#' Consider carefully whether the default handling of factor levels
+#' (see \code{coerce} argument) is appropriate for your application.
+
 #'
 #' @param x data.frame
 #' @param coerce logical: whether to coerce factor levels to guide; alternatively, a key for the levels
@@ -560,14 +566,15 @@ decorations <- function(x,...)UseMethod('decorations')
 #' decorations(y)
 #' decorations(y, coerce = TRUE)
 #' decorations(y, coerce = 'codelist')
-#' decorations(y, exclude_attr = 'class')
+#' decorations(y, exclude_attr = NULL)
 
 decorations.data.frame <- function(
   x,
   coerce = getOption('yamlet_coerce_decorations', FALSE),
-  exclude_attr = getOption('yamlet_exclude_attr', character(0)),
+  exclude_attr = getOption('yamlet_exclude_attr', 'class'),
   ...
 ){
+  stopifnot(length(exclude_attr) == 0 || is.character(exclude_attr))
   out <- lapply(x, attributes)
   levs_key <- 'guide'
   if(!is.logical(coerce)){
@@ -1090,7 +1097,7 @@ read_yamlet <- function(
 #' tmp <- tempfile()
 #' write_yamlet(x, tmp)
 #' identical(read_yamlet(meta), read_yamlet(tmp))
-#'
+
 write_yamlet <- function(
   x,
   con = stdout(),

@@ -10,7 +10,6 @@
 #' @export
 #' @return see methods
 #' @family io
-#' @family interface
 #' @examples
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 #' x <- io_yamlet(file)
@@ -66,7 +65,6 @@ io_yamlet.character <- function(
 #' @param ... passed to \code{\link{as_yamlet}}
 #' @export
 #' @keywords internal
-#' @family interface
 #' @family io
 #' @return invisible description of con: i.e., a file path
 #' @examples

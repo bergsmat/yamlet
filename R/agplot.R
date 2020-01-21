@@ -5,6 +5,7 @@
 #' @param ... passed arguments
 #' @return see methods; typically length-one character
 #' @export
+#' @keywords internal
 #' @family lab
 as_lab <- function(x,...)UseMethod('as_lab')
 
@@ -29,7 +30,6 @@ as_lab <- function(x,...)UseMethod('as_lab')
 #' @param ... ignored
 #' @return length-one character
 #' @export
-#' @keywords internal
 #' @family lab
 #' @examples
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -139,8 +139,18 @@ as_lab.list <- function(
 #
 singularity <- function(x, data, ...){
   if(!length(x))return(0)
-  exprs <- lapply(x, function(i)parse(text = i))
-  vals <- lapply(exprs, function(i)try(eval(i, envir = data, enclos = NULL)))
+  #exprs <- lapply(x, function(i)parse(text = i))
+  #vals <- lapply(exprs, function(i)try(eval(i, envir = data, enclos = NULL)))
+  vals <- lapply(
+    x, function(i)try(
+      silent = TRUE,
+      eval(
+        parse(text = i),
+        envir = data,
+        enclos = NULL
+      )
+    )
+  )
   defined <- lapply(vals, function(i){
     if(inherits(i, 'try-error')) i <- FALSE
     i <- as.logical(i)
@@ -165,7 +175,8 @@ singularity <- function(x, data, ...){
 #' it tries to implement automatic labels and units in axes and legends
 #' in association with \code{\link{print.ag}}.
 #' Use \code{ggplot(as.data.frame(x))} to get default
-#' ggplot() behavior.
+#' ggplot() behavior. Use \code{ggplot(as_decorated(x))}
+#' to enforce custom behavior.
 #'
 #' @param data data.frame or similar
 #' @param ... passed to \code{\link[ggplot2]{ggplot}}
@@ -173,6 +184,7 @@ singularity <- function(x, data, ...){
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @family lab
+#' @family interface
 #' @examples
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(meta)
@@ -215,7 +227,7 @@ ggplot.decorated <- function(data, ...){
 #' file %>% decorate %>% resolve %>% filter(!is.na(conc)) %>%
 #' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 #'
-#' # No factors created here, but print.ag promotes to factor if it can:
+#' # No factors created here, but print.ag promotes guide to factor if it can:
 #'
 #' file %>% decorate %>% filter(!is.na(conc)) %>%
 #' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
@@ -297,9 +309,9 @@ print.ag <- function(x, labeller = getOption('yamlet_labeller', default = as_lab
   NextMethod()
 }
 
-#' Test Expression is Conditional
+#' Test Object is Conditional
 #'
-#' Tests whether expression is conditional.
+#' Tests whether object is conditional.
 #' @param x character
 #' @param ... passed arguments
 #' @export
@@ -308,21 +320,22 @@ print.ag <- function(x, labeller = getOption('yamlet_labeller', default = as_lab
 #' @return logical
 isConditional <- function(x, ...)UseMethod('isConditional')
 
-#' Test Default Expression is Conditional
+#' Test Object is Conditional by Default
 #'
-#' Tests whether expression is conditional by default. Coerces to character.
+#' Tests whether object is conditional by default. Coerces to list.
 #' @param x default
 #' @param ... passed arguments
 #' @export
 #' @keywords internal
 #' @family conditional
 #' @return logical
-isConditional.default <- function(x,...)isConditional(as.character(x),...)
-
-#' Test Character Expression is Conditional
 #'
-#' Tests whether character expression is conditional by default.
-#' Evaluates x on data and looks for meaningful result.
+isConditional.default <- function(x,...)isConditional(as.list(x),...)
+
+#' Test List is Conditional
+#'
+#' Tests whether a list is conditional by default.
+#' Evaluates names of x on data and looks for meaningful result.
 #' @param x default
 #' @param data environment for variable lookup
 #' @param ... passed arguments
@@ -331,7 +344,7 @@ isConditional.default <- function(x,...)isConditional(as.character(x),...)
 #' @family conditional
 #' @return logical
 
-isConditional.character <- function(x, data,...){
+isConditional.list <- function(x, data,...){
   nms <- names(x)
   status <- singularity(nms, data, ...)
   if(is.na(status))return(FALSE)

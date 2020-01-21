@@ -20,7 +20,8 @@ This is the ggplot() method for class 'decorated';
 it tries to implement automatic labels and units in axes and legends
 in association with \code{\link{print.ag}}.
 Use \code{ggplot(as.data.frame(x))} to get default
-ggplot() behavior.
+ggplot() behavior. Use \code{ggplot(as_decorated(x))}
+to enforce custom behavior.
 }
 \examples{
 meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -36,5 +37,20 @@ Other lab:
 \code{\link{as_lab}()},
 \code{\link{print.ag}()},
 \code{\link{singularity}()}
+
+Other interface: 
+\code{\link{conditionalize.data.frame}()},
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_yamlet.character}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{read_yamlet}()},
+\code{\link{resolve.data.frame}()},
+\code{\link{write_yamlet}()}
 }
+\concept{interface}
 \concept{lab}

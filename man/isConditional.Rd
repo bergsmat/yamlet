@@ -2,7 +2,7 @@
 % Please edit documentation in R/agplot.R
 \name{isConditional}
 \alias{isConditional}
-\title{Test Expression is Conditional}
+\title{Test Object is Conditional}
 \usage{
 isConditional(x, ...)
 }
@@ -15,12 +15,12 @@ isConditional(x, ...)
 logical
 }
 \description{
-Tests whether expression is conditional.
+Tests whether object is conditional.
 }
 \seealso{
 Other conditional: 
-\code{\link{isConditional.character}()},
-\code{\link{isConditional.default}()}
+\code{\link{isConditional.default}()},
+\code{\link{isConditional.list}()}
 }
 \concept{conditional}
 \keyword{internal}

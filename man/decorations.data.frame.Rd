@@ -7,7 +7,7 @@
 \method{decorations}{data.frame}(
   x,
   coerce = getOption("yamlet_coerce_decorations", FALSE),
-  exclude_attr = getOption("yamlet_exclude_attr", character(0)),
+  exclude_attr = getOption("yamlet_exclude_attr", "class"),
   ...
 )
 }
@@ -26,6 +26,10 @@ named list
 \description{
 Retrieve the decorations of a data.frame; i.e., the metadata
 used to decorate it. Returns a list with same names as the data.frame.
+By default, \code{class} attributes are excluded from the result,
+as this is an attribute you likely don't want to manipulate independently.
+Consider carefully whether the default handling of factor levels
+(see \code{coerce} argument) is appropriate for your application.
 }
 \examples{
 library(csv)
@@ -37,7 +41,7 @@ decorations(x)
 decorations(y)
 decorations(y, coerce = TRUE)
 decorations(y, coerce = 'codelist')
-decorations(y, exclude_attr = 'class')
+decorations(y, exclude_attr = NULL)
 }
 \seealso{
 Other decorate: 

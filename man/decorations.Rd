@@ -15,7 +15,8 @@ decorations(x, ...)
 see methods
 }
 \description{
-Retrieve the decorations of something. Generic, with method for data.frame.
+Retrieve the decorations of something.
+Generic, with method for data.frame.
 }
 \examples{
 library(csv)

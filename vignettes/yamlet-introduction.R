@@ -63,6 +63,7 @@ file.exists(out)
 meta <- sub('csv','yaml', out)
 file.exists(meta)
 meta %>% readLines %>% head %>% writeLines
+options(csv_source = TRUE) # restore
 
 ## ---- fig.width = 5.46, fig.height = 3.52, fig.cap = 'Automatic axis labels and legends using curated metadata as column attributes.'----
 suppressWarnings(library(ggplot2))
@@ -79,8 +80,6 @@ file %>%
 
 ## -----------------------------------------------------------------------------
 suppressMessages(library(table1))
-options(yamlet_overwrite = TRUE)
-options(csv_source = TRUE) # as.csv adds a source attribute
 file %>%
   decorate %>% 
   resolve %>% 

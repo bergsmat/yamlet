@@ -22,9 +22,10 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' explicit in case required downstream.
 #'
 #' The logic is as follows.  If value of 'guide' is of length greater than
-#' one (and data is not supplied), it is assumed to be a 'codelist' (and this value replaces 'guide').
+#' one (and data is not supplied), it is assumed to be a 'codelist'
+#' (and this value replaces 'guide').
 #' If, however, it is (\code{\link[encode]{encoded}}), the valued becomes
-#' 'encoding'. Failing those tests, two or more % signs will flag
+#' 'encoding'. Failing those tests, two or more percent signs will flag
 #' it as a 'format' string, i.e. for a date or time class. Otherwise
 #' 'guide' will be replaced with 'units' by default.
 #'

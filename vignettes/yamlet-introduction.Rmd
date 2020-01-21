@@ -114,8 +114,8 @@ or perhaps something else.
 
 The **yamlet** package
 gives you five ways of controlling how
-data items are identified.  The most
-direct way is to supply explicit `yaml` keys:
+data items are identified (see details for `?as_yamlet.character`).
+The most direct way is to supply explicit `yaml` keys:
 
 ```
 ID: [ label: subject identifier ]
@@ -284,16 +284,17 @@ file.exists(out)
 meta <- sub('csv','yaml', out)
 file.exists(meta)
 meta %>% readLines %>% head %>% writeLines
+options(csv_source = TRUE) # restore
 ```
 
 ## Using Yamlet Metadata
 
-An early use of metadata is to guide table development
-in a collaborative setting (i.e. as a data specification).
-In contrast with this prospective use is the retrospective
-use of metadata for reporting.  Curated metadata, 
-appropriately associated with primary data, can 
-enrich output such as tables and figures consistently.  
+Metadata can be used prospectively or retrospectively.
+Early in the data life cycle, it can be used prospectively
+to guide table development in a collaborative setting
+(i.e. as a data specification). Later in the life cycle,
+metadata can be used retrospectively to consistently
+inform report elements such as figures and tables.
 
 ### Example Figure
 
@@ -325,8 +326,6 @@ as units and factor levels, which is what `table1()` needs.
 
 ```{r}
 suppressMessages(library(table1))
-options(yamlet_overwrite = TRUE)
-options(csv_source = TRUE) # as.csv adds a source attribute
 file %>%
   decorate %>% 
   resolve %>% 
