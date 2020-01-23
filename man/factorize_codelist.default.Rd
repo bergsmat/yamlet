@@ -7,12 +7,12 @@
 \method{factorize_codelist}{default}(x, ...)
 }
 \arguments{
-\item{x}{presumably vector-like or factor}
+\item{x}{presumably vector-like}
 
 \item{...}{passed arguments}
 }
 \value{
-factor
+class 'classified' 'factor'
 }
 \description{
 Coerces Codelist to Factor by Default. Coerces to character and calls next method.

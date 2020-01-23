@@ -30,9 +30,12 @@ library(ggplot2)
 library(dplyr)
 library(magrittr)
 # par(ask = FALSE)
-options(enclose = c('[ ',' ]'))
+options(yamlet_enclose = c('[ ',' ]'))
 
-# Filter() strips 'label' from factors (see legend), but not vectors:
+# resolve() promotes factors to a class
+# that retains attributes when subsetting,
+# so legend has access to the label from Heart,
+# even after a filter operation.
 
 file \%>\% decorate \%>\% resolve \%>\% filter(!is.na(conc)) \%>\%
 ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
@@ -41,6 +44,13 @@ ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 
 file \%>\% decorate \%>\% filter(!is.na(conc)) \%>\%
 ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+
+# facet_wrap() should use decodes where available.
+# resolve() makes them available by promoting to
+# (a subclass of) factor.
+
+file \%>\% decorate \%>\% filter(!is.na(conc)) \%>\% resolve \%>\%
+ggplot(aes(x = time, y = conc)) + geom_point() + facet_wrap(~Creatinine)
 
 # Here we try a dataset with conditional labels and units.
 
@@ -70,7 +80,6 @@ ggplot(aes(x = time, y = value, color = Wt)) +
 geom_point() +
 scale_y_log10() +
 scale_color_gradientn(colours = rainbow(4))
-
 }
 \seealso{
 Other lab: 

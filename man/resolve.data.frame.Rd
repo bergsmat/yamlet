@@ -31,6 +31,7 @@ Other resolve:
 \code{\link{resolve}()}
 
 Other interface: 
+\code{\link{as_classified.factor}()},
 \code{\link{conditionalize.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},

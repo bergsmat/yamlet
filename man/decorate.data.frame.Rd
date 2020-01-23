@@ -40,6 +40,7 @@ identical(a, e)
 decorate.list
 
 Other interface: 
+\code{\link{as_classified.factor}()},
 \code{\link{conditionalize.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{ggplot.decorated}()},

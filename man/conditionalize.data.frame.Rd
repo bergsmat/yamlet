@@ -67,6 +67,7 @@ x \%>\% write_yamlet
 }
 \seealso{
 Other interface: 
+\code{\link{as_classified.factor}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{ggplot.decorated}()},

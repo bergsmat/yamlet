@@ -1,11 +1,14 @@
 #' Coerce Codelist to Factor
 #'
-#' Coerces codelist to factor.  Generic, with default and data.frame methods.
+#' Coerces codelist to factor.
+#' Generic, with default and data.frame methods.
+#' Returns 'classified' 'factor' which as an attribute-preserving
+#' subset method.
 #'
 #' @param x object
 #' @param ... passed arguments
 #' @export
-#' @return see methods
+#' @return class 'classified' 'factor'
 #' @family factorize_codelist
 factorize_codelist <- function(x,...){UseMethod('factorize_codelist')}
 
@@ -13,14 +16,13 @@ factorize_codelist <- function(x,...){UseMethod('factorize_codelist')}
 #'
 #' Coerces Codelist to Factor by Default. Coerces to character and calls next method.
 #'
-#' @param x presumably vector-like or factor
+#' @param x presumably vector-like
 #' @param ... passed arguments
 #' @export
 #' @keywords internal
-#' @return factor
+#' @return class 'classified' 'factor'
 #' @family factorize_codelist
 factorize_codelist.default <- function(x,...){
-  # stopifnot(is.vector(x) || is.factor(x))
   y <- as.character(x)
   attributes(y) <- attributes(x)
   factorize_codelist(y,...)
@@ -30,14 +32,13 @@ factorize_codelist.default <- function(x,...){
 #' Coerces Codelist to Factor for Factors.
 #' Coerces to character and calls next method.
 #'
-#' @param x presumably vector-like or factor
+#' @param x factor
 #' @param ... passed arguments
 #' @export
 #' @keywords internal
-#' @return factor
+#' @return class 'classified' 'factor'
 #' @family factorize_codelist
 factorize_codelist.factor <- function(x,...){
-  # stopifnot(is.vector(x) || is.factor(x))
   y <- as.character(x)
   attr(x, 'levels') <- NULL
   attr(x, 'class') <- NULL
@@ -48,21 +49,20 @@ factorize_codelist.factor <- function(x,...){
 #' Coerce Character with Codelist to Factor
 #'
 #' Coerces character with codelist attribute to factor.
+#' If attribute 'codelist' is missing, unique values of
+#' x are supplied.
 #'
 #' @param x character
 #' @param ... passed arguments
 #' @export
 #' @keywords internal
-#' @return factor
+#' @return class 'classified' 'factor'
 #' @family factorize_codelist
 #' @examples
 #' example(factorize_codelist.data.fame)
 factorize_codelist.character <- function(x,...){
   guide <- attr(x,'codelist')
-  if(is.null(guide)){
-    warning('no codelist found; returning unmodified object')
-    return(x)
-  }
+  if(is.null(guide)) guide <- as.list(unique(x))
   if(any(sapply(guide,function(i)is.null(i)))){
     warning('codelist contains NULL')
   }else{
@@ -76,7 +76,12 @@ factorize_codelist.character <- function(x,...){
     reserve <- attributes(x)
     reserve$codelist <- NULL
     try(x <- factor(x, levels = levs, labels = labs))
-    if(is.factor(x)) attributes(x) <- c(reserve, attributes(x))
+    if(is.factor(x)){
+      attributes(x) <- c(reserve, attributes(x))
+      x <- as_classified(x)
+    }else{
+      warning('could not coerce to factor, returning character')
+    }
     x
   }
 }

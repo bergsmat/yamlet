@@ -9,5 +9,5 @@ value:
   - event == 'dose': dose of drug administered
   - event == 'conc': serum phenobarbital concentration
  -
-  - event == 'dose': ug/kg
-  - event == 'conc': ug/L
+  - event == 'dose': µg/kg
+  - event == 'conc': µg/L

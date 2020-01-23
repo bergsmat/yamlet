@@ -12,10 +12,12 @@
 \item{...}{passed arguments}
 }
 \value{
-factor
+class 'classified' 'factor'
 }
 \description{
 Coerces character with codelist attribute to factor.
+If attribute 'codelist' is missing, unique values of
+x are supplied.
 }
 \examples{
 example(factorize_codelist.data.fame)

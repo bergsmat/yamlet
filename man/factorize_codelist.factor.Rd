@@ -7,12 +7,12 @@
 \method{factorize_codelist}{factor}(x, ...)
 }
 \arguments{
-\item{x}{presumably vector-like or factor}
+\item{x}{factor}
 
 \item{...}{passed arguments}
 }
 \value{
-factor
+class 'classified' 'factor'
 }
 \description{
 Coerces Codelist to Factor for Factors.

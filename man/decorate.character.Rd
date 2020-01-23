@@ -90,6 +90,7 @@ Other decorate:
 \code{\link{decorations}()}
 
 Other interface: 
+\code{\link{as_classified.factor}()},
 \code{\link{conditionalize.data.frame}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{ggplot.decorated}()},

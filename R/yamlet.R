@@ -447,29 +447,6 @@ decorate.list <- function(
           }
         }
         attr(x[[item]], attrb) <- val[[attrb]]
-        # if(attrb == 'guide'){
-        #   guide <- val[[attrb]]
-        #   # if(is.list(guide)){
-        #   if(length(guide) > 1){
-        #       if(coerce){
-        #       if(any(sapply(guide,function(i)is.null(i)))){
-        #         warning('guide for ', item, ' contains NULL')
-        #       }else{
-        #         labs <- names(guide)
-        #         if(is.null(labs))labs <- rep('',length(guide))
-        #         levs <- unlist(guide)
-        #         if(any(labs == '')){
-        #           # warning('guide for ',item,' contains unlabeled level(s); using level itself')
-        #           labs[labs == ''] <- levs[labs == '']
-        #         }
-        #         reserve <- attributes(x[[item]])
-        #         reserve$guide <- NULL
-        #         try(x[[item]] <- factor(x[[item]], levels = levs, labels = labs))
-        #         if(is.factor(x[[item]])) attributes(x[[item]]) <- c(reserve, attributes(x[[item]]))
-        #       }
-        #     }
-        #   }
-        # }
       }
     }
   }

@@ -323,7 +323,7 @@ test_that('factorize_codelist creates class factor and removes attribute codelis
    x$Creatinine %>% names,
    c('label','levels','class')
  )
- expect_identical(x$Heart$class, 'factor')
+ expect_true('factor' %in% x$Heart$class)
 })
 test_that('user can specify unit instead of units',{
   a <- 'CONC: [ concentration, ng/mL ]' %>% as_yamlet %>% explicit_guide(default = 'unit')
@@ -341,7 +341,7 @@ test_that('resolve correctly classifies conditional elements',{
 test_that('resolve correctly classifies factors',{
   library(magrittr)
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-  expect_identical(file %>% decorate %>% resolve %$% Heart %>% class, 'factor')
+  expect_true(file %>% decorate %>% resolve %$% Heart %>% inherits('factor'))
 })
 test_that('filter, select, mutate, group_by, arrange, summarize and [ do not drop subclass decorated',{
   library(dplyr)
@@ -434,7 +434,11 @@ test_that('conitionalize handles factors like character',{
     c( "test == '\"cant\"'", "test == \"can't\"")
   )
 })
-
-
+test_that('subset classified does not drop label', {
+ a <- as_classified(factor(letters))
+ attr(a, 'label') <- 'foo'
+ a <- a[1:3]
+ expect_identical(attr(a,'label'), 'foo')
+})
 
 
