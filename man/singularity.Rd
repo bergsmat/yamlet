@@ -52,10 +52,12 @@ singularity(
 }
 \seealso{
 Other lab: 
+\code{\link{as_lab.character}()},
 \code{\link{as_lab.list}()},
 \code{\link{as_lab}()},
 \code{\link{ggplot.decorated}()},
-\code{\link{print.ag}()}
+\code{\link{print.ag}()},
+\code{\link{wikisym2plotmath_}()}
 }
 \concept{lab}
 \keyword{internal}

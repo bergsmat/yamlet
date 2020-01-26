@@ -11,6 +11,7 @@
 #' @export
 #' @return see methods
 #' @family explicit_guide
+#' @md
 explicit_guide <- function(x,...)UseMethod('explicit_guide')
 
 #' Coerce Yamlet Guide to Something More Explicit
@@ -21,16 +22,21 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' and encodings.  The idea here is to replace 'guide' with something
 #' explicit in case required downstream.
 #'
-#' The logic is as follows.  If value of 'guide' is of length greater than
-#' one (and data is not supplied), it is assumed to be a 'codelist'
-#' (and this value replaces 'guide').
-#' If, however, it is (\code{\link[encode]{encoded}}), the valued becomes
-#' 'encoding'. Failing those tests, two or more percent signs will flag
-#' it as a 'format' string, i.e. for a date or time class. Otherwise
-#' 'guide' will be replaced with 'units' by default.
+#' The key 'guide' is replaced as follows for the first test
+#' that succeeds, or replaced with the default if none do.
+#'
+#' * If the value of 'guide' is of length greater than
+#' one (and data is not supplied), key becomes 'codelist'.
+#' * If the value of 'guide' \code{\link{is_parseable}},
+#' key becomes 'units'.
+#' * If the value of 'guide' contains two or more percent signs,
+#' key becomes 'format' (i.e. a 'format' string for a date or time class).
+#' * If the value of 'guide' is (\code{\link[encode]{encoded}}),
+#' key becomes 'encoding'.
 #'
 #' If \code{data} is supplied, guides with length greater than one
-#' are checked to see if they evaluate to conditions in data context.
+#' are checked to see if they evaluate to conditions in data context
+#' (see \code{\link{isConditional.list}}).
 #' If so, inferences are based on the first guide element rather
 #' than the guide as a whole.
 #'
@@ -47,11 +53,13 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' @family explicit_guide
 #' @examples
 #' library(magrittr)
-#' 'CONC: [ concentration, ng/mL ]' %>% as_yamlet %>% explicit_guide
-#' 'RACE: [ subject race, [ Caucasian, Latin, Black ]]' %>% as_yamlet %>% explicit_guide
-#' 'RACE: [ subject race, //Caucasian//Latin//Black// ]' %>% as_yamlet %>% explicit_guide
+#' 'CONC: [ concentration, µg/mL ]' %>% as_yamlet %>% explicit_guide
+#' 'RACE: [ subject race, [ Caucasian: 0, Latin: 1, Black: 2 ]]' %>% as_yamlet %>% explicit_guide
+#' 'RACE: [ subject race, //0/Caucasian//1/Latin//2/Black// ]' %>% as_yamlet %>% explicit_guide
 #' 'DATE: [ date, "%Y-%m-%d" ]' %>% as_yamlet %>% explicit_guide
-explicit_guide.yamlet <- function(x, default = 'units', data = NULL, ...){
+#' 'PRSE: [ standard error, "%" ]' %>% as_yamlet %>% explicit_guide
+#'
+explicit_guide.yamlet <- function(x, default = 'guide', data = NULL, ...){
   stopifnot(is.character(default), length(default) == 1)
   if(!is.null(data))stopifnot(is.list(data))
   for(i in seq_along(x)){
@@ -69,8 +77,9 @@ explicit_guide.yamlet <- function(x, default = 'units', data = NULL, ...){
           }
           explicit <- case_when(
             length(val) > 1 ~ 'codelist',
-            encoded(val) ~ 'encoding',
+            is_parseable(val) ~ 'units',
             length(gregexpr(pattern = '%', val)[[1]]) > 1 ~ 'format',
+            encoded(val) ~ 'encoding',
             TRUE ~ default
           )
           explicit <- unique(explicit)
@@ -129,3 +138,62 @@ explicit_guide.data.frame <- function(x, overwrite = TRUE, ...){
   x <- decorate(x, meta = y, overwrite = TRUE, ...)
   x
 }
+
+#' Check Parseable as Units
+#'
+#' Checks if something is parseable as units.
+#' Generic, with default method.
+#'
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @return see methods
+#' @family parseable
+#' @examples
+#' example(is_parseable.character)
+is_parseable <- function(x,...)UseMethod('is_parseable')
+
+
+#' Check Something is Parseable as Units by Default
+#'
+#' Checks if something is parseable as units.
+#' Tests against the udunits library in \pkg{units}.
+#' See \code{\link[units]{as_units}}.
+#' See also \code{\link[units]{install_symbolic_unit}}
+#' for finer control.
+#'
+#' @param x character
+#' @param ... passed arguments
+#' @export
+#' @importFrom units as_units
+#' @return logical
+#' @family parseable
+#' @family interface
+#' @examples
+#' is_parseable(c('kg/m2','kg/m^2','kg.m/s2','µg/L'))
+#' is_parseable('foo')
+#' library(units)
+#' install_symbolic_unit('foo')
+#' is_parseable('foo')
+#'
+is_parseable.default <- function(x,...){
+  res <- sapply(x, .is_parseable.default, ..., USE.NAMES = FALSE)
+  res
+}
+
+.is_parseable.default <- function(x,...){
+  stopifnot(length(x) == 1)
+  res <- try(
+    silent = TRUE,
+    suppressWarnings(
+      suppressMessages(
+        as_units(x,...)
+      )
+    )
+  )
+  res <- !inherits(res, 'try-error')
+  res
+}
+
+

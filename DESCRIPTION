@@ -1,7 +1,7 @@
 Package: yamlet
 Type: Package
 Title: Versatile Curation of Table Metadata
-Version: 0.3.4
+Version: 0.3.5
 Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>
 Description: The 'yamlet' package implements a file-based
@@ -17,7 +17,7 @@ Description: The 'yamlet' package implements a file-based
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: yaml, csv (>= 0.5.4), encode, 
+Imports: yaml, csv (>= 0.5.4), encode, units,
  ggplot2, knitr, dplyr (>= 0.8.1), rlang
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr

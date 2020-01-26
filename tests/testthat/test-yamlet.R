@@ -325,10 +325,10 @@ test_that('factorize_codelist creates class factor and removes attribute codelis
  )
  expect_true('factor' %in% x$Heart$class)
 })
-test_that('user can specify unit instead of units',{
-  a <- 'CONC: [ concentration, ng/mL ]' %>% as_yamlet %>% explicit_guide(default = 'unit')
-  expect_identical(names(a$CONC), c('label','unit'))
-})
+# test_that('user can specify unit instead of units',{
+#   a <- 'CONC: [ concentration, ng/mL ]' %>% as_yamlet %>% explicit_guide(default = 'unit')
+#   expect_identical(names(a$CONC), c('label','unit'))
+# })
 test_that('resolve correctly classifies conditional elements',{
   file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
   x <- decorate(file)
@@ -441,4 +441,52 @@ test_that('subset classified does not drop label', {
  expect_identical(attr(a,'label'), 'foo')
 })
 
+test_that('is_parseable distinguishes udunits from non-udunits',{
+  expect_identical(
+    is_parseable(c('kg/m2','kg/m^2','foo','kg.m/s2','µg/L')),
+    c(TRUE, TRUE, FALSE, TRUE, TRUE)
+  )
+})
+test_that('is_pareseable is vectorized',{
+  expect_identical(
+    is_parseable(c('kg/m2','kg/m^2','foo','kg.m/s2','µg/L')),
+    c(TRUE, TRUE, FALSE, TRUE, TRUE)
+  )
+})
+test_that('is_parseable respects locally-defined units',{
+  library(units)
+  expect_false(is_parseable('foo'))
+  install_symbolic_unit('foo')
+  expect_true(is_parseable('foo'))
+  remove_symbolic_unit('foo')
+  expect_false(is_parseable('foo'))
+})
+test_that('labels parsed and unparsed, with and without units, display correctly',{
+  library(magrittr)
+  library(ggplot2)
+  Theoph %<>% as.data.frame
+  Theoph %<>% as_decorated
+  options(yamlet_enclose = c('[ ',' ]'))
+  Theoph$conc %<>% structure(label = 'Theophylline concentration', units = 'µg/m^2')
+  Theoph$Time %<>% structure(label = 'time since administration', units = 'h')
+  ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
+  options(yamlet_label_parse = TRUE)
+  ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
 
+
+})
+test_that('R reserved words survive in print.ag labels',{
+
+})
+test_that('global and passed values of parse and enclose are respected by as_lab',{
+
+})
+test_that('as_lab respects user-supplied parse function',{
+
+})
+test_that('as_lab displays micrograms correctly',{
+
+})
+test_that('as_lab(parse = TRUE) respects wikisym in label',{
+
+})

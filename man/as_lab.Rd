@@ -9,20 +9,22 @@ as_lab(x, ...)
 \arguments{
 \item{x}{object}
 
-\item{...}{passed arguments}
+\item{...}{passed to other methods}
 }
 \value{
-see methods; typically length-one character
+character, or expression if parse is TRUE
 }
 \description{
 Converts to axis label. Generic, with method \code{\link{as_lab.list}}.
 }
 \seealso{
 Other lab: 
+\code{\link{as_lab.character}()},
 \code{\link{as_lab.list}()},
 \code{\link{ggplot.decorated}()},
 \code{\link{print.ag}()},
-\code{\link{singularity}()}
+\code{\link{singularity}()},
+\code{\link{wikisym2plotmath_}()}
 }
 \concept{lab}
 \keyword{internal}

@@ -83,9 +83,11 @@ scale_color_gradientn(colours = rainbow(4))
 }
 \seealso{
 Other lab: 
+\code{\link{as_lab.character}()},
 \code{\link{as_lab.list}()},
 \code{\link{as_lab}()},
 \code{\link{ggplot.decorated}()},
-\code{\link{singularity}()}
+\code{\link{singularity}()},
+\code{\link{wikisym2plotmath_}()}
 }
 \concept{lab}

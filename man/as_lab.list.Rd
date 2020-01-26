@@ -9,6 +9,7 @@
   default,
   collapse = "\\n",
   enclose = getOption("yamlet_enclose", default = c("(", ")")),
+  parse = getOption("yamlet_label_parse", FALSE),
   data,
   ...
 )
@@ -22,9 +23,11 @@
 
 \item{enclose}{length-two character for enclosing unit}
 
+\item{parse}{whether to convert to expression, or function to do the same}
+
 \item{data}{data.frame for resolving competing named values}
 
-\item{...}{ignored}
+\item{...}{passed to other methods}
 }
 \value{
 length-one character
@@ -41,6 +44,11 @@ the supplied data. If a suitable value is
 found, it is chosen as a substitute.  See
 \code{\link{singularity}} for search logic.
 }
+\details{
+If \code{parse} is TRUE, \code{\link{as_lab.character}}
+is called by default; supply your own function
+as the value of \code{parse} for finer control.
+}
 \examples{
 meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(meta)
@@ -49,9 +57,11 @@ as_lab(attributes(x$time), 'time', enclose = c('[ ',' ]'))
 }
 \seealso{
 Other lab: 
+\code{\link{as_lab.character}()},
 \code{\link{as_lab}()},
 \code{\link{ggplot.decorated}()},
 \code{\link{print.ag}()},
-\code{\link{singularity}()}
+\code{\link{singularity}()},
+\code{\link{wikisym2plotmath_}()}
 }
 \concept{lab}

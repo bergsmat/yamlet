@@ -4,7 +4,7 @@
 \alias{explicit_guide.yamlet}
 \title{Coerce Yamlet Guide to Something More Explicit}
 \usage{
-\method{explicit_guide}{yamlet}(x, default = "units", data = NULL, ...)
+\method{explicit_guide}{yamlet}(x, default = "guide", data = NULL, ...)
 }
 \arguments{
 \item{x}{yamlet}
@@ -26,25 +26,32 @@ and encodings.  The idea here is to replace 'guide' with something
 explicit in case required downstream.
 }
 \details{
-The logic is as follows.  If value of 'guide' is of length greater than
-one (and data is not supplied), it is assumed to be a 'codelist'
-(and this value replaces 'guide').
-If, however, it is (\code{\link[encode]{encoded}}), the valued becomes
-'encoding'. Failing those tests, two or more percent signs will flag
-it as a 'format' string, i.e. for a date or time class. Otherwise
-'guide' will be replaced with 'units' by default.
+The key 'guide' is replaced as follows for the first test
+that succeeds, or replaced with the default if none do.
+
+* If the value of 'guide' is of length greater than
+one (and data is not supplied), key becomes 'codelist'.
+* If the value of 'guide' \code{\link{is_parseable}},
+key becomes 'units'.
+* If the value of 'guide' contains two or more percent signs,
+key becomes 'format' (i.e. a 'format' string for a date or time class).
+* If the value of 'guide' is (\code{\link[encode]{encoded}}),
+key becomes 'encoding'.
 
 If \code{data} is supplied, guides with length greater than one
-are checked to see if they evaluate to conditions in data context.
+are checked to see if they evaluate to conditions in data context
+(see \code{\link{isConditional.list}}).
 If so, inferences are based on the first guide element rather
 than the guide as a whole.
 }
 \examples{
 library(magrittr)
-'CONC: [ concentration, ng/mL ]' \%>\% as_yamlet \%>\% explicit_guide
-'RACE: [ subject race, [ Caucasian, Latin, Black ]]' \%>\% as_yamlet \%>\% explicit_guide
-'RACE: [ subject race, //Caucasian//Latin//Black// ]' \%>\% as_yamlet \%>\% explicit_guide
+'CONC: [ concentration, Âµg/mL ]' \%>\% as_yamlet \%>\% explicit_guide
+'RACE: [ subject race, [ Caucasian: 0, Latin: 1, Black: 2 ]]' \%>\% as_yamlet \%>\% explicit_guide
+'RACE: [ subject race, //0/Caucasian//1/Latin//2/Black// ]' \%>\% as_yamlet \%>\% explicit_guide
 'DATE: [ date, "\%Y-\%m-\%d" ]' \%>\% as_yamlet \%>\% explicit_guide
+'PRSE: [ standard error, "\%" ]' \%>\% as_yamlet \%>\% explicit_guide
+
 }
 \seealso{
 Other explicit_guide: 

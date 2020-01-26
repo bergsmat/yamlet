@@ -58,6 +58,7 @@ Other interface:
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
 \code{\link{io_yamlet.character}()},
+\code{\link{is_parseable.default}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.data.frame}()},
 \code{\link{write_yamlet}()}

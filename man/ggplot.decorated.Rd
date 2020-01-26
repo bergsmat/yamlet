@@ -33,10 +33,12 @@ example(print.ag)
 }
 \seealso{
 Other lab: 
+\code{\link{as_lab.character}()},
 \code{\link{as_lab.list}()},
 \code{\link{as_lab}()},
 \code{\link{print.ag}()},
-\code{\link{singularity}()}
+\code{\link{singularity}()},
+\code{\link{wikisym2plotmath_}()}
 
 Other interface: 
 \code{\link{as_classified.factor}()},
@@ -49,6 +51,7 @@ Other interface:
 \code{\link{io_table.data.frame}()},
 \code{\link{io_yamlet.character}()},
 \code{\link{io_yamlet.data.frame}()},
+\code{\link{is_parseable.default}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.data.frame}()},
 \code{\link{write_yamlet}()}

@@ -1,9 +1,82 @@
+#' Coerce Character to Axis Label
+#'
+#' Converts character to axis label, optionally returning an expression
+#' intended as \code{\link{plotmath}}.  Respecting units, the intent
+#' is to support udunits syntax (\code{\link[units]{as_unit}}).
+#'
+#' If \code{parse} is FALSE, \code{units} (if any) are enclosed
+#' in \code{enclose}, and appended to \code{x} with a space
+#' separator. If \code{parse} is a function (or its name), it is passed
+#' all arguments and the result is returned.
+#' if\code{parse} is TRUE, arguments are processed as follows:
+#'
+#' * label is converted using \code{\link{wikisym2plotmath}},
+#' * spaces in the label are then replaced with plotmath space,
+#' * units if present are converted using \code{\link{wikisym2plotmath}},
+#' * units will be enclosed using \code{enclose} values with \code{group()},
+#' * label and units(if any) will be combined using \code{paste}, and
+#' * the result is returned as an expression.
+
+#' @param x character
+#' @param units value to use for units
+#' @param enclose length-two character for enclosing unit
+#' @param parse whether to convert to expression, or function to do the same
+#' @param ... passed arguments
+#' @return character, or expression if parse is TRUE.
+#' @export
+#' @keywords internal
+#' @family lab
+as_lab.character <- function(
+  x,
+  units = character(0),
+  enclose = getOption('yamlet_enclose', default = c('(',')')),
+  parse = getOption('yamlet_label_parse', FALSE),
+  ...
+){
+    # u <- paste0(enclose[[1]], u, enclose[[2]])
+  # out <- paste(out, u)
+  stopifnot(length(x) == 1)
+  stopifnot(length(units) <= 1)
+  stopifnot(length(enclose) == 2)
+  if(!is.logical(parse)){
+    fun <- try(silent = TRUE, match.fun(parse))
+    if(inherits(fun, 'try-error')){
+      warning('could not coerce parse to function')
+      parse <- FALSE
+    }else{
+      return(
+        fun(parse)(x = x, units = units, enclose = enclose, ...)
+      )
+    }
+  }
+  # now parse is logical
+  stopifnot(length(parse) == 1)
+  if(!parse){
+    return(
+      paste(
+        x,
+        paste0(enclose[[1]], units, enclose[[2]])
+      )
+    )
+  }
+  # now parse is true, no function passed
+  label <- wikisym2plotmath(x)
+  label <- gsub(' ','~ ~',label)
+  if(length(units)){
+    units <- wikisym2plotmath(units)
+    units <-paste0('group("', enclose[[1]],'"', units, '"', enclose[[2]], '"',')')
+    label <- paste0('paste(', label, ',', units, ')')
+  }
+  res <- parse(text = label)
+  res
+}
+
 #' Coerce to Axis Label
 #'
 #' Converts to axis label. Generic, with method \code{\link{as_lab.list}}.
 #' @param x object
-#' @param ... passed arguments
-#' @return see methods; typically length-one character
+#' @param ... passed to other methods
+#' @return character, or expression if parse is TRUE
 #' @export
 #' @keywords internal
 #' @family lab
@@ -22,12 +95,17 @@ as_lab <- function(x,...)UseMethod('as_lab')
 #' found, it is chosen as a substitute.  See
 #' \code{\link{singularity}} for search logic.
 #'
+#' If \code{parse} is TRUE, \code{\link{as_lab.character}}
+#' is called by default; supply your own function
+#' as the value of \code{parse} for finer control.
+#'
 #' @param x list, such as returned by \code{\link{attributes}}.
 #' @param default a value to return by default
 #' @param collapse character: separator for collapsing multi-line units
 #' @param enclose length-two character for enclosing unit
 #' @param data data.frame for resolving competing named values
-#' @param ... ignored
+#' @param parse whether to convert to expression, or function to do the same
+#' @param ... passed to other methods
 #' @return length-one character
 #' @export
 #' @family lab
@@ -41,6 +119,7 @@ as_lab.list <- function(
   default,
   collapse = '\n',
   enclose = getOption('yamlet_enclose', default = c('(',')')),
+  parse = getOption('yamlet_label_parse', FALSE),
   data,
   ...
 ){
@@ -64,34 +143,34 @@ as_lab.list <- function(
       }
     }
   }
-  more <- character(0)
-  if('units' %in% names(x)) more <- x$units
-  if('unit' %in% names(x)) more <- x$unit
-  if('guide' %in% names(x)) more <- x$guide # such as encoding or unit
+  u <- character(0)
+  if('units' %in% names(x)) u <- x$units
+  if('unit' %in% names(x)) u <- x$unit
+  if('guide' %in% names(x)) u <- x$guide # such as encoding or unit
   # if(length(x$guide) == 1)
-  #if(length(more) > 1) more <- paste(more, collapse = collapse)
-  if(length(more) > 1){ # named levels? or conditional units?
-    dex <- singularity(names(more), data)
+  #if(length(u) > 1) u <- paste(u, collapse = collapse)
+  if(length(u) > 1){ # named levels? or conditional units?
+    dex <- singularity(names(u), data)
     if(!is.na(dex)){
       if(dex > 0){
-         more <- more[[dex]]
+         u <- u[[dex]]
       }else{
-        more <- character(0)
+        u <- character(0)
       }
     }else{
-      more <- character(0)
+      u <- character(0)
     }
   }
-  if(length(more)) {
-    # at this point, more should be length-one character
+  if(length(u)) {
+    # at this point, u should be length-one character
     # just in case, we can collapse it to ensure singularity
-    if(length(more) > 1){
-      more <- paste(more, collapse = collapse)
+    if(length(u) > 1){
+      u <- paste(u, collapse = collapse)
     }
-    more <- paste0(enclose[[1]], more, enclose[[2]])
-    out <- paste(out, more)
   }
-  out
+  # pass to as_lab.character
+  res <- as_lab(x = out, units = u, enclose = enclose, parse = parse, ... )
+  res
 }
 
 
