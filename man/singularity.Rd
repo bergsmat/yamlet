@@ -56,8 +56,7 @@ Other lab:
 \code{\link{as_lab.list}()},
 \code{\link{as_lab}()},
 \code{\link{ggplot.decorated}()},
-\code{\link{print.ag}()},
-\code{\link{wikisym2plotmath_}()}
+\code{\link{print.ag}()}
 }
 \concept{lab}
 \keyword{internal}

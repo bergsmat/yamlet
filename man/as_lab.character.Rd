@@ -29,7 +29,7 @@ character, or expression if parse is TRUE.
 \description{
 Converts character to axis label, optionally returning an expression
 intended as \code{\link{plotmath}}.  Respecting units, the intent
-is to support udunits syntax (\code{\link[units]{as_unit}}).
+is to support udunits syntax (\code{\link[units]{as_units}}).
 }
 \details{
 If \code{parse} is FALSE, \code{units} (if any) are enclosed
@@ -38,9 +38,9 @@ separator. If \code{parse} is a function (or its name), it is passed
 all arguments and the result is returned.
 if\code{parse} is TRUE, arguments are processed as follows:
 
-* label is converted using \code{\link{wikisym2plotmath}},
+* label is converted using \code{\link{as_wikisymbol}} and \code{\link{as_plotmath}},
 * spaces in the label are then replaced with plotmath space,
-* units if present are converted using \code{\link{wikisym2plotmath}},
+* units if present are converted similarly,
 * units will be enclosed using \code{enclose} values with \code{group()},
 * label and units(if any) will be combined using \code{paste}, and
 * the result is returned as an expression.
@@ -51,8 +51,7 @@ Other lab:
 \code{\link{as_lab}()},
 \code{\link{ggplot.decorated}()},
 \code{\link{print.ag}()},
-\code{\link{singularity}()},
-\code{\link{wikisym2plotmath_}()}
+\code{\link{singularity}()}
 }
 \concept{lab}
 \keyword{internal}

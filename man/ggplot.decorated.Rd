@@ -37,8 +37,7 @@ Other lab:
 \code{\link{as_lab.list}()},
 \code{\link{as_lab}()},
 \code{\link{print.ag}()},
-\code{\link{singularity}()},
-\code{\link{wikisym2plotmath_}()}
+\code{\link{singularity}()}
 
 Other interface: 
 \code{\link{as_classified.factor}()},

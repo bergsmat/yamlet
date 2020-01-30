@@ -61,7 +61,6 @@ Other lab:
 \code{\link{as_lab}()},
 \code{\link{ggplot.decorated}()},
 \code{\link{print.ag}()},
-\code{\link{singularity}()},
-\code{\link{wikisym2plotmath_}()}
+\code{\link{singularity}()}
 }
 \concept{lab}

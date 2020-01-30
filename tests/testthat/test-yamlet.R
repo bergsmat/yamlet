@@ -466,8 +466,8 @@ test_that('labels parsed and unparsed, with and without units, display correctly
   library(ggplot2)
   Theoph %<>% as.data.frame
   Theoph %<>% as_decorated
-  options(yamlet_enclose = c('[ ',' ]'))
-  Theoph$conc %<>% structure(label = 'Theophylline concentration', units = 'µg/m^2')
+  options(yamlet_enclose = c('[',']'))
+  Theoph$conc %<>% structure(label = 'CO[2] concentration', units = 'µg/m^2')
   Theoph$Time %<>% structure(label = 'time since administration', units = 'h')
   ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
   options(yamlet_label_parse = TRUE)
@@ -488,5 +488,11 @@ test_that('as_lab displays micrograms correctly',{
 
 })
 test_that('as_lab(parse = TRUE) respects wikisym in label',{
+
+})
+test_that('enclose can be arbitrary characters',{
+
+})
+test_that('units not enclosed if label is length zero',{
 
 })

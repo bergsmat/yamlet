@@ -2,7 +2,7 @@
 #'
 #' Converts character to axis label, optionally returning an expression
 #' intended as \code{\link{plotmath}}.  Respecting units, the intent
-#' is to support udunits syntax (\code{\link[units]{as_unit}}).
+#' is to support udunits syntax (\code{\link[units]{as_units}}).
 #'
 #' If \code{parse} is FALSE, \code{units} (if any) are enclosed
 #' in \code{enclose}, and appended to \code{x} with a space
@@ -10,9 +10,9 @@
 #' all arguments and the result is returned.
 #' if\code{parse} is TRUE, arguments are processed as follows:
 #'
-#' * label is converted using \code{\link{wikisym2plotmath}},
+#' * label is converted using \code{\link{as_wikisymbol}} and \code{\link{as_plotmath}},
 #' * spaces in the label are then replaced with plotmath space,
-#' * units if present are converted using \code{\link{wikisym2plotmath}},
+#' * units if present are converted similarly,
 #' * units will be enclosed using \code{enclose} values with \code{group()},
 #' * label and units(if any) will be combined using \code{paste}, and
 #' * the result is returned as an expression.
@@ -60,11 +60,13 @@ as_lab.character <- function(
     )
   }
   # now parse is true, no function passed
-  label <- wikisym2plotmath(x)
-  label <- gsub(' ','~ ~',label)
+  label <- as_plotmath(as_wikisymbol(x))
+  label <- gsub(' ','phantom(0)',label)
   if(length(units)){
-    units <- wikisym2plotmath(units)
-    units <-paste0('group("', enclose[[1]],'"', units, '"', enclose[[2]], '"',')')
+    units <- as_plotmath(as_wikisymbol(units))
+    if(nchar(label)){
+      units <-paste0('~~group("', enclose[[1]],'",', units, ',"', enclose[[2]], '"',')')
+    }
     label <- paste0('paste(', label, ',', units, ')')
   }
   res <- parse(text = label)
