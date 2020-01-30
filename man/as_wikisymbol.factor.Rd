@@ -17,7 +17,7 @@ wikisymbol
 \description{
 Coerces factor to class 'wikisymbol'
 by converting to character and calling
-\code{\link{as_wikisymbol.character}}.
+\code{\link{as_wikisymbol}}.
 }
 \examples{
 as_wikisymbol(as.factor('V_c./F'))
@@ -36,6 +36,7 @@ Other wikisymbol:
 \code{\link{as_plotmath.wikisymbol}()},
 \code{\link{as_plotmath}()},
 \code{\link{as_wikisymbol.character}()},
+\code{\link{as_wikisymbol.symbolic_units}()},
 \code{\link{as_wikisymbol}()},
 \code{\link{wikisym2latex_}()},
 \code{\link{wikisym2plotmath_}()}

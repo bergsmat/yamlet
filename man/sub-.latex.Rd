@@ -42,6 +42,7 @@ Other wikisymbol:
 \code{\link{as_plotmath}()},
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.factor}()},
+\code{\link{as_wikisymbol.symbolic_units}()},
 \code{\link{as_wikisymbol}()},
 \code{\link{wikisym2latex_}()},
 \code{\link{wikisym2plotmath_}()}

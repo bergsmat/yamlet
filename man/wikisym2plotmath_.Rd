@@ -16,18 +16,9 @@ character
 }
 \description{
 Converts one wiki symbol to plotmath.
-}
-\details{
-A Wiki symbol is simple text with arbitrarily
-nested subscript (\code{_}) and superscript
-(\code{^}) groupings.  Use dot (\code{.})
-to explicitly terminate a grouping, and use
-backslash-dot (\code{\.}) for a literal dot.
-Examples: \code{V_c./F}. Trailing dots need
-not be supplied. Leading/trailing whitespace
-is removed. Tab character not allowed.
-Space characters converted to plotmath space
-(\code{phantom(0)}).
+See description for \code{\link{as_wikisymbol}}.
+Space characters are converted to plotmath space
+(\code{phantom(0)}). Asterix is converted to \code{\%.\%}.
 }
 \examples{
 x <- c(
@@ -54,6 +45,7 @@ Other wikisymbol:
 \code{\link{as_plotmath}()},
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.factor}()},
+\code{\link{as_wikisymbol.symbolic_units}()},
 \code{\link{as_wikisymbol}()},
 \code{\link{wikisym2latex_}()}
 }

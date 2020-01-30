@@ -16,14 +16,7 @@ wikisymbol
 }
 \description{
 Coerces character to class 'wikisymbol'.
-A Wiki symbol is simple text with arbitrarily
-nested subscript (\code{_}) and superscript
-(\code{^}) groupings.  Use dot (\code{.})
-to explicitly terminate a grouping, and use
-backslash-dot (\code{\.}) for a literal dot.
-Examples: \code{V_c./F}. Trailing dots need
-not be supplied. Leading/trailing whitespace
-is removed. Tab character not allowed.
+See description for \code{\link{as_wikisymbol}}.
 }
 \examples{
 as_wikisymbol('V_c./F')
@@ -42,6 +35,7 @@ Other wikisymbol:
 \code{\link{as_plotmath.wikisymbol}()},
 \code{\link{as_plotmath}()},
 \code{\link{as_wikisymbol.factor}()},
+\code{\link{as_wikisymbol.symbolic_units}()},
 \code{\link{as_wikisymbol}()},
 \code{\link{wikisym2latex_}()},
 \code{\link{wikisym2plotmath_}()}

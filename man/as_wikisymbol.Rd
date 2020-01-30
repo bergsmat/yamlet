@@ -20,11 +20,12 @@ with method \code{\link{as_wikisymbol.character}}.
 A Wiki symbol is simple text with arbitrarily
 nested subscript (\code{_}) and superscript
 (\code{^}) groupings.  Use dot (\code{.})
-to explicitly terminate a grouping, and use
-backslash-dot (\code{\.}) for a literal dot.
-Examples: \code{V_c./F}. Trailing dots need
-not be supplied. Leading/trailing whitespace
-is removed. Tab character not allowed.
+to explicitly terminate a grouping.
+Use asterisk(\code{*}) to suggest multiplication.
+Escape specials with a backslash.
+Trailing dots need not be supplied.
+Leading/trailing whitespace is removed.
+Tab character not allowed.
 }
 \examples{
 example(as_wikisymbol.character)
@@ -44,6 +45,7 @@ Other wikisymbol:
 \code{\link{as_plotmath}()},
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.factor}()},
+\code{\link{as_wikisymbol.symbolic_units}()},
 \code{\link{wikisym2latex_}()},
 \code{\link{wikisym2plotmath_}()}
 }

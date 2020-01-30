@@ -16,6 +16,15 @@ character
 }
 \description{
 Converts one wiki symbol to latex.
+See description for \code{\link{as_wikisymbol}}.
+These have special meaning in Wiki Symbol
+and may be escaped with a backslash:
+\code{\ * ^ _ .}.
+These have special meaning in latex:
+\code{& \% $ # _ { } ~ ^ \ }.
+These have special meaning in both
+wikisymbol and latex:
+\code{\ ^ _ }.
 }
 \details{
 A Wiki symbol is simple text with arbitrarily
@@ -52,6 +61,7 @@ Other wikisymbol:
 \code{\link{as_plotmath}()},
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.factor}()},
+\code{\link{as_wikisymbol.symbolic_units}()},
 \code{\link{as_wikisymbol}()},
 \code{\link{wikisym2plotmath_}()}
 }

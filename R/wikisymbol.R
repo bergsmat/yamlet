@@ -5,11 +5,12 @@
 #' A Wiki symbol is simple text with arbitrarily
 #' nested subscript (\code{_}) and superscript
 #' (\code{^}) groupings.  Use dot (\code{.})
-#' to explicitly terminate a grouping, and use
-#' backslash-dot (\code{\.}) for a literal dot.
-#' Examples: \code{V_c./F}. Trailing dots need
-#' not be supplied. Leading/trailing whitespace
-#' is removed. Tab character not allowed.
+#' to explicitly terminate a grouping.
+#' Use asterisk(\code{*}) to suggest multiplication.
+#' Escape specials with a backslash.
+#' Trailing dots need not be supplied.
+#' Leading/trailing whitespace is removed.
+#' Tab character not allowed.
 #'
 #' @param x object
 #' @param ... passed arguments
@@ -24,14 +25,7 @@ as_wikisymbol <- function(x, ...)UseMethod('as_wikisymbol')
 #' Coerce Character to Wiki Symbol
 #'
 #' Coerces character to class 'wikisymbol'.
-#' A Wiki symbol is simple text with arbitrarily
-#' nested subscript (\code{_}) and superscript
-#' (\code{^}) groupings.  Use dot (\code{.})
-#' to explicitly terminate a grouping, and use
-#' backslash-dot (\code{\.}) for a literal dot.
-#' Examples: \code{V_c./F}. Trailing dots need
-#' not be supplied. Leading/trailing whitespace
-#' is removed. Tab character not allowed.
+#' See description for \code{\link{as_wikisymbol}}.
 #'
 #' @param x character
 #' @param ... ignored arguments
@@ -52,7 +46,7 @@ as_wikisymbol.character <- function(x, ...){
 #'
 #' Coerces factor to class 'wikisymbol'
 #' by converting to character and calling
-#' \code{\link{as_wikisymbol.character}}.
+#' \code{\link{as_wikisymbol}}.
 #'
 #' @param x factor
 #' @param ... ignored arguments
@@ -150,17 +144,9 @@ as_latex.wikisymbol <- function(x, ...){
 #' Convert One Wiki Symbol to Plotmath
 #'
 #' Converts one wiki symbol to plotmath.
-#'
-#' A Wiki symbol is simple text with arbitrarily
-#' nested subscript (\code{_}) and superscript
-#' (\code{^}) groupings.  Use dot (\code{.})
-#' to explicitly terminate a grouping, and use
-#' backslash-dot (\code{\.}) for a literal dot.
-#' Examples: \code{V_c./F}. Trailing dots need
-#' not be supplied. Leading/trailing whitespace
-#' is removed. Tab character not allowed.
-#' Space characters converted to plotmath space
-#' (\code{phantom(0)}).
+#' See description for \code{\link{as_wikisymbol}}.
+#' Space characters are converted to plotmath space
+#' (\code{phantom(0)}). Asterix is converted to \code{\%.\%}.
 #'
 #' @export
 #' @keywords internal
@@ -182,7 +168,7 @@ wikisym2plotmath_ <- function(x, ...){
   if(grepl('\t',x)) stop('tab character not allowed in wikisymbol')
   x <- sub('^\\s+','',x) # strip leading whitespace
   x <- sub('\\s+$','',x) # strip trailing whitespace
-  x <- gsub('\\.', '\t',x,fixed = TRUE) # store literal dot as single character
+# x <- gsub('\\.', '\t',x,fixed = TRUE) # store literal dot as single character
   x <- strsplit(x,'')[[1]] # tokenize
   y <- character(0) # result accumulator
   b <- character(0) # closer stack
@@ -190,6 +176,16 @@ wikisym2plotmath_ <- function(x, ...){
     c <- x[1]
     x <- x[-1]
     t <- c # default
+    # handle escapes
+    if(c == '\\'){ # encountered escape character
+      if(length(x)){ # still have characters remaining
+        e <- x[1]
+        if (e %in% c('\\','*','^', '_', '.')){ # attempt to escape something
+          x <- x[-1] # pull it out of line
+          t <- e
+        }
+      }
+    }
     if(c == '_'){
       t <- '['  # subscript initiator
       b <- append(b,']') # subscript closer
@@ -202,8 +198,9 @@ wikisym2plotmath_ <- function(x, ...){
       t <- b[length(b)]
       b <- b[-length(b)] # drop from stack
     }
-    if(c == '\t') t <- '.'  # literal dot
-    if(c == ' ') t <- '*phantom(0)*'
+  # if(c == '\t') t <- '.'  # literal dot
+    if(c == '*') t <- '%.%'
+    # if(c == ' ') t <- '*phantom(0)*'
 
     # accumulate
     y <- paste0(y,t)
@@ -213,12 +210,32 @@ wikisym2plotmath_ <- function(x, ...){
   # empty closer stack
   b <- paste(rev(b),collapse = '')
   y <- paste0(y,b)
+  .reserved <- c(
+    'if', 'else', 'repeat', 'while',
+    'function', 'for', 'in', 'next', 'break',
+    'TRUE', 'FALSE', 'NULL', 'Inf', 'NaN', 'NA', 'NA_integer_',
+    'NA_real_', 'NA_complex_', 'NA_character_',
+    '...', '%' #https://stackoverflow.com/questions/17334759/subscript-letters-in-ggplot-axis-label
+  )
+  # handle reserves
+  s <- strsplit(y, ' ', fixed = TRUE)[[1]]
+  s[s %in% .reserved] <- paste0('"', s[s %in% .reserved], '"') #  quote reserves
+  y <- paste(y, collapse = '*phantom(0)*')
   y
 }
 
 #' Convert One Wiki Symbol to Latex
 #'
 #' Converts one wiki symbol to latex.
+#' See description for \code{\link{as_wikisymbol}}.
+#' These have special meaning in Wiki Symbol
+#' and may be escaped with a backslash:
+#' \code{\ * ^ _ .}.
+#' These have special meaning in latex:
+#' \code{& \% $ # _ { } ~ ^ \ }.
+#' These have special meaning in both
+#' wikisymbol and latex:
+#' \code{\ ^ _ }.
 #'
 #' A Wiki symbol is simple text with arbitrarily
 #' nested subscript (\code{_}) and superscript
@@ -249,7 +266,7 @@ wikisym2latex_ <- function(x, ...){
   if(grepl('\t',x)) stop('tab character not allowed in wikisymbol')
   x <- sub('^\\s+','',x) # strip leading whitespace
   x <- sub('\\s+$','',x) # strip trailing whitespace
-  x <- gsub('\\.', '\t',x,fixed = TRUE) # store literal dot as single character
+# x <- gsub('\\.', '\t',x,fixed = TRUE) # store literal dot as single character
   x <- strsplit(x,'')[[1]] # tokenize
   y <- character(0) # result accumulator
   b <- character(0) # closer stack
@@ -257,6 +274,28 @@ wikisym2latex_ <- function(x, ...){
     c <- x[1]
     x <- x[-1]
     t <- c # default
+
+    w <- c('\\',             '*',   '^',   '_', '.') # special in wiki
+    w2<- c('\\textbackslash','*', '\\^', '\\_', '.') # use in latex
+
+    l <- c(  '&',  '%',  '$',  '#',  '_',  '{',  '}','~',                '^',               '\\'             ) # special in latex
+    l2<- c('\\&','\\%','\\$','\\#','\\_','\\{','\\}','\\textasciitilde','\\textasciicircum','\\textbackslash') # use in latex
+
+    # handle escapes
+    if(c == '\\'){ # encountered escape character
+      if(length(x)){ # still have characters remaining
+        e <- x[1]
+        if (e %in% w){ # attempt to escape something
+          x <- x[-1] # pull it out of line
+          t <- w2[match(e, w)] # look up replacement
+        }else{ # escape something unrecognized
+          t <- e # pass-through
+        }
+      }else{ # terminal escape character
+             # do nothing
+      }
+    }
+    # handle wiki specials
     if(c == '_'){
       t <- '_{'  # subscript initiator
       b <- append(b,'}') # subscript closer
@@ -269,8 +308,11 @@ wikisym2latex_ <- function(x, ...){
       t <- b[length(b)]
       b <- b[-length(b)] # drop from stack
     }
-    if(c == '\t') t <- '.'  # literal dot
-
+ #  if(c == '\t') t <- '.'  # literal dot
+    # handle latex specials
+    if(c %in% l){
+      t <- l2[match(c, l)]
+    }
     # accumulate
     y <- paste0(y,t)
   }
@@ -282,13 +324,7 @@ wikisym2latex_ <- function(x, ...){
   y
 }
 
-# .reserved <- c(
-#   'if', 'else', 'repeat', 'while',
-#   'function', 'for', 'in', 'next', 'break',
-#    'TRUE', 'FALSE', 'NULL', 'Inf', 'NaN', 'NA', 'NA_integer_',
-#   'NA_real_', 'NA_complex_', 'NA_character_',
-#   '...'
-# )
+
 
 #' Coerce Plotmath to Expression
 #'
@@ -494,6 +530,35 @@ parse_one <- function(x){
   y <- NextMethod()
   # contrasts and levels will have been handled
   class(y) <- union('latex', class(y))
+  y
+}
+
+#' Coerce Symbolic Units to Wiki Symbol.
+#'
+#' Coerces symbolic units to wikisymbol.  A literal dot
+#' means different things in wikisymbol vs. units,
+#' and there may be some other subtleties as well.
+#' @param x units; see \code{\link[units]{as_units}}
+#' @param ... ignored arguments
+#' @export
+#' @family wikisymbol
+#' @return units
+#' @examples
+#' library(units)
+#' x <- as_units('kg.m/s^2')
+#' names(attributes(x))
+#' y <- attr(x,'units')
+#' class(y)
+#' as.character(y)
+#' as.character(attr(x, 'units'))
+#' as_wikisymbol(y)
+#' library(magrittr)
+#' 'kg.m^2/s^2' %>% as_units %>% attr('units') %>% as_wikisymbol
+as_wikisymbol.symbolic_units <- function(x, ...){
+  y <- as.character(x)
+  y <- gsub('\\.','*',y) # \u22c5 https://en.wikipedia.org/wiki/Interpunct
+  y <- gsub('\\^([0-9])+','^\\1.',y)
+  y <- as_wikisymbol(y)
   y
 }
 
