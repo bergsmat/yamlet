@@ -2,21 +2,14 @@
 #'
 #' Converts one wiki symbol to latex.
 #' See description for \code{\link{as_wikisymbol}}.
-#' These have special meaning in Wiki Symbol
-#' and may be escaped with a backslash:
-#' \code{\ * ^ _ .}.
-#' These have special meaning in latex:
-#' \code{& \% $ # _ { } ~ ^ \ }.
-#' These have special meaning in both
-#' wikisymbol and latex:
-#' \code{\ ^ _ }.
-#'
 #'
 #' @export
 #' @keywords internal
 #' @return character
 #' @family wikisymbol
 #' @param x character
+#' @param italics whether to use italics or not (default: no)
+#' @param math whether to wrap in math environment (default: yes)
 #' @param ... ignored
 #' @examples
 #' x <- c(
@@ -26,13 +19,29 @@
 #'   'var^eta_j'
 #' )
 #' x <- as_wikisymbol(x)
-#' lapply(x, wikisym2latex_)
+#' lapply(x, wiki_to_latex)
 #' library(magrittr)
-#' 'joule^\\*. ~1 kg m^2./s^2' %>% wikisym2latex_
-#' 'gravitational force (kg\\.m/s^2.)' %>% wikisym2latex_
-wikisym2latex_ <- function(x, ...){
+#' 'joule^\\*. ~1 kg m^2./s^2' %>% wiki_to_latex
+#' 'gravitational force (kg\\.m/s^2.)' %>% wiki_to_latex
+wiki_to_latex <- function(x, italics = FALSE, math = TRUE, ...){
+
+  # These have special meaning in Wiki Symbol
+  # and may be escaped with a backslash:
+  # \code{\ * ^ _ .}.
+  # These have special meaning in latex:
+  # \code{& \% $ # _ { } ~ ^ \ }.
+  # These have special meaning in both
+  # wikisymbol and latex:
+  # \code{\ ^ _ }.
+
   tokenize <- function(x)strsplit(x,'')[[1]] # assumes length one character
-  stopifnot(length(x) == 1)
+  stopifnot(
+    length(x) == 1,
+    length(italics) == 1,
+    length(math) == 1,
+    is.logical(italics),
+    is.logical(math)
+  )
   if(grepl('\t',x)) stop('tab character not allowed in wikisymbol')
   x <- sub('^\\s+','',x) # strip leading whitespace
   x <- sub('\\s+$','',x) # strip trailing whitespace
@@ -108,7 +117,8 @@ wikisym2latex_ <- function(x, ...){
     replacement <- paste0('\\\\', w)
     y <- gsub(pattern,replacement,y)
   }
-  y <- paste0('$\\mathrm{', y, '}$') # enforce math environment
+  if(!italics) y <- paste0('\\mathrm{', y, '}')
+  if(math) y <- paste0('$', y, '$') # enforce math environment
   y
 }
 

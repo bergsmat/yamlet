@@ -2,28 +2,15 @@
 #'
 #' Coerces to class 'wikisymbol'. Generic,
 #' with method \code{\link{as_wikisymbol.character}}.
-#' A Wiki symbol is simple text with arbitrarily
-#' nested subscript (\code{_}) and superscript
-#' (\code{^}) groupings.
-#'
-#' Wiki symbol is intended as a compact syntax
-#' that abstracts across differences in
-#' plotmath and latex.  The main purpose
-#' is to handle nested subscripts and superscripts,
-#' but bare words and special symbols are not
-#' disallowed. Support is defined by
-#' \code{\link{as_plotmath}} and
-#' \code{\link{as_latex}}.
-#' Additional rules:
-#'
-#' * Use dot (\code{.}) to explicitly terminate a grouping.
-#' * Use asterisk(\code{*}) to suggest multiplication.
-#' * Escape specials with a backslash.
-#' * Trailing dots need not be supplied.
-#' * Leading/trailing whitespace is ignored.
-#' * Internal white space should be respected.
-#' * Tab character is not allowed.
-#'
+#' A wiki symbol is simple text expressing
+#' arbitrarily nested subscripts (\code{x_y_z})
+#' and superscripts (\code{x^y^z}). A dot
+#' (\code{x^y._z}) explicitly terminates
+#' a group. An asterisk (\code{*}) suggests
+#' multiplication. Special characters
+#' may be escaped with a backslash.
+#' Convert to plotmath with\code{\link{as_plotmath}}
+#' and to latex with \code{\link{as_latex}}.
 #'
 #' @param x object
 #' @param ... passed arguments
@@ -83,9 +70,6 @@ as_wikisymbol <- function(x, ...)UseMethod('as_wikisymbol')
 #' @examples
 #' as_wikisymbol('V_c./F')
 as_wikisymbol.character <- function(x, ...){
-  if(any(grepl('\t', x))){
-    stop('wikisymbol cannot contain tabs')
-  }
   class(x) <- union('wikisymbol', class(x))
   x
 }
@@ -139,7 +123,7 @@ as_latex <- function(x, ...)UseMethod('as_latex')
 #' Convert Wiki Symbol to Plotmath
 #'
 #' Converts wiki symbol to plotmath. See '?plotmath'.
-#' Vectorized version of \code{\link{wikisym2plotmath_}}.
+#' Vectorized version of \code{\link{wiki_to_plotmath}}.
 #'
 #' @export
 #' @param x wikisymbol
@@ -157,7 +141,7 @@ as_latex <- function(x, ...)UseMethod('as_latex')
 #' as_plotmath(x)
 #' as_plotmath(as_wikisymbol('gravitational force (kg\\.m/s^2.)'))
 as_plotmath.wikisymbol <- function(x, ...){
-  y <- sapply(x, wikisym2plotmath_ , USE.NAMES = F)
+  y <- sapply(x, wiki_to_plotmath , USE.NAMES = F)
   if(length(y) == 0) y <- character(0)
   class(y) <- union('plotmath', class(y))
   y
@@ -165,7 +149,7 @@ as_plotmath.wikisymbol <- function(x, ...){
 #' Convert Wiki Symbol to Latex
 #'
 #' Converts wiki symbol to latex.
-#' Vectorized version of \code{\link{wikisym2latex_}}.
+#' Vectorized version of \code{\link{wiki_to_latex}}.
 #'
 #' @export
 #' @param x wikisymbol
@@ -222,14 +206,6 @@ as_latex.wikisymbol <- function(x, ...){
 #'   label
 #'
 as.expression.plotmath <- function(x, ...)parse(text = x)
-
-
-# parse_one <- function(x){
-#   stopifnot(length(x) == 1)
-#   stopifnot(inherits(x, 'character'))
-#   y <- parse(text = x)
-#   y
-# }
 
 #' Subset Wiki Symbol
 #'
@@ -333,8 +309,6 @@ as.expression.plotmath <- function(x, ...)parse(text = x)
   y
 }
 
-##################
-
 #' Subset Latex
 #'
 #' Subsets latex, retaining class.
@@ -394,6 +368,8 @@ as.expression.plotmath <- function(x, ...)parse(text = x)
 #' @param x units; see \code{\link[units]{as_units}}
 #' @param ... ignored arguments
 #' @export
+#' @importFrom units as_units
+#' @importFrom units deparse_unit
 #' @family wikisymbol
 #' @return units
 #' @examples
@@ -407,10 +383,15 @@ as.expression.plotmath <- function(x, ...)parse(text = x)
 #' as_wikisymbol(y)
 #' library(magrittr)
 #' 'kg.m^2/s^2' %>% as_units %>% attr('units') %>% as_wikisymbol
-as_wikisymbol.symbolic_units <- function(x, ...){
+#' 'kg.m2 s-2' %>% as_units %>% attr('units') %>% as_wikisymbol
+#' 'kg.m^2/s^2' %>% as_units %>% attr('units') %>% as_wikisymbol(FALSE)
+#' 'kg.m2 s-2' %>% as_units %>% attr('units') %>% as_wikisymbol(FALSE)
+as_wikisymbol.symbolic_units <- function(x, canonical = TRUE, ...){
   y <- as.character(x)
+  if(!canonical)y <- as_units(y) %>% deparse_unit
   y <- gsub('\\.','*',y) # \u22c5 https://en.wikipedia.org/wiki/Interpunct
-  y <- gsub('\\^([0-9])+','^\\1.',y)
+  y <- gsub('\\^([0-9])+','^\\1.',y) # canonical, all pos num follow ^
+  y <- gsub('([a-zA-Z])([-0-9]+)', '\\1^\\2.',y) # non-canonical, unsigned or neg num follow char
   y <- as_wikisymbol(y)
   y
 }

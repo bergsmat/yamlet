@@ -16,9 +16,8 @@
 #'   'C_max_ss',
 #'   'var^eta_j'
 #' )
-#' x <- as_wikisymbol(x)
-#' lapply(x, wikisym2plotmath_)
-.wp <- function(x, close = character(0), ...){
+#' lapply(x, wiki_to_plotmath)
+wiki_to_plotmath <- function(x, close = character(0), ...){
   # the plotmath of a wikisym is the recursive
   # combination of leading and trailing tokens.
   # tokens are separated by _ or ^ or .
@@ -42,11 +41,11 @@
 
   # handle early closure
   if(op == '.'){
-    if(!length(close))return(.wp(paste0(pre,post), ...))
+    if(!length(close))return(wiki_to_plotmath(paste0(pre,post), ...))
     early  <- close[[length(close)]]
     close <- close[-length(close)]
-    lhs <- .wp(pre,  close = early, ...)
-    rhs <- .wp(post, close = close, ...)
+    lhs <- wiki_to_plotmath(pre,  close = early, ...)
+    rhs <- wiki_to_plotmath(post, close = close, ...)
 
     if(rhs == "''") rhs <- '' # 'post' not essential
     if(lhs == '' & rhs == '') return("''")
@@ -62,8 +61,8 @@
   # handle superscript
   if(op == '^'){
     close  <- c(close, '}')
-    lhs <- .wp(pre,...)
-    rhs <- .wp(post, close = close, ...)
+    lhs <- wiki_to_plotmath(pre,...)
+    rhs <- wiki_to_plotmath(post, close = close, ...)
     out <- paste0(lhs, '^{', rhs)
     return(out)
   }
@@ -71,8 +70,8 @@
   # handle subscript
   if(op == '_'){
     close  <- c(close, ']')
-    lhs <- .wp(pre,...)
-    rhs <- .wp(post, close = close, ...)
+    lhs <- wiki_to_plotmath(pre,...)
+    rhs <- wiki_to_plotmath(post, close = close, ...)
     out <- paste0(lhs, '[', rhs)
     return(out)
   }
@@ -86,13 +85,13 @@
   if(grepl('^\\s+\\S', x)){ # leading white
     lhs <- sub('^(\\s+)(.*)$','\\1',x)
     rhs <- sub('^(\\s+)(.*)$','\\2',x)
-    return(paste0(.wp(lhs, ...), '*', .wp(rhs, close = close, ...)))
+    return(paste0(wiki_to_plotmath(lhs, ...), '*', wiki_to_plotmath(rhs, close = close, ...)))
   }
 
   if(grepl('^\\S+\\s', x)){ # leading non-white
     lhs <- sub('^(\\S+)(.*)$','\\1',x)
     rhs <- sub('^(\\S+)(.*)$','\\2',x)
-    return(paste0(.wp(lhs, ...), '*', .wp(rhs, close = close, ...)))
+    return(paste0(wiki_to_plotmath(lhs, ...), '*', wiki_to_plotmath(rhs, close = close, ...)))
   }
 
   # handle pure whitespace
@@ -109,8 +108,8 @@
     pre  <- sub('^([^\\]*)\\\\([._^*\\])(.*)$', '\\1', x)
     nop  <- sub('^([^\\]*)\\\\([._^*\\])(.*)$', '\\2', x)
     post <- sub('^([^\\]*)\\\\([._^*\\])(.*)$', '\\3', x)
-    lhs <- .wp(pre, ...)
-    rhs <- .wp(post, close = close, ...)
+    lhs <- wiki_to_plotmath(pre, ...)
+    rhs <- wiki_to_plotmath(post, close = close, ...)
     if(nop == '\\') nop <- '\\\\'
     nop <- paste0("'", nop, "'")
     return(paste(lhs, nop, rhs, sep = '*'))
@@ -120,10 +119,10 @@
   if(grepl('[*]', x)){
     pre  <- sub('^([^*]*)[*](.*)$', '\\1', x)
     post <- sub('^([^*]*)[*](.*)$', '\\2', x)
-    lhs <- .wp(pre, ...)
-    rhs <- .wp(post, close = close, ...)
+    lhs <- wiki_to_plotmath(pre, ...)
+    rhs <- wiki_to_plotmath(post, close = close, ...)
     if(rhs == "''") rhs <- '' # simplify
-    return(paste0(.wp(pre, ...), '%.%', .wp(post, close = close, ...)))
+    return(paste0(wiki_to_plotmath(pre, ...), '%.%', wiki_to_plotmath(post, close = close, ...)))
   }
 
   # anything surviving this far has no whitespace, operators, nesting, escapes,  or *

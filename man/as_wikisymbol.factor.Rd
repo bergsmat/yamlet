@@ -38,8 +38,8 @@ Other wikisymbol:
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.symbolic_units}()},
 \code{\link{as_wikisymbol}()},
-\code{\link{wikisym2latex_}()},
-\code{\link{wikisym2plotmath_}()}
+\code{\link{wiki_to_latex}()},
+\code{\link{wiki_to_plotmath}()}
 }
 \concept{wikisymbol}
 \keyword{internal}

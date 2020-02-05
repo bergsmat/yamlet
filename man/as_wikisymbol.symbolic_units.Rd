@@ -4,7 +4,7 @@
 \alias{as_wikisymbol.symbolic_units}
 \title{Coerce Symbolic Units to Wiki Symbol.}
 \usage{
-\method{as_wikisymbol}{symbolic_units}(x, ...)
+\method{as_wikisymbol}{symbolic_units}(x, canonical = TRUE, ...)
 }
 \arguments{
 \item{x}{units; see \code{\link[units]{as_units}}}
@@ -30,6 +30,9 @@ as.character(attr(x, 'units'))
 as_wikisymbol(y)
 library(magrittr)
 'kg.m^2/s^2' \%>\% as_units \%>\% attr('units') \%>\% as_wikisymbol
+'kg.m2 s-2' \%>\% as_units \%>\% attr('units') \%>\% as_wikisymbol
+'kg.m^2/s^2' \%>\% as_units \%>\% attr('units') \%>\% as_wikisymbol(FALSE)
+'kg.m2 s-2' \%>\% as_units \%>\% attr('units') \%>\% as_wikisymbol(FALSE)
 }
 \seealso{
 Other wikisymbol: 
@@ -47,7 +50,7 @@ Other wikisymbol:
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.factor}()},
 \code{\link{as_wikisymbol}()},
-\code{\link{wikisym2latex_}()},
-\code{\link{wikisym2plotmath_}()}
+\code{\link{wiki_to_latex}()},
+\code{\link{wiki_to_plotmath}()}
 }
 \concept{wikisymbol}
