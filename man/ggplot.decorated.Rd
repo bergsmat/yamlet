@@ -18,7 +18,7 @@ return value like \code{\link[ggplot2]{ggplot}}
 Creates a new ggplot object for a decorated data.frame.
 This is the ggplot() method for class 'decorated';
 it tries to implement automatic labels and units in axes and legends
-in association with \code{\link{print.ag}}.
+in association with \code{\link{print.dg}}.
 Use \code{ggplot(as.data.frame(x))} to get default
 ggplot() behavior. Use \code{ggplot(as_decorated(x))}
 to enforce custom behavior.
@@ -29,15 +29,11 @@ x <- decorate(meta)
 library(ggplot2)
 class(ggplot(data = x) + geom_path(aes(x = time, y = conc)))
 class(ggplot(data = x, aes(x = time, y = conc)) + geom_path())
-example(print.ag)
+example(print.dg)
 }
 \seealso{
-Other lab: 
-\code{\link{as_lab.character}()},
-\code{\link{as_lab.list}()},
-\code{\link{as_lab}()},
-\code{\link{print.ag}()},
-\code{\link{singularity}()}
+Other dg: 
+\code{\link{print.dg}()}
 
 Other interface: 
 \code{\link{as_classified.factor}()},
@@ -55,5 +51,5 @@ Other interface:
 \code{\link{resolve.data.frame}()},
 \code{\link{write_yamlet}()}
 }
+\concept{dg}
 \concept{interface}
-\concept{lab}

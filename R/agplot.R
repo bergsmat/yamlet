@@ -61,13 +61,13 @@ as_lab.character <- function(
   }
   # now parse is true, no function passed
   label <- as_plotmath(as_wikisymbol(x))
-  label <- gsub(' ','phantom(0)',label)
+  label <- gsub(' ','~',label)
   if(length(units)){
     units <- as_plotmath(as_wikisymbol(units))
     if(nchar(label)){
-      units <-paste0('~~group("', enclose[[1]],'",', units, ',"', enclose[[2]], '"',')')
+      units <-paste0('~group("', enclose[[1]],'",', units, ',"', enclose[[2]], '"',')')
     }
-    label <- paste0('paste(', label, ',', units, ')')
+    label <- paste0(label,'~', units)
   }
   res <- parse(text = label)
   res
@@ -254,7 +254,7 @@ singularity <- function(x, data, ...){
 #' Creates a new ggplot object for a decorated data.frame.
 #' This is the ggplot() method for class 'decorated';
 #' it tries to implement automatic labels and units in axes and legends
-#' in association with \code{\link{print.ag}}.
+#' in association with \code{\link{print.dg}}.
 #' Use \code{ggplot(as.data.frame(x))} to get default
 #' ggplot() behavior. Use \code{ggplot(as_decorated(x))}
 #' to enforce custom behavior.
@@ -264,7 +264,7 @@ singularity <- function(x, data, ...){
 #' @return return value like \code{\link[ggplot2]{ggplot}}
 #' @export
 #' @importFrom ggplot2 ggplot
-#' @family lab
+#' @family dg
 #' @family interface
 #' @examples
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -272,29 +272,24 @@ singularity <- function(x, data, ...){
 #' library(ggplot2)
 #' class(ggplot(data = x) + geom_path(aes(x = time, y = conc)))
 #' class(ggplot(data = x, aes(x = time, y = conc)) + geom_path())
-#' example(print.ag)
+#' example(print.dg)
 
 ggplot.decorated <- function(data, ...){
   class(data) <- setdiff(class(data), 'decorated')
   p <- ggplot(data = data, ...)
-  class(p) <- c('ag',class(p))
+  class(p) <- c('dg',class(p))
   p
 }
 #' Print Automatic Labels and Units for ggplot
 #'
 #' Prints automatic labels and units for ggplot.
-#' Reworks the labels as a function of attributes
-#' in corresponding data. Default for \code{labeller}
-#' (\code{\link{as_lab}}) will
-#' receive existing labels one at a time
-#' and corresponding attributes (if any) from data.
+#' Substitutes column label, if present, for default.
 #'
-#' @param x class 'ag' from \code{\link{ggplot.decorated}}
-#' @param labeller a function (or its name) like \code{\link{as_lab}} to generate axis labels
+#' @param x class 'dg' from \code{\link{ggplot.decorated}}
 #' @param ... passed arguments
-#' @return used for side effects
+#' @return see \code{\link[ggplot2]{print.ggplot}}
 #' @export
-#' @family lab
+#' @family dg
 #' @examples
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' library(ggplot2)
@@ -311,7 +306,7 @@ ggplot.decorated <- function(data, ...){
 #' file %>% decorate %>% resolve %>% filter(!is.na(conc)) %>%
 #' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 #'
-#' # No factors created here, but print.ag promotes guide to factor if it can:
+#' # No factors created here, but print.dg promotes guide to factor if it can:
 #'
 #' file %>% decorate %>% filter(!is.na(conc)) %>%
 #' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
@@ -354,41 +349,57 @@ ggplot.decorated <- function(data, ...){
 #' scale_color_gradientn(colours = rainbow(4))
 
 
-print.ag <- function(x, labeller = getOption('yamlet_labeller', default = as_lab), ...){
-  fun <- match.fun(labeller)
+# print.ag <- function(x, labeller = getOption('yamlet_labeller', default = as_lab), ...){
+#   fun <- match.fun(labeller)
+#   for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
+#     lab <- x$labels[[i]]                   # deal with one label
+#
+#     if(lab %in% names(x$data)){            # if this is just a bare column name
+#       attr <- attributes(x$data[[lab]])    # retrieve the attributes
+#       if(!is.null(attr)){
+#         val <- fun(x = attr, default = lab, data = x$data, ...)
+#         x$labels[[i]] <- val               # replace default label with one from labeller
+#       }
+#       # while we are here, we should
+#       #promote lab to factor if appropriate
+#       guide <- attr$guide
+#       table <- x$data[[lab]]
+#       if(length(guide) > 1){
+#         if(!isConditional(guide, x$data)){
+#           if(!is.factor(table)){ # is.vector returns false if x has non-name attributes
+#             if(isLevels(guide, table)){
+#               labels <- as.character(guide)
+#               if(length(names(guide))){
+#                 if(!any(names(guide) == '')){
+#                   labels <- names(guide)
+#                 }
+#               }
+#               try(
+#                 x$data[[lab]] <- factor(
+#                   x$data[[lab]],
+#                   levels = as.character(attr$guide),
+#                   labels = labels
+#                 )
+#               )
+#             }
+#           }
+#         }
+#       }
+#     }
+#   }
+#   NextMethod()
+# }
+print.dg <- function(x, ...){
+  # fun <- match.fun(labeller)
   for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
     lab <- x$labels[[i]]                   # deal with one label
 
     if(lab %in% names(x$data)){            # if this is just a bare column name
-      attr <- attributes(x$data[[lab]])    # retrieve the attributes
-      if(!is.null(attr)){
-        val <- fun(x = attr, default = lab, data = x$data, ...)
-        x$labels[[i]] <- val               # replace default label with one from labeller
-      }
-      # while we are here, we should
-      #promote lab to factor if appropriate
-      guide <- attr$guide
-      table <- x$data[[lab]]
-      if(length(guide) > 1){
-        if(!isConditional(guide, x$data)){
-          if(!is.factor(table)){ # is.vector returns false if x has non-name attributes
-            if(isLevels(guide, table)){
-              labels <- as.character(guide)
-              if(length(names(guide))){
-                if(!any(names(guide) == '')){
-                  labels <- names(guide)
-                }
-              }
-              try(
-                x$data[[lab]] <- factor(
-                  x$data[[lab]],
-                  levels = as.character(attr$guide),
-                  labels = labels
-                )
-              )
-            }
-          }
-        }
+      col <- x$data[[lab]]
+      atr <- attributes(col)
+      label <- atr$label                   # retrieve label
+      if(!is.null(label)){
+        x$labels[[i]] <- label             # replace default label with one from labeller
       }
     }
   }

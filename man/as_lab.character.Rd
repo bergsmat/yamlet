@@ -49,8 +49,6 @@ if\code{parse} is TRUE, arguments are processed as follows:
 Other lab: 
 \code{\link{as_lab.list}()},
 \code{\link{as_lab}()},
-\code{\link{ggplot.decorated}()},
-\code{\link{print.ag}()},
 \code{\link{singularity}()}
 }
 \concept{lab}

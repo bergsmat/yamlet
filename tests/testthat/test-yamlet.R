@@ -472,10 +472,77 @@ test_that('labels parsed and unparsed, with and without units, display correctly
   ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
   options(yamlet_label_parse = TRUE)
   ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
-
-
 })
-test_that('R reserved words survive in print.ag labels',{
+
+test_that('all valid wikisymbol print as axis label',{
+  library(magrittr)
+  library(dplyr)
+  library(ggplot2)
+  expect_silent(
+  data.frame(y=1:10, x=1:10) %>%
+  decorate("x: 1 joule^\\*. ~1 kg m^2./s^2") %>%
+  mutate(x = structure(x, label = x %>% attr('label') %>%
+  as_wikisymbol %>%
+  as_plotmath %>%
+  as.expression)) %>%
+  ggplot(aes(x, y))
+  )
+  expect_silent(
+  data.frame(y=1:10, x=1:10) %>%
+  decorate("x: gravitational force (kg\\.m/s^2.)") %>%
+  mutate(x = structure(x, label = x %>% attr('label') %>%
+  as_wikisymbol %>%
+  as_plotmath %>%
+  as.expression)) %>%
+  ggplot(aes(x, y))
+  )
+
+  expect_identical(
+  'gravitational force  (kg\\.m/s^2.)' %>%
+    as_wikisymbol %>%
+    as_plotmath %>%
+    as.character,
+  "gravitational~force~~(kg*\".\"*m/s^{2})"
+  )
+
+  expect_identical(
+   '1 joule^\\*. ~1 kg m^2./s^2' %>%
+     as_wikisymbol %>%
+     as_plotmath %>%
+     as.character,
+   "1~joule^{\"*\"} ~\"~\"*1~kg~m^{2}/s^{2}"
+  )
+})
+
+test_that('R reserved words survive in print.dg labels',{
+  library(magrittr)
+  library(dplyr)
+  library(ggplot2)
+  expect_silent(
+  data.frame(y=1:10, x=1:10) %>%
+  decorate("x: for NaN% joule^\\*. ~1 kg m^2./s^2. %") %>%
+  mutate(x = structure(x, label = x %>% attr('label') %>%
+  as_wikisymbol %>%
+  as_plotmath %>%
+  as.expression)) %>%
+  ggplot(aes(x, y))
+  )
+})
+test_that('as_latex is table',{
+  expect_identical(
+    'Omega joule^\\*. ~1 kg*m^2./s^2' %>%
+      as_wikisymbol %>%
+      as_latex %>%
+      as.character,
+    "$\\mathrm{\\Omega\\: joule^{*}\\: \\sim 1\\: kg\\cdot m^{2}/s^{2}}$"
+  )
+  expect_identical(
+    'gravitational force gamma (kg\\.m/s^2.)' %>%
+      as_wikisymbol %>%
+      as_latex %>%
+      as.character,
+    "$\\mathrm{gravitational\\: force\\: \\gamma\\: (kg.m/s^{2})}$"
+  )
 
 })
 test_that('global and passed values of parse and enclose are respected by as_lab',{
@@ -494,5 +561,127 @@ test_that('enclose can be arbitrary characters',{
 
 })
 test_that('units not enclosed if label is length zero',{
+
+})
+
+test_that('wikisymbol to plotmath is stable',{
+  e <- c(
+  '',
+  '.',
+  '^',
+  '.^',
+  '^.',
+  'a',
+  'a.',
+  '.a',
+  '1',
+  '1.',
+  '.1',
+  'a^',
+  '^a',
+  '1^',
+  '^1',
+
+  'a.^',
+  'a^.',
+  '.a^',
+  '.^a',
+  '^a.',
+  '^.a',
+
+  '1.^',
+  '1^.',
+  '.1^',
+  '.^1',
+  '^1.',
+  '^.1',
+
+
+  'a1.^',
+  'a1^.',
+  '.a1^',
+  '.^a1',
+  '^a1.',
+  '^.a1',
+
+  '1a.^',
+  '1a^.',
+  '.1a^',
+  '.^1a',
+  '^1a.',
+  '^.1a',
+
+  '".^',
+  '"^.',
+  '."^',
+  '.^"',
+  '^".',
+  '^."',
+
+  "'.^",
+  "'^.",
+  ".'^",
+  ".^'",
+  "^'.",
+  "^.'",
+
+  "  ",
+  "  xx",
+  "xx  ",
+
+
+  "  xx  ",
+  "xx  xx",
+
+  "\\\\",
+  "\\*",
+  "\\.",
+  "\\_",
+
+  "*",
+  "a*b",
+  "a * b",
+  "a *b",
+  "a\\*b",
+
+  "a\\*b$",
+
+  "H_b^A_1^c",
+  "H_b^A_1^c.",
+  "H_b^A_1^.c",
+  "H_b^A_1.^c",
+  "H_b^A_.1^c",
+  "H_b^A._1^c",
+  "H_b^.A_1^c",
+  "H_b.^A_1^c",
+  "H_.b^A_1^c",
+  "H._b^A_1^c",
+  ".H_b^A_1^c",
+
+  "____.",
+  "___.",
+  "__.",
+  "_.",
+  ".",
+  "^^^^.",
+  "^^^.",
+  "^^.",
+  "^.",
+  ".",
+
+  "H_b^A_1^c.",
+  "_ ",
+  " _",
+  " = ",
+  " _ ",
+  "^c.",
+  " ^c.",
+  "^ c.",
+  "^c .",
+  "^c. ",
+  " ^ c . ",
+  " H _ b ^ A _ 1 ^ c . ",
+  " H]_]b ^]A]_]1]^]c].]"
+)
 
 })

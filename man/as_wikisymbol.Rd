@@ -19,16 +19,64 @@ Coerces to class 'wikisymbol'. Generic,
 with method \code{\link{as_wikisymbol.character}}.
 A Wiki symbol is simple text with arbitrarily
 nested subscript (\code{_}) and superscript
-(\code{^}) groupings.  Use dot (\code{.})
-to explicitly terminate a grouping.
-Use asterisk(\code{*}) to suggest multiplication.
-Escape specials with a backslash.
-Trailing dots need not be supplied.
-Leading/trailing whitespace is removed.
-Tab character not allowed.
+(\code{^}) groupings.
+}
+\details{
+Wiki symbol is intended as a compact syntax
+that abstracts across differences in
+plotmath and latex.  The main purpose
+is to handle nested subscripts and superscripts,
+but bare words and special symbols are not
+disallowed. Support is defined by
+\code{\link{as_plotmath}} and
+\code{\link{as_latex}}.
+Additional rules:
+\itemize{
+\item Use dot (\code{.}) to explicitly terminate a grouping.
+\item Use asterisk(\code{*}) to suggest multiplication.
+\item Escape specials with a backslash.
+\item Trailing dots need not be supplied.
+\item Leading/trailing whitespace is ignored.
+\item Internal white space should be respected.
+\item Tab character is not allowed.
+}
 }
 \examples{
-example(as_wikisymbol.character)
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+library(latexpdf)
+
+data.frame(y=1:10, x=1:10) \%>\%
+decorate("x: Omega joule^\\\\*. ~1 kg*m^2./s^2. [\%]") \%>\%
+mutate(x = structure(x, label = x \%>\% attr('label') \%>\%
+as_wikisymbol \%>\%
+as_plotmath \%>\%
+as.expression)) \%>\%
+ggplot(aes(x, y))
+
+data.frame(y=1:10, x=1:10) \%>\%
+decorate("x: gravitational force gamma (kg\\\\.m/s^2.)") \%>\%
+mutate(x = structure(x, label = x \%>\% attr('label') \%>\%
+as_wikisymbol \%>\%
+as_plotmath \%>\%
+as.expression)) \%>\%
+ggplot(aes(x, y))
+
+path <- tempfile()
+data.frame(
+ stringsAsFactors = FALSE,
+ wikisymbol = c(
+   'Omega joule^\\\\*. ~1 kg*m^2./s^2[\%]',
+   'gravitational force gamma (kg\\\\.m/s^2.)'
+ )
+) \%>\%
+ transmute(
+   latex = wikisymbol \%>\%
+   as_wikisymbol \%>\%
+   as_latex
+ ) \%>\%
+ as.pdf(reserve = FALSE, wider = -70)
 }
 \seealso{
 Other wikisymbol: 

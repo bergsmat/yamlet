@@ -12,7 +12,7 @@
 \item{...}{ignored arguments}
 }
 \value{
-expression, or list of expression for length(x) > 1
+expression
 }
 \description{
 Coerces plotath to expression by parsing as text.

@@ -21,8 +21,6 @@ Converts to axis label. Generic, with method \code{\link{as_lab.list}}.
 Other lab: 
 \code{\link{as_lab.character}()},
 \code{\link{as_lab.list}()},
-\code{\link{ggplot.decorated}()},
-\code{\link{print.ag}()},
 \code{\link{singularity}()}
 }
 \concept{lab}

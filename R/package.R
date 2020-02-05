@@ -80,8 +80,8 @@
 #'
 #' To get started using yamlet, see \code{?as_yamlet.character} and
 #' examples there. See also \code{?decorate} which adds yamlet
-#' values to corresponding items in your data. See also \code{?print.ag}
-#' which uses labels and guides to autogenerate axis labels.
+#' values to corresponding items in your data. See also \code{?print.dg}
+#' which uses label attributes, if present, as axis labels.
 #'
 #' Note: the quinidine and phenobarb datasets in the examples
 #' are borrowed from \pkg{nlme} (\code{?Quinidine}, \code{?Phenobarb}),
