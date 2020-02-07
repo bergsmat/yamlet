@@ -33,13 +33,19 @@ library(dplyr)
 library(ggplot2)
 library(latexpdf)
 
+'j^*' \%>\% as_wikisymbol \%>\% as_plotmath \%>\% as.character
+as_wikisymbol \%>\%
+as_plotmath #\%>\%
+as_expression
 data.frame(y=1:10, x=1:10) \%>\%
 decorate("x: Omega joule^\\\\*. ~1 kg*m^2./s^2. [\%]") \%>\%
-mutate(x = structure(x, label = x \%>\% attr('label') \%>\%
-as_wikisymbol \%>\%
-as_plotmath \%>\%
-as.expression)) \%>\%
-ggplot(aes(x, y))
+mutate(
+ x = structure(x, label = x \%>\% attr('label') \%>\%
+ as_wikisymbol \%>\%
+ as_plotmath \%>\%
+ as.expression)
+) \%>\%
+ ggplot(aes(x, y))
 
 data.frame(y=1:10, x=1:10) \%>\%
 decorate("x: gravitational force - gamma (kg\\\\.m/s^2.)") \%>\%
@@ -80,6 +86,8 @@ Other wikisymbol:
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.factor}()},
 \code{\link{as_wikisymbol.symbolic_units}()},
+\code{\link{as_wikisymbol.unit_string}()},
+\code{\link{as_wikisymbol.units}()},
 \code{\link{wiki_to_latex}()},
 \code{\link{wiki_to_plotmath}()}
 }

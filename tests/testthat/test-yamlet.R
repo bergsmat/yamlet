@@ -502,7 +502,7 @@ test_that('all valid wikisymbol print as axis label',{
     as_wikisymbol %>%
     as_plotmath %>%
     as.character,
-  "gravitational~force~~(kg*\".\"*m/s^{2})"
+  "gravitational*' '*force*'  '*'(kg'*'.'*m/s^{2}*')'"
   )
 
   expect_identical(
@@ -534,33 +534,15 @@ test_that('as_latex is table',{
       as_wikisymbol %>%
       as_latex %>%
       as.character,
-    "$\\mathrm{\\Omega\\: joule^{*}\\: \\sim 1\\: kg\\cdot m^{2}/s^{2}}$"
+    "$\\mathrm{\\Omega{\\:}joule^{*}{\\:}{\\sim}1{\\:}kg{\\cdot}m^{2}/s^{2}}$"
   )
   expect_identical(
     'gravitational force gamma (kg\\.m/s^2.)' %>%
       as_wikisymbol %>%
       as_latex %>%
       as.character,
-    "$\\mathrm{gravitational\\: force\\: \\gamma\\: (kg.m/s^{2})}$"
+    "$\\mathrm{gravitational{\\:}force{\\:}\\gamma{\\:}(kg.m/s^{2})}$"
   )
-
-})
-test_that('global and passed values of parse and enclose are respected by as_lab',{
-
-})
-test_that('as_lab respects user-supplied parse function',{
-
-})
-test_that('as_lab displays micrograms correctly',{
-
-})
-test_that('as_lab(parse = TRUE) respects wikisym in label',{
-
-})
-test_that('enclose can be arbitrary characters',{
-
-})
-test_that('units not enclosed if label is length zero',{
 
 })
 
@@ -683,5 +665,138 @@ test_that('wikisymbol to plotmath is stable',{
   " H _ b ^ A _ 1 ^ c . ",
   " H]_]b ^]A]_]1]^]c].]"
 )
+f <- c(
+  "''",
+  "''",
+  "''^{}",
+  "''^{}",
+  "''^{}",
+  "a",
+  "a",
+  "a",
+  "1",
+  "1",
+  "1",
+  "a^{}",
+  "''^{a}",
+  "1^{}",
+  "''^{1}",
+  "a^{}",
+  "a^{}",
+  "a^{}",
+  "''^{a}",
+  "''^{a}",
+  "''^{}*a",
+  "1^{}",
+  "1^{}",
+  "1^{}",
+  "''^{1}",
+  "''^{1}",
+  "''^{}*1",
+  "a1^{}",
+  "a1^{}",
+  "a1^{}",
+  "''^{a1}",
+  "''^{a1}",
+  "''^{}*a1",
+  "'1a'^{}",
+  "'1a'^{}",
+  "'1a'^{}",
+  "''^{'1a'}",
+  "''^{'1a'}",
+  "''^{}*'1a'",
+  "'\"'^{}"  ,
+  "'\"'^{}",
+  "'\"'^{}",
+  "''^{'\"'}",
+  "''^{'\"'}",
+  "''^{}*'\"'",
+  "'\\''^{}",
+  "'\\''^{}",
+  "'\\''^{}",
+  "''^{'\\''}",
+  "''^{'\\''}",
+  "''^{}*'\\''",
+  "'  '",
+  "'  '*xx",
+  "xx*'  '",
+  "'  '*xx*'  '",
+  "xx*'  '*xx",
+  "'\\\\'",
+  "'*'",
+  "'.'",
+  "'_'",
+  "''%.%''",
+  "a%.%b",
+  "a*' '*''%.%''*' '*b",
+  "a*' '*''%.%b",
+  "a*'*'*b",
+  "a*'*'*'b$'",
+  "H[b^{A[1^{c}]}]",
+  "H[b^{A[1^{c}]}]",
+  "H[b^{A[1^{}*c]}]",
+  "H[b^{A[1]*''^{c}}]",
+  "H[b^{A[]*1^{c}}]",
+  "H[b^{A}*''[1^{c}]]",
+  "H[b^{}*A[1^{c}]]",
+  "H[b]*''^{A[1^{c}]}",
+  "H[]*b^{A[1^{c}]}",
+  "H[b^{A[1^{c}]}]",
+  "H[b^{A[1^{c}]}]",
+  "''[''[''[''[]]]]",
+  "''[''[''[]]]",
+  "''[''[]]",
+  "''[]",
+  "''",
+  "''^{''^{''^{''^{}}}}",
+  "''^{''^{''^{}}}",
+  "''^{''^{}}",
+  "''^{}",
+  "''",
+  "H[b^{A[1^{c}]}]",
+  "''[' ']",
+  "' '[]",
+  "' '*'='*' '",
+  "' '[' ']",
+  "''^{c}",
+  "' '^{c}",
+  "''^{' '*c}",
+  "''^{c*' '}",
+  "''^{c}*' '",
+  "' '^{' '*c*' '}*' '",
+  "' '*H*' '[' '*b*' '^{' '*A*' '[' '*1*' '^{' '*c*' '}*' ']}]",
+  "' '*'H]'[']b'*' '^{']A]'[']1]'^{']c]'}*']']}]"
+)
+g <- as_plotmath(as_wikisymbol(e)) %>% as.character
+expect_identical(f, g)
+})
+
+test_that('extreme juxatpostion without escape succeeds',{
+  library(magrittr)
+  library(testthat)
+  render <- . %>% as_wikisymbol %>% as_plotmath %>% as.expression
+  expect_silent('^1' %>% render)
+  expect_silent('^*' %>% render)
+  expect_silent('*^' %>% render)
+  expect_silent('* ^' %>% render)
+  expect_silent(' *^' %>% render)
+  expect_silent('*^ ' %>% render)
+  expect_silent('^\\*' %>% render)
+  expect_silent('\\^\\*' %>% render)
+  expect_silent('\\*' %>% render)
+  expect_silent('\\\\' %>% render)
+  expect_silent('\\_' %>% render)
+  expect_silent('\\.' %>% render)
+  expect_silent('\\^' %>% render)
+  expect_silent('\\*^' %>% render)
+  expect_silent('\\*^' %>% render)
+  expect_silent('^\\.' %>% render)
+  expect_silent('^\\\\' %>% render)
+  expect_silent('^\\^' %>% render)
+  expect_silent('^\\_' %>% render)
+
+  '1 joule^\\*. ~1 kg m^2./s^2' %>% render
+  '^\\*. ' %>% render
 
 })
+

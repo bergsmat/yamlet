@@ -25,13 +25,19 @@
 #' library(ggplot2)
 #' library(latexpdf)
 #'
+#' 'j^*' %>% as_wikisymbol %>% as_plotmath %>% as.character
+#' as_wikisymbol %>%
+#' as_plotmath #%>%
+#' as_expression
 #' data.frame(y=1:10, x=1:10) %>%
 #' decorate("x: Omega joule^\\*. ~1 kg*m^2./s^2. [%]") %>%
-#' mutate(x = structure(x, label = x %>% attr('label') %>%
-#' as_wikisymbol %>%
-#' as_plotmath %>%
-#' as.expression)) %>%
-#' ggplot(aes(x, y))
+#' mutate(
+#'  x = structure(x, label = x %>% attr('label') %>%
+#'  as_wikisymbol %>%
+#'  as_plotmath %>%
+#'  as.expression)
+#' ) %>%
+#'  ggplot(aes(x, y))
 #'
 #' data.frame(y=1:10, x=1:10) %>%
 #' decorate("x: gravitational force - gamma (kg\\.m/s^2.)") %>%
@@ -167,7 +173,7 @@ as_plotmath.wikisymbol <- function(x, ...){
 #' as_latex(x)
 #' as_latex(as_wikisymbol('gravitational force (kg\\.m/s^2.)'))
 as_latex.wikisymbol <- function(x, ...){
-  y <- sapply(x, wikisym2latex_ , USE.NAMES = F)
+  y <- sapply(x, wiki_to_latex , USE.NAMES = F)
   if(length(y) == 0) y <- character(0)
   class(y) <- union('latex', class(y))
   y
@@ -202,9 +208,9 @@ as_latex.wikisymbol <- function(x, ...){
 #' 'gravitational force (kg\\.m/s^2.)' %>%
 #'   as_wikisymbol %>%
 #'   as_plotmath %>%
-#'   as_expression -> label
+#'   as.expression -> label
 #'   label
-#'
+
 as.expression.plotmath <- function(x, ...)parse(text = x)
 
 #' Subset Wiki Symbol
@@ -362,16 +368,14 @@ as.expression.plotmath <- function(x, ...)parse(text = x)
 
 #' Coerce Symbolic Units to Wiki Symbol.
 #'
-#' Coerces symbolic units to wikisymbol.  A literal dot
-#' means different things in wikisymbol vs. units,
-#' and there may be some other subtleties as well.
-#' @param x units; see \code{\link[units]{as_units}}
+#' Coerces symbolic units to wikisymbol by coercing first
+#' to unit_string.
+#' @param x symbolic_units; see \code{\link[units]{as_units}}
 #' @param ... ignored arguments
 #' @export
-#' @importFrom units as_units
-#' @importFrom units deparse_unit
+#' @keywords internal
 #' @family wikisymbol
-#' @return units
+#' @return wikisymbol
 #' @examples
 #' library(units)
 #' x <- as_units('kg.m/s^2')
@@ -386,13 +390,58 @@ as.expression.plotmath <- function(x, ...)parse(text = x)
 #' 'kg.m2 s-2' %>% as_units %>% attr('units') %>% as_wikisymbol
 #' 'kg.m^2/s^2' %>% as_units %>% attr('units') %>% as_wikisymbol(FALSE)
 #' 'kg.m2 s-2' %>% as_units %>% attr('units') %>% as_wikisymbol(FALSE)
+
 as_wikisymbol.symbolic_units <- function(x, canonical = TRUE, ...){
-  y <- as.character(x)
-  if(!canonical)y <- as_units(y) %>% deparse_unit
-  y <- gsub('\\.','*',y) # \u22c5 https://en.wikipedia.org/wiki/Interpunct
+  y <- as_unit_string(x, canonical = canonical, ...)
+  y <- as_wikisymbol(y, ...)
+  y
+}
+
+#' Coerce Units to Wiki Symbol.
+#'
+#' Coerces units to wikisymbol by coercing first
+#' to unit_string.
+#' @param x units; see \code{\link[units]{as_units}}
+#' @param ... ignored arguments
+#' @export
+#' @keywords internal
+#' @family wikisymbol
+#' @return wikisymbol
+#' @examples
+#' library(units)
+#' library(magrittr)
+#' 'kg.m^2/s^2' %>% as_units %>% as_wikisymbol
+#' 'kg.m2 s-2' %>% as_units %>% as_wikisymbol
+#' 'kg.m^2/s^2' %>% as_units %>% as_wikisymbol(FALSE)
+#' 'kg.m2 s-2' %>% as_units %>% as_wikisymbol(FALSE)
+as_wikisymbol.units <- function(x, canonical = TRUE, ...){
+  y <- as_unit_string(x, canonical = canonical, ...)
+  y <- as_wikisymbol(y, ...)
+  y
+}
+
+#' Coerce Unit String to Wiki Symbol.
+#'
+#' Coerces unit string to wikisymbol.  A literal dot
+#' means different things in wikisymbol vs. units,
+#' and there may be some other subtleties as well.
+#' Unit string is character that \code{\link{is_parseable}}.
+#' @param x unit_string
+#' @param ... ignored arguments
+#' @export
+#' @keywords internal
+#' @family wikisymbol
+#' @return units
+#' @examples
+#' library(magrittr)
+#' 'kg.m^2/s^2' %>% as_unit_string %>% as_wikisymbol
+#' 'kg.m2 s-2' %>% as_unit_string %>% as_wikisymbol
+as_wikisymbol.unit_string <- function(x, ...){
+  stopifnot(all(is_parseable(x)))
+  y <- gsub('\\.','*',x) # \u22c5 https://en.wikipedia.org/wiki/Interpunct
   y <- gsub('\\^([0-9])+','^\\1.',y) # canonical, all pos num follow ^
   y <- gsub('([a-zA-Z])([-0-9]+)', '\\1^\\2.',y) # non-canonical, unsigned or neg num follow char
-  y <- as_wikisymbol(y)
+  y <- as_wikisymbol(as.character(y))
   y
 }
 

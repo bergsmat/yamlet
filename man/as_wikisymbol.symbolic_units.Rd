@@ -7,17 +7,16 @@
 \method{as_wikisymbol}{symbolic_units}(x, canonical = TRUE, ...)
 }
 \arguments{
-\item{x}{units; see \code{\link[units]{as_units}}}
+\item{x}{symbolic_units; see \code{\link[units]{as_units}}}
 
 \item{...}{ignored arguments}
 }
 \value{
-units
+wikisymbol
 }
 \description{
-Coerces symbolic units to wikisymbol.  A literal dot
-means different things in wikisymbol vs. units,
-and there may be some other subtleties as well.
+Coerces symbolic units to wikisymbol by coercing first
+to unit_string.
 }
 \examples{
 library(units)
@@ -49,8 +48,11 @@ Other wikisymbol:
 \code{\link{as_plotmath}()},
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.factor}()},
+\code{\link{as_wikisymbol.unit_string}()},
+\code{\link{as_wikisymbol.units}()},
 \code{\link{as_wikisymbol}()},
 \code{\link{wiki_to_latex}()},
 \code{\link{wiki_to_plotmath}()}
 }
 \concept{wikisymbol}
+\keyword{internal}

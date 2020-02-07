@@ -37,9 +37,8 @@ library(magrittr)
 'gravitational force (kg\\\\.m/s^2.)' \%>\%
   as_wikisymbol \%>\%
   as_plotmath \%>\%
-  as_expression -> label
+  as.expression -> label
   label
-
 }
 \seealso{
 Other wikisymbol: 
@@ -56,6 +55,8 @@ Other wikisymbol:
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.factor}()},
 \code{\link{as_wikisymbol.symbolic_units}()},
+\code{\link{as_wikisymbol.unit_string}()},
+\code{\link{as_wikisymbol.units}()},
 \code{\link{as_wikisymbol}()},
 \code{\link{wiki_to_latex}()},
 \code{\link{wiki_to_plotmath}()}

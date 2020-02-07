@@ -26,6 +26,16 @@ x <- c(
   'var^eta_j'
 )
 lapply(x, wiki_to_plotmath)
+library(magrittr)
+wiki_to_plotmath('^*') \%>\% parse(text = .)
+wiki_to_plotmath('^\\\\*') \%>\% parse(text = .)
+wiki_to_plotmath('^\\\\*.') \%>\% parse(text = .)
+wiki_to_plotmath('^\\\\.') \%>\% parse(text = .)
+wiki_to_plotmath('^\\\\\\\\') \%>\% parse(text = .)
+wiki_to_plotmath('\\\\\\\\') \%>\% parse(text = .)
+wiki_to_plotmath('^\\\\^') \%>\% parse(text = .)
+wiki_to_plotmath('^\\\\_') \%>\% parse(text = .)
+wiki_to_plotmath('\\\\^') \%>\% parse(text = .)
 }
 \seealso{
 Other wikisymbol: 
@@ -43,6 +53,8 @@ Other wikisymbol:
 \code{\link{as_wikisymbol.character}()},
 \code{\link{as_wikisymbol.factor}()},
 \code{\link{as_wikisymbol.symbolic_units}()},
+\code{\link{as_wikisymbol.unit_string}()},
+\code{\link{as_wikisymbol.units}()},
 \code{\link{as_wikisymbol}()},
 \code{\link{wiki_to_latex}()}
 }
