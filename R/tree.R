@@ -40,18 +40,19 @@ tree.character <- function(x, ...){
   # before and after are only
   # created if they have length.
   if(!length(x))return(list(token = character(0), before = character(0), after = character(0)))
+  # handle nests
+  if(length(this(x, '\\_')))return(bundle(x,'\\_'))
+  if(length(this(x, '_')))return(bundle(x,'_'))
+  if(length(this(x, '\\^')))return(bundle(x,'\\^'))
+  if(length(this(x, '^')))return(bundle(x,'^'))
+  if(length(this(x, '\\.')))return(bundle(x,'\\.'))
+  if(length(this(x, '.')))return(bundle(x,'.'))
   # handle literals
   if(length(this(x, '\\*')))return(bundle(x,'\\*'))
-  if(length(this(x, '\\.')))return(bundle(x,'\\.'))
-  if(length(this(x, '\\_')))return(bundle(x,'\\_'))
-  if(length(this(x, '\\^')))return(bundle(x,'\\^'))
   if(length(this(x, '\\s+', fixed = FALSE)))return(bundle(x, '\\s+', fixed = FALSE))
   # handle specials
   if(length(this(x, '*')))return(bundle(x,'*'))
-  if(length(this(x, '.')))return(bundle(x,'.'))
-  if(length(this(x, '_')))return(bundle(x,'_'))
-  if(length(this(x, '^')))return(bundle(x,'^'))
-  # handle
+  # handle default
   return(list(token = x, before = character(0), after = character(0)))
 }
 
@@ -142,16 +143,30 @@ tree_to_plotmath <- function(x, ...){
   #stopifnot(inherits(x, 'list'))
   stopifnot(all(c('token','before','after') %in% names(x)))
   token <- x$token
-  # handle literals
-  if(identical(x$token, '\\*'))token <- tokenWrap("'*'", x)
-  if(identical(x$token, '\\.'))token <- tokenWrap("'.'", x)
-  if(identical(x$token, '\\_'))token <- tokenWrap("'_'", x)
-  if(identical(x$token, '\\^'))token <- tokenWrap("'^'", x)
-  if(length(x$token))if(grepl('^\\s+$', x$token)){
-    token <- paste0("'",x$token,"'")
-    token <- tokenWrap(token, x)
-  }
   # handle specials
+  if(identical(x$token, '_')){
+    token <- character(0) # squelch
+    x$after <- paste0('[',asCharacter(x$after), ']')
+    if(!length(asCharacter(x$before))){
+      x$after <- paste0("''", x$after) # implicit base
+    }else{
+      if(!nchar(asCharacter(x$before))){
+        x$after <- paste0("''", x$after) # implicit base
+      }
+    }
+  }
+  if(identical(x$token, '^')){
+    #browser()
+    token <- character(0) # squelch
+    x$after <- paste0('^{',asCharacter(x$after), '}')
+    if(!length(asCharacter(x$before))){
+      x$after <- paste0("''", x$after) # implicit base
+    }else{
+      if(!nchar(asCharacter(x$before))){
+        x$after <- paste0("''", x$after) # implicit base
+      }
+    }
+  }
   if(identical(x$token, '*')){}
   if(identical(x$token, '.')){
     token <- character(0) # squelch
@@ -170,28 +185,14 @@ tree_to_plotmath <- function(x, ...){
     }
   }
 
-  if(identical(x$token, '_')){
-    token <- character(0) # squelch
-    x$after <- paste0('[',asCharacter(x$after), ']')
-    if(!length(asCharacter(x$before))){
-      x$after <- paste0("''", x$after) # implicit base
-    }else{
-      if(!nchar(asCharacter(x$before))){
-        x$after <- paste0("''", x$after) # implicit base
-      }
-    }
-  }
-  if(identical(x$token, '^')){
-    browser()
-    token <- character(0) # squelch
-    x$after <- paste0('^{',asCharacter(x$after), '}')
-    if(!length(asCharacter(x$before))){
-      x$after <- paste0("''", x$after) # implicit base
-    }else{
-      if(!nchar(asCharacter(x$before))){
-        x$after <- paste0("''", x$after) # implicit base
-      }
-    }
+  # handle literals
+  if(identical(x$token, '\\*'))token <- tokenWrap("'*'", x)
+  if(identical(x$token, '\\.'))token <- tokenWrap("'.'", x)
+  if(identical(x$token, '\\_'))token <- tokenWrap("'_'", x)
+  if(identical(x$token, '\\^'))token <- tokenWrap("'^'", x)
+  if(length(x$token))if(grepl('^\\s+$', x$token)){
+    token <- paste0("'",x$token,"'")
+    token <- tokenWrap(token, x)
   }
   # handle default
   if(identical(token, x$token)){ # unmodified from above
