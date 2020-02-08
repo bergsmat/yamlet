@@ -4,10 +4,16 @@
 \alias{wiki_to_plotmath}
 \title{Convert One Wiki Symbol to Plotmath}
 \usage{
-wiki_to_plotmath(x, close = character(0), ...)
+wiki_to_plotmath(
+  x,
+  unrecognized = getOption("plotmath_unrecognized", "quoteToken"),
+  ...
+)
 }
 \arguments{
 \item{x}{character}
+
+\item{unrecognized}{function to process unrecognized tokens: default \code{\link{quoteToken}}}
 
 \item{...}{ignored}
 }
@@ -17,6 +23,11 @@ character
 \description{
 Converts one wiki symbol to plotmath.
 See description for \code{\link{as_wikisymbol}}.
+By default, unrecognized tokens are returned
+unmodified if they are parseable.
+Otherwise, backslashes and single quotesare escaped,
+and the result is wrapped in single quotes.
+See \code{\link{quoteToken}}.
 }
 \examples{
 x <- c(
@@ -27,15 +38,26 @@ x <- c(
 )
 lapply(x, wiki_to_plotmath)
 library(magrittr)
-wiki_to_plotmath('^*') \%>\% parse(text = .)
-wiki_to_plotmath('^\\\\*') \%>\% parse(text = .)
-wiki_to_plotmath('^\\\\*.') \%>\% parse(text = .)
-wiki_to_plotmath('^\\\\.') \%>\% parse(text = .)
-wiki_to_plotmath('^\\\\\\\\') \%>\% parse(text = .)
-wiki_to_plotmath('\\\\\\\\') \%>\% parse(text = .)
-wiki_to_plotmath('^\\\\^') \%>\% parse(text = .)
-wiki_to_plotmath('^\\\\_') \%>\% parse(text = .)
-wiki_to_plotmath('\\\\^') \%>\% parse(text = .)
+render <- . \%>\% as_wikisymbol \%>\% as_plotmath \%>\% as.expression
+'^*' \%>\% render
+'^\\\\*' \%>\% render
+'^\\\\*.' \%>\% render
+'^\\\\.' \%>\% render
+'^\\\\\\\\' \%>\% render
+'\\\\\\\\' \%>\% render
+'^\\\\^' \%>\% render
+'^\\\\_' \%>\% render
+'\\\\^' \%>\% render
+'^.a' \%>\% render
+'\\\\$' \%>\% render
+wiki_to_plotmath('\\\\$') \%>\% goodToken
+wiki_to_plotmath('\\\\$', unescape = FALSE) \%>\% goodToken
+wiki_to_plotmath('\\\\$', unrecognized = function(x,...)x) \%>\% goodToken
+options(plotmath_unrecognized = function(x,...)x)
+wiki_to_plotmath('\\\\$') \%>\% goodToken
+options(plotmath_unrecognized = NULL)
+wiki_to_plotmath('\\\\$') \%>\% goodToken
+
 }
 \seealso{
 Other wikisymbol: 
@@ -56,7 +78,8 @@ Other wikisymbol:
 \code{\link{as_wikisymbol.unit_string}()},
 \code{\link{as_wikisymbol.units}()},
 \code{\link{as_wikisymbol}()},
-\code{\link{wiki_to_latex}()}
+\code{\link{wiki_to_latex}()},
+\code{\link{wikitoken}()}
 }
 \concept{wikisymbol}
 \keyword{internal}

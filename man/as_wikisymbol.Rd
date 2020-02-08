@@ -89,7 +89,8 @@ Other wikisymbol:
 \code{\link{as_wikisymbol.unit_string}()},
 \code{\link{as_wikisymbol.units}()},
 \code{\link{wiki_to_latex}()},
-\code{\link{wiki_to_plotmath}()}
+\code{\link{wiki_to_plotmath}()},
+\code{\link{wikitoken}()}
 }
 \concept{wikisymbol}
 \keyword{internal}

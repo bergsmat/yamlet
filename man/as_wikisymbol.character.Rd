@@ -40,6 +40,7 @@ Other wikisymbol:
 \code{\link{as_wikisymbol.units}()},
 \code{\link{as_wikisymbol}()},
 \code{\link{wiki_to_latex}()},
-\code{\link{wiki_to_plotmath}()}
+\code{\link{wiki_to_plotmath}()},
+\code{\link{wikitoken}()}
 }
 \concept{wikisymbol}

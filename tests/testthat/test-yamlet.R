@@ -481,6 +481,7 @@ test_that('all valid wikisymbol print as axis label',{
   expect_silent(
   data.frame(y=1:10, x=1:10) %>%
   decorate("x: 1 joule^\\*. ~1 kg m^2./s^2") %>%
+  #decorate("x: ''") %>%
   mutate(x = structure(x, label = x %>% attr('label') %>%
   as_wikisymbol %>%
   as_plotmath %>%
@@ -489,8 +490,8 @@ test_that('all valid wikisymbol print as axis label',{
   )
   expect_silent(
   data.frame(y=1:10, x=1:10) %>%
-  decorate("x: gravitational force (kg\\.m/s^2.)") %>%
-  mutate(x = structure(x, label = x %>% attr('label') %>%
+    decorate("x: gravitational force \\\\ (kg\\.m/s^2.)") %>%
+    mutate(x = structure(x, label = x %>% attr('label') %>%
   as_wikisymbol %>%
   as_plotmath %>%
   as.expression)) %>%
@@ -510,7 +511,7 @@ test_that('all valid wikisymbol print as axis label',{
      as_wikisymbol %>%
      as_plotmath %>%
      as.character,
-   "1~joule^{\"*\"} ~\"~\"*1~kg~m^{2}/s^{2}"
+   "1*' '*joule^{'*'}*' '*~1*' '*kg*' '*m^{2}*'/s'^{2}"
   )
 })
 
@@ -520,8 +521,9 @@ test_that('R reserved words survive in print.dg labels',{
   library(ggplot2)
   expect_silent(
   data.frame(y=1:10, x=1:10) %>%
-  decorate("x: for NaN% joule^\\*. ~1 kg m^2./s^2. %") %>%
-  mutate(x = structure(x, label = x %>% attr('label') %>%
+   decorate("x: for NaN% joule^\\*. ~1 kg m^2./s^2. %") %>%
+   #decorate("x: ''") %>%
+    mutate(x = structure(x, label = x %>% attr('label') %>%
   as_wikisymbol %>%
   as_plotmath %>%
   as.expression)) %>%
@@ -569,14 +571,14 @@ test_that('wikisymbol to plotmath is stable',{
   '.a^',
   '.^a',
   '^a.',
-  '^.a',
+  '^.a', #
 
   '1.^',
   '1^.',
   '.1^',
   '.^1',
   '^1.',
-  '^.1',
+  '^.1', #
 
 
   'a1.^',
@@ -666,8 +668,8 @@ test_that('wikisymbol to plotmath is stable',{
   " H]_]b ^]A]_]1]^]c].]"
 )
 f <- c(
-  "''",
-  "''",
+  "",
+  "",
   "''^{}",
   "''^{}",
   "''^{}",
@@ -722,14 +724,14 @@ f <- c(
   "xx*'  '",
   "'  '*xx*'  '",
   "xx*'  '*xx",
-  "'\\\\'",
+  "'\\\\\\\\'",
   "'*'",
   "'.'",
   "'_'",
   "''%.%''",
   "a%.%b",
-  "a*' '*''%.%''*' '*b",
-  "a*' '*''%.%b",
+  "a*' '%.%' '*b",
+  "a*' '%.%b",
   "a*'*'*b",
   "a*'*'*'b$'",
   "H[b^{A[1^{c}]}]",
@@ -747,12 +749,12 @@ f <- c(
   "''[''[''[]]]",
   "''[''[]]",
   "''[]",
-  "''",
+  "",
   "''^{''^{''^{''^{}}}}",
   "''^{''^{''^{}}}",
   "''^{''^{}}",
   "''^{}",
-  "''",
+  "",
   "H[b^{A[1^{c}]}]",
   "''[' ']",
   "' '[]",
@@ -771,7 +773,7 @@ g <- as_plotmath(as_wikisymbol(e)) %>% as.character
 expect_identical(f, g)
 })
 
-test_that('extreme juxatpostion without escape succeeds',{
+test_that('extreme juxtapostion without escape succeeds',{
   library(magrittr)
   library(testthat)
   render <- . %>% as_wikisymbol %>% as_plotmath %>% as.expression
@@ -794,9 +796,13 @@ test_that('extreme juxatpostion without escape succeeds',{
   expect_silent('^\\\\' %>% render)
   expect_silent('^\\^' %>% render)
   expect_silent('^\\_' %>% render)
-
-  '1 joule^\\*. ~1 kg m^2./s^2' %>% render
-  '^\\*. ' %>% render
-
+  expect_silent('1 joule^\\*. ~1 kg m^2./s^2' %>% render)
+  expect_silent('^\\*. ' %>% render)
 })
-
+test_that('arbitrary plotmath escapes succeed by default',{
+  library(magrittr)
+  library(testthat)
+  render <- . %>% as_wikisymbol %>% as_plotmath %>% as.expression
+  expect_silent(' $ \n \\$ \\\t \\\\$ \\\\\' \\\\\\$ \\\\\\\" \\\\\\\\$ ' %>% render)
+  expect_silent(' % \n \\% \\\t \\\\% \\\\\' \\\\\\% \\\\\\\" \\\\\\\\% ' %>% render)
+})

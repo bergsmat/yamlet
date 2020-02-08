@@ -20,7 +20,7 @@
 
 wikitoken <- function(x, ...){
   x <- as.character(x)
-  stopifnot(length(x) <= 1)
+#  stopifnot(length(x) >= 1)
   if(length(x) == 0) return(character(0))
   if(x == '')return('')
   input <- x
@@ -43,6 +43,9 @@ wikitoken <- function(x, ...){
       this(input, p)
     )
     input <- after(input, p)
+    if(identical(input, character(0))){
+      input <- ''
+    }
   }
   return(output)
 }
