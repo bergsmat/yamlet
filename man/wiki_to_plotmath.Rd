@@ -6,14 +6,14 @@
 \usage{
 wiki_to_plotmath(
   x,
-  unrecognized = getOption("plotmath_unrecognized", "quoteToken"),
+  unrecognized = getOption("plotmath_unrecognized", "plotmathToken"),
   ...
 )
 }
 \arguments{
 \item{x}{character}
 
-\item{unrecognized}{function to process unrecognized tokens: default \code{\link{quoteToken}}}
+\item{unrecognized}{function to process unrecognized tokens: default \code{\link{plotmathToken}}}
 
 \item{...}{ignored}
 }
@@ -25,9 +25,9 @@ Converts one wiki symbol to plotmath.
 See description for \code{\link{as_wikisymbol}}.
 By default, unrecognized tokens are returned
 unmodified if they are parseable.
-Otherwise, backslashes and single quotesare escaped,
+Otherwise, backslashes and single quotes are escaped,
 and the result is wrapped in single quotes.
-See \code{\link{quoteToken}}.
+See \code{\link{plotmathToken}}.
 }
 \examples{
 x <- c(

@@ -18,7 +18,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: yaml, csv (>= 0.5.4), encode, units,
- ggplot2, knitr, dplyr (>= 0.8.1), rlang
+ ggplot2, knitr, dplyr (>= 0.8.1), rlang, png, latexpdf
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr
-Suggests: testthat (>= 2.1.0), magrittr, table1, png, patexpdf
+Suggests: testthat (>= 2.1.0), magrittr, table1

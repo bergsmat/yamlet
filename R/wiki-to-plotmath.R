@@ -51,7 +51,7 @@ wiki_to_plotmath <- function(
 ){
   # the plotmath of a wikisymol is the sequential
   # combination of tokens.
-  # tokens are separated by _ or ^ or . are non-printing
+  # tokens separated by _ or ^ or . are non-printing
   # but trigger nesting or un-nesting.
   # Single quote is escaped and used for quoting.
   # Whitespace is quoted.
@@ -283,37 +283,146 @@ plotmathToken <- function(
   token
 }
 
-#' Render Wiki Symbol in Plot
+
+#' Plot Wiki Symbol
 #'
-#' For diagnostic purposes, render wikisymbol in a ggplot.
-#' @param x wikisymbol; see \code{\link{as_wikisymbol}}
+#' Render wikisymbol in a ggplot.
+#' @param x length-one wikisymbol; see \code{\link{as_wikisymbol}}
+#' @param blank whether to use a blank plot area
 #' @param ... ignored arguments
 #' @export
+#' @family preview
 #' @keywords internal
+#' @method ggplot wikisymbol
 #' @import ggplot2
+#' @return gg
 #' @examples
-#' wiki_to_gg('1 joule^\\*. ~1 kg m^2./s^2')
-wiki_to_gg <- function(x, ...){
-  p <- ggplot(data.frame(x = 1,y = 1,label = wiki_to_plotmath(x)))
+#' '1 joule^\\*. ~1 kg m^2./s^2' %>% as_wikisymbol %>% ggplot
+ggplot.wikisymbol <- function(x, blank = TRUE, ...){
+  stopifnot(length(x) == 1)
+  y <- as_plotmath(x)
+  ggplot(y, blank = blank, ...)
+}
+
+#' Plot Plotmath
+#'
+#' Render plotmath in a ggplot.
+#' @param x length-one plotmath; see \code{\link{as_plotmath}}
+#' @param blank whether to use a blank plot area
+#' @param ... ignored arguments
+#' @export
+#' @family preview
+#' @keywords internal
+#' @method ggplot plotmath
+#' @import ggplot2
+#' @return gg
+#' @examples
+#' '1 joule^\\*. ~1 kg m^2./s^2' %>% as_wikisymbol %>% as_plotmath %>% ggplot
+ggplot.plotmath <- function(x, blank = TRUE, ...){
+  stopifnot(length(x)==1)
+  p <- ggplot(data.frame(x = 1,y = 1,label = (x)))
   p <- p + geom_text(aes(x,y,label=label), parse = TRUE)
-  p <- p +
-    scale_x_continuous(expand=c(0,0)) +
-    scale_y_continuous(expand=c(0,0))
-  p <- p + theme(axis.line=element_blank(),axis.text.x=element_blank(),
-            axis.text.y=element_blank(),axis.ticks=element_blank(),
-            axis.title.x=element_blank(),
-            axis.title.y=element_blank(),legend.position="none",
-            panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
-            panel.grid.minor=element_blank(),plot.background=element_blank())
+  if(blank){
+    p <- p +
+      scale_x_continuous(expand=c(0,0)) +
+      scale_y_continuous(expand=c(0,0))
+    p <- p + theme(axis.line=element_blank(),axis.text.x=element_blank(),
+                   axis.text.y=element_blank(),axis.ticks=element_blank(),
+                   axis.title.x=element_blank(),
+                   axis.title.y=element_blank(),legend.position="none",
+                   panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+                   panel.grid.minor=element_blank(),plot.background=element_blank())
+  }
   p
 }
 
+#' Convert Wiki Symbol to PNG
+#'
+#' Converts wikisymbol to png.
+#' @param x wikisymbol; see \code{\link{as_wikisymbol}}
+#' @param filename path for image file
+#' @param width width
+#' @param height height
+#' @param units units
+#' @param res resolution
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @method as.png wikisymbol
+#' @importFrom grDevices png
+#' @importFrom latexpdf as.png
+#' @return invisible filepath
+#' @examples
+#' library(magrittr)
+#' 'Omega ~ joule^\\*. ~1 kg*m^2./s^2' %>% as_wikisymbol %>% as.png -> file
+#' file
+as.png.wikisymbol <- function(x, filename = tempfile(), width = 3, height = 1, units = 'in', res = 150, ...){
+  args <- list(...)
+  if(length(args))args <- args[names(args) %in% names(formals(png))]
+  args <- c(list(filename = filename, width = width, height = height, units = units, res = res), args)
+  do.call(png, args)
+  p <- ggplot(x, ...)
+  print(p)
+  dev.off()
+  invisible(filename)
+}
+#' Convert Plotmath to PNG
+#'
+#' Converts plotmath to png.
+#' @param x plotmath; see \code{\link{as_plotmath}}
+#' @param filename path for image file
+#' @param width width
+#' @param height height
+#' @param units units
+#' @param res resolution
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @method as.png plotmath
+#' @importFrom grDevices png
+#' @importFrom latexpdf as.png
+#' @return invisible filepath
+#' @examples
+#' library(magrittr)
+#' 'Omega ~ joule^\\*. ~1 kg*m^2./s^2' %>% as_wikisymbol %>% as_plotmath %>% as.png -> file
+#' file
+as.png.plotmath <- function(x, filename = tempfile(), width = 3, height = 1, units = 'in', res = 150, ...){
+  args <- list(...)
+  if(length(args))args <- args[names(args) %in% names(formals(png))]
+  args <- c(list(filename = filename, width = width, height = height, units = units, res = res), args)
+  do.call(png, args)
+  p <- ggplot(x, ...)
+  print(p)
+  dev.off()
+  invisible(filename)
+}
 
 
-
-
-
-
-
-
-
+#' Preview Wiki Symbol as Plotmath
+#'
+#' Preview wikisymbol after conversion to plotmath.
+#' Creates and displays a temporary png file with
+#' a parsed expression.
+#' @param x wikisymbol; see \code{\link{as_wikisymbol}}
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @family preview
+#' @keywords internal
+#' @importFrom grDevices png
+#' @importFrom png readPNG
+#' @importFrom grid grid.raster
+#' @return invisible filepath
+#' @examples
+#' library(magrittr)
+#' 'Omega ~ joule^\\*. ~1 kg*m^2./s^2' %>%
+#' as_wikisymbol %>%
+#' as_plotmath %>%
+#' as_preview
+as_preview.plotmath <- function(x, stem = 'plotmath_preview', ...){
+  stopifnot(length(x) == 1)
+  file <- as.png(x, stem = stem, ...)
+  img <- readPNG(file)
+  grid.raster(img)
+  invisible(file)
+}

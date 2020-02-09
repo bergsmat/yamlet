@@ -4,16 +4,26 @@
 \alias{wiki_to_latex}
 \title{Convert One Wiki Symbol to Latex}
 \usage{
-wiki_to_latex(x, italics = FALSE, math = TRUE, ...)
+wiki_to_latex(
+  x,
+  unrecognized = getOption("latex_unrecognized", "latexToken"),
+  italics = FALSE,
+  math = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{character}
+
+\item{unrecognized}{function to process unrecognized tokens: default \code{\link{latexToken}}}
 
 \item{italics}{whether to use italics or not (default: no)}
 
 \item{math}{whether to wrap in math environment (default: yes)}
 
 \item{...}{ignored}
+
+\item{space}{latex sequence for single space}
 }
 \value{
 character
@@ -21,6 +31,9 @@ character
 \description{
 Converts one wiki symbol to latex.
 See description for \code{\link{as_wikisymbol}}.
+By default, unrecognized tokens are returned
+literally.  However, Greek symbols are escaped.
+See \code{\link{latexToken}}.
 }
 \examples{
 x <- c(
@@ -34,6 +47,7 @@ lapply(x, wiki_to_latex)
 library(magrittr)
 'joule^\\\\*. ~1 kg m^2./s^2' \%>\% wiki_to_latex
 'gravitational force (kg\\\\.m/s^2.)' \%>\% wiki_to_latex
+'V_c./F' \%>\% wiki_to_latex
 }
 \seealso{
 Other wikisymbol: 
