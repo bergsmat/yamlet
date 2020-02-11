@@ -519,6 +519,7 @@ test_that('R reserved words survive in print.dg labels',{
   library(magrittr)
   library(dplyr)
   library(ggplot2)
+  library(testthat)
   expect_silent(
   data.frame(y=1:10, x=1:10) %>%
    decorate("x: for NaN% joule^\\*. ~1 kg m^2./s^2. %") %>%

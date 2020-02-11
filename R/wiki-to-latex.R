@@ -3,7 +3,8 @@
 #' Converts one wiki symbol to latex.
 #' See description for \code{\link{as_wikisymbol}}.
 #' By default, unrecognized tokens are returned
-#' literally.  However, Greek symbols are escaped.
+#' literally.  However, Greek symbols and latex
+#' metacharacters are escaped.
 #' See \code{\link{latexToken}}.
 #'
 #' @export
@@ -14,8 +15,7 @@
 #' @param unrecognized function to process unrecognized tokens: default \code{\link{latexToken}}
 #' @param italics whether to use italics or not (default: no)
 #' @param math whether to wrap in math environment (default: yes)
-#' @param space latex sequence for single space
-#' @param ... ignored
+#' @param ... passed arguments
 #' @examples
 #' x <- c(
 #'   'V_c./F',
@@ -28,7 +28,8 @@
 #' library(magrittr)
 #' 'joule^\\*. ~1 kg m^2./s^2' %>% wiki_to_latex
 #' 'gravitational force (kg\\.m/s^2.)' %>% wiki_to_latex
-#' 'V_c./F' %>% wiki_to_latex
+#' '& % $ # \\_ { } ~ \\^ \\' %>% wiki_to_latex
+
 wiki_to_latex <- function(
   x,
   unrecognized = getOption('latex_unrecognized','latexToken'),
@@ -43,7 +44,8 @@ wiki_to_latex <- function(
   # Whitespace and recognized escapes are supplied literally.
   # unescaped '*' is promoted to \code{\cdot}.
   # surviving tokens are processed by 'unrecognized',
-  # which escapes Greek characters and renders other
+  # which escapes metacharacters and
+  # names of Greek letters, but renders other
   # tokens literally.
 
   x <- wikitoken(x,...)
@@ -62,7 +64,7 @@ wiki_to_latex <- function(
     if(max(m) == -1){ # unrecognized token
       # pre-process
       fun <- match.fun(unrecognized)
-      token <- fun(token, ...)
+      token <- fun(token, unrecognized = unrecognized, math = math, italics = italics, ...)
       if(active){
         base <- paste0(base, ' ', token)
       }else{
@@ -113,7 +115,7 @@ wiki_to_latex <- function(
         }
       }
       if(p == '[\\][_]'){
-        token <- paste0("\\textrm{_}")
+        token <- paste0("\\textrm{\\_}")
         if(active){
           base <- paste0(base, ' ', token)
         }else{
@@ -122,7 +124,7 @@ wiki_to_latex <- function(
         }
       }
       if(p == '[\\]\\^'){
-        token <- paste0("\\textrm{^}")
+        token <- paste0("\\textrm{{\\textasciicircum}}")
         if(active){
           base <- paste0(base, ' ', token)
         }else{
@@ -216,6 +218,9 @@ wiki_to_latex <- function(
 #' common upper and lower case names for Greek letters.
 #'
 #' @param x character
+#' @param unrecognized function to process unrecognized tokens
+#' @param italics whether to use italics or not
+#' @param math whether to wrap in math environment
 #' @param ... ignored arguments
 #' @export
 #' @keywords internal
@@ -224,8 +229,9 @@ wiki_to_latex <- function(
 #' latexToken('foo')
 #' latexToken('alpha')
 #' latexToken('Alpha')
-latexToken <- function(x, ...){
-
+latexToken <- function(x, unrecognized, math, italics, ...){
+  special <- c(  '&',  '%',  '$',  '#',  '_',  '{',  '}','~',                '^',               '\\'             ) # special in latex
+  replace <- c('\\&','\\%','\\$','\\#','\\_','\\{','\\}','${\\sim}$','{\\textasciicircum}','{\\textbackslash}')      # use in latex
   greek <- c(
     'alpha','beta','gamma','delta','epsilon','zeta',
     'eta','theta','iota','kappa','lambda','mu',
@@ -238,108 +244,41 @@ latexToken <- function(x, ...){
     'Nu','Xi','Omicron','Pi','Rho','Sigma','Tau',
     'Upsilon','Phi','Chi','Psi','Omega'
   )
+  escape <- function(x,pattern,replace)sub(
+    fixed = TRUE,
+    pattern,
+    replace[match(pattern,replace)],
+    x
+  )
   if(x %in% c(greek, Greek)){
     x <- paste0('\\', x)
   }else{
+    input <- x
+    output <- character(0)
+    while(nchar(input)){
+      m <- sapply(special, function(pattern)position(input, pattern, fixed = TRUE))
+      if(max(m) == -1){ # no match
+        output <- input
+        input <- character(0)
+      }else{
+        m <- m[m != -1] # remove nonmatch
+        m <- m[m == min(m)] # take first match
+        stopifnot(length(m) == 1)
+        p <- names(m)
+        bef <- before(input, p, fixed = TRUE)
+        #ths <- this(input, p, fixed = TRUE)
+        ths <- replace[match(p, special)]
+        aft <- after(input, p, fixed = TRUE)
+        output <- paste0(output, bef, ths)
+        input <- after(input, p, fixed = TRUE)
+        if(identical(input, character(0))){
+          input <- ''
+        }
+      }
+    }
+    x <- output
     x <- paste0('\\textrm{',x, '}')
   }
   x
-}
-
-#' Preview Something
-#'
-#' Creates a preview.
-#' Generic, with methods for latex and plotmath.
-#' @param x object
-#' @param ... passed arguments
-#' @export
-#' @family preview
-#' @return see methods
-#' @examples
-#' library(magrittr)
-#' 'V_c./F' %>% as_wikisymbol %>% as_plotmath %>% as_preview
-#' \dontrun{
-#' 'V_c./F' %>% as_wikisymbol %>% as_latex %>% as_preview
-#' }
-#' 'Omega ~ joule^\\*. ~1 kg*m^2./s^2' %>% as_wikisymbol %>% as_plotmath %>% as_preview
-#' \dontrun{
-#' 'Omega ~ joule^\\*. ~1 kg*m^2./s^2' %>% as_wikisymbol %>% as_latex %>% as_preview
-#' }
-as_preview <- function(x, ...)UseMethod('as_preview')
-
-#' Preview Wiki Symbol as Latex
-#'
-#' Preview wikisymbol after conversion to latex.
-#' Creates and displays a temporary png file, after
-#' conversion from pdf using \code{\link[latexpdf]{ghostconvert}}.
-#' @param x wikisymbol; see \code{\link{as_wikisymbol}}
-#' @param wide nominal page width
-#' @param long nominal page length
-#' @param dir a working directory; see \code{\link[latexpdf]{as.pdf}}
-#' @param gs_cmd ghostscript command; see \code{\link[latexpdf]{ghostconvert}}
-#' @param ... passed arguments
-#' @export
-#' @keywords internal
-#' @family preview
-#' @keywords internal
-#' @importFrom latexpdf as.png
-#' @importFrom latexpdf as.pdf
-#' @importFrom latexpdf ghostconvert
-#' @importFrom png readPNG
-#' @importFrom grid grid.raster
-#' @return invisible filepath
-#' @examples
-#' \dontrun{
-#' library(magrittr)
-#' 'Omega ~ joule^\\*. ~1 kg*m^2./s^2' %>%
-#' as_wikisymbol %>%
-#' as_latex %>%
-#' as_preview
-#' }
-as_preview.latex <- function(
-  x,
-  wide = 50,
-  long = 20,
-  stem = 'latex_preview',
-  dir = tempdir(),
-  gs_cmd = 'mgs',
-  ...
-){
-   stopifnot(length(x) == 1)
-   #x <- wiki_to_latex(x, ...)
-   pdf <- as.pdf(x, stem = stem, dir = dir, wide = wide, long = long, ...)
-   png <- ghostconvert(pdf, gs_cmd = gs_cmd, ...)
-   img <- readPNG(png)
-   grid.raster(img)
-   invisible(png)
-}
-
-#' Compare Plotmath and Latex Previews
-#'
-#' Compares plotmath and latex previews of wikisymbol
-#' Generates png for both, and overlays
-#' latex above plotmath.
-#'
-#' @param x length-one character (will be coerced to wikisymbol)
-#' @param wide width in mm of the latex image
-#' @param long length in mm of the latex image
-#' @param width width (default: inches) of the plotmath image
-#' @param height height (default: inches) of the plotmath image
-#' @param ... passed arguments
-#' @export
-#' @return invisible list of filepaths
-#' @family preview
-#' @examples
-#' specials <- '& % $ # \\_ { } ~ \\^ \\\\ '
-#' '& % $ ~ \\_ { } \\^ \\\\ #' %>% as_wikisymbol %>% as_plotmath %>% goodToken
-#' specials %>% as_wikisymbol %>% as_latex
-#' compare(specials)
-compare <- function(x, wide = 50, long = 20, width = 3, height = 1,...){
-  stopifnot(length(x) == 1)
-  stopifnot(inherits(x, 'character'))
-  x <- as_wikisymbol(x)
-  a <- as_preview(as_plotmath(x))
-  b <- as_preview(as_latex(x))
-  invisible(list(plotmath = a, latex = b))
 }
 

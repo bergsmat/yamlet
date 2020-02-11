@@ -18,8 +18,9 @@ character
 Parses wikisymbol.  Converts length-one character
 to vector of tokens.  Explicit tokens include
 \code{*._^} and any of these escaped with
-backslash, e.g. \code{\\*}. Consecutive
-whitespace characters are a single token.
+backslash, e.g. \code{'\\*'}. One or more consecutive
+whitespace characters are a single token,
+as are one or more consecutive octothorpes (\code{#}).
 Any string of characters delimited by
 one or more of the above is implicitly
 a token as well.

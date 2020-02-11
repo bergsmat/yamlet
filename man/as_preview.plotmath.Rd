@@ -29,6 +29,8 @@ as_preview
 \seealso{
 Other preview: 
 \code{\link{as_preview.latex}()},
+\code{\link{as_previews.wikisymbol}()},
+\code{\link{as_previews}()},
 \code{\link{as_preview}()},
 \code{\link{ggplot.plotmath}()},
 \code{\link{ggplot.wikisymbol}()}

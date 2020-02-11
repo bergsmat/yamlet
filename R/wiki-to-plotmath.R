@@ -66,7 +66,7 @@ wiki_to_plotmath <- function(
   if(identical(x, ''))return(x)
   base <- ''
   explicit <- c(
-    '\\s+',
+    '\\s+','#+',
     '[*]','[.]','[_]','\\^',
     '[\\][*]','[\\][.]','[\\][_]','[\\]\\^'
   )
@@ -94,6 +94,20 @@ wiki_to_plotmath <- function(
       stopifnot(length(m) == 1)
       p <- names(m)
       if(p == '\\s+'){
+        token <- paste0("'",token,"'")
+        if(active){
+          base <- paste0(base, '*', token)
+        }else{
+          if(grepl('[]}]$',base)){ # not empty nest
+            base <- paste0(base, '*', token)
+            active <- TRUE
+          }else{ # empty nest or start of line
+            base <- paste0(base, token)
+            active <- TRUE
+          }
+        }
+      }
+      if(p == '#+'){
         token <- paste0("'",token,"'")
         if(active){
           base <- paste0(base, '*', token)
@@ -320,8 +334,8 @@ ggplot.wikisymbol <- function(x, blank = TRUE, ...){
 #' '1 joule^\\*. ~1 kg m^2./s^2' %>% as_wikisymbol %>% as_plotmath %>% ggplot
 ggplot.plotmath <- function(x, blank = TRUE, ...){
   stopifnot(length(x)==1)
-  p <- ggplot(data.frame(x = 1,y = 1,label = (x)))
-  p <- p + geom_text(aes(x,y,label=label), parse = TRUE)
+  p <- ggplot(data.frame(x = 1:10,y = 1:10,label = (x)))
+  p <- p + geom_text(aes(x = 1,y = 1,label=label), parse = TRUE)
   if(blank){
     p <- p +
       scale_x_continuous(expand=c(0,0)) +

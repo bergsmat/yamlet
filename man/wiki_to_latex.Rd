@@ -21,9 +21,7 @@ wiki_to_latex(
 
 \item{math}{whether to wrap in math environment (default: yes)}
 
-\item{...}{ignored}
-
-\item{space}{latex sequence for single space}
+\item{...}{passed arguments}
 }
 \value{
 character
@@ -32,7 +30,8 @@ character
 Converts one wiki symbol to latex.
 See description for \code{\link{as_wikisymbol}}.
 By default, unrecognized tokens are returned
-literally.  However, Greek symbols are escaped.
+literally.  However, Greek symbols and latex
+metacharacters are escaped.
 See \code{\link{latexToken}}.
 }
 \examples{
@@ -47,7 +46,7 @@ lapply(x, wiki_to_latex)
 library(magrittr)
 'joule^\\\\*. ~1 kg m^2./s^2' \%>\% wiki_to_latex
 'gravitational force (kg\\\\.m/s^2.)' \%>\% wiki_to_latex
-'V_c./F' \%>\% wiki_to_latex
+'& \% $ # \\\\_ { } ~ \\\\^ \\\\' \%>\% wiki_to_latex
 }
 \seealso{
 Other wikisymbol: 

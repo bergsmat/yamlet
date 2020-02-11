@@ -26,6 +26,8 @@ Render wikisymbol in a ggplot.
 Other preview: 
 \code{\link{as_preview.latex}()},
 \code{\link{as_preview.plotmath}()},
+\code{\link{as_previews.wikisymbol}()},
+\code{\link{as_previews}()},
 \code{\link{as_preview}()},
 \code{\link{ggplot.plotmath}()}
 }

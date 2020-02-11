@@ -4,10 +4,16 @@
 \alias{latexToken}
 \title{Process Latex Token}
 \usage{
-latexToken(x, ...)
+latexToken(x, unrecognized, math, italics, ...)
 }
 \arguments{
 \item{x}{character}
+
+\item{unrecognized}{function to process unrecognized tokens}
+
+\item{math}{whether to wrap in math environment}
+
+\item{italics}{whether to use italics or not}
 
 \item{...}{ignored arguments}
 }
