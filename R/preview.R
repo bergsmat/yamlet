@@ -59,7 +59,16 @@ as_preview.latex <- function(
 ){
   stopifnot(length(x) == 1)
   #x <- wiki_to_latex(x, ...)
-  pdf <- as.pdf(x, stem = stem, dir = dir, wide = wide, long = long, ...)
+  pdf <- as.pdf(
+    x,
+    stem = stem,
+    dir = dir,
+    wide = wide,
+    long = long,
+    prolog = '\\begin{center}',
+    epilog = '\\end{center}',
+    ...
+  )
   png <- ghostconvert(pdf, gs_cmd = gs_cmd, ...)
   img <- readPNG(png)
   grid.raster(img)
@@ -97,9 +106,9 @@ as_previews <- function(x,...)UseMethod('as_previews')
 #' @examples
 #' library(magrittr)
 #' specials <- '& % $ # \\_ { } ~ \\^ \\'
-#' specials %>% gsub(' ','',.) %>% as_wikisymbol %>% as_previews
 #' specials %>% as_wikisymbol %>% as_previews
-#' as_previews(as_wikisymbol('$'))-> foo
+#' specials %>% gsub(' ','',.) %>% as_wikisymbol %>% as_previews
+#' as_previews(as_wikisymbol('one joule (Omega) ~ 1 kg*m/s^2'))
 
 as_previews.wikisymbol <- function(x, wide = 13, long = 2.54, width = .25, height = 0.05,...){
   stopifnot(length(x) == 1)

@@ -29,6 +29,7 @@
 #' 'joule^\\*. ~1 kg m^2./s^2' %>% wiki_to_latex
 #' 'gravitational force (kg\\.m/s^2.)' %>% wiki_to_latex
 #' '& % $ # \\_ { } ~ \\^ \\' %>% wiki_to_latex
+#' 'one joule (Omega) ~ 1 kg*m/s^2' %>% wiki_to_latex
 
 wiki_to_latex <- function(
   x,
@@ -250,35 +251,66 @@ latexToken <- function(x, unrecognized, math, italics, ...){
     replace[match(pattern,replace)],
     x
   )
-  if(x %in% c(greek, Greek)){
-    x <- paste0('\\', x)
-  }else{
-    input <- x
-    output <- character(0)
-    while(nchar(input)){
-      m <- sapply(special, function(pattern)position(input, pattern, fixed = TRUE))
-      if(max(m) == -1){ # no match
-        output <- input
-        input <- character(0)
-      }else{
-        m <- m[m != -1] # remove nonmatch
-        m <- m[m == min(m)] # take first match
-        stopifnot(length(m) == 1)
-        p <- names(m)
-        bef <- before(input, p, fixed = TRUE)
-        #ths <- this(input, p, fixed = TRUE)
-        ths <- replace[match(p, special)]
-        aft <- after(input, p, fixed = TRUE)
-        output <- paste0(output, bef, ths)
-        input <- after(input, p, fixed = TRUE)
-        if(identical(input, character(0))){
-          input <- ''
-        }
+
+
+  ### specials
+  input <- x
+  output <- ''
+  while(nchar(input)){
+    m <- sapply(special, function(pattern)position(input, pattern, fixed = TRUE))
+    if(max(m) == -1){ # no match
+      output <- paste0(output,input)
+      input <- ''
+    }else{
+      m <- m[m != -1] # remove nonmatch
+      m <- m[m == min(m)] # take first match
+      stopifnot(length(m) == 1)
+      p <- names(m)
+      bef <- before(input, p, fixed = TRUE)
+      #ths <- this(input, p, fixed = TRUE)
+      ths <- replace[match(p, special)]
+      aft <- after(input, p, fixed = TRUE)
+      output <- paste0(output, bef, ths)
+      input <- after(input, p, fixed = TRUE)
+      if(identical(input, character(0))){
+        input <- ''
       }
     }
-    x <- output
-    x <- paste0('\\textrm{',x, '}')
   }
+  x <- output
+
+  ### greek
+  nms <- c(greek, Greek)
+  input <- x
+  output <- ''
+  while(nchar(input)){
+    m <- sapply(nms, function(pattern)position(
+      input,
+      paste0('\\b',pattern,'\\b'),
+      fixed = FALSE
+    ))
+    if(max(m) == -1){ # no match
+      output <- paste0(output,input)
+      input <- ''
+    }else{
+      m <- m[m != -1] # remove nonmatch
+      m <- m[m == min(m)] # take first match
+      stopifnot(length(m) == 1)
+      p <- names(m)
+      bef <- before(input, p, fixed = FALSE)
+      ths <- paste0('$\\', p, '{}$')
+      aft <- after(input, p, fixed = FALSE)
+      output <- paste0(output, bef, ths)
+      input <- after(input, p, fixed = FALSE)
+      if(identical(input, character(0))){
+        input <- ''
+      }
+    }
+  }
+  x <- output
+
+  x <- paste0('\\textrm{',x, '}')
+
   x
 }
 

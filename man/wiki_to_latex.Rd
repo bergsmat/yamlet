@@ -47,6 +47,7 @@ library(magrittr)
 'joule^\\\\*. ~1 kg m^2./s^2' \%>\% wiki_to_latex
 'gravitational force (kg\\\\.m/s^2.)' \%>\% wiki_to_latex
 '& \% $ # \\\\_ { } ~ \\\\^ \\\\' \%>\% wiki_to_latex
+'one joule (Omega) ~ 1 kg*m/s^2' \%>\% wiki_to_latex
 }
 \seealso{
 Other wikisymbol: 

@@ -20,6 +20,7 @@ gg
 Render plotmath in a ggplot.
 }
 \examples{
+library(magrittr)
 '1 joule^\\\\*. ~1 kg m^2./s^2' \%>\% as_wikisymbol \%>\% as_plotmath \%>\% ggplot
 }
 \seealso{

@@ -30,9 +30,9 @@ latex above plotmath.
 \examples{
 library(magrittr)
 specials <- '& \% $ # \\\\_ { } ~ \\\\^ \\\\'
-specials \%>\% gsub(' ','',.) \%>\% as_wikisymbol \%>\% as_previews
 specials \%>\% as_wikisymbol \%>\% as_previews
-as_previews(as_wikisymbol('$'))-> foo
+specials \%>\% gsub(' ','',.) \%>\% as_wikisymbol \%>\% as_previews
+as_previews(as_wikisymbol('one joule (Omega) ~ 1 kg*m/s^2'))
 }
 \seealso{
 Other preview: 
