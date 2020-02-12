@@ -252,9 +252,14 @@ test_that('dplyr filter does not drop attributes',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- file %>% decorate %>% resolve
   x %$% Heart %>% attributes %>% names
-  x %>% filter(!is.na(conc)) %$% Heart %>% attributes %>% names
+  expect_true(
+    setequal(
+      x %>% filter(!is.na(conc)) %$% Heart %>% attributes %>% names,
+      c('levels','class','label')
+    )
+  )
 })
-test_that('print.ag treats variable as categorical if guide has length > 1',{
+test_that('print.dg treats variable as categorical if guide has length > 1',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   library(ggplot2)
   library(dplyr)
@@ -262,7 +267,8 @@ test_that('print.ag treats variable as categorical if guide has length > 1',{
   file %>% decorate %>% filter(!is.na(conc)) %>%
   ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 })
-test_that('print.ag uses conditional labels and guides',{
+test_that('print.dg uses conditional labels and guides',{
+  # needs work to accommodate new paradigm
   file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
   file %>% decorate %>%
   filter(event == 'conc') %>%
@@ -334,9 +340,10 @@ test_that('resolve correctly classifies conditional elements',{
   x <- decorate(file)
   x %>% as_yamlet
   x %>% explicit_guide %>% as_yamlet
+  x %>% select(value) %>% explicit_guide %>% as_yamlet
   x %>% explicit_guide %>% factorize_codelist %>% as_yamlet
   a <- x %>% resolve %>% as_yamlet
-  identical(names(a$value), c('label','units'))
+  expect_true(identical(names(a$value), c('label','units')))
 })
 test_that('resolve correctly classifies factors',{
   library(magrittr)
@@ -474,16 +481,17 @@ test_that('labels parsed and unparsed, with and without units, display correctly
   ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
 })
 
-test_that('all valid wikisymbol print as axis label',{
+test_that('all valid spork print as axis label',{
   library(magrittr)
   library(dplyr)
   library(ggplot2)
+  library(spork)
   expect_silent(
   data.frame(y=1:10, x=1:10) %>%
   decorate("x: 1 joule^\\*. ~1 kg m^2./s^2") %>%
   #decorate("x: ''") %>%
   mutate(x = structure(x, label = x %>% attr('label') %>%
-  as_wikisymbol %>%
+  as_spork %>%
   as_plotmath %>%
   as.expression)) %>%
   ggplot(aes(x, y))
@@ -492,26 +500,10 @@ test_that('all valid wikisymbol print as axis label',{
   data.frame(y=1:10, x=1:10) %>%
     decorate("x: gravitational force \\\\ (kg\\.m/s^2.)") %>%
     mutate(x = structure(x, label = x %>% attr('label') %>%
-  as_wikisymbol %>%
+  as_spork %>%
   as_plotmath %>%
   as.expression)) %>%
   ggplot(aes(x, y))
-  )
-
-  expect_identical(
-  'gravitational force  (kg\\.m/s^2.)' %>%
-    as_wikisymbol %>%
-    as_plotmath %>%
-    as.character,
-  "gravitational*' '*force*'  '*'(kg'*'.'*m/s^{2}*')'"
-  )
-
-  expect_identical(
-   '1 joule^\\*. ~1 kg m^2./s^2' %>%
-     as_wikisymbol %>%
-     as_plotmath %>%
-     as.character,
-   "1*' '*joule^{'*'}*' '*~1*' '*kg*' '*m^{2}*'/s'^{2}"
   )
 })
 
@@ -525,285 +517,9 @@ test_that('R reserved words survive in print.dg labels',{
    decorate("x: for NaN% joule^\\*. ~1 kg m^2./s^2. %") %>%
    #decorate("x: ''") %>%
     mutate(x = structure(x, label = x %>% attr('label') %>%
-  as_wikisymbol %>%
+  as_spork %>%
   as_plotmath %>%
   as.expression)) %>%
   ggplot(aes(x, y))
   )
-})
-test_that('as_latex is table',{
-  expect_identical(
-    'Omega joule^\\*. ~1 kg*m^2./s^2' %>%
-      as_wikisymbol %>%
-      as_latex %>%
-      as.character,
-    "$\\mathrm{\\Omega{\\:}joule^{*}{\\:}{\\sim}1{\\:}kg{\\cdot}m^{2}/s^{2}}$"
-  )
-  expect_identical(
-    'gravitational force gamma (kg\\.m/s^2.)' %>%
-      as_wikisymbol %>%
-      as_latex %>%
-      as.character,
-    "$\\mathrm{gravitational{\\:}force{\\:}\\gamma{\\:}(kg.m/s^{2})}$"
-  )
-
-})
-
-test_that('wikisymbol to plotmath is stable',{
-  e <- c(
-  '',
-  '.',
-  '^',
-  '.^',
-  '^.',
-  'a',
-  'a.',
-  '.a',
-  '1',
-  '1.',
-  '.1',
-  'a^',
-  '^a',
-  '1^',
-  '^1',
-
-  'a.^',
-  'a^.',
-  '.a^',
-  '.^a',
-  '^a.',
-  '^.a', #
-
-  '1.^',
-  '1^.',
-  '.1^',
-  '.^1',
-  '^1.',
-  '^.1', #
-
-
-  'a1.^',
-  'a1^.',
-  '.a1^',
-  '.^a1',
-  '^a1.',
-  '^.a1',
-
-  '1a.^',
-  '1a^.',
-  '.1a^',
-  '.^1a',
-  '^1a.',
-  '^.1a',
-
-  '".^',
-  '"^.',
-  '."^',
-  '.^"',
-  '^".',
-  '^."',
-
-  "'.^",
-  "'^.",
-  ".'^",
-  ".^'",
-  "^'.",
-  "^.'",
-
-  "  ",
-  "  xx",
-  "xx  ",
-
-
-  "  xx  ",
-  "xx  xx",
-
-  "\\\\",
-  "\\*",
-  "\\.",
-  "\\_",
-
-  "*",
-  "a*b",
-  "a * b",
-  "a *b",
-  "a\\*b",
-
-  "a\\*b$",
-
-  "H_b^A_1^c",
-  "H_b^A_1^c.",
-  "H_b^A_1^.c",
-  "H_b^A_1.^c",
-  "H_b^A_.1^c",
-  "H_b^A._1^c",
-  "H_b^.A_1^c",
-  "H_b.^A_1^c",
-  "H_.b^A_1^c",
-  "H._b^A_1^c",
-  ".H_b^A_1^c",
-
-  "____.",
-  "___.",
-  "__.",
-  "_.",
-  ".",
-  "^^^^.",
-  "^^^.",
-  "^^.",
-  "^.",
-  ".",
-
-  "H_b^A_1^c.",
-  "_ ",
-  " _",
-  " = ",
-  " _ ",
-  "^c.",
-  " ^c.",
-  "^ c.",
-  "^c .",
-  "^c. ",
-  " ^ c . ",
-  " H _ b ^ A _ 1 ^ c . ",
-  " H]_]b ^]A]_]1]^]c].]"
-)
-f <- c(
-  "",
-  "",
-  "''^{}",
-  "''^{}",
-  "''^{}",
-  "a",
-  "a",
-  "a",
-  "1",
-  "1",
-  "1",
-  "a^{}",
-  "''^{a}",
-  "1^{}",
-  "''^{1}",
-  "a^{}",
-  "a^{}",
-  "a^{}",
-  "''^{a}",
-  "''^{a}",
-  "''^{}*a",
-  "1^{}",
-  "1^{}",
-  "1^{}",
-  "''^{1}",
-  "''^{1}",
-  "''^{}*1",
-  "a1^{}",
-  "a1^{}",
-  "a1^{}",
-  "''^{a1}",
-  "''^{a1}",
-  "''^{}*a1",
-  "'1a'^{}",
-  "'1a'^{}",
-  "'1a'^{}",
-  "''^{'1a'}",
-  "''^{'1a'}",
-  "''^{}*'1a'",
-  "'\"'^{}"  ,
-  "'\"'^{}",
-  "'\"'^{}",
-  "''^{'\"'}",
-  "''^{'\"'}",
-  "''^{}*'\"'",
-  "'\\''^{}",
-  "'\\''^{}",
-  "'\\''^{}",
-  "''^{'\\''}",
-  "''^{'\\''}",
-  "''^{}*'\\''",
-  "'  '",
-  "'  '*xx",
-  "xx*'  '",
-  "'  '*xx*'  '",
-  "xx*'  '*xx",
-  "'\\\\\\\\'",
-  "'*'",
-  "'.'",
-  "'_'",
-  "''%.%''",
-  "a%.%b",
-  "a*' '%.%' '*b",
-  "a*' '%.%b",
-  "a*'*'*b",
-  "a*'*'*'b$'",
-  "H[b^{A[1^{c}]}]",
-  "H[b^{A[1^{c}]}]",
-  "H[b^{A[1^{}*c]}]",
-  "H[b^{A[1]*''^{c}}]",
-  "H[b^{A[]*1^{c}}]",
-  "H[b^{A}*''[1^{c}]]",
-  "H[b^{}*A[1^{c}]]",
-  "H[b]*''^{A[1^{c}]}",
-  "H[]*b^{A[1^{c}]}",
-  "H[b^{A[1^{c}]}]",
-  "H[b^{A[1^{c}]}]",
-  "''[''[''[''[]]]]",
-  "''[''[''[]]]",
-  "''[''[]]",
-  "''[]",
-  "",
-  "''^{''^{''^{''^{}}}}",
-  "''^{''^{''^{}}}",
-  "''^{''^{}}",
-  "''^{}",
-  "",
-  "H[b^{A[1^{c}]}]",
-  "''[' ']",
-  "' '[]",
-  "' '*'='*' '",
-  "' '[' ']",
-  "''^{c}",
-  "' '^{c}",
-  "''^{' '*c}",
-  "''^{c*' '}",
-  "''^{c}*' '",
-  "' '^{' '*c*' '}*' '",
-  "' '*H*' '[' '*b*' '^{' '*A*' '[' '*1*' '^{' '*c*' '}*' ']}]",
-  "' '*'H]'[']b'*' '^{']A]'[']1]'^{']c]'}*']']}]"
-)
-g <- as_plotmath(as_wikisymbol(e)) %>% as.character
-expect_identical(f, g)
-})
-
-test_that('extreme juxtapostion without escape succeeds',{
-  library(magrittr)
-  library(testthat)
-  render <- . %>% as_wikisymbol %>% as_plotmath %>% as.expression
-  expect_silent('^1' %>% render)
-  expect_silent('^*' %>% render)
-  expect_silent('*^' %>% render)
-  expect_silent('* ^' %>% render)
-  expect_silent(' *^' %>% render)
-  expect_silent('*^ ' %>% render)
-  expect_silent('^\\*' %>% render)
-  expect_silent('\\^\\*' %>% render)
-  expect_silent('\\*' %>% render)
-  expect_silent('\\\\' %>% render)
-  expect_silent('\\_' %>% render)
-  expect_silent('\\.' %>% render)
-  expect_silent('\\^' %>% render)
-  expect_silent('\\*^' %>% render)
-  expect_silent('\\*^' %>% render)
-  expect_silent('^\\.' %>% render)
-  expect_silent('^\\\\' %>% render)
-  expect_silent('^\\^' %>% render)
-  expect_silent('^\\_' %>% render)
-  expect_silent('1 joule^\\*. ~1 kg m^2./s^2' %>% render)
-  expect_silent('^\\*. ' %>% render)
-})
-test_that('arbitrary plotmath escapes succeed by default',{
-  library(magrittr)
-  library(testthat)
-  render <- . %>% as_wikisymbol %>% as_plotmath %>% as.expression
-  expect_silent(' $ \n \\$ \\\t \\\\$ \\\\\' \\\\\\$ \\\\\\\" \\\\\\\\$ ' %>% render)
-  expect_silent(' % \n \\% \\\t \\\\% \\\\\' \\\\\\% \\\\\\\" \\\\\\\\% ' %>% render)
 })

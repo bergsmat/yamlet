@@ -21,7 +21,8 @@ For a list of expressions evaluated on a data.frame
 this returns the index of the one expression that evaluates
 to an all-true vector (after coercing NA to FALSE).
 Returns 0 if no expressions succeed, and NA_integer_ if
-more than one succeed.
+more than one succeed. Returns -1 if any expression
+does not evaluate to logical or if list is empty.
 }
 \examples{
 meta <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')

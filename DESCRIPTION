@@ -17,7 +17,7 @@ Description: The 'yamlet' package implements a file-based
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: yaml, csv (>= 0.5.4), encode, units,
+Imports: yaml, csv (>= 0.5.4), encode, units, spork,
  ggplot2, knitr, dplyr (>= 0.8.1), rlang, png, latexpdf
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr
