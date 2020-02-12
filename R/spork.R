@@ -6,10 +6,12 @@
 #' @param ... ignored arguments
 #' @export
 #' @keywords internal
-#' @family util
+#' @family spork
+#' @importFrom spork as_spork
 #' @return spork
 #' @examples
 #' library(units)
+#' library(spork)
 #' x <- as_units('kg.m/s^2')
 #' names(attributes(x))
 #' y <- attr(x,'units')
@@ -36,12 +38,14 @@ as_spork.symbolic_units <- function(x, canonical = TRUE, ...){
 #' @param x units; see \code{\link[units]{as_units}}
 #' @param ... ignored arguments
 #' @export
+#' @importFrom spork as_spork
 #' @keywords internal
 #' @family spork
 #' @return spork
 #' @examples
 #' library(units)
 #' library(magrittr)
+#' library(spork)
 #' 'kg.m^2/s^2' %>% as_units %>% as_spork
 #' 'kg.m2 s-2' %>% as_units %>% as_spork
 #' 'kg.m^2/s^2' %>% as_units %>% as_spork(FALSE)
@@ -62,10 +66,12 @@ as_spork.units <- function(x, canonical = TRUE, ...){
 #' @param ... ignored arguments
 #' @export
 #' @keywords internal
+#' @importFrom spork as_spork
 #' @family spork
 #' @return units
 #' @examples
 #' library(magrittr)
+#' library(spork)
 #' 'kg.m^2/s^2' %>% as_unit_string %>% as_spork
 #' 'kg.m2 s-2' %>% as_unit_string %>% as_spork
 as_spork.unit_string <- function(x, ...){

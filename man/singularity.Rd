@@ -51,11 +51,5 @@ singularity(
   )
 )
 }
-\seealso{
-Other lab: 
-\code{\link{as_lab.character}()},
-\code{\link{as_lab.list}()},
-\code{\link{as_lab}()}
-}
 \concept{lab}
 \keyword{internal}

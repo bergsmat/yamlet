@@ -4,7 +4,7 @@
 \alias{as_spork.symbolic_units}
 \title{Coerce Symbolic Units to Spork}
 \usage{
-as_spork.symbolic_units(x, canonical = TRUE, ...)
+\method{as_spork}{symbolic_units}(x, canonical = TRUE, ...)
 }
 \arguments{
 \item{x}{symbolic_units; see \code{\link[units]{as_units}}}
@@ -20,6 +20,7 @@ to unit_string.
 }
 \examples{
 library(units)
+library(spork)
 x <- as_units('kg.m/s^2')
 names(attributes(x))
 y <- attr(x,'units')
@@ -33,5 +34,10 @@ library(magrittr)
 'kg.m^2/s^2' \%>\% as_units \%>\% attr('units') \%>\% as_spork(FALSE)
 'kg.m2 s-2' \%>\% as_units \%>\% attr('units') \%>\% as_spork(FALSE)
 }
-\concept{util}
+\seealso{
+Other spork: 
+\code{\link{as_spork.unit_string}()},
+\code{\link{as_spork.units}()}
+}
+\concept{spork}
 \keyword{internal}

@@ -4,7 +4,7 @@
 \alias{as_spork.units}
 \title{Coerce Units to Spork}
 \usage{
-as_spork.units(x, canonical = TRUE, ...)
+\method{as_spork}{units}(x, canonical = TRUE, ...)
 }
 \arguments{
 \item{x}{units; see \code{\link[units]{as_units}}}
@@ -21,6 +21,7 @@ to unit_string.
 \examples{
 library(units)
 library(magrittr)
+library(spork)
 'kg.m^2/s^2' \%>\% as_units \%>\% as_spork
 'kg.m2 s-2' \%>\% as_units \%>\% as_spork
 'kg.m^2/s^2' \%>\% as_units \%>\% as_spork(FALSE)
@@ -28,6 +29,7 @@ library(magrittr)
 }
 \seealso{
 Other spork: 
+\code{\link{as_spork.symbolic_units}()},
 \code{\link{as_spork.unit_string}()}
 }
 \concept{spork}

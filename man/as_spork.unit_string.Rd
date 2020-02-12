@@ -4,7 +4,7 @@
 \alias{as_spork.unit_string}
 \title{Coerce Unit String to Spork}
 \usage{
-as_spork.unit_string(x, ...)
+\method{as_spork}{unit_string}(x, ...)
 }
 \arguments{
 \item{x}{unit_string}
@@ -22,11 +22,13 @@ Unit string is character that \code{\link{is_parseable}}.
 }
 \examples{
 library(magrittr)
+library(spork)
 'kg.m^2/s^2' \%>\% as_unit_string \%>\% as_spork
 'kg.m2 s-2' \%>\% as_unit_string \%>\% as_spork
 }
 \seealso{
 Other spork: 
+\code{\link{as_spork.symbolic_units}()},
 \code{\link{as_spork.units}()}
 }
 \concept{spork}

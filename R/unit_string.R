@@ -130,7 +130,7 @@ as_unit_string.factor <- function(x, ...)as_unit_string(as.character(x), ...)
 #' 'kg.m2 s-2' %>% as_units %>% attr('units') %>% as_unit_string(FALSE)
 as_unit_string.symbolic_units <- function(x, canonical = TRUE, ...){
   y <- as.character(x)
-  if(!canonical)y <- as_units(y) %>% deparse_unit
+  if(!canonical)y <- deparse_unit(as_units(y))
   y <- as_unit_string(y, ...)
   y
 }
