@@ -106,7 +106,7 @@ as_unit_string.factor <- function(x, ...)as_unit_string(as.character(x), ...)
 #'
 #' Coerces symbolic units to unit_string.
 #' @param x symbolic_units; see \code{\link[units]{as_units}}
-#' @param canonical whether to return the form with all positive exponents
+#' @param canonical whether to return the form having all positive exponents
 #' @param ... ignored arguments
 #' @export
 #' @keywords internal

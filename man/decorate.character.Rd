@@ -94,6 +94,7 @@ Other interface:
 \code{\link{conditionalize.data.frame}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{ggplot.decorated}()},
+\code{\link{ggready.data.frame}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_table.character}()},

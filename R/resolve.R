@@ -29,6 +29,7 @@ resolve <- function(x, ...)UseMethod('resolve')
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)
 #' x %>% resolve(default = 'unit') %>% as_yamlet
+
 resolve.data.frame <- function(x, ...){
   x <- explicit_guide(x, ...)
   x <- factorize_codelist(x, ...)

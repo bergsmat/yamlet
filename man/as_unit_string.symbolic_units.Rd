@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{symbolic_units; see \code{\link[units]{as_units}}}
 
-\item{canonical}{whether to return the form with all positive exponents}
+\item{canonical}{whether to return the form having all positive exponents}
 
 \item{...}{ignored arguments}
 }

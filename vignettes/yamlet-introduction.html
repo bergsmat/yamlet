@@ -12,7 +12,7 @@
 
 <meta name="author" content="Tim Bergsma" />
 
-<meta name="date" content="2020-01-22" />
+<meta name="date" content="2020-02-12" />
 
 <title>An Introduction to Yamlet</title>
 
@@ -304,7 +304,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">An Introduction to Yamlet</h1>
 <h4 class="author">Tim Bergsma</h4>
-<h4 class="date">2020-01-22</h4>
+<h4 class="date">2020-02-12</h4>
 
 
 <div id="TOC">
@@ -467,19 +467,18 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <h2>Coordinated Input and Output</h2>
 <p>A useful convention is to store metadata in a file next to the file it describes, with the same name but the ‘yaml’ extension. <code>decorate()</code> expects this, and if given a file path to a CSV file, it will look for a ’*.yaml’ file nearby. To “decorate” a CSV path means to read it, read its <code>yamlet</code> (if any) and apply the <code>yamlet</code> as attributes on the resulting data frame.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">library</span>(csv)</a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt; Warning: package &#39;csv&#39; was built under R version 3.6.2</span></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="co"># see ?Quinidine in package nlme</span></a>
-<a class="sourceLine" id="cb15-4" title="4">file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</a>
-<a class="sourceLine" id="cb15-5" title="5">a &lt;-<span class="st"> </span><span class="kw">decorate</span>(file)</a>
-<a class="sourceLine" id="cb15-6" title="6"><span class="kw">as_yamlet</span>(a)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb15-7" title="7"><span class="co">#&gt; - Subject</span></a>
-<a class="sourceLine" id="cb15-8" title="8"><span class="co">#&gt;  - label: patient identifier</span></a>
-<a class="sourceLine" id="cb15-9" title="9"><span class="co">#&gt; - time</span></a>
-<a class="sourceLine" id="cb15-10" title="10"><span class="co">#&gt;  - label: time since start of study</span></a>
-<a class="sourceLine" id="cb15-11" title="11"><span class="co">#&gt;  - guide: h</span></a>
-<a class="sourceLine" id="cb15-12" title="12"><span class="co">#&gt; - conc</span></a>
-<a class="sourceLine" id="cb15-13" title="13"><span class="co">#&gt;  - label: quinidine serum concentration</span></a>
-<a class="sourceLine" id="cb15-14" title="14"><span class="co">#&gt;  - guide: mg/L</span></a></code></pre></div>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co"># see ?Quinidine in package nlme</span></a>
+<a class="sourceLine" id="cb15-3" title="3">file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</a>
+<a class="sourceLine" id="cb15-4" title="4">a &lt;-<span class="st"> </span><span class="kw">decorate</span>(file)</a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="kw">as_yamlet</span>(a)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="co">#&gt; - Subject</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="co">#&gt;  - label: patient identifier</span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="co">#&gt; - time</span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="co">#&gt;  - label: time since start of study</span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="co">#&gt;  - guide: h</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="co">#&gt; - conc</span></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="co">#&gt;  - label: quinidine serum concentration</span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="co">#&gt;  - guide: mg/L</span></a></code></pre></div>
 <p>Another way to achieve the same thing is with <code>io_csv()</code>. It is a toggle function that returns a path if given a file to store, and returns a decorated data frame if given a path to read (same for <code>io_table()</code>, which has all the formatting options of <code>read.table()</code> and <code>write.table()</code>). The path is just the path to the primary data, but the path to the metadata is implied as well.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">options</span>(<span class="dt">csv_source =</span> <span class="ot">FALSE</span>) <span class="co"># see ?as.csv</span></a>
 <a class="sourceLine" id="cb16-2" title="2">file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</a>
@@ -500,7 +499,7 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <a class="sourceLine" id="cb16-17" title="17"><span class="co">#&gt; conc: [ quinidine serum concentration, mg/L ]</span></a>
 <a class="sourceLine" id="cb16-18" title="18"><span class="co">#&gt; dose: [ quinidine administered dose, mg ]</span></a>
 <a class="sourceLine" id="cb16-19" title="19"><span class="co">#&gt; interval: [ inter-dose interval, h ]</span></a>
-<a class="sourceLine" id="cb16-20" title="20"><span class="co">#&gt; Age: [ baseline subject age, &#39;y&#39; ]</span></a>
+<a class="sourceLine" id="cb16-20" title="20"><span class="co">#&gt; Age: [ baseline subject age, year ]</span></a>
 <a class="sourceLine" id="cb16-21" title="21"><span class="kw">options</span>(<span class="dt">csv_source =</span> <span class="ot">TRUE</span>) <span class="co"># restore</span></a></code></pre></div>
 </div>
 <div id="using-yamlet-metadata" class="section level2">
@@ -517,8 +516,9 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <a class="sourceLine" id="cb17-6" title="6">file <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb17-7" title="7"><span class="st">  </span>decorate <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb17-8" title="8"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(conc)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-9" title="9"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> conc, <span class="dt">color =</span> Heart)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb17-10" title="10"><span class="st">  </span><span class="kw">geom_point</span>()</a></code></pre></div>
+<a class="sourceLine" id="cb17-9" title="9"><span class="st">  </span><span class="kw">ggready</span>(<span class="dt">parse =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> conc, <span class="dt">color =</span> Heart)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-11" title="11"><span class="st">  </span><span class="kw">geom_point</span>()</a></code></pre></div>
 <div class="figure">
 <img src="data:image/png;base64,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" alt="Automatic axis labels and legends using curated metadata as column attributes." />
 <p class="caption">Automatic axis labels and legends using curated metadata as column attributes.</p>
@@ -528,13 +528,12 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <h3>Example Table</h3>
 <p>The <strong>table1</strong> package uses labels and units stored as attributes to enrich table output. In the example below, we use <code>resolve()</code> to re-implement guides as units and factor levels, which is what <code>table1()</code> needs.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(table1))</a>
-<a class="sourceLine" id="cb18-2" title="2"><span class="co">#&gt; Warning: package &#39;table1&#39; was built under R version 3.6.2</span></a>
-<a class="sourceLine" id="cb18-3" title="3">file <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-4" title="4"><span class="st">  </span>decorate <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb18-5" title="5"><span class="st">  </span>resolve <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb18-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(Subject) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-7" title="7"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-8" title="8"><span class="st">  </span><span class="kw">table1</span>(<span class="op">~</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Weight <span class="op">+</span><span class="st"> </span>Race <span class="op">|</span><span class="st"> </span>Heart, .)</a></code></pre></div>
+<a class="sourceLine" id="cb18-2" title="2">file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="st">  </span>decorate <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="st">  </span>resolve <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="st">  </span><span class="kw">group_by</span>(Subject) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-6" title="6"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-7" title="7"><span class="st">  </span><span class="kw">table1</span>(<span class="op">~</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Weight <span class="op">+</span><span class="st"> </span>Race <span class="op">|</span><span class="st"> </span>Heart, .)</a></code></pre></div>
 <div class="Rtable1"><table class="Rtable1">
 <thead>
 <tr>
@@ -547,7 +546,7 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 </thead>
 <tbody>
 <tr>
-<td class='rowlabel firstrow'><span class='varlabel'>baseline subject age<span class='varunits'> (y)</span></span></td>
+<td class='rowlabel firstrow'><span class='varlabel'>baseline subject age<span class='varunits'> (year)</span></span></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
@@ -589,7 +588,7 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <td class='lastrow'>79.0 [41.0, 119]</td>
 </tr>
 <tr>
-<td class='rowlabel firstrow'><span class='varlabel'>Race</span></td>
+<td class='rowlabel firstrow'><span class='varlabel'>subject race</span></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
