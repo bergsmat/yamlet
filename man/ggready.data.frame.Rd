@@ -4,24 +4,29 @@
 \alias{ggready.data.frame}
 \title{Prepare Data Frame for GGplot}
 \usage{
-\method{ggready}{data.frame}(x, parse = TRUE, ...)
+\method{ggready}{data.frame}(x, style = getOption("append_units_style", "character"), ...)
 }
 \arguments{
 \item{x}{object}
 
-\item{parse}{if TRUE, call \code{\link{express_label_units}} instead of \code{\link{join_label_units}}}
+\item{style}{passed to \code{\link{append_units}}}
 
-\item{...}{passed arguments}
+\item{...}{passed to \code{\link{append_units}}}
 }
 \value{
 decorated
 }
 \description{
 Prepares data.frame for ggplot. Calls
-\code{\link{resolve}} and one of
-\code{\link{join_label_units}} or
-\code{\link{express_label_units}}.
+\code{\link{resolve}} and appends
+units to label.
 Enforces class 'decorated'.
+If \code{parse} is true,
+labels and units are
+coerced with \code{\link{as_spork}}
+and \code{\link{as_plotmath}},
+merged with \code{\link[spork]{concatenate}},
+and parsed with \code{\link{as.expression.plotmath}}.
 }
 \examples{
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')

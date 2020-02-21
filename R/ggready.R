@@ -15,15 +15,23 @@ ggready <- function(x, ...)UseMethod('ggready')
 #' Prepare Data Frame for GGplot
 #'
 #' Prepares data.frame for ggplot. Calls
-#' \code{\link{resolve}} and one of
-#' \code{\link{join_label_units}} or
-#' \code{\link{express_label_units}}.
+#' \code{\link{resolve}} and appends
+#' units to label.
 #' Enforces class 'decorated'.
+#' If \code{parse} is true,
+#' labels and units are
+#' coerced with \code{\link{as_spork}}
+#' and \code{\link{as_plotmath}},
+#' merged with \code{\link[spork]{concatenate}},
+#' and parsed with \code{\link{as.expression.plotmath}}.
+#'
 #'
 #' @param x object
-#' @param parse if TRUE, call \code{\link{express_label_units}} instead of \code{\link{join_label_units}}
-#' @param ... passed arguments
+#' @param style passed to \code{\link{append_units}}
+#' @param ... passed to \code{\link{append_units}}
 #' @export
+#' @importFrom spork as_spork
+#' @importFrom spork plotmathToken
 #' @return decorated
 #' @family resolve
 #' @family interface
@@ -42,11 +50,12 @@ ggready <- function(x, ...)UseMethod('ggready')
 #'  geom_point()
 
 
-ggready.data.frame <- function(x, parse = TRUE, ...){
-  x <- explicit_guide(x, ...)
-  x <- factorize_codelist(x, ...)
-  if(parse) x <- express_label_units(x,...)
-  if(!parse) x <- join_label_units(x,...)
+ggready.data.frame <- function(x, style = getOption('append_units_style','character'), ...){
+  x <- resolve(x, ...)
+  x <- append_units(x, style = style, ...)
   class(x) <- union('decorated', class(x))
   x
 }
+
+#' @export
+spork::plotmathToken
