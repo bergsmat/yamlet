@@ -32,25 +32,23 @@ class(ggplot(data = x, aes(x = time, y = conc)) + geom_path())
 example(print.dg)
 }
 \seealso{
-Other dg: 
-\code{\link{print.dg}()}
+Other dg: \code{\link{print.dg}}
 
-Other interface: 
-\code{\link{as_classified.factor}()},
-\code{\link{conditionalize.data.frame}()},
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
-\code{\link{ggready.data.frame}()},
-\code{\link{io_csv.character}()},
-\code{\link{io_csv.data.frame}()},
-\code{\link{io_table.character}()},
-\code{\link{io_table.data.frame}()},
-\code{\link{io_yamlet.character}()},
-\code{\link{io_yamlet.data.frame}()},
-\code{\link{is_parseable.default}()},
-\code{\link{read_yamlet}()},
-\code{\link{resolve.data.frame}()},
-\code{\link{write_yamlet}()}
+Other interface: \code{\link{as_classified.factor}},
+  \code{\link{conditionalize.data.frame}},
+  \code{\link{decorate.character}},
+  \code{\link{decorate.data.frame}},
+  \code{\link{ggready.data.frame}},
+  \code{\link{io_csv.character}},
+  \code{\link{io_csv.data.frame}},
+  \code{\link{io_table.character}},
+  \code{\link{io_table.data.frame}},
+  \code{\link{io_yamlet.character}},
+  \code{\link{io_yamlet.data.frame}},
+  \code{\link{is_parseable.default}},
+  \code{\link{read_yamlet}},
+  \code{\link{resolve.data.frame}},
+  \code{\link{write_yamlet}}
 }
 \concept{dg}
 \concept{interface}

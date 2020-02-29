@@ -16,18 +16,14 @@ ggready <- function(x, ...)UseMethod('ggready')
 #'
 #' Prepares data.frame for ggplot. Calls
 #' \code{\link{resolve}} and appends
-#' units to label.
+#' units to label using \code{\link{append_units}}
+#' (passing \code{style = 'plotmath'} if \code{parse}
+#' is true, else \code{style = 'plain'}).
 #' Enforces class 'decorated'.
-#' If \code{parse} is true,
-#' labels and units are
-#' coerced with \code{\link{as_spork}}
-#' and \code{\link{as_plotmath}},
-#' merged with \code{\link[spork]{concatenate}},
-#' and parsed with \code{\link{as.expression.plotmath}}.
 #'
 #'
 #' @param x object
-#' @param style passed to \code{\link{append_units}}
+#' @param parse passed to \code{\link{append_units}}
 #' @param ... passed to \code{\link{append_units}}
 #' @export
 #' @importFrom spork as_spork
@@ -50,9 +46,10 @@ ggready <- function(x, ...)UseMethod('ggready')
 #'  geom_point()
 
 
-ggready.data.frame <- function(x, style = getOption('append_units_style','character'), ...){
+ggready.data.frame <- function(x, parse = getOption('ggready_parse',TRUE), ...){
   x <- resolve(x, ...)
-  x <- append_units(x, style = style, ...)
+  stopifnot(is.logical(parse), length(parse) == 1)
+  x <- append_units(x, style = if(parse) 'plotmath' else 'plain', ...)
   class(x) <- union('decorated', class(x))
   x
 }

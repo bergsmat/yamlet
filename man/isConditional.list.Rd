@@ -24,9 +24,8 @@ all evaluate to logicals with length equal
 to number of rows in data.
 }
 \seealso{
-Other conditional: 
-\code{\link{isConditional.default}()},
-\code{\link{isConditional}()}
+Other conditional: \code{\link{isConditional.default}},
+  \code{\link{isConditional}}
 }
 \concept{conditional}
 \keyword{internal}

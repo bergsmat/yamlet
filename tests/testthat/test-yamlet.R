@@ -197,8 +197,8 @@ test_that('io_table methods are reciprocal with default or modified arguments',{
   rownames(y) <- NULL
   expect_identical(x, y) # lossless 'round-trip'
 
-  io_table(x, out, sep = ',' , na = '.', fileEncoding = 'UTF-16')
-  y <- io_table(out, as.is = TRUE, sep = ',', na.strings = '.', fileEncoding = 'UTF-16')
+  io_table(x, out, sep = ',' , na = '.') #, fileEncoding = 'UTF-16')
+  y <- io_table(out, as.is = TRUE, sep = ',', na.strings = '.') #, fileEncoding = 'UTF-16')
   rownames(y) <- NULL
   expect_identical(x, y) # lossless 'round-trip'
 })
@@ -217,8 +217,8 @@ test_that('io_csv methods are reciprocal with default or modified arguments',{
   attr(y, 'source') <- NULL
   expect_identical(x, y) # lossless 'round-trip'
 
-  io_csv(x, out, quote = TRUE, na = 'NA', eol = '\r', fileEncoding = 'UTF-16')
-  y <- io_csv(out, na.strings = 'NA', fileEncoding = 'UTF-16')
+  io_csv(x, out, quote = TRUE, na = 'NA', eol = '\r') #, fileEncoding = 'UTF-16')
+  y <- io_csv(out, na.strings = 'NA') # , fileEncoding = 'UTF-16')
   attr(y, 'source') <- NULL
   expect_identical(x, y) # lossless 'round-trip'
 

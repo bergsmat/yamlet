@@ -4,13 +4,9 @@
 \alias{append_units.default}
 \title{Append Units By Default}
 \usage{
-\method{append_units}{default}(
-  x,
-  open = getOption("append_units_open", " ("),
-  close = getOption("append_units_close", ")"),
-  style = getOption("append_units_style", "character"),
-  ...
-)
+\method{append_units}{default}(x, open = getOption("append_units_open",
+  " ("), close = getOption("append_units_close", ")"),
+  style = getOption("append_units_style", "plain"), ...)
 }
 \arguments{
 \item{x}{object}
@@ -19,18 +15,20 @@
 
 \item{close}{character to follow units}
 
-\item{style}{one of character, latex, or plotmath}
+\item{style}{one of 'plain', 'latex', or 'plotmath'}
 
 \item{...}{ignored arguments}
 }
 \value{
-same class as x with named character label of length four having supplied class
+same class as x with named character label of length four; of sub-class 'latex' or 'plotmath' depending on \code{style}
 }
 \description{
 Units attribute is wrapped in \code{open} and
 \code{close}, and appended to label.
-Label is then coerced using \code{as}
-and concatenated using \code{\link{concatenate}}.
+If style is 'latex' or 'plotmath',
+all elements are treated as spork
+(\code{\link{as_spork}}) and coerced
+to canonical form before concatenation.
 }
 \examples{
 library(units)
@@ -47,10 +45,9 @@ y \%>\% append_units \%>\% attr('label')
 
 }
 \seealso{
-Other labels: 
-\code{\link{alias.data.frame}()},
-\code{\link{append_units.data.frame}()},
-\code{\link{append_units}()}
+Other labels: \code{\link{alias.data.frame}},
+  \code{\link{append_units.data.frame}},
+  \code{\link{append_units}}
 }
 \concept{labels}
 \keyword{internal}

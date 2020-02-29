@@ -25,11 +25,10 @@ x \%>\% explicit_guide \%>\% as_yamlet
 x \%>\% explicit_guide \%>\% factorize_codelist \%>\% as_yamlet
 }
 \seealso{
-Other factorize_codelist: 
-\code{\link{factorize_codelist.character}()},
-\code{\link{factorize_codelist.default}()},
-\code{\link{factorize_codelist.factor}()},
-\code{\link{factorize_codelist}()}
+Other factorize_codelist: \code{\link{factorize_codelist.character}},
+  \code{\link{factorize_codelist.default}},
+  \code{\link{factorize_codelist.factor}},
+  \code{\link{factorize_codelist}}
 }
 \concept{factorize_codelist}
 \keyword{internal}

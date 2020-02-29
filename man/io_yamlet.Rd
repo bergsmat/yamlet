@@ -30,15 +30,13 @@ out <- file.path(tmp, 'tmp.yaml')
 identical(x, io_yamlet(io_yamlet(x, out)))
 }
 \seealso{
-Other io: 
-\code{\link{io_csv.character}()},
-\code{\link{io_csv.data.frame}()},
-\code{\link{io_csv}()},
-\code{\link{io_table.character}()},
-\code{\link{io_table.data.frame}()},
-\code{\link{io_table}()},
-\code{\link{io_yamlet.character}()},
-\code{\link{io_yamlet.data.frame}()},
-\code{\link{io_yamlet.yamlet}()}
+Other io: \code{\link{io_csv.character}},
+  \code{\link{io_csv.data.frame}}, \code{\link{io_csv}},
+  \code{\link{io_table.character}},
+  \code{\link{io_table.data.frame}},
+  \code{\link{io_table}},
+  \code{\link{io_yamlet.character}},
+  \code{\link{io_yamlet.data.frame}},
+  \code{\link{io_yamlet.yamlet}}
 }
 \concept{io}

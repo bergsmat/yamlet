@@ -19,22 +19,24 @@ append_units <- function(x, ...)UseMethod('append_units')
 #'
 #' Units attribute is wrapped in \code{open} and
 #' \code{close}, and appended to label.
-#' Label is then coerced using \code{as}
-#' and concatenated using \code{\link{concatenate}}.
+#' If style is 'latex' or 'plotmath',
+#' all elements are treated as spork
+#' (\code{\link{as_spork}}) and coerced
+#' to canonical form before concatenation.
+#'
 #'
 #' @param x object
 #' @param open character to precede units
 #' @param close character to follow units
-#' @param style one of character, latex, or plotmath
+#' @param style one of 'plain', 'latex', or 'plotmath'
 #' @param ... ignored arguments
 #' @export
 #' @importFrom spork as_spork
 #' @importFrom spork as_plotmath
 #' @importFrom spork as_latex
-#' @importFrom spork concatenate
 #' @keywords internal
 #' @family labels
-#' @return same class as x with named character label of length four having supplied class
+#' @return same class as x with named character label of length four; of sub-class 'latex' or 'plotmath' depending on \code{style}
 #' @examples
 #' library(units)
 #' library(magrittr)
@@ -52,10 +54,10 @@ append_units.default <- function(
   x,
   open = getOption( 'append_units_open' , ' (' ),
   close = getOption('append_units_close', ')'  ),
-  style = getOption('append_units_style','character'),
+  style = getOption('append_units_style','plain'),
   ...
 ){
-  stopifnot(style %in% c('character', 'latex','plotmath'))
+  stopifnot(style %in% c('plain', 'latex','plotmath'))
   lab <- attr(x, 'label')
   unit <- attr(x, 'units')
   if(is.null(lab)) lab <- ''
@@ -63,7 +65,7 @@ append_units.default <- function(
     unit <- as.character(unit)
     lab <- c(label = lab, open = open, units = unit, close = close)
   }
-  if(style == 'character'){
+  if(style == 'plain'){
     lab <- paste(lab, collapse = '')
   }
   if(style == 'latex'){

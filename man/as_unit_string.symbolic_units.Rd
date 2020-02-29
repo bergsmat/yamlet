@@ -35,13 +35,12 @@ library(magrittr)
 'kg.m2 s-2' \%>\% as_units \%>\% attr('units') \%>\% as_unit_string(FALSE)
 }
 \seealso{
-Other unit_string: 
-\code{\link{[.unit_string}()},
-\code{\link{[[.unit_string}()},
-\code{\link{as_unit_string.character}()},
-\code{\link{as_unit_string.factor}()},
-\code{\link{as_unit_string.units}()},
-\code{\link{as_unit_string}()}
+Other unit_string: \code{\link{[.unit_string}},
+  \code{\link{[[.unit_string}},
+  \code{\link{as_unit_string.character}},
+  \code{\link{as_unit_string.factor}},
+  \code{\link{as_unit_string.units}},
+  \code{\link{as_unit_string}}
 }
 \concept{unit_string}
 \keyword{internal}

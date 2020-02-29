@@ -25,8 +25,7 @@ meta <- as_yamlet(meta)
 list2encoding(meta$Creatinine$guide)
 }
 \seealso{
-Other encode: 
-\code{\link{encode.yamlet}()}
+Other encode: \code{\link{encode.yamlet}}
 }
 \concept{encode}
 \keyword{internal}

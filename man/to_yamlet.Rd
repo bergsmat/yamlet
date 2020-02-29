@@ -21,10 +21,9 @@ implement the yamlet storage syntax.
 Always returns length-one character, possibly the empty string.
 }
 \seealso{
-Other to_yamlet: 
-\code{\link{to_yamlet.NULL}()},
-\code{\link{to_yamlet.character}()},
-\code{\link{to_yamlet.default}()},
-\code{\link{to_yamlet.list}()}
+Other to_yamlet: \code{\link{to_yamlet.NULL}},
+  \code{\link{to_yamlet.character}},
+  \code{\link{to_yamlet.default}},
+  \code{\link{to_yamlet.list}}
 }
 \concept{to_yamlet}

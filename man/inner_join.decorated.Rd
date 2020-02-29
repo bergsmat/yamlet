@@ -4,7 +4,8 @@
 \alias{inner_join.decorated}
 \title{Inner_join Decorated}
 \usage{
-\method{inner_join}{decorated}(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...)
+\method{inner_join}{decorated}(x, y, by = NULL, copy = FALSE,
+  suffix = c(".x", ".y"), ...)
 }
 \arguments{
 \item{x}{tbls to join}
@@ -31,27 +32,26 @@ it is a potentially expensive operation so you must opt into it.}
 Should be a character vector of length 2.}
 
 \item{...}{other parameters passed onto methods, for instance, \code{na_matches}
-to control how \code{NA} values are matched.  See \link[dplyr]{join.tbl_df} for more.}
+to control how \code{NA} values are matched.  See \link{join.tbl_df} for more.}
 }
 \description{
 Preserves class when joining decorated.
 }
 \seealso{
-Other dplyr: 
-\code{\link{anti_join.decorated}()},
-\code{\link{arrange.decorated}()},
-\code{\link{as_decorated}()},
-\code{\link{filter.decorated}()},
-\code{\link{full_join.decorated}()},
-\code{\link{group_by.decorated}()},
-\code{\link{left_join.decorated}()},
-\code{\link{mutate.decorated}()},
-\code{\link{right_join.decorated}()},
-\code{\link{select.decorated}()},
-\code{\link{semi_join.decorated}()},
-\code{\link{slice.decorated}()},
-\code{\link{summarise.decorated}()},
-\code{\link{summarize.decorated}()}
+Other dplyr: \code{\link{anti_join.decorated}},
+  \code{\link{arrange.decorated}},
+  \code{\link{as_decorated}},
+  \code{\link{filter.decorated}},
+  \code{\link{full_join.decorated}},
+  \code{\link{group_by.decorated}},
+  \code{\link{left_join.decorated}},
+  \code{\link{mutate.decorated}},
+  \code{\link{right_join.decorated}},
+  \code{\link{select.decorated}},
+  \code{\link{semi_join.decorated}},
+  \code{\link{slice.decorated}},
+  \code{\link{summarise.decorated}},
+  \code{\link{summarize.decorated}}
 }
 \concept{dplyr}
 \keyword{internal}

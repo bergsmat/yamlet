@@ -4,16 +4,12 @@
 \alias{io_csv.data.frame}
 \title{Export Documented Table as CSV}
 \usage{
-\method{io_csv}{data.frame}(
-  x,
-  file = "",
+\method{io_csv}{data.frame}(x, file = "",
   ext = getOption("yamlet_extension", ".yaml"),
   coerce = getOption("yamlet_coerce_decorations", FALSE),
-  con = stdout(),
-  useBytes = FALSE,
-  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
-  ...
-)
+  con = stdout(), useBytes = FALSE,
+  default_keys = getOption("yamlet_default_keys", list("label",
+  "guide")), ...)
 }
 \arguments{
 \item{x}{data.frame}
@@ -44,33 +40,29 @@ A wrapper for \code{\link[csv]{as.csv.data.frame}}.
 example(io_table)
 }
 \seealso{
-Other io: 
-\code{\link{io_csv.character}()},
-\code{\link{io_csv}()},
-\code{\link{io_table.character}()},
-\code{\link{io_table.data.frame}()},
-\code{\link{io_table}()},
-\code{\link{io_yamlet.character}()},
-\code{\link{io_yamlet.data.frame}()},
-\code{\link{io_yamlet.yamlet}()},
-\code{\link{io_yamlet}()}
+Other io: \code{\link{io_csv.character}},
+  \code{\link{io_csv}}, \code{\link{io_table.character}},
+  \code{\link{io_table.data.frame}},
+  \code{\link{io_table}},
+  \code{\link{io_yamlet.character}},
+  \code{\link{io_yamlet.data.frame}},
+  \code{\link{io_yamlet.yamlet}}, \code{\link{io_yamlet}}
 
-Other interface: 
-\code{\link{as_classified.factor}()},
-\code{\link{conditionalize.data.frame}()},
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
-\code{\link{ggplot.decorated}()},
-\code{\link{ggready.data.frame}()},
-\code{\link{io_csv.character}()},
-\code{\link{io_table.character}()},
-\code{\link{io_table.data.frame}()},
-\code{\link{io_yamlet.character}()},
-\code{\link{io_yamlet.data.frame}()},
-\code{\link{is_parseable.default}()},
-\code{\link{read_yamlet}()},
-\code{\link{resolve.data.frame}()},
-\code{\link{write_yamlet}()}
+Other interface: \code{\link{as_classified.factor}},
+  \code{\link{conditionalize.data.frame}},
+  \code{\link{decorate.character}},
+  \code{\link{decorate.data.frame}},
+  \code{\link{ggplot.decorated}},
+  \code{\link{ggready.data.frame}},
+  \code{\link{io_csv.character}},
+  \code{\link{io_table.character}},
+  \code{\link{io_table.data.frame}},
+  \code{\link{io_yamlet.character}},
+  \code{\link{io_yamlet.data.frame}},
+  \code{\link{is_parseable.default}},
+  \code{\link{read_yamlet}},
+  \code{\link{resolve.data.frame}},
+  \code{\link{write_yamlet}}
 }
 \concept{interface}
 \concept{io}

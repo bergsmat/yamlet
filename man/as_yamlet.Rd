@@ -29,9 +29,7 @@ as_yamlet(file)
 
 }
 \seealso{
-Other yamlet: 
-\code{\link{as_yamlet.character}()},
-\code{\link{as_yamlet.yam}()},
-\code{\link{print.yamlet}()}
+Other yamlet: \code{\link{as_yamlet.character}},
+  \code{\link{as_yamlet.yam}}, \code{\link{print.yamlet}}
 }
 \concept{yamlet}

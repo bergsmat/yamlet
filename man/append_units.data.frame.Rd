@@ -27,9 +27,8 @@ file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 file \%>\% decorate \%>\% explicit_guide \%>\% append_units \%>\% as_yamlet
 }
 \seealso{
-Other labels: 
-\code{\link{alias.data.frame}()},
-\code{\link{append_units.default}()},
-\code{\link{append_units}()}
+Other labels: \code{\link{alias.data.frame}},
+  \code{\link{append_units.default}},
+  \code{\link{append_units}}
 }
 \concept{labels}

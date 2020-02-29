@@ -22,8 +22,7 @@ and encodings.  The idea here is to replace 'guide' with something
 explicit in case required downstream.
 }
 \seealso{
-Other explicit_guide: 
-\code{\link{explicit_guide.data.frame}()},
-\code{\link{explicit_guide.yamlet}()}
+Other explicit_guide: \code{\link{explicit_guide.data.frame}},
+  \code{\link{explicit_guide.yamlet}}
 }
 \concept{explicit_guide}

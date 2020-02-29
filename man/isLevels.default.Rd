@@ -18,9 +18,8 @@ logical
 Tests whether value is levels by default.  Coerces to character.
 }
 \seealso{
-Other levels: 
-\code{\link{isLevels.character}()},
-\code{\link{isLevels}()}
+Other levels: \code{\link{isLevels.character}},
+  \code{\link{isLevels}}
 }
 \concept{levels}
 \keyword{internal}

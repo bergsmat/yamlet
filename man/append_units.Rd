@@ -24,10 +24,9 @@ Generic, with methods
 # see methods
 }
 \seealso{
-Other labels: 
-\code{\link{alias.data.frame}()},
-\code{\link{append_units.data.frame}()},
-\code{\link{append_units.default}()}
+Other labels: \code{\link{alias.data.frame}},
+  \code{\link{append_units.data.frame}},
+  \code{\link{append_units.default}}
 }
 \concept{labels}
 \keyword{internal}

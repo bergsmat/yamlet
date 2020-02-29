@@ -18,13 +18,11 @@ invisible(x)
 Prints a yamlet object for interactive inspection.
 }
 \examples{
-as_yamlet('mpg: [efficiency, mi/gallon]\nvs: [Engine, [V-shaped: 0, straight: 1]]')
+as_yamlet('mpg: [efficiency, mi/gallon]\\nvs: [Engine, [V-shaped: 0, straight: 1]]')
 }
 \seealso{
-Other yamlet: 
-\code{\link{as_yamlet.character}()},
-\code{\link{as_yamlet.yam}()},
-\code{\link{as_yamlet}()}
+Other yamlet: \code{\link{as_yamlet.character}},
+  \code{\link{as_yamlet.yam}}, \code{\link{as_yamlet}}
 }
 \concept{yamlet}
 \keyword{internal}

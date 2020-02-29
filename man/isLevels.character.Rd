@@ -23,9 +23,8 @@ Uses \code{\link{intersect}}, which is fairly flexible
 respecting underlying data types (character 0 can match integer 0, etc.).
 }
 \seealso{
-Other levels: 
-\code{\link{isLevels.default}()},
-\code{\link{isLevels}()}
+Other levels: \code{\link{isLevels.default}},
+  \code{\link{isLevels}}
 }
 \concept{levels}
 \keyword{internal}

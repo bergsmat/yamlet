@@ -3,6 +3,7 @@
 \docType{package}
 \name{yamlet}
 \alias{yamlet}
+\alias{yamlet-package}
 \title{yamlet: Versatile Curation of Table Metadata}
 \description{
 The \pkg{yamlet} package supports storage and retrieval of table

@@ -4,7 +4,7 @@
 \alias{to_yamlet.NULL}
 \title{Coerce Null to Yamlet Storage Format}
 \usage{
-\method{to_yamlet}{`NULL`}(x, ...)
+\method{to_yamlet}{NULL}(x, ...)
 }
 \arguments{
 \item{x}{object}
@@ -21,11 +21,9 @@ Coerces null to yamlet storage format (returns empty string).
 to_yamlet(NULL)
 }
 \seealso{
-Other to_yamlet: 
-\code{\link{to_yamlet.character}()},
-\code{\link{to_yamlet.default}()},
-\code{\link{to_yamlet.list}()},
-\code{\link{to_yamlet}()}
+Other to_yamlet: \code{\link{to_yamlet.character}},
+  \code{\link{to_yamlet.default}},
+  \code{\link{to_yamlet.list}}, \code{\link{to_yamlet}}
 }
 \concept{to_yamlet}
 \keyword{internal}

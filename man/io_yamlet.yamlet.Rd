@@ -4,15 +4,9 @@
 \alias{io_yamlet.yamlet}
 \title{Export Yamlet}
 \usage{
-\method{io_yamlet}{yamlet}(
-  x,
-  con = stdout(),
-  eol = "\\n",
-  useBytes = FALSE,
-  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
-  fileEncoding = getOption("encoding"),
-  ...
-)
+\method{io_yamlet}{yamlet}(x, con = stdout(), eol = "\\n",
+  useBytes = FALSE, default_keys = getOption("yamlet_default_keys",
+  list("label", "guide")), fileEncoding = getOption("encoding"), ...)
 }
 \arguments{
 \item{x}{yamlet}
@@ -47,16 +41,14 @@ io_yamlet(out)
 
 }
 \seealso{
-Other io: 
-\code{\link{io_csv.character}()},
-\code{\link{io_csv.data.frame}()},
-\code{\link{io_csv}()},
-\code{\link{io_table.character}()},
-\code{\link{io_table.data.frame}()},
-\code{\link{io_table}()},
-\code{\link{io_yamlet.character}()},
-\code{\link{io_yamlet.data.frame}()},
-\code{\link{io_yamlet}()}
+Other io: \code{\link{io_csv.character}},
+  \code{\link{io_csv.data.frame}}, \code{\link{io_csv}},
+  \code{\link{io_table.character}},
+  \code{\link{io_table.data.frame}},
+  \code{\link{io_table}},
+  \code{\link{io_yamlet.character}},
+  \code{\link{io_yamlet.data.frame}},
+  \code{\link{io_yamlet}}
 }
 \concept{io}
 \keyword{internal}

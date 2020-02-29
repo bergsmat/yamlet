@@ -32,10 +32,8 @@ as_yamlet(
 
 }
 \seealso{
-Other yam: 
-\code{\link{as_yam.character}()},
-\code{\link{as_yam.yamlet}()},
-\code{\link{as_yam}()}
+Other yam: \code{\link{as_yam.character}},
+  \code{\link{as_yam.yamlet}}, \code{\link{as_yam}}
 }
 \concept{yam}
 \keyword{internal}

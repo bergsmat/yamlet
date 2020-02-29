@@ -19,9 +19,8 @@ The default unnest() method returns the unmodified object.
 unnest(yaml::yaml.load('ITEM:'))
 }
 \seealso{
-Other unnest: 
-\code{\link{unnest.list}()},
-\code{\link{unnest}()}
+Other unnest: \code{\link{unnest.list}},
+  \code{\link{unnest}}
 }
 \concept{unnest}
 \keyword{internal}
