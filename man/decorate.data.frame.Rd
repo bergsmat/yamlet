@@ -58,7 +58,7 @@ Other interface: \code{\link{as_classified.factor}},
 Other decorate: \code{\link{decorate.character}},
   \code{\link{decorate.list}}, \code{\link{decorate}},
   \code{\link{decorations.data.frame}},
-  \code{\link{decorations}}
+  \code{\link{decorations}}, \code{\link{redecorate}}
 }
 \concept{decorate}
 \concept{interface}

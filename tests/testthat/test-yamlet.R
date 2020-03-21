@@ -336,6 +336,8 @@ test_that('factorize_codelist creates class factor and removes attribute codelis
 #   expect_identical(names(a$CONC), c('label','unit'))
 # })
 test_that('resolve correctly classifies conditional elements',{
+  library(magrittr)
+  library(dplyr)
   file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
   x <- decorate(file)
   x %>% as_yamlet
@@ -343,7 +345,7 @@ test_that('resolve correctly classifies conditional elements',{
   x %>% select(value) %>% explicit_guide %>% as_yamlet
   x %>% explicit_guide %>% factorize_codelist %>% as_yamlet
   a <- x %>% resolve %>% as_yamlet
-  expect_true(identical(names(a$value), c('label','units')))
+  expect_true(setequal(names(a$value), c('label','units')))
 })
 test_that('resolve correctly classifies factors',{
   library(magrittr)
@@ -450,16 +452,20 @@ test_that('subset classified does not drop label', {
 
 test_that('is_parseable distinguishes udunits from non-udunits',{
   expect_identical(
-    is_parseable(c('kg/m2','kg/m^2','foo','kg.m/s2','µg/L')),
-    c(TRUE, TRUE, FALSE, TRUE, TRUE)
+    is_parseable(c('kg/m2','kg/m^2','foo','kg.m/s2')),
+    c(TRUE, TRUE, FALSE, TRUE)
   )
 })
 test_that('is_pareseable is vectorized',{
   expect_identical(
-    is_parseable(c('kg/m2','kg/m^2','foo','kg.m/s2','µg/L')),
-    c(TRUE, TRUE, FALSE, TRUE, TRUE)
+    is_parseable(c('kg/m2','kg/m^2','foo','kg.m/s2')),
+    c(TRUE, TRUE, FALSE, TRUE)
   )
 })
+test_that('micro symbol is_pareseable',{
+  expect_true(is_parseable('µg/L'))
+})
+
 test_that('is_parseable respects locally-defined units',{
   library(units)
   expect_false(is_parseable('foo'))

@@ -32,7 +32,7 @@ Other decorate: \code{\link{decorate.character}},
   \code{\link{decorate.data.frame}},
   \code{\link{decorate.list}},
   \code{\link{decorations.data.frame}},
-  \code{\link{decorations}}
+  \code{\link{decorations}}, \code{\link{redecorate}}
 }
 \concept{decorate}
 \keyword{internal}

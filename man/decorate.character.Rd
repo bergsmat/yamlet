@@ -81,7 +81,7 @@ levels(d$Creatinine) # level detail retained as 'guide'
 Other decorate: \code{\link{decorate.data.frame}},
   \code{\link{decorate.list}}, \code{\link{decorate}},
   \code{\link{decorations.data.frame}},
-  \code{\link{decorations}}
+  \code{\link{decorations}}, \code{\link{redecorate}}
 
 Other interface: \code{\link{as_classified.factor}},
   \code{\link{conditionalize.data.frame}},

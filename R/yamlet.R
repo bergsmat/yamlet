@@ -274,6 +274,30 @@ as_yamlet.character <- function(x, default_keys = getOption('yamlet_default_keys
   as_yamlet(as_yam(x, ...), default_keys = default_keys, ...)
 }
 
+#' Redecorate a List-like Object
+#'
+#' Redecorates a list-like object.
+#' Equivalent to \code{decorate( ..., overwrite = TRUE)}.
+
+#'
+#' @param x object
+#' @param ... passed arguments
+#' @param overwrite passed to \code{\link{decorate}}
+#' @export
+#' @family decorate
+#' @return a list-like object, typically data.frame
+#' @examples
+#' library(dplyr)
+#' library(magrittr)
+#' library(csv)
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+#' x <- decorate(as.csv(file))
+#' x %>% select(Subject) %>% as_yamlet
+#' x %<>% redecorate('Subject: Patient Identifier')
+#' x %>% select(Subject) %>% as_yamlet
+#'
+redecorate <- function(x, ..., overwrite = TRUE)decorate(x, ..., overwrite = overwrite)
+
 #' Decorate a List-like Object
 #'
 #' Decorates a list-like object. Generic.

@@ -44,6 +44,6 @@ decorations(y, exclude_attr = NULL)
 Other decorate: \code{\link{decorate.character}},
   \code{\link{decorate.data.frame}},
   \code{\link{decorate.list}}, \code{\link{decorate}},
-  \code{\link{decorations}}
+  \code{\link{decorations}}, \code{\link{redecorate}}
 }
 \concept{decorate}

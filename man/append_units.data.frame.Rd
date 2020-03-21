@@ -29,6 +29,6 @@ file \%>\% decorate \%>\% explicit_guide \%>\% append_units \%>\% as_yamlet
 \seealso{
 Other labels: \code{\link{alias.data.frame}},
   \code{\link{append_units.default}},
-  \code{\link{append_units}}
+  \code{\link{append_units}}, \code{\link{sub_units}}
 }
 \concept{labels}

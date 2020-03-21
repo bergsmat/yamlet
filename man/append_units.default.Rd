@@ -17,7 +17,7 @@
 
 \item{style}{one of 'plain', 'latex', or 'plotmath'}
 
-\item{...}{ignored arguments}
+\item{...}{passed to \code{\link{as_latex}}, \code{\link{as_plotmath}}}
 }
 \value{
 same class as x with named character label of length four; of sub-class 'latex' or 'plotmath' depending on \code{style}
@@ -41,13 +41,16 @@ x \%>\% attr('label')
 x \%>\% append_units \%>\% attr('label')
 y \%>\% attr('label')
 y \%>\% append_units \%>\% attr('label')
+x \%>\% append_units(style = 'plain')
+x \%>\% append_units(style = 'plotmath')
+x \%>\% append_units(style = 'latex')
 
 
 }
 \seealso{
 Other labels: \code{\link{alias.data.frame}},
   \code{\link{append_units.data.frame}},
-  \code{\link{append_units}}
+  \code{\link{append_units}}, \code{\link{sub_units}}
 }
 \concept{labels}
 \keyword{internal}
