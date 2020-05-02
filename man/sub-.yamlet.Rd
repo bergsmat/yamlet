@@ -24,9 +24,10 @@ class(meta)
 stopifnot(inherits(meta[1:2],'yamlet'))
 }
 \seealso{
-Other as_yamlet: \code{\link{as.character.yamlet}},
-  \code{\link{as_yamlet.data.frame}},
-  \code{\link{as_yamlet.yamlet}}
+Other as_yamlet: 
+\code{\link{as.character.yamlet}()},
+\code{\link{as_yamlet.data.frame}()},
+\code{\link{as_yamlet.yamlet}()}
 }
 \concept{as_yamlet}
 \keyword{internal}

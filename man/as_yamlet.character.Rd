@@ -4,9 +4,11 @@
 \alias{as_yamlet.character}
 \title{Coerce Character To Yamlet Format}
 \usage{
-\method{as_yamlet}{character}(x,
-  default_keys = getOption("yamlet_default_keys", list("label",
-  "guide")), ...)
+\method{as_yamlet}{character}(
+  x,
+  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
+  ...
+)
 }
 \arguments{
 \item{x}{length-one filepath or actual data}
@@ -43,12 +45,14 @@ file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 as_yamlet(file)
 as_yamlet('ID: subject identifier')
 as_yamlet(c('id: subject','amt: dose'))
-as_yamlet(c('id: subject\\namt: dose'))
+as_yamlet(c('id: subject\namt: dose'))
 
 }
 \seealso{
-Other yamlet: \code{\link{as_yamlet.yam}},
-  \code{\link{as_yamlet}}, \code{\link{print.yamlet}}
+Other yamlet: 
+\code{\link{as_yamlet.yam}()},
+\code{\link{as_yamlet}()},
+\code{\link{print.yamlet}()}
 }
 \concept{yamlet}
 \keyword{internal}

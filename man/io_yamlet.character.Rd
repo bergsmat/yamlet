@@ -4,9 +4,11 @@
 \alias{io_yamlet.character}
 \title{Import Yamlet}
 \usage{
-\method{io_yamlet}{character}(x,
-  default_keys = getOption("yamlet_default_keys", list("label",
-  "guide")), ...)
+\method{io_yamlet}{character}(
+  x,
+  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
+  ...
+)
 }
 \arguments{
 \item{x}{file path for yamlet}
@@ -29,29 +31,33 @@ example(io_yamlet)
 \seealso{
 \code{\link{decorate.list}}
 
-Other io: \code{\link{io_csv.character}},
-  \code{\link{io_csv.data.frame}}, \code{\link{io_csv}},
-  \code{\link{io_table.character}},
-  \code{\link{io_table.data.frame}},
-  \code{\link{io_table}},
-  \code{\link{io_yamlet.data.frame}},
-  \code{\link{io_yamlet.yamlet}}, \code{\link{io_yamlet}}
+Other io: 
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_csv}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_table}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{io_yamlet.yamlet}()},
+\code{\link{io_yamlet}()}
 
-Other interface: \code{\link{as_classified.factor}},
-  \code{\link{conditionalize.data.frame}},
-  \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{ggplot.decorated}},
-  \code{\link{ggready.data.frame}},
-  \code{\link{io_csv.character}},
-  \code{\link{io_csv.data.frame}},
-  \code{\link{io_table.character}},
-  \code{\link{io_table.data.frame}},
-  \code{\link{io_yamlet.data.frame}},
-  \code{\link{is_parseable.default}},
-  \code{\link{read_yamlet}},
-  \code{\link{resolve.data.frame}},
-  \code{\link{write_yamlet}}
+Other interface: 
+\code{\link{as_classified.factor}()},
+\code{\link{conditionalize.data.frame}()},
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{ggplot.decorated}()},
+\code{\link{ggready.data.frame}()},
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{is_parseable.default}()},
+\code{\link{read_yamlet}()},
+\code{\link{resolve.data.frame}()},
+\code{\link{write_yamlet}()}
 }
 \concept{interface}
 \concept{io}

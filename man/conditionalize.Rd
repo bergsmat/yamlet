@@ -22,7 +22,8 @@ Generic, with method for data.frame.
 example(conditionalize.data.frame)
 }
 \seealso{
-Other conditionalize: \code{\link{conditionalize.data.frame}}
+Other conditionalize: 
+\code{\link{conditionalize.data.frame}()}
 }
 \concept{conditionalize}
 \keyword{internal}

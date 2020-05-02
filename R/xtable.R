@@ -1,4 +1,4 @@
-#' Footnote Something.
+#' Footnote Something
 #'
 #' Footnotes something.
 #' Generic, with method \code{\link{footnote.decorated}}.
@@ -12,7 +12,7 @@
 #' # see methods
 footnote <- function(x, ...)UseMethod('footnote')
 
-#' Footnote Decorated.
+#' Footnote Decorated
 #'
 #' Footnotes a decorated data.frame.
 #' Generates a text string that defines
@@ -32,10 +32,10 @@ footnote <- function(x, ...)UseMethod('footnote')
 #'  bmi = rnorm(100, mean = 20, sd = 5),
 #'  gen = 0:1
 #' )
-# x %<>% decorate('auc: [AUC_0-24, ng*h/mL]')
-# x %<>% decorate('bmi: [Body Mass Index, kg/m^2]')
-# x %<>% decorate('gen: [Gender, [Male: 1, Female: 0]]')
-# footnote(x)
+#' x %<>% decorate('auc: [AUC_0-24, ng*h/mL]')
+#' x %<>% decorate('bmi: [Body Mass Index, kg/m^2]')
+#' x %<>% decorate('gen: [Gender, [Male: 1, Female: 0]]')
+#' footnote(x)
 
 footnote.decorated <- function(x, equal = ':', collapse = '; ', ...){
   x <- append_units(x, ...)
@@ -45,7 +45,7 @@ footnote.decorated <- function(x, equal = ':', collapse = '; ', ...){
   y
 }
 
-#' Create Export Table for Decorated.
+#' Create Export Table for Decorated
 #'
 #' Creates an export table for decorated data.frame
 #' by adding a footnote attribute.

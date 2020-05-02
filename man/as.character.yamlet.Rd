@@ -21,7 +21,7 @@ Coerces yamlet to character.  See also \code{\link{as_yamlet.character}}.
 
 as.character(as_yamlet('ID: subject identifier'))
 as.character(as_yamlet(c('id: subject','amt: dose')))
-as.character(as_yamlet(c('id: subject\\namt: dose')))
+as.character(as_yamlet(c('id: subject\namt: dose')))
 foo <- as_yamlet(system.file(package = 'yamlet', 'extdata','quinidine.yaml'))
 class(foo)
 writeLines(as.character(foo))
@@ -35,9 +35,10 @@ as.character(as_yamlet(foo, exclude_attr = 'class'))
 
 }
 \seealso{
-Other as_yamlet: \code{\link{[.yamlet}},
-  \code{\link{as_yamlet.data.frame}},
-  \code{\link{as_yamlet.yamlet}}
+Other as_yamlet: 
+\code{\link{[.yamlet}()},
+\code{\link{as_yamlet.data.frame}()},
+\code{\link{as_yamlet.yamlet}()}
 }
 \concept{as_yamlet}
 \keyword{internal}

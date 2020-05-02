@@ -4,9 +4,15 @@
 \alias{write_yamlet}
 \title{Write Yamlet}
 \usage{
-write_yamlet(x, con = stdout(), eol = "\\n", useBytes = FALSE,
-  default_keys = getOption("yamlet_default_keys", list("label",
-  "guide")), fileEncoding = getOption("encoding"), ...)
+write_yamlet(
+  x,
+  con = stdout(),
+  eol = "\\n",
+  useBytes = FALSE,
+  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
+  fileEncoding = getOption("encoding"),
+  ...
+)
 }
 \arguments{
 \item{x}{something that can be coerced to class 'yamlet', like a yamlet object or a decorated data.frame}
@@ -45,20 +51,21 @@ identical(read_yamlet(meta), read_yamlet(tmp))
 \seealso{
 \code{\link{decorate.list}}
 
-Other interface: \code{\link{as_classified.factor}},
-  \code{\link{conditionalize.data.frame}},
-  \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{ggplot.decorated}},
-  \code{\link{ggready.data.frame}},
-  \code{\link{io_csv.character}},
-  \code{\link{io_csv.data.frame}},
-  \code{\link{io_table.character}},
-  \code{\link{io_table.data.frame}},
-  \code{\link{io_yamlet.character}},
-  \code{\link{io_yamlet.data.frame}},
-  \code{\link{is_parseable.default}},
-  \code{\link{read_yamlet}},
-  \code{\link{resolve.data.frame}}
+Other interface: 
+\code{\link{as_classified.factor}()},
+\code{\link{conditionalize.data.frame}()},
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{ggplot.decorated}()},
+\code{\link{ggready.data.frame}()},
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_yamlet.character}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{is_parseable.default}()},
+\code{\link{read_yamlet}()},
+\code{\link{resolve.data.frame}()}
 }
 \concept{interface}

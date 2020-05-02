@@ -4,9 +4,11 @@
 \alias{as_yamlet.yam}
 \title{Coerce Yam To Yamlet Format}
 \usage{
-\method{as_yamlet}{yam}(x,
-  default_keys = getOption("yamlet_default_keys", list("label",
-  "guide")), ...)
+\method{as_yamlet}{yam}(
+  x,
+  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
+  ...
+)
 }
 \arguments{
 \item{x}{a yam object; see \code{\link{as_yam}}}
@@ -30,8 +32,10 @@ as_yamlet(as_yam(file))
 
 }
 \seealso{
-Other yamlet: \code{\link{as_yamlet.character}},
-  \code{\link{as_yamlet}}, \code{\link{print.yamlet}}
+Other yamlet: 
+\code{\link{as_yamlet.character}()},
+\code{\link{as_yamlet}()},
+\code{\link{print.yamlet}()}
 }
 \concept{yamlet}
 \keyword{internal}

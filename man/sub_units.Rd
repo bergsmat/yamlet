@@ -4,10 +4,18 @@
 \alias{sub_units}
 \title{Place below Under Label}
 \usage{
-sub_units(x, open = if (style == "plain") "\\n(" else "\\\\n(",
-  close = ")", style = "latex", math_open = "", math_close = "",
+sub_units(
+  x,
+  open = if (style == "plain") "\\n(" else "\\\\n(",
+  close = ")",
+  style = "latex",
+  math_open = "",
+  math_close = "",
   label_open = "$\\\\begin{gathered}",
-  label_close = "\\\\end{gathered}$", newline = "\\\\\\\\", ...)
+  label_close = "\\\\end{gathered}$",
+  newline = "\\\\\\\\",
+  ...
+)
 }
 \arguments{
 \item{x}{object}
@@ -56,9 +64,10 @@ ggplot(data = ., aes(x = conc, y = time, color = Heart)) \%>\%
 add(geom_point())
 }
 \seealso{
-Other labels: \code{\link{alias.data.frame}},
-  \code{\link{append_units.data.frame}},
-  \code{\link{append_units.default}},
-  \code{\link{append_units}}
+Other labels: 
+\code{\link{alias.data.frame}()},
+\code{\link{append_units.data.frame}()},
+\code{\link{append_units.default}()},
+\code{\link{append_units}()}
 }
 \concept{labels}

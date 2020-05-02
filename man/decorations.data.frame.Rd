@@ -4,9 +4,12 @@
 \alias{decorations.data.frame}
 \title{Retrieve Decorations for Data Frame}
 \usage{
-\method{decorations}{data.frame}(x,
+\method{decorations}{data.frame}(
+  x,
   coerce = getOption("yamlet_coerce_decorations", FALSE),
-  exclude_attr = getOption("yamlet_exclude_attr", "class"), ...)
+  exclude_attr = getOption("yamlet_exclude_attr", "class"),
+  ...
+)
 }
 \arguments{
 \item{x}{data.frame}
@@ -41,9 +44,12 @@ decorations(y, coerce = 'codelist')
 decorations(y, exclude_attr = NULL)
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{decorate.list}}, \code{\link{decorate}},
-  \code{\link{decorations}}, \code{\link{redecorate}}
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{decorate.list}()},
+\code{\link{decorate}()},
+\code{\link{decorations}()},
+\code{\link{redecorate}()}
 }
 \concept{decorate}

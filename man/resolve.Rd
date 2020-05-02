@@ -22,8 +22,10 @@ Generic, with method for data.frame.
 example(resolve.data.frame)
 }
 \seealso{
-Other resolve: \code{\link{ggready.data.frame}},
-  \code{\link{ggready}}, \code{\link{resolve.data.frame}}
+Other resolve: 
+\code{\link{ggready.data.frame}()},
+\code{\link{ggready}()},
+\code{\link{resolve.data.frame}()}
 }
 \concept{resolve}
 \keyword{internal}

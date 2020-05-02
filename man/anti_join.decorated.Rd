@@ -27,26 +27,27 @@ same src as \code{x}.  This allows you to join tables across srcs, but
 it is a potentially expensive operation so you must opt into it.}
 
 \item{...}{other parameters passed onto methods, for instance, \code{na_matches}
-to control how \code{NA} values are matched.  See \link{join.tbl_df} for more.}
+to control how \code{NA} values are matched.  See \link[dplyr]{join.tbl_df} for more.}
 }
 \description{
 Preserves class when joining decorated.
 }
 \seealso{
-Other dplyr: \code{\link{arrange.decorated}},
-  \code{\link{as_decorated}},
-  \code{\link{filter.decorated}},
-  \code{\link{full_join.decorated}},
-  \code{\link{group_by.decorated}},
-  \code{\link{inner_join.decorated}},
-  \code{\link{left_join.decorated}},
-  \code{\link{mutate.decorated}},
-  \code{\link{right_join.decorated}},
-  \code{\link{select.decorated}},
-  \code{\link{semi_join.decorated}},
-  \code{\link{slice.decorated}},
-  \code{\link{summarise.decorated}},
-  \code{\link{summarize.decorated}}
+Other dplyr: 
+\code{\link{arrange.decorated}()},
+\code{\link{as_decorated}()},
+\code{\link{filter.decorated}()},
+\code{\link{full_join.decorated}()},
+\code{\link{group_by.decorated}()},
+\code{\link{inner_join.decorated}()},
+\code{\link{left_join.decorated}()},
+\code{\link{mutate.decorated}()},
+\code{\link{right_join.decorated}()},
+\code{\link{select.decorated}()},
+\code{\link{semi_join.decorated}()},
+\code{\link{slice.decorated}()},
+\code{\link{summarise.decorated}()},
+\code{\link{summarize.decorated}()}
 }
 \concept{dplyr}
 \keyword{internal}

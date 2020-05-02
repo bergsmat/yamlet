@@ -30,8 +30,9 @@ unnest(yaml::yaml.load(a))
 as_yamlet(a)
 }
 \seealso{
-Other unnest: \code{\link{unnest.default}},
-  \code{\link{unnest}}
+Other unnest: 
+\code{\link{unnest.default}()},
+\code{\link{unnest}()}
 }
 \concept{unnest}
 \keyword{internal}

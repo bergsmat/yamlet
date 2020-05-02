@@ -25,11 +25,13 @@ x <- decorate(as.csv(file))
 decorations(x) # prefer as_yamlet(x)
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{decorate.list}}, \code{\link{decorate}},
-  \code{\link{decorations.data.frame}},
-  \code{\link{redecorate}}
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{decorate.list}()},
+\code{\link{decorate}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{redecorate}()}
 }
 \concept{decorate}
 \keyword{internal}

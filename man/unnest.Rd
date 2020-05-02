@@ -28,8 +28,9 @@ str(yaml::yaml.load('[foo: 1, bar: 3]'))
 str(unnest(yaml::yaml.load('[foo: 1, bar: 3]')))
 }
 \seealso{
-Other unnest: \code{\link{unnest.default}},
-  \code{\link{unnest.list}}
+Other unnest: 
+\code{\link{unnest.default}()},
+\code{\link{unnest.list}()}
 }
 \concept{unnest}
 \keyword{internal}

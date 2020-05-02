@@ -22,7 +22,8 @@ Generic, with default method.
 example(is_parseable.character)
 }
 \seealso{
-Other parseable: \code{\link{is_parseable.default}}
+Other parseable: 
+\code{\link{is_parseable.default}()}
 }
 \concept{parseable}
 \keyword{internal}

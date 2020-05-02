@@ -28,11 +28,13 @@ decorations(x) # but prefer as_yamlet(x)
 
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{decorate.list}},
-  \code{\link{decorations.data.frame}},
-  \code{\link{decorations}}, \code{\link{redecorate}}
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{decorate.list}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations}()},
+\code{\link{redecorate}()}
 }
 \concept{decorate}
 \keyword{internal}

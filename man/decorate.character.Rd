@@ -4,9 +4,13 @@
 \alias{decorate.character}
 \title{Decorate Character}
 \usage{
-\method{decorate}{character}(x, meta = NULL,
+\method{decorate}{character}(
+  x,
+  meta = NULL,
   read = getOption("yamlet_import", as.csv),
-  ext = getOption("yamlet_extension", ".yaml"), ...)
+  ext = getOption("yamlet_extension", ".yaml"),
+  ...
+)
 }
 \arguments{
 \item{x}{file path for table data}
@@ -78,26 +82,30 @@ levels(c$Creatinine)
 levels(d$Creatinine) # level detail retained as 'guide'
 }
 \seealso{
-Other decorate: \code{\link{decorate.data.frame}},
-  \code{\link{decorate.list}}, \code{\link{decorate}},
-  \code{\link{decorations.data.frame}},
-  \code{\link{decorations}}, \code{\link{redecorate}}
+Other decorate: 
+\code{\link{decorate.data.frame}()},
+\code{\link{decorate.list}()},
+\code{\link{decorate}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations}()},
+\code{\link{redecorate}()}
 
-Other interface: \code{\link{as_classified.factor}},
-  \code{\link{conditionalize.data.frame}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{ggplot.decorated}},
-  \code{\link{ggready.data.frame}},
-  \code{\link{io_csv.character}},
-  \code{\link{io_csv.data.frame}},
-  \code{\link{io_table.character}},
-  \code{\link{io_table.data.frame}},
-  \code{\link{io_yamlet.character}},
-  \code{\link{io_yamlet.data.frame}},
-  \code{\link{is_parseable.default}},
-  \code{\link{read_yamlet}},
-  \code{\link{resolve.data.frame}},
-  \code{\link{write_yamlet}}
+Other interface: 
+\code{\link{as_classified.factor}()},
+\code{\link{conditionalize.data.frame}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{ggplot.decorated}()},
+\code{\link{ggready.data.frame}()},
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_yamlet.character}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{is_parseable.default}()},
+\code{\link{read_yamlet}()},
+\code{\link{resolve.data.frame}()},
+\code{\link{write_yamlet}()}
 }
 \concept{decorate}
 \concept{interface}

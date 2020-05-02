@@ -76,6 +76,7 @@ scale_y_log10() +
 scale_color_gradientn(colours = rainbow(4))
 }
 \seealso{
-Other dg: \code{\link{ggplot.decorated}}
+Other dg: 
+\code{\link{ggplot.decorated}()}
 }
 \concept{dg}

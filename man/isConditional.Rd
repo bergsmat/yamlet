@@ -18,8 +18,9 @@ logical
 Tests whether object is conditional.
 }
 \seealso{
-Other conditional: \code{\link{isConditional.default}},
-  \code{\link{isConditional.list}}
+Other conditional: 
+\code{\link{isConditional.default}()},
+\code{\link{isConditional.list}()}
 }
 \concept{conditional}
 \keyword{internal}

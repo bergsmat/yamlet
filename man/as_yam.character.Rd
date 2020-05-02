@@ -32,12 +32,14 @@ as_yam(file)
 as_yam(c('ID:','TIME:'))
 
 # Read from length-one character (same result).
-as_yam('ID:\\nTIME:')
+as_yam('ID:\nTIME:')
 
 }
 \seealso{
-Other yam: \code{\link{as.character.yam}},
-  \code{\link{as_yam.yamlet}}, \code{\link{as_yam}}
+Other yam: 
+\code{\link{as.character.yam}()},
+\code{\link{as_yam.yamlet}()},
+\code{\link{as_yam}()}
 }
 \concept{yam}
 \keyword{internal}

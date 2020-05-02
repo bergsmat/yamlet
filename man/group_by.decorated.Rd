@@ -4,8 +4,7 @@
 \alias{group_by.decorated}
 \title{Group_by Decorated}
 \usage{
-\method{group_by}{decorated}(.data, ..., add = FALSE,
-  .drop = group_by_drop_default(.data))
+\method{group_by}{decorated}(.data, ..., add = FALSE, .drop = group_by_drop_default(.data))
 }
 \arguments{
 \item{.data}{a tbl}
@@ -18,27 +17,28 @@ will be silently dropped.}
 override existing groups. To add to the existing groups, use
 \code{add = TRUE}.}
 
-\item{.drop}{When \code{.drop = TRUE}, empty groups are dropped. See \code{\link[=group_by_drop_default]{group_by_drop_default()}} for
+\item{.drop}{When \code{.drop = TRUE}, empty groups are dropped. See \code{\link[dplyr:group_by_drop_default]{group_by_drop_default()}} for
 what the default value is for this argument.}
 }
 \description{
 Preserves class when grouping decorated.
 }
 \seealso{
-Other dplyr: \code{\link{anti_join.decorated}},
-  \code{\link{arrange.decorated}},
-  \code{\link{as_decorated}},
-  \code{\link{filter.decorated}},
-  \code{\link{full_join.decorated}},
-  \code{\link{inner_join.decorated}},
-  \code{\link{left_join.decorated}},
-  \code{\link{mutate.decorated}},
-  \code{\link{right_join.decorated}},
-  \code{\link{select.decorated}},
-  \code{\link{semi_join.decorated}},
-  \code{\link{slice.decorated}},
-  \code{\link{summarise.decorated}},
-  \code{\link{summarize.decorated}}
+Other dplyr: 
+\code{\link{anti_join.decorated}()},
+\code{\link{arrange.decorated}()},
+\code{\link{as_decorated}()},
+\code{\link{filter.decorated}()},
+\code{\link{full_join.decorated}()},
+\code{\link{inner_join.decorated}()},
+\code{\link{left_join.decorated}()},
+\code{\link{mutate.decorated}()},
+\code{\link{right_join.decorated}()},
+\code{\link{select.decorated}()},
+\code{\link{semi_join.decorated}()},
+\code{\link{slice.decorated}()},
+\code{\link{summarise.decorated}()},
+\code{\link{summarize.decorated}()}
 }
 \concept{dplyr}
 \keyword{internal}

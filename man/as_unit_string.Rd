@@ -26,12 +26,13 @@ as_unit_string('kg.m^2/s^2')
 as_unit_string('kg.m2 s-2')
 }
 \seealso{
-Other unit_string: \code{\link{[.unit_string}},
-  \code{\link{[[.unit_string}},
-  \code{\link{as_unit_string.character}},
-  \code{\link{as_unit_string.factor}},
-  \code{\link{as_unit_string.symbolic_units}},
-  \code{\link{as_unit_string.units}}
+Other unit_string: 
+\code{\link{[.unit_string}()},
+\code{\link{[[.unit_string}()},
+\code{\link{as_unit_string.character}()},
+\code{\link{as_unit_string.factor}()},
+\code{\link{as_unit_string.symbolic_units}()},
+\code{\link{as_unit_string.units}()}
 }
 \concept{unit_string}
 \keyword{internal}

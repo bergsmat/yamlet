@@ -28,8 +28,9 @@ library(spork)
 'kg.m2 s-2' \%>\% as_units \%>\% as_spork(FALSE)
 }
 \seealso{
-Other spork: \code{\link{as_spork.symbolic_units}},
-  \code{\link{as_spork.unit_string}}
+Other spork: 
+\code{\link{as_spork.symbolic_units}()},
+\code{\link{as_spork.unit_string}()}
 }
 \concept{spork}
 \keyword{internal}

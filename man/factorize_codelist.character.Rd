@@ -23,10 +23,11 @@ x are supplied.
 example(factorize_codelist.data.fame)
 }
 \seealso{
-Other factorize_codelist: \code{\link{factorize_codelist.data.frame}},
-  \code{\link{factorize_codelist.default}},
-  \code{\link{factorize_codelist.factor}},
-  \code{\link{factorize_codelist}}
+Other factorize_codelist: 
+\code{\link{factorize_codelist.data.frame}()},
+\code{\link{factorize_codelist.default}()},
+\code{\link{factorize_codelist.factor}()},
+\code{\link{factorize_codelist}()}
 }
 \concept{factorize_codelist}
 \keyword{internal}

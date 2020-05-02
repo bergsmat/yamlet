@@ -24,9 +24,11 @@ to_yamlet(c(a = 'a',b = 'b'))
 to_yamlet(c(no = 'n', yes = 'y'))
 }
 \seealso{
-Other to_yamlet: \code{\link{to_yamlet.NULL}},
-  \code{\link{to_yamlet.default}},
-  \code{\link{to_yamlet.list}}, \code{\link{to_yamlet}}
+Other to_yamlet: 
+\code{\link{to_yamlet.NULL}()},
+\code{\link{to_yamlet.default}()},
+\code{\link{to_yamlet.list}()},
+\code{\link{to_yamlet}()}
 }
 \concept{to_yamlet}
 \keyword{internal}

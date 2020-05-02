@@ -4,9 +4,13 @@
 \alias{decorate.list}
 \title{Decorate List}
 \usage{
-\method{decorate}{list}(x, meta = NULL,
+\method{decorate}{list}(
+  x,
+  meta = NULL,
   ext = getOption("yamlet_extension", ".yaml"),
-  overwrite = getOption("yamlet_overwrite", FALSE), ...)
+  overwrite = getOption("yamlet_overwrite", FALSE),
+  ...
+)
 }
 \arguments{
 \item{x}{object inheriting from \code{list}}
@@ -32,11 +36,13 @@ example(decorate.data.frame)
 
 }
 \seealso{
-Other decorate: \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{decorate}},
-  \code{\link{decorations.data.frame}},
-  \code{\link{decorations}}, \code{\link{redecorate}}
+Other decorate: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{decorate}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations}()},
+\code{\link{redecorate}()}
 }
 \concept{decorate}
 \keyword{internal}

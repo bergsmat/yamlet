@@ -336,6 +336,7 @@ test_that('factorize_codelist creates class factor and removes attribute codelis
 #   expect_identical(names(a$CONC), c('label','unit'))
 # })
 test_that('resolve correctly classifies conditional elements',{
+  skip_if_not( l10n_info()$`UTF-8` )
   library(magrittr)
   library(dplyr)
   file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
@@ -463,6 +464,9 @@ test_that('is_pareseable is vectorized',{
   )
 })
 test_that('micro symbol is_pareseable',{
+  # https://blog.r-hub.io/2019/04/25/r-devel-linux-x86-64-debian-clang/
+  # https://github.com/davidgohel/fpeek/blob/2fe6e41f5eb90583ba3393e07c8508b77e28d2ed/tests/testthat/test-iconv.R#L7
+  skip_if_not( l10n_info()$`UTF-8` )
   expect_true(is_parseable('µg/L'))
 })
 

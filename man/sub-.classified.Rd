@@ -24,8 +24,9 @@ a <- a[1:3]
 attributes(a)
 }
 \seealso{
-Other classified: \code{\link{as_classified.factor}},
-  \code{\link{as_classified}}
+Other classified: 
+\code{\link{as_classified.factor}()},
+\code{\link{as_classified}()}
 }
 \concept{classified}
 \keyword{internal}

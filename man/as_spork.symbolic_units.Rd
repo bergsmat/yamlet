@@ -35,8 +35,9 @@ library(magrittr)
 'kg.m2 s-2' \%>\% as_units \%>\% attr('units') \%>\% as_spork(FALSE)
 }
 \seealso{
-Other spork: \code{\link{as_spork.unit_string}},
-  \code{\link{as_spork.units}}
+Other spork: 
+\code{\link{as_spork.unit_string}()},
+\code{\link{as_spork.units}()}
 }
 \concept{spork}
 \keyword{internal}

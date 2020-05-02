@@ -27,8 +27,10 @@ x
 alias(x)
 }
 \seealso{
-Other labels: \code{\link{append_units.data.frame}},
-  \code{\link{append_units.default}},
-  \code{\link{append_units}}, \code{\link{sub_units}}
+Other labels: 
+\code{\link{append_units.data.frame}()},
+\code{\link{append_units.default}()},
+\code{\link{append_units}()},
+\code{\link{sub_units}()}
 }
 \concept{labels}

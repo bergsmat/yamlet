@@ -8,10 +8,10 @@
 }
 \arguments{
 \item{.data}{A tbl. All main verbs are S3 generics and provide methods
-for \code{\link[=tbl_df]{tbl_df()}}, \code{\link[dtplyr:tbl_dt]{dtplyr::tbl_dt()}} and \code{\link[dbplyr:tbl_dbi]{dbplyr::tbl_dbi()}}.}
+for \code{\link[dplyr:tbl_df]{tbl_df()}}, \code{\link[dtplyr:tbl_dt]{dtplyr::tbl_dt()}} and \code{\link[dbplyr:tbl_dbi]{dbplyr::tbl_dbi()}}.}
 
 \item{...}{Name-value pairs of expressions, each with length 1 or the same
-length as the number of rows in the group (if using \code{\link[=group_by]{group_by()}}) or in the entire
+length as the number of rows in the group (if using \code{\link[dplyr:group_by]{group_by()}}) or in the entire
 input (if not using groups). The name of each argument will be the name of
 a new variable, and the value will be its corresponding value.  Use a \code{NULL}
 value in \code{mutate} to drop a variable.  New variables overwrite existing variables
@@ -27,20 +27,21 @@ these concepts.}
 Preserves class when mutating decorated.
 }
 \seealso{
-Other dplyr: \code{\link{anti_join.decorated}},
-  \code{\link{arrange.decorated}},
-  \code{\link{as_decorated}},
-  \code{\link{filter.decorated}},
-  \code{\link{full_join.decorated}},
-  \code{\link{group_by.decorated}},
-  \code{\link{inner_join.decorated}},
-  \code{\link{left_join.decorated}},
-  \code{\link{right_join.decorated}},
-  \code{\link{select.decorated}},
-  \code{\link{semi_join.decorated}},
-  \code{\link{slice.decorated}},
-  \code{\link{summarise.decorated}},
-  \code{\link{summarize.decorated}}
+Other dplyr: 
+\code{\link{anti_join.decorated}()},
+\code{\link{arrange.decorated}()},
+\code{\link{as_decorated}()},
+\code{\link{filter.decorated}()},
+\code{\link{full_join.decorated}()},
+\code{\link{group_by.decorated}()},
+\code{\link{inner_join.decorated}()},
+\code{\link{left_join.decorated}()},
+\code{\link{right_join.decorated}()},
+\code{\link{select.decorated}()},
+\code{\link{semi_join.decorated}()},
+\code{\link{slice.decorated}()},
+\code{\link{summarise.decorated}()},
+\code{\link{summarize.decorated}()}
 }
 \concept{dplyr}
 \keyword{internal}

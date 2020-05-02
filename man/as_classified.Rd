@@ -22,8 +22,9 @@ Generic, with method for factor.
 example(as_classified.factor)
 }
 \seealso{
-Other classified: \code{\link{[.classified}},
-  \code{\link{as_classified.factor}}
+Other classified: 
+\code{\link{[.classified}()},
+\code{\link{as_classified.factor}()}
 }
 \concept{classified}
 \keyword{internal}

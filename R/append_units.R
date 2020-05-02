@@ -88,7 +88,7 @@ append_units.default <- function(
   x
 }
 
-#' Append Units for Data Frame.
+#' Append Units for Data Frame
 #'
 #' Appends units for data.frame.
 #' For finer control, consider applying

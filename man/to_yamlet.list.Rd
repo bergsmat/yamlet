@@ -23,9 +23,11 @@ to_yamlet(list(a = 1, b = 2, c = NULL))
 to_yamlet(list(a = 1, b = list(c = 3, d = list(e = 4, f = 'g', 'h'))))
 }
 \seealso{
-Other to_yamlet: \code{\link{to_yamlet.NULL}},
-  \code{\link{to_yamlet.character}},
-  \code{\link{to_yamlet.default}}, \code{\link{to_yamlet}}
+Other to_yamlet: 
+\code{\link{to_yamlet.NULL}()},
+\code{\link{to_yamlet.character}()},
+\code{\link{to_yamlet.default}()},
+\code{\link{to_yamlet}()}
 }
 \concept{to_yamlet}
 \keyword{internal}

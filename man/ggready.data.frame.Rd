@@ -4,8 +4,7 @@
 \alias{ggready.data.frame}
 \title{Prepare Data Frame for GGplot}
 \usage{
-\method{ggready}{data.frame}(x, parse = getOption("ggready_parse", TRUE),
-  ...)
+\method{ggready}{data.frame}(x, parse = getOption("ggready_parse", TRUE), ...)
 }
 \arguments{
 \item{x}{object}
@@ -40,24 +39,27 @@ file \%>\%
  geom_point()
 }
 \seealso{
-Other resolve: \code{\link{ggready}},
-  \code{\link{resolve.data.frame}}, \code{\link{resolve}}
+Other resolve: 
+\code{\link{ggready}()},
+\code{\link{resolve.data.frame}()},
+\code{\link{resolve}()}
 
-Other interface: \code{\link{as_classified.factor}},
-  \code{\link{conditionalize.data.frame}},
-  \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{ggplot.decorated}},
-  \code{\link{io_csv.character}},
-  \code{\link{io_csv.data.frame}},
-  \code{\link{io_table.character}},
-  \code{\link{io_table.data.frame}},
-  \code{\link{io_yamlet.character}},
-  \code{\link{io_yamlet.data.frame}},
-  \code{\link{is_parseable.default}},
-  \code{\link{read_yamlet}},
-  \code{\link{resolve.data.frame}},
-  \code{\link{write_yamlet}}
+Other interface: 
+\code{\link{as_classified.factor}()},
+\code{\link{conditionalize.data.frame}()},
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{ggplot.decorated}()},
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_yamlet.character}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{is_parseable.default}()},
+\code{\link{read_yamlet}()},
+\code{\link{resolve.data.frame}()},
+\code{\link{write_yamlet}()}
 }
 \concept{interface}
 \concept{resolve}

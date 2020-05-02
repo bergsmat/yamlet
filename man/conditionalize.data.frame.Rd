@@ -66,23 +66,25 @@ x \%>\% write_yamlet
 
 }
 \seealso{
-Other interface: \code{\link{as_classified.factor}},
-  \code{\link{decorate.character}},
-  \code{\link{decorate.data.frame}},
-  \code{\link{ggplot.decorated}},
-  \code{\link{ggready.data.frame}},
-  \code{\link{io_csv.character}},
-  \code{\link{io_csv.data.frame}},
-  \code{\link{io_table.character}},
-  \code{\link{io_table.data.frame}},
-  \code{\link{io_yamlet.character}},
-  \code{\link{io_yamlet.data.frame}},
-  \code{\link{is_parseable.default}},
-  \code{\link{read_yamlet}},
-  \code{\link{resolve.data.frame}},
-  \code{\link{write_yamlet}}
+Other interface: 
+\code{\link{as_classified.factor}()},
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{ggplot.decorated}()},
+\code{\link{ggready.data.frame}()},
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_yamlet.character}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{is_parseable.default}()},
+\code{\link{read_yamlet}()},
+\code{\link{resolve.data.frame}()},
+\code{\link{write_yamlet}()}
 
-Other conditionalize: \code{\link{conditionalize}}
+Other conditionalize: 
+\code{\link{conditionalize}()}
 }
 \concept{conditionalize}
 \concept{interface}

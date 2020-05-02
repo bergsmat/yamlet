@@ -30,13 +30,15 @@ attr(y, 'source') <- NULL
 identical(x, y) # lossless 'round-trip'
 }
 \seealso{
-Other io: \code{\link{io_csv.character}},
-  \code{\link{io_csv.data.frame}},
-  \code{\link{io_table.character}},
-  \code{\link{io_table.data.frame}},
-  \code{\link{io_table}},
-  \code{\link{io_yamlet.character}},
-  \code{\link{io_yamlet.data.frame}},
-  \code{\link{io_yamlet.yamlet}}, \code{\link{io_yamlet}}
+Other io: 
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_table}()},
+\code{\link{io_yamlet.character}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{io_yamlet.yamlet}()},
+\code{\link{io_yamlet}()}
 }
 \concept{io}

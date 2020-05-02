@@ -18,10 +18,11 @@ class 'classified' 'factor'
 Coerces Codelist to Factor by Default. Coerces to character and calls next method.
 }
 \seealso{
-Other factorize_codelist: \code{\link{factorize_codelist.character}},
-  \code{\link{factorize_codelist.data.frame}},
-  \code{\link{factorize_codelist.factor}},
-  \code{\link{factorize_codelist}}
+Other factorize_codelist: 
+\code{\link{factorize_codelist.character}()},
+\code{\link{factorize_codelist.data.frame}()},
+\code{\link{factorize_codelist.factor}()},
+\code{\link{factorize_codelist}()}
 }
 \concept{factorize_codelist}
 \keyword{internal}

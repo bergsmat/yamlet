@@ -21,9 +21,10 @@ Returns 'classified' 'factor' which as an attribute-preserving
 subset method.
 }
 \seealso{
-Other factorize_codelist: \code{\link{factorize_codelist.character}},
-  \code{\link{factorize_codelist.data.frame}},
-  \code{\link{factorize_codelist.default}},
-  \code{\link{factorize_codelist.factor}}
+Other factorize_codelist: 
+\code{\link{factorize_codelist.character}()},
+\code{\link{factorize_codelist.data.frame}()},
+\code{\link{factorize_codelist.default}()},
+\code{\link{factorize_codelist.factor}()}
 }
 \concept{factorize_codelist}

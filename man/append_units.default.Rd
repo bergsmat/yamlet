@@ -4,9 +4,13 @@
 \alias{append_units.default}
 \title{Append Units By Default}
 \usage{
-\method{append_units}{default}(x, open = getOption("append_units_open",
-  " ("), close = getOption("append_units_close", ")"),
-  style = getOption("append_units_style", "plain"), ...)
+\method{append_units}{default}(
+  x,
+  open = getOption("append_units_open", " ("),
+  close = getOption("append_units_close", ")"),
+  style = getOption("append_units_style", "plain"),
+  ...
+)
 }
 \arguments{
 \item{x}{object}
@@ -48,9 +52,11 @@ x \%>\% append_units(style = 'latex')
 
 }
 \seealso{
-Other labels: \code{\link{alias.data.frame}},
-  \code{\link{append_units.data.frame}},
-  \code{\link{append_units}}, \code{\link{sub_units}}
+Other labels: 
+\code{\link{alias.data.frame}()},
+\code{\link{append_units.data.frame}()},
+\code{\link{append_units}()},
+\code{\link{sub_units}()}
 }
 \concept{labels}
 \keyword{internal}

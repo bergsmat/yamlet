@@ -8,7 +8,7 @@
 }
 \arguments{
 \item{.data}{A tbl. All main verbs are S3 generics and provide methods
-for \code{\link[=tbl_df]{tbl_df()}}, \code{\link[dtplyr:tbl_dt]{dtplyr::tbl_dt()}} and \code{\link[dbplyr:tbl_dbi]{dbplyr::tbl_dbi()}}.}
+for \code{\link[dplyr:tbl_df]{tbl_df()}}, \code{\link[dtplyr:tbl_dt]{dtplyr::tbl_dt()}} and \code{\link[dbplyr:tbl_dbi]{dbplyr::tbl_dbi()}}.}
 
 \item{...}{Logical predicates defined in terms of the variables in \code{.data}.
 Multiple conditions are combined with \code{&}. Only rows where the
@@ -27,20 +27,21 @@ is recalculated based on the resulting data, otherwise it is kept as is.}
 Preserves class when filtering decorated.
 }
 \seealso{
-Other dplyr: \code{\link{anti_join.decorated}},
-  \code{\link{arrange.decorated}},
-  \code{\link{as_decorated}},
-  \code{\link{full_join.decorated}},
-  \code{\link{group_by.decorated}},
-  \code{\link{inner_join.decorated}},
-  \code{\link{left_join.decorated}},
-  \code{\link{mutate.decorated}},
-  \code{\link{right_join.decorated}},
-  \code{\link{select.decorated}},
-  \code{\link{semi_join.decorated}},
-  \code{\link{slice.decorated}},
-  \code{\link{summarise.decorated}},
-  \code{\link{summarize.decorated}}
+Other dplyr: 
+\code{\link{anti_join.decorated}()},
+\code{\link{arrange.decorated}()},
+\code{\link{as_decorated}()},
+\code{\link{full_join.decorated}()},
+\code{\link{group_by.decorated}()},
+\code{\link{inner_join.decorated}()},
+\code{\link{left_join.decorated}()},
+\code{\link{mutate.decorated}()},
+\code{\link{right_join.decorated}()},
+\code{\link{select.decorated}()},
+\code{\link{semi_join.decorated}()},
+\code{\link{slice.decorated}()},
+\code{\link{summarise.decorated}()},
+\code{\link{summarize.decorated}()}
 }
 \concept{dplyr}
 \keyword{internal}
