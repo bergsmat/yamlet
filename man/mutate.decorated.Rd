@@ -7,21 +7,21 @@
 \method{mutate}{decorated}(.data, ...)
 }
 \arguments{
-\item{.data}{A tbl. All main verbs are S3 generics and provide methods
-for \code{\link[dplyr:tbl_df]{tbl_df()}}, \code{\link[dtplyr:tbl_dt]{dtplyr::tbl_dt()}} and \code{\link[dbplyr:tbl_dbi]{dbplyr::tbl_dbi()}}.}
+\item{.data}{A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
+more details.}
 
-\item{...}{Name-value pairs of expressions, each with length 1 or the same
-length as the number of rows in the group (if using \code{\link[dplyr:group_by]{group_by()}}) or in the entire
-input (if not using groups). The name of each argument will be the name of
-a new variable, and the value will be its corresponding value.  Use a \code{NULL}
-value in \code{mutate} to drop a variable.  New variables overwrite existing variables
-of the same name.
+\item{...}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Name-value pairs.
+The name gives the name of the column in the output.
 
-The arguments in \code{...} are automatically \link[rlang:quo]{quoted} and
-\link[rlang:eval_tidy]{evaluated} in the context of the data
-frame. They support \link[rlang:quasiquotation]{unquoting} and
-splicing. See \code{vignette("programming")} for an introduction to
-these concepts.}
+The value can be:
+\itemize{
+\item A vector of length 1, which will be recycled to the correct length.
+\item A vector the same length as the current group (or the whole data frame
+if ungrouped).
+\item \code{NULL}, to remove the column.
+\item A data frame or tibble, to create multiple columns in the output.
+}}
 }
 \description{
 Preserves class when mutating decorated.

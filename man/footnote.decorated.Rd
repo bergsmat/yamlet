@@ -2,7 +2,7 @@
 % Please edit documentation in R/xtable.R
 \name{footnote.decorated}
 \alias{footnote.decorated}
-\title{Footnote Decorated.}
+\title{Footnote Decorated}
 \usage{
 \method{footnote}{decorated}(x, equal = ":", collapse = "; ", ...)
 }
@@ -31,6 +31,10 @@ x <- data.frame(
  bmi = rnorm(100, mean = 20, sd = 5),
  gen = 0:1
 )
+x \%<>\% decorate('auc: [AUC_0-24, ng*h/mL]')
+x \%<>\% decorate('bmi: [Body Mass Index, kg/m^2]')
+x \%<>\% decorate('gen: [Gender, [Male: 1, Female: 0]]')
+footnote(x)
 }
 \seealso{
 Other footnote: 

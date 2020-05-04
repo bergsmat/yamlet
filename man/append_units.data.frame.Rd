@@ -2,7 +2,7 @@
 % Please edit documentation in R/append_units.R
 \name{append_units.data.frame}
 \alias{append_units.data.frame}
-\title{Append Units for Data Frame.}
+\title{Append Units for Data Frame}
 \usage{
 \method{append_units}{data.frame}(x, ...)
 }
