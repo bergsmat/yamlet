@@ -7,18 +7,19 @@
 \method{summarise}{decorated}(.data, ...)
 }
 \arguments{
-\item{.data}{A tbl. All main verbs are S3 generics and provide methods
-for \code{\link[dplyr:tbl_df]{tbl_df()}}, \code{\link[dtplyr:tbl_dt]{dtplyr::tbl_dt()}} and \code{\link[dbplyr:tbl_dbi]{dbplyr::tbl_dbi()}}.}
+\item{.data}{A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
+more details.}
 
-\item{...}{Name-value pairs of summary functions. The name will be the
-name of the variable in the result. The value should be an expression
-that returns a single value like \code{min(x)}, \code{n()}, or \code{sum(is.na(y))}.
+\item{...}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Name-value pairs of summary
+functions. The name will be the name of the variable in the result.
 
-The arguments in \code{...} are automatically \link[rlang:quo]{quoted} and
-\link[rlang:eval_tidy]{evaluated} in the context of the data
-frame. They support \link[rlang:quasiquotation]{unquoting} and
-splicing. See \code{vignette("programming")} for an introduction to
-these concepts.}
+The value can be:
+\itemize{
+\item A vector of length 1, e.g. \code{min(x)}, \code{n()}, or \code{sum(is.na(y))}.
+\item A vector of length \code{n}, e.g. \code{quantile()}.
+\item A data frame, to add multiple columns from a single expression.
+}}
 }
 \description{
 Preserves class when summarising decorated.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/xtable.R
 \name{xtable.decorated}
 \alias{xtable.decorated}
-\title{Create Export Table for Decorated.}
+\title{Create Export Table for Decorated}
 \usage{
 \method{xtable}{decorated}(x, style = "latex", ...)
 }
