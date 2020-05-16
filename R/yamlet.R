@@ -772,15 +772,23 @@ to_yamlet.character <- function(x, ...){
     return(to_yamlet(x))
   }
   # quote strings beginning with ' " [] {} > | * & ! % # ` @ ,. ? : -
+  index <- grepl("^'", x)                       # starts with '
+  x[index] <- paste0('"',x[index], '"')         # wrapped in "
+  index <- grepl('^[][{}>|*&!%#`@,.?:-]', x)    # starts with special
+  x[index] <- paste0("'",x[index],"'")          # wrapped in '
+
   # quote yes, no, y, n
-  index <- grepl("^'", x)
-  x[index] <- paste0('"',x[index], '"')
-  index <- grepl('^[][{}>|*&!%#`@,.?:-]', x)
-  x[index] <- paste0("'",x[index],"'")
   index <- x %in% c('yes','no','y','n')
   x[index] <- paste0("'",x[index],"'")
+
+  # must quote existing ][, to disambiguate
+  index <- grepl('[],[]', x)                   # contains collapse meta
+  x[index] <- paste0("'",x[index],"'")         # wrapped in '
+
   if(length(x) == 1) return(x)
+
   # multiples get [,,]
+  # collapse multiple
   x <- paste(x, collapse = ', ')
   x <- paste('[', x, ']')
   names(x) <- NULL # should not have names

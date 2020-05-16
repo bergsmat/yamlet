@@ -2,7 +2,7 @@
 % Please edit documentation in R/xtable.R
 \name{footnote}
 \alias{footnote}
-\title{Footnote Something.}
+\title{Footnote Something}
 \usage{
 footnote(x, ...)
 }

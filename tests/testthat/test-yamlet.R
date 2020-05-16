@@ -337,6 +337,10 @@ test_that('factorize_codelist creates class factor and removes attribute codelis
 # })
 test_that('resolve correctly classifies conditional elements',{
   skip_if_not( l10n_info()$`UTF-8` )
+  skip_if(
+    .Platform$OS.type == "unix" && Encoding(enc2native("\U00B5")) != "UTF-8",
+    "Skipping non-ASCII path tests on UTF-8 Unix system"
+  )
   library(magrittr)
   library(dplyr)
   file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
@@ -463,10 +467,15 @@ test_that('is_pareseable is vectorized',{
     c(TRUE, TRUE, FALSE, TRUE)
   )
 })
+
 test_that('micro symbol is_pareseable',{
-  # https://blog.r-hub.io/2019/04/25/r-devel-linux-x86-64-debian-clang/
-  # https://github.com/davidgohel/fpeek/blob/2fe6e41f5eb90583ba3393e07c8508b77e28d2ed/tests/testthat/test-iconv.R#L7
+  # https://github.com/rstudio/httpuv/issues/264
+  # https://github.com/rstudio/httpuv/commit/32ba7d34e9d0895552db8346cea8acbed7a74022
   skip_if_not( l10n_info()$`UTF-8` )
+  skip_if(
+    .Platform$OS.type == "unix" && Encoding(enc2native("\U00B5")) != "UTF-8",
+    "Skipping non-ASCII path tests on UTF-8 Unix system"
+  )
   expect_true(is_parseable('µg/L'))
 })
 
@@ -532,4 +541,23 @@ test_that('R reserved words survive in print.dg labels',{
   as.expression)) %>%
   ggplot(aes(x, y))
   )
+})
+
+test_that('ggplot.decorated works with multiple layers',{
+
+})
+
+test_that('column attributes with metacharacters are quoted or escaped on write',{
+  library(magrittr)
+  library(dplyr)
+  library(ggplot2)
+  library(testthat)
+
+  datum <- "x: [ 'AUC , [0-24]', ng*h/mL ]"
+  x <- data.frame(x=1:10) %>% decorate(datum)
+  path <- tempdir()
+  file <- file.path(path,'foo.csv')
+  x %>% io_csv(file)
+  y <- readLines(sub('csv','yaml',file))
+  expect_identical(y, datum)
 })
