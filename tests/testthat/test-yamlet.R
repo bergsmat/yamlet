@@ -544,6 +544,30 @@ test_that('R reserved words survive in print.dg labels',{
 })
 
 test_that('ggplot.decorated works with multiple layers',{
+  library(yamlet)
+  library(ggplot2)
+  library(magrittr)
+  library(csv)
+  a <- io_csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
+  b <- io_csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
+  c <- as.csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
+  d <- as.csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
+
+  x <-
+    a %>% filter(event == 'conc') %>%
+    ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
+    b %>% filter(!is.na(conc)) %>%
+    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
+  y <-
+    c %>% filter(event == 'conc') %>%
+    ggplot2:::ggplot.default(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
+    d %>% filter(!is.na(conc)) %>%
+    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
+
+
+
+
+
 
 })
 
