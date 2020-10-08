@@ -7,21 +7,22 @@
 \method{slice}{decorated}(.data, ..., .preserve = FALSE)
 }
 \arguments{
-\item{.data}{A tbl.}
+\item{.data}{A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
+more details.}
 
-\item{...}{Integer row values.  Provide either positive values to keep,
-or negative values to drop. The values provided must be either all
-positive or all negative.  Indices beyond the number of rows in the
-input are silently ignored.
+\item{...}{For \code{slice()}: <\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Integer row
+values.
 
-The arguments in \code{...} are automatically \link[rlang:quo]{quoted} and
-\link[rlang:eval_tidy]{evaluated} in the context of the data
-frame. They support \link[rlang:quasiquotation]{unquoting} and
-splicing. See \code{vignette("programming")} for an introduction to
-these concepts.}
+Provide either positive values to keep, or negative values to drop.
+The values provided must be either all positive or all negative.
+Indices beyond the number of rows in the input are silently ignored.
 
-\item{.preserve}{when \code{FALSE} (the default), the grouping structure
-is recalculated based on the resulting data, otherwise it is kept as is.}
+For \code{slice_helpers()}, these arguments are passed on to methods.}
+
+\item{.preserve}{Relevant when the \code{.data} input is grouped.
+If \code{.preserve = FALSE} (the default), the grouping structure
+is recalculated based on the resulting data, otherwise the grouping is kept as is.}
 }
 \description{
 Preserves class when slicing decorated.

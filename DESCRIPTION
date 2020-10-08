@@ -1,10 +1,10 @@
 Package: yamlet
 Type: Package
 Title: Versatile Curation of Table Metadata
-Version: 0.4.7
+Version: 0.4.9
 Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>
-Description: The 'yamlet' package implements a file-based
+Description: A file-based
  mechanism for documenting datasets. It reads and writes
  YAML-formatted metadata and applies it as data 
  item attributes. Data and metadata are stored independently

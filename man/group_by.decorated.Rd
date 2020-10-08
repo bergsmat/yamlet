@@ -7,15 +7,20 @@
 \method{group_by}{decorated}(.data, ..., add = FALSE, .drop = group_by_drop_default(.data))
 }
 \arguments{
-\item{.data}{a tbl}
+\item{.data}{A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
+more details.}
 
-\item{...}{Variables to group by. All tbls accept variable names.
-Some tbls will accept functions of variables. Duplicated groups
-will be silently dropped.}
+\item{...}{In \code{group_by()}, variables or computations to group by.
+In \code{ungroup()}, variables to remove from the grouping.}
 
-\item{add}{When \code{add = FALSE}, the default, \code{group_by()} will
+\item{add}{When \code{FALSE}, the default, \code{group_by()} will
 override existing groups. To add to the existing groups, use
-\code{add = TRUE}.}
+\code{.add = TRUE}.
+
+This argument was previously called \code{add}, but that prevented
+creating a new grouping variable called \code{add}, and conflicts with
+our naming conventions.}
 
 \item{.drop}{When \code{.drop = TRUE}, empty groups are dropped. See \code{\link[dplyr:group_by_drop_default]{group_by_drop_default()}} for
 what the default value is for this argument.}
