@@ -564,11 +564,6 @@ test_that('ggplot.decorated works with multiple layers',{
     d %>% filter(!is.na(conc)) %>%
     geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
 
-
-
-
-
-
 })
 
 test_that('column attributes with metacharacters are quoted or escaped on write',{
@@ -585,3 +580,55 @@ test_that('column attributes with metacharacters are quoted or escaped on write'
   y <- readLines(sub('csv','yaml',file))
   expect_identical(y, datum)
 })
+test_that('ggready supports axis label line breaks',{
+  library(yamlet)
+  library(ggplot2)
+  library(magrittr)
+  library(dplyr)
+  library(encode)
+  data(mtcars)
+  mtcars %>%
+    select(mpg, vs, am) %>%
+    data.frame %>%
+    mutate(
+      plotgroup = case_when(
+        vs == 0 & am == 0 ~ 'v-shaped\nautomatic',
+        vs == 0 & am == 1 ~ 'v-shaped\nmanual',
+        vs == 1 & am == 0 ~ 'straight\nautomatic',
+        vs == 1 & am == 1 ~ 'straight\nmanual'
+      )
+    ) %>%
+    redecorate("
+mpg: [ milage, mi/gal ]
+plotgroup: [ engine\\ntransmission, [v-shaped\n\nautomatic,v-shaped\n\nmanual,straight\n\nautomatic,straight\n\nmanual]]
+") %>%
+    ggready %>%
+    ggplot(aes(x = plotgroup, y = mpg)) +
+    geom_boxplot()
+})
+
+test_that(
+  'for each named column, or all if none named,
+  the data.frame method for modify() assigns a
+  value in the attributes environment',{
+
+
+})
+test_that(
+  'modify() makes the the underlying object available as an argument',{
+
+})
+
+test_that(
+  'the data.frame method for modify() gives a warning
+  if the assignment target is reserved
+  (i.e, class, levels, labels, names)',{
+
+})
+
+test_that(
+  'the data.frame method for modify() fails gracefully
+  if assignment cannot be made',{
+
+})
+

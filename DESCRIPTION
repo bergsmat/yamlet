@@ -19,6 +19,6 @@ Encoding: UTF-8
 LazyData: true
 Imports: yaml, csv (>= 0.5.4), encode, units, spork,
  ggplot2, dplyr (>= 0.8.1), rlang, xtable
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Suggests: testthat (>= 2.1.0), magrittr, table1, knitr

@@ -1,5 +1,3 @@
-
-
 #' Choose Singular Expression
 #'
 #' For a list of expressions evaluated on a data.frame
@@ -191,4 +189,16 @@ print.dg <- function(x, ...){
   NextMethod()
 }
 
+#' Enable Automatic Labels and Units for ggplot
+#'
+#' Enable automatic labels and units for ggplot.
+#' Substitutes column label, if present, for default.
+#' Supports arrangements of ggplot objects.
+#'
+#' @param x class 'dg' from \code{\link{ggplot.decorated}}
+#' @param ... passed arguments
+#' @return see \code{\link[ggplot2]{ggplot_build}}
+#' @export
+#' @family dg
 
+ggplot_build.dg <- print.dg

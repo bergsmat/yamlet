@@ -77,6 +77,7 @@ scale_color_gradientn(colours = rainbow(4))
 }
 \seealso{
 Other dg: 
-\code{\link{ggplot.decorated}()}
+\code{\link{ggplot.decorated}()},
+\code{\link{ggplot_build.dg}()}
 }
 \concept{dg}

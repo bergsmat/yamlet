@@ -33,6 +33,7 @@ example(print.dg)
 }
 \seealso{
 Other dg: 
+\code{\link{ggplot_build.dg}()},
 \code{\link{print.dg}()}
 
 Other interface: 
@@ -48,6 +49,7 @@ Other interface:
 \code{\link{io_yamlet.character}()},
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{is_parseable.default}()},
+\code{\link{modify.default}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.data.frame}()},
 \code{\link{write_yamlet}()}
