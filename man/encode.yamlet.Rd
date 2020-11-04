@@ -4,16 +4,16 @@
 \alias{encode.yamlet}
 \title{Encode Yamlet}
 \usage{
-\method{encode}{yamlet}(x, target = "guide", data = NULL, ...)
+\method{encode}{yamlet}(x, ..., target = "guide", data = NULL)
 }
 \arguments{
 \item{x}{yamlet}
 
+\item{...}{ignored}
+
 \item{target}{attribute to encode}
 
 \item{data}{optional data.frame for guide context}
-
-\item{...}{ignored}
 }
 \value{
 yamlet, with guide elements possibly transformed to encodings
@@ -33,3 +33,4 @@ Other encode:
 \code{\link{list2encoding}()}
 }
 \concept{encode}
+\keyword{internal}

@@ -2,10 +2,11 @@
 % Please edit documentation in R/sub_units.R
 \name{sub_units}
 \alias{sub_units}
-\title{Place below Under Label}
+\title{Place Units Under Label}
 \usage{
 sub_units(
   x,
+  ...,
   open = if (style == "plain") "\\n(" else "\\\\n(",
   close = ")",
   style = "latex",
@@ -13,12 +14,13 @@ sub_units(
   math_close = "",
   label_open = "$\\\\begin{gathered}",
   label_close = "\\\\end{gathered}$",
-  newline = "\\\\\\\\",
-  ...
+  newline = "\\\\\\\\"
 )
 }
 \arguments{
 \item{x}{object}
+
+\item{...}{passed to \code{\link{append_units}}}
 
 \item{open}{character to precede units}
 
@@ -27,8 +29,6 @@ sub_units(
 \item{style}{one of 'plain', 'latex', or 'plotmath'}
 
 \item{math_open, math_close, label_open, label_close, newline}{passed to \code{\link{as_latex.spar}} if style = 'latex'}
-
-\item{...}{passed arguments}
 }
 \value{
 see methods for append_units
@@ -60,7 +60,7 @@ x \%>\% sub_units(style = 'latex')
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 file \%>\% decorate \%>\% resolve \%>\%
 sub_units(style = 'plotmath') \%>\%
-ggplot(data = ., aes(x = conc, y = time, color = Heart)) \%>\%
+ggplot(data = ., aes(x = time, y = conc, color = Heart)) \%>\%
 add(geom_point())
 }
 \seealso{
@@ -71,3 +71,4 @@ Other labels:
 \code{\link{append_units}()}
 }
 \concept{labels}
+\keyword{internal}

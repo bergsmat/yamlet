@@ -42,7 +42,7 @@ conditionalize <- function(x, ...)UseMethod('conditionalize')
 #' @importFrom dplyr mutate
 #' @importFrom dplyr distinct
 #' @export
-#' @family interface
+#' @keywords internal
 #' @family conditionalize
 #' @return class 'decorated' 'data.frame'
 #' @examples

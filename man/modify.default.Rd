@@ -7,8 +7,8 @@
 \method{modify}{default}(
   x,
   ...,
-  .warn = getOption("yamlet_modify_warn", c("class", "levels", "labels", "names")),
-  .silent = getOption("yamlet_modify_silent", TRUE)
+  .reserved = getOption("yamlet_modify_reserved", c("class", "levels", "labels",
+    "names"))
 )
 }
 \arguments{
@@ -16,52 +16,80 @@
 
 \item{...}{indicated columns, or name-value pairs}
 
-\item{.warn}{reserved labels that warn on assignment}
-
-\item{.silent}{passed to \code{\link{try}} (as 'silent')}
+\item{.reserved}{reserved labels that warn on assignment}
 }
 \value{
 same class as x
 }
 \description{
 Modifies the attributes of each indicated element
-(all elements by default).  Assigns the value of an expression
+(all elements by default).  Tries to assign the value of an expression
 to the supplied label, with existing attributes
 and the object itself (.) available as arguments.
-Fails silently on error. Gives a warning if the
-supplied label is considered reserved.
+Gives a warning if the supplied label is considered reserved.
+Intends to support anything with one or more non-empty names.
+}
+\details{
+The name of the component itself is available during assignments as
+attribute 'name' (any pre-existing attribute 'name' is temporarily masked).
+After all assignments are complete, the value of 'name' is enforced at the object level.
+Thus, \code{modify} expressions can modify component names.
 }
 \examples{
 library(magrittr)
 library(dplyr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
-x \%<>\% modify(.silent = FALSE, epithet = 2, time)
-x \%<>\% modify(.silent = FALSE, epithet = 2 + 5, time)
-x \%<>\% modify(.silent = TRUE, epithet = paste(label, '(', guide, ')'), time)
-x \%<>\% modify(.silent = TRUE, epithet = paste(label, '(', guide, ')'), time)
+
+# modify selected columns
+x \%<>\% modify(title = paste(label, '(', guide, ')'), time)
 x \%>\% select(time, conc) \%>\% as_yamlet
+
+# modify (almost) all columns
+x \%<>\% modify(title = paste(label, '(', guide, ')'), -Subject)
+x \%>\% select(time, conc) \%>\% as_yamlet
+
+# use column itself
+x \%<>\% modify(`defined values` = sum(!is.na(.)))
+x \%>\% select(time) \%>\% as_yamlet
+
+# rename column
+x \%<>\% modify(time, name = label)
+names(x)
+
+# warn if assignment fails
+\dontrun{
+\donttest{
+x \%<>\% modify(title = foo, time)
+}}
+# support lists
+list(a = 1, b = 1:10, c = letters) \%>\%
+modify(length = length(.), b:c)
+
 }
 \seealso{
 Other modify: 
-\code{\link{modify}()}
+\code{\link{modify}()},
+\code{\link{named}()},
+\code{\link{selected.default}()},
+\code{\link{selected}()}
 
 Other interface: 
-\code{\link{as_classified.factor}()},
-\code{\link{conditionalize.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
-\code{\link{ggplot.decorated}()},
+\code{\link{ggplot.resolved}()},
 \code{\link{ggready.data.frame}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
+\code{\link{io_res.character}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
 \code{\link{io_yamlet.character}()},
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{is_parseable.default}()},
 \code{\link{read_yamlet}()},
-\code{\link{resolve.data.frame}()},
+\code{\link{resolve.decorated}()},
+\code{\link{selected.default}()},
 \code{\link{write_yamlet}()}
 }
 \concept{interface}

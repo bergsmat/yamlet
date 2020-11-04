@@ -19,11 +19,14 @@ Modifies the attributes of indicated components.
 Generic, with default method.
 }
 \examples{
-example(modify.data.frame)
+example(modify.default)
 }
 \seealso{
 Other modify: 
-\code{\link{modify.default}()}
+\code{\link{modify.default}()},
+\code{\link{named}()},
+\code{\link{selected.default}()},
+\code{\link{selected}()}
 }
 \concept{modify}
 \keyword{internal}

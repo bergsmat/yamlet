@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{character}
 
-\item{...}{passed arguments}
+\item{...}{ignored}
 }
 \value{
 class 'classified' 'factor'

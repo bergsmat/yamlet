@@ -48,27 +48,29 @@ io_yamlet(out)
 }
 \seealso{
 Other interface: 
-\code{\link{as_classified.factor}()},
-\code{\link{conditionalize.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
-\code{\link{ggplot.decorated}()},
+\code{\link{ggplot.resolved}()},
 \code{\link{ggready.data.frame}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
+\code{\link{io_res.character}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
 \code{\link{io_yamlet.character}()},
 \code{\link{is_parseable.default}()},
 \code{\link{modify.default}()},
 \code{\link{read_yamlet}()},
-\code{\link{resolve.data.frame}()},
+\code{\link{resolve.decorated}()},
+\code{\link{selected.default}()},
 \code{\link{write_yamlet}()}
 
 Other io: 
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},
+\code{\link{io_res.character}()},
+\code{\link{io_res}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
 \code{\link{io_table}()},

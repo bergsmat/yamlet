@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{data.frame}
 
-\item{...}{ignored arguments}
+\item{...}{optional unquoted names of target columns}
 }
 \value{
 aliased data.frame
@@ -20,11 +20,13 @@ Replaces column names with labels, where present.
 Stores column name as 'alias' attribute.
 }
 \examples{
-x <- data.frame(x = 1:10, y = 1:10, z = 1:10)
-attr(x$x, 'label') <- 'Independent Value'
-attr(x$y, 'label') <- 'Dependent Value'
-x
-alias(x)
+library(magrittr)
+d <- data.frame(x = 1:10, y = 1:10, z = 1:10)
+d \%<>\% modify(x, label = 'Independent Value')
+d \%<>\% modify(y, label = 'Dependent Value')
+d
+alias(d)
+alias(d, y)
 }
 \seealso{
 Other labels: 
@@ -32,5 +34,12 @@ Other labels:
 \code{\link{append_units.default}()},
 \code{\link{append_units}()},
 \code{\link{sub_units}()}
+
+Other deprecated: 
+\code{\link{append_units}()},
+\code{\link{ggready.data.frame}()},
+\code{\link{ggready}()}
 }
+\concept{deprecated}
 \concept{labels}
+\keyword{internal}

@@ -9,7 +9,7 @@
 #' @return see methods
 #' @family modify
 #' @examples
-#' example(modify.data.frame)
+#' example(modify.default)
 modify <- function(x, ...)UseMethod('modify')
 
 #' Modify Attributes of Indicated Components by Default
@@ -20,6 +20,11 @@ modify <- function(x, ...)UseMethod('modify')
 #' and the object itself (.) available as arguments.
 #' Gives a warning if the supplied label is considered reserved.
 #' Intends to support anything with one or more non-empty names.
+#'
+#' The name of the component itself is available during assignments as
+#' attribute 'name' (any pre-existing attribute 'name' is temporarily masked).
+#' After all assignments are complete, the value of 'name' is enforced at the object level.
+#' Thus, \code{modify} expressions can modify component names.
 #'
 #' @param x object
 #' @param ... indicated columns, or name-value pairs
@@ -47,6 +52,10 @@ modify <- function(x, ...)UseMethod('modify')
 #' x %<>% modify(`defined values` = sum(!is.na(.)))
 #' x %>% select(time) %>% as_yamlet
 #'
+#' # rename column
+#' x %<>% modify(time, name = label)
+#' names(x)
+#'
 #' # warn if assignment fails
 #' \dontrun{
 #' \donttest{
@@ -65,26 +74,15 @@ modify.default <- function(
   )
 ){
   stopifnot(is.character(.reserved))
-  args <- quos(...)
-  # args <- lapply(args, rlang::f_rhs)
-  vars <- args[names(args) == ""]
-  mods <- args[names(args) != ""]
-  # vars <- lapply(vars, rlang::f_rhs)
-  # vars <- sapply(vars, as.character)
-  y <- names(x) # should work if x has names
-  y <- y[y != ''] # ignore empty names
-  d <- lapply(y, function(i)character())
-  names(d) <- y # reuse names
-  d <- data.frame(d)# dummy data.frame for dplyr
-  vars <- d %>% select(!!!vars) %>% names
-  if(length(vars) == 0) vars <- names(x)
+  vars <- selected(x, ...)
+  mods <- quos(...)
+  mods <- mods[names(mods) != '']
   reserved <- intersect(names(mods), .reserved)
-#  missing <- setdiff(vars, names(x))
-  vars <- intersect(vars, names(x))
   if(length(reserved))warning('reserved: ', paste(reserved, collapse = ', '))
-#  if(length(missing))warning('missing: ', paste(missing, collapse = ', '))
   for(var in vars){
-   for(mod in names(mods)){
+    was <- attr(x[[var]], 'name', exact = TRUE)
+    attr(x[[var]], 'name') <- var
+    for(mod in names(mods)){
      expr <- mods[[mod]] # a quosure
      attr <- attributes(x[[var]])
      attr <- attr[names(attr) != ''] # see ?list2env
@@ -96,6 +94,10 @@ modify.default <- function(
         error = function(e)warning(var, ': ', e)
       )
     }
+    i <- match(var, names(x), nomatch = 0) # singular
+    stopifnot(i > 0)
+    names(x)[[i]] <- attr(x[[i]],'name')
+    attr(x[[i]], 'name') <- was
   }
   x
 }

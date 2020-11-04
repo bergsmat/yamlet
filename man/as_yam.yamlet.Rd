@@ -6,16 +6,16 @@
 \usage{
 \method{as_yam}{yamlet}(
   x,
-  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
-  ...
+  ...,
+  default_keys = getOption("yamlet_default_keys", list("label", "guide"))
 )
 }
 \arguments{
 \item{x}{yamlet}
 
-\item{default_keys}{names that may be omitted in left subsets}
-
 \item{...}{ignored}
+
+\item{default_keys}{names that may be omitted in left subsets}
 }
 \value{
 yam

@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{data.frame}
 
-\item{...}{passed arguments}
+\item{...}{passed to \code{\link[dplyr]{select}} to limit scope}
 }
 \value{
 data.frame
@@ -23,6 +23,7 @@ file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
 x \%>\% explicit_guide \%>\% as_yamlet
 x \%>\% explicit_guide \%>\% factorize_codelist \%>\% as_yamlet
+x \%>\% explicit_guide \%>\% factorize_codelist(Heart:glyco) \%>\% as_yamlet
 }
 \seealso{
 Other factorize_codelist: 

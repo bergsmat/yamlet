@@ -7,7 +7,7 @@
 #' @export
 #' @keywords internal
 #' @return see methods
-#' @family resolve
+#' @family deprecated
 #' @examples
 #' example(ggready.data.frame)
 ggready <- function(x, ...)UseMethod('ggready')
@@ -19,17 +19,18 @@ ggready <- function(x, ...)UseMethod('ggready')
 #' units to label using \code{\link{append_units}}
 #' (passing \code{style = 'plotmath'} if \code{parse}
 #' is true, else \code{style = 'plain'}).
-#' Enforces class 'decorated'.
+#' Enforces class 'ggready'.
 #'
 #'
 #' @param x object
+#' @param ... passed to \code{\link{append_units}} and \code{\link{resolve}}; may include unquoted column names
 #' @param parse passed to \code{\link{append_units}}
-#' @param ... passed to \code{\link{append_units}}
 #' @export
 #' @importFrom spork as_spork
 #' @importFrom spork plotmathToken
-#' @return decorated
-#' @family resolve
+#' @return ggready
+#' @family deprecated
+#' @keywords internal
 #' @family interface
 #' @examples
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -44,13 +45,17 @@ ggready <- function(x, ...)UseMethod('ggready')
 #'  ggready %>%
 #'  ggplot(aes(x = time, y = conc, color = Heart)) +
 #'  geom_point()
+#' file %>% decorate %>% ggready(time, Heart:glyco) %>% as_yamlet
 
-
-ggready.data.frame <- function(x, parse = getOption('ggready_parse',TRUE), ...){
+ggready.data.frame <- function(
+  x, ... ,
+  parse = getOption('ggready_parse',TRUE)
+){
   x <- resolve(x, ...)
   stopifnot(is.logical(parse), length(parse) == 1)
-  x <- append_units(x, style = if(parse) 'plotmath' else 'plain', ...)
+  x <- append_units(x, ..., style = if(parse) 'plotmath' else 'plain')
   class(x) <- union('decorated', class(x))
+  class(x) <- union('ggready', class(x))
   x
 }
 

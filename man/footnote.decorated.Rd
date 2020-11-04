@@ -4,16 +4,16 @@
 \alias{footnote.decorated}
 \title{Footnote Decorated}
 \usage{
-\method{footnote}{decorated}(x, equal = ":", collapse = "; ", ...)
+\method{footnote}{decorated}(x, ..., equal = ":", collapse = "; ")
 }
 \arguments{
 \item{x}{decorated}
 
+\item{...}{passed to \code{\link{append_units}}}
+
 \item{equal}{character: a symbol suggesting equality between a name and its note}
 
 \item{collapse}{used to \code{\link{paste}} column-wise footnotes}
-
-\item{...}{passed to append_units}
 }
 \value{
 character
@@ -34,10 +34,13 @@ x <- data.frame(
 x \%<>\% decorate('auc: [AUC_0-24, ng*h/mL]')
 x \%<>\% decorate('bmi: [Body Mass Index, kg/m^2]')
 x \%<>\% decorate('gen: [Gender, [Male: 1, Female: 0]]')
+x \%<>\% resolve
 footnote(x)
+footnote(x, auc)
 }
 \seealso{
 Other footnote: 
 \code{\link{footnote}()}
 }
 \concept{footnote}
+\keyword{internal}

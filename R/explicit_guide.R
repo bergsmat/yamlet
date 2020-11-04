@@ -9,6 +9,7 @@
 #' @param x object of dispatch
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @return see methods
 #' @family explicit_guide
 #' @md
@@ -42,9 +43,9 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #'
 #'
 #' @param x yamlet
+#' @param ... passed to \code{\link[dplyr]{select}} to limit scope
 #' @param default length-one character: the default key
 #' @param data optional data.frame for testing guides with length > 1
-#' @param ... ignored arguments
 #' @export
 #' @keywords internal
 #' @importFrom dplyr case_when
@@ -59,11 +60,15 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' 'DATE: [ date, "%Y-%m-%d" ]' %>% as_yamlet %>% explicit_guide
 #' 'PRSE: [ standard error, "%" ]' %>% as_yamlet %>% explicit_guide
 #'
-explicit_guide.yamlet <- function(x, default = 'guide', data = NULL, ...){
+explicit_guide.yamlet <- function(x, ..., default = 'guide', data = NULL){
   stopifnot(is.character(default), length(default) == 1)
   if(!is.null(data))stopifnot(is.list(data))
-  for(i in seq_along(x)){
-    nms <- names(x[[i]])
+
+  ### don't do all, just selected names
+
+# for(i in seq_along(x)){
+  for(i in selected(x, ...)){
+      nms <- names(x[[i]])
     for(j in seq_along(x[[i]])){
       if(length(nms) >= j){
         if(nms[[j]] == 'guide'){
@@ -106,7 +111,8 @@ explicit_guide.yamlet <- function(x, default = 'guide', data = NULL, ...){
 #'
 #' @param x yamlet
 #' @param overwrite passed as TRUE
-#' @param ... passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}
+#' @param ... named arguments passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}; un-named arguments limit scope
+#' @param simplify whether to remove guide attribute
 #' @export
 #' @keywords internal
 #' @importFrom dplyr case_when
@@ -122,20 +128,30 @@ explicit_guide.yamlet <- function(x, default = 'guide', data = NULL, ...){
 #'  SEX = 1,
 #'  DATE = 1
 #' )
-#' x$ID   %<>% structure(label = 'subject identifier')
-#' x$CONC %<>% structure(label = 'concentration', guide = 'ng/mL')
-#' x$RACE %<>% structure(label = 'race', guide = list(white = 0, black = 1, asian = 2))
-#' x$SEX  %<>% structure(label = 'sex', guide = list(female = 0, male = 1))
-#' x$DATE %<>% structure(label = 'date', guide = '%Y-%m-%d')
+#' x %<>% modify(ID, label = 'subject identifier')
+#' x %<>% modify(CONC, label = 'concentration', guide = 'ng/mL')
+#' x %<>% modify(RACE, label = 'race', guide = list(white = 0, black = 1, asian = 2))
+#' x %<>% modify(SEX, label = 'sex', guide = list(female = 0, male = 1))
+#' x %<>% modify(DATE, label  = 'date', guide = '%Y-%m-%d')
 #' x %>% as_yamlet
 #' x %>% explicit_guide %>% as_yamlet
-explicit_guide.data.frame <- function(x, overwrite = TRUE, ...){
-  y <- as_yamlet(x,...)
-  y <- explicit_guide(y, data = x, ...)
-  for(nm in names(x)){
-    attr(x[[nm]], 'guide') <- NULL
+#' x %>% explicit_guide(DATE) %>% as_yamlet # limit scope
+explicit_guide.data.frame <- function(
+  x,
+  ...,
+  overwrite = getOption('explicit_guide_overwrite',TRUE),
+  simplify = getOption('explicit_guide_simplify', TRUE)
+){
+  y <- do.call(as_yamlet, c(list(x), named(...)))
+  nms <- selected(x, ...)
+  y <- y[nms]
+  y <- do.call(explicit_guide, c(list(y, data = x), named(...)))
+  if(simplify){
+    for(nm in nms){
+      attr(x[[nm]], 'guide') <- NULL
+    }
   }
-  x <- decorate(x, meta = y, overwrite = TRUE, ...)
+  x <- do.call(decorate, c(list(x, meta = y, overwrite = TRUE), named(...)))
   x
 }
 

@@ -16,16 +16,14 @@ see methods
 }
 \description{
 Resolves implicit usage of default key 'guide' to explicit usage.
-Generic, with method for data.frame.
+Generic, with method \code{\link{resolve.decorated}}.
 }
 \examples{
-example(resolve.data.frame)
+example(resolve.decorated)
 }
 \seealso{
 Other resolve: 
-\code{\link{ggready.data.frame}()},
-\code{\link{ggready}()},
-\code{\link{resolve.data.frame}()}
+\code{\link{resolve.decorated}()}
 }
 \concept{resolve}
 \keyword{internal}

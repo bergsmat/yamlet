@@ -6,16 +6,16 @@
 \usage{
 read_yamlet(
   x,
-  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
-  ...
+  ...,
+  default_keys = getOption("yamlet_default_keys", list("label", "guide"))
 )
 }
 \arguments{
 \item{x}{file path for yamlet, or vector of yamlet in storage syntax}
 
-\item{default_keys}{character: default keys for the first n anonymous members of each element}
-
 \item{...}{passed to \code{\link{as_yamlet}}}
+
+\item{default_keys}{character: default keys for the first n anonymous members of each element}
 }
 \value{
 yamlet: a named list with default keys applied
@@ -38,21 +38,21 @@ identical(x, decorate(file))
 \code{\link{decorate.data.frame}}
 
 Other interface: 
-\code{\link{as_classified.factor}()},
-\code{\link{conditionalize.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
-\code{\link{ggplot.decorated}()},
+\code{\link{ggplot.resolved}()},
 \code{\link{ggready.data.frame}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
+\code{\link{io_res.character}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
 \code{\link{io_yamlet.character}()},
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{is_parseable.default}()},
 \code{\link{modify.default}()},
-\code{\link{resolve.data.frame}()},
+\code{\link{resolve.decorated}()},
+\code{\link{selected.default}()},
 \code{\link{write_yamlet}()}
 }
 \concept{interface}

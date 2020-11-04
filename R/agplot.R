@@ -1,86 +1,11 @@
-#' Choose Singular Expression
+#' Create a New ggplot for a GGready Data Frame
 #'
-#' For a list of expressions evaluated on a data.frame
-#' this returns the index of the one expression that evaluates
-#' to an all-true vector (after coercing NA to FALSE).
-#' Returns 0 if no expressions succeed, and NA_integer_ if
-#' more than one succeed. Returns -1 if any expression
-#' does not evaluate to logical or if list is empty.
-#'
-#' @param x list of expressions
-#' @param data data.frame
-#' @param ... ignored
-#' @export
-#' @keywords internal
-#' @return integer, possibly NA
-#' @family lab
-#' @examples
-#' meta <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
-#' x <- read.csv(meta)
-#' singularity(
-#'   data = x,
-#'   list(
-#'     "event == 'conc'",
-#'     "event == 'dose'",
-#'     "event == 'metabolite'"
-#'   )
-#' )
-#' singularity(
-#'   data = x[x$event == 'dose',],
-#'   list(
-#'     "event == 'conc'",
-#'     "event == 'dose'",
-#'     "event == 'metabolite'"
-#'   )
-#' )
-#' singularity(
-#'   data = x[x$event == 'dose',],
-#'   list(
-#'     "time >= 0",
-#'     "event == 'dose'"
-#'   )
-#' )
-#
-singularity <- function(x, data, ...){
-  if(!length(x))return(-1)
-  #exprs <- lapply(x, function(i)parse(text = i))
-  #vals <- lapply(exprs, function(i)try(eval(i, envir = data, enclos = NULL)))
-  vals <- lapply(
-    x, function(i)try(
-      silent = TRUE,
-      eval(
-        parse(text = i),
-        envir = data,
-        enclos = NULL
-      )
-    )
-  )
-  defined <- lapply(vals, function(i){
-    if(inherits(i, 'try-error')) return(-1) # i <- FALSE
-    if(!is.logical(i)) return(-1) # i <- as.logical(i)
-    i[is.na(i)] <- FALSE
-    i
-  })
-  condensed <- sapply(defined, all)
-  res <- sum(condensed)
-  if(res == 0) return(as.integer(res))
-  if(res > 1) return(NA_integer_)
-  # res = 1
-  res <- seq_along(condensed)[condensed]
-  stopifnot(length(res) == 1)
-  res
-}
-
-
-#' Create a New ggplot for a Decorated Data Frame
-#'
-#' Creates a new ggplot object for a decorated data.frame.
-#' This is the ggplot() method for class 'decorated';
+#' Creates a new ggplot object for a ggready data.frame.
+#' This is the ggplot() method for class 'ggready';
 #' it tries to implement automatic labels and units in axes and legends
 #' in association with \code{\link{print.dg}}.
-#' Use \code{ggplot(as.data.frame(x))} to get default
-#' ggplot() behavior. Use \code{ggplot(as_decorated(x))}
-#' to enforce custom behavior.
+#' This approach is deprecated in favor of a cleaner
+#' object hierarchy for classes 'decorated' and 'resolved'.
 #'
 #' @param data data.frame or similar
 #' @param ... passed to \code{\link[ggplot2]{ggplot}}
@@ -88,7 +13,7 @@ singularity <- function(x, data, ...){
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @family dg
-#' @family interface
+#' @keywords internal
 #' @examples
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(meta)
@@ -97,8 +22,8 @@ singularity <- function(x, data, ...){
 #' class(ggplot(data = x, aes(x = time, y = conc)) + geom_path())
 #' example(print.dg)
 
-ggplot.decorated <- function(data, ...){
-  class(data) <- setdiff(class(data), 'decorated')
+ggplot.ggready <- function(data, ...){
+  class(data) <- setdiff(class(data), 'ggready')
   p <- ggplot(data = data, ...)
   class(p) <- c('dg',class(p))
   p
@@ -108,10 +33,11 @@ ggplot.decorated <- function(data, ...){
 #' Prints automatic labels and units for ggplot.
 #' Substitutes column label, if present, for default.
 #'
-#' @param x class 'dg' from \code{\link{ggplot.decorated}}
+#' @param x class 'dg' from \code{\link{ggplot.ggready}}
 #' @param ... passed arguments
 #' @return see \code{\link[ggplot2]{print.ggplot}}
 #' @export
+#' @keywords internal
 #' @family dg
 #' @examples
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -182,7 +108,7 @@ print.dg <- function(x, ...){
       atr <- attributes(col)
       label <- atr$label                   # retrieve label
       if(!is.null(label)){
-        x$labels[[i]] <- label             # replace default label with one from labeller
+        x$labels[[i]] <- label             # replace default label with one from data attributes
       }
     }
   }
@@ -195,10 +121,11 @@ print.dg <- function(x, ...){
 #' Substitutes column label, if present, for default.
 #' Supports arrangements of ggplot objects.
 #'
-#' @param x class 'dg' from \code{\link{ggplot.decorated}}
+#' @param x class 'dg' from \code{\link{ggplot.ggready}}
 #' @param ... passed arguments
 #' @return see \code{\link[ggplot2]{ggplot_build}}
 #' @export
+#' @keywords internal
 #' @family dg
 
 ggplot_build.dg <- print.dg

@@ -8,6 +8,7 @@
 #' @param x object
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @return class 'classified' 'factor'
 #' @family factorize_codelist
 factorize_codelist <- function(x,...){UseMethod('factorize_codelist')}
@@ -53,7 +54,7 @@ factorize_codelist.factor <- function(x,...){
 #' x are supplied.
 #'
 #' @param x character
-#' @param ... passed arguments
+#' @param ... ignored
 #' @export
 #' @keywords internal
 #' @return class 'classified' 'factor'
@@ -90,7 +91,7 @@ factorize_codelist.character <- function(x,...){
 #' Coerces items in data.frame with codelist attribute to factor.
 #'
 #' @param x data.frame
-#' @param ... passed arguments
+#' @param ... passed to \code{\link[dplyr]{select}} to limit scope
 #' @export
 #' @keywords internal
 #' @return data.frame
@@ -101,9 +102,10 @@ factorize_codelist.character <- function(x,...){
 #' x <- decorate(file)
 #' x %>% explicit_guide %>% as_yamlet
 #' x %>% explicit_guide %>% factorize_codelist %>% as_yamlet
+#' x %>% explicit_guide %>% factorize_codelist(Heart:glyco) %>% as_yamlet
 
 factorize_codelist.data.frame <- function(x,...){
-  for(nm in names(x)){
+  for(nm in selected(x,...)){
     if('codelist' %in% names(attributes(x[[nm]]))){
       x[[nm]] <- factorize_codelist(x[[nm]])
     }

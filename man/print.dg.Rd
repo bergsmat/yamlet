@@ -7,7 +7,7 @@
 \method{print}{dg}(x, ...)
 }
 \arguments{
-\item{x}{class 'dg' from \code{\link{ggplot.decorated}}}
+\item{x}{class 'dg' from \code{\link{ggplot.ggready}}}
 
 \item{...}{passed arguments}
 }
@@ -77,7 +77,11 @@ scale_color_gradientn(colours = rainbow(4))
 }
 \seealso{
 Other dg: 
-\code{\link{ggplot.decorated}()},
-\code{\link{ggplot_build.dg}()}
+\code{\link{ggplot.ggready}()},
+\code{\link{ggplot.resolved}()},
+\code{\link{ggplot_build.dg}()},
+\code{\link{ggplot_build.rg}()},
+\code{\link{print.rg}()}
 }
 \concept{dg}
+\keyword{internal}

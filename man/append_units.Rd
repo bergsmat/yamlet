@@ -19,16 +19,23 @@ Appends units attribute to label attribute.
 Generic, with methods
 \code{\link{append_units.default}} and
 \code{\link{append_units.data.frame}}.
+Deprecated, in favor of a general strategy using \code{\link{modify}}.
 }
 \examples{
 # see methods
 }
 \seealso{
+Other deprecated: 
+\code{\link{alias.data.frame}()},
+\code{\link{ggready.data.frame}()},
+\code{\link{ggready}()}
+
 Other labels: 
 \code{\link{alias.data.frame}()},
 \code{\link{append_units.data.frame}()},
 \code{\link{append_units.default}()},
 \code{\link{sub_units}()}
 }
+\concept{deprecated}
 \concept{labels}
 \keyword{internal}

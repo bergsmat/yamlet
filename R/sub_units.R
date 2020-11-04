@@ -1,4 +1,4 @@
-#' Place below Under Label
+#' Place Units Under Label
 #'
 #' Places units attribute below label attribute.
 #' Makes the most sense for figures (\code{style = 'plotmath'})
@@ -6,12 +6,13 @@
 #' with \code{\link{alias}}. See also \code{\link{append_units}}.
 #'
 #' @param x object
+#' @param ... passed to \code{\link{append_units}}
 #' @param open character to precede units
 #' @param close character to follow units
 #' @param style one of 'plain', 'latex', or 'plotmath'
 #' @param math_open,math_close,label_open,label_close,newline passed to \code{\link{as_latex.spar}} if style = 'latex'
-#' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @family labels
 #' @return see methods for append_units
 #' @examples
@@ -35,11 +36,12 @@
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' file %>% decorate %>% resolve %>%
 #' sub_units(style = 'plotmath') %>%
-#' ggplot(data = ., aes(x = conc, y = time, color = Heart)) %>%
+#' ggplot(data = ., aes(x = time, y = conc, color = Heart)) %>%
 #' add(geom_point())
 
 sub_units <- function(
   x,
+  ...,
   open = if(style == 'plain') '\n(' else '\\n(',
   close = ')',
   style = 'latex',
@@ -47,8 +49,7 @@ sub_units <- function(
   math_close =  "",
   label_open =  "$\\begin{gathered}",
   label_close =  "\\end{gathered}$",
-  newline = '\\\\',
-  ...
+  newline = '\\\\'
 )append_units(
   x,
   open = open,

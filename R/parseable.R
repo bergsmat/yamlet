@@ -25,6 +25,7 @@ is_parseable <- function(x,...)UseMethod('is_parseable')
 #' @param x character
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @importFrom units as_units
 #' @return logical
 #' @family parseable

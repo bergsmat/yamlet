@@ -18,11 +18,12 @@ footnote <- function(x, ...)UseMethod('footnote')
 #' Generates a text string that defines
 #' column names using label and unit attributes.
 #' @param x decorated
+#' @param ... passed to \code{\link{append_units}}
 #' @param equal character: a symbol suggesting equality between a name and its note
 #' @param collapse used to \code{\link{paste}} column-wise footnotes
-#' @param ... passed to append_units
 #' @family footnote
 #' @export
+#' @keywords internal
 #' @return character
 #' @examples
 #' library(magrittr)
@@ -35,12 +36,15 @@ footnote <- function(x, ...)UseMethod('footnote')
 #' x %<>% decorate('auc: [AUC_0-24, ng*h/mL]')
 #' x %<>% decorate('bmi: [Body Mass Index, kg/m^2]')
 #' x %<>% decorate('gen: [Gender, [Male: 1, Female: 0]]')
+#' x %<>% resolve
 #' footnote(x)
+#' footnote(x, auc)
 
-footnote.decorated <- function(x, equal = ':', collapse = '; ', ...){
-  x <- append_units(x, ...)
-  y <- sapply(x, attr, 'label')
-  y <- paste0(names(x), equal, y)
+footnote.decorated <- function(x, ..., equal = ':', collapse = '; '){
+  x <- append_units(x, ...) # safe
+  nms <- selected(x,...)
+  y <- sapply(select(x,!!!nms), attr, 'label')
+  y <- paste0(nms, equal, y)
   y <- paste(y, collapse = collapse)
   y
 }
@@ -51,8 +55,8 @@ footnote.decorated <- function(x, equal = ':', collapse = '; ', ...){
 #' by adding a footnote attribute.
 #'
 #' @param x decorated
+#' @param ... passed to \code{\link{footnote}} and (if named) \code{\link[xtable]{xtable}}
 #' @param style passed to \code{\link{footnote}}
-#' @param ... passed to \code{\link{footnote}} and \code{\link[xtable]{xtable}}
 #' @export
 #' @importFrom xtable xtable
 #' @return class 'decorated', 'xtable','data.frame'
@@ -70,9 +74,11 @@ footnote.decorated <- function(x, equal = ':', collapse = '; ', ...){
 #' x %<>% decorate('gen: [Gender, [Male: 1, Female: 0]]')
 #' y <- xtable(x)
 #' attr(y, 'footnote')
+#' y <- xtable(x, auc:bmi)
+#' attr(y, 'footnote')
 #'
-xtable.decorated <- function(x,style = 'latex', ...){
-  y <- xtable(data.frame(x), ...)
+xtable.decorated <- function(x, ..., style = 'latex'){
+  y <- do.call(xtable,c(list(data.frame(x)),named(...)))
   class(y) <- c('decorated', 'xtable', 'data.frame')
   z <- footnote(x, style = style, ...)
   attr(y, 'footnote') <- z
@@ -91,7 +97,7 @@ xtable.decorated <- function(x,style = 'latex', ...){
 #' @keywords internal
 #' @return character
 #' @param x decorated
-#' @param ... passed to other methods and to \code{\link{footnote}}
+#' @param ... passed to other methods
 #' @examples
 #' library(magrittr)
 #' library(xtable)

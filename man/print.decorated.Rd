@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{decorated}
 
-\item{...}{passed to other methods and to \code{\link{footnote}}}
+\item{...}{passed to other methods}
 }
 \value{
 character

@@ -28,3 +28,4 @@ Other factorize_codelist:
 \code{\link{factorize_codelist.factor}()}
 }
 \concept{factorize_codelist}
+\keyword{internal}

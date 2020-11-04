@@ -22,10 +22,10 @@ Generic, with method for data.frame.
 example(ggready.data.frame)
 }
 \seealso{
-Other resolve: 
-\code{\link{ggready.data.frame}()},
-\code{\link{resolve.data.frame}()},
-\code{\link{resolve}()}
+Other deprecated: 
+\code{\link{alias.data.frame}()},
+\code{\link{append_units}()},
+\code{\link{ggready.data.frame}()}
 }
-\concept{resolve}
+\concept{deprecated}
 \keyword{internal}

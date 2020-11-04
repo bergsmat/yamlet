@@ -4,11 +4,13 @@
 #' Generic, with methods
 #' \code{\link{append_units.default}} and
 #' \code{\link{append_units.data.frame}}.
+#' Deprecated, in favor of a general strategy using \code{\link{modify}}.
 #'
 #' @param x object
 #' @param ... passed arguments
 #' @export
 #' @keywords internal
+#' @family deprecated
 #' @family labels
 #' @return see methods
 #' @examples
@@ -26,10 +28,10 @@ append_units <- function(x, ...)UseMethod('append_units')
 #'
 #'
 #' @param x object
+#' @param ... passed to \code{\link{as_latex}}, \code{\link{as_plotmath}}
 #' @param open character to precede units
 #' @param close character to follow units
 #' @param style one of 'plain', 'latex', or 'plotmath'
-#' @param ... passed to \code{\link{as_latex}}, \code{\link{as_plotmath}}
 #' @export
 #' @importFrom spork as_spork
 #' @importFrom spork as_plotmath
@@ -38,7 +40,7 @@ append_units <- function(x, ...)UseMethod('append_units')
 #' @importFrom spork latexToken
 #' @keywords internal
 #' @family labels
-#' @return same class as x with named character label of length four; of sub-class 'latex' or 'plotmath' depending on \code{style}
+#' @return same class as x, with sub-class 'latex' or 'plotmath' depending on \code{style}
 #' @examples
 #' library(units)
 #' library(magrittr)
@@ -57,10 +59,11 @@ append_units <- function(x, ...)UseMethod('append_units')
 #'
 append_units.default <- function(
   x,
+  ...,
   open = getOption( 'append_units_open' , ' (' ),
   close = getOption('append_units_close', ')'  ),
-  style = getOption('append_units_style','plain'),
-  ...
+  style = getOption('append_units_style','plain')
+
 ){
   stopifnot(style %in% c('plain', 'latex','plotmath'))
   lab <- attr(x, 'label')
@@ -96,18 +99,25 @@ append_units.default <- function(
 #' to individual columns.
 #'
 #' @param x data.frame
-#' @param ... passed to default method
+#' @param ... named arguments passed to default method, un-named are columns to alter scope
 #' @export
+#' @keywords internal
 #' @family labels
 #' @return data.frame
 #' @examples
 #' library(magrittr)
-#' library(ggplot2)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' file %>% decorate %>% explicit_guide %>% append_units %>% as_yamlet
+#' file %>% decorate %>% explicit_guide %>% append_units(glyco) %>% as_yamlet
 
 append_units.data.frame <- function(x, ...){
-  x[] <- lapply(x, append_units, ...)
+  vars <- selected(x, ...)
+  mods <- named(...)
+  for(var in vars){
+    # pass only named arguments
+    x[[var]] <- do.call(append_units, c(list(x[[var]]),mods))
+  }
+  #x[] <- lapply(x, append_units, ...)
   x
 }
 #' @export

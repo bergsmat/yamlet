@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{data.frame}
 
-\item{...}{passed to default method}
+\item{...}{named arguments passed to default method, un-named are columns to alter scope}
 }
 \value{
 data.frame
@@ -22,9 +22,9 @@ to individual columns.
 }
 \examples{
 library(magrittr)
-library(ggplot2)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 file \%>\% decorate \%>\% explicit_guide \%>\% append_units \%>\% as_yamlet
+file \%>\% decorate \%>\% explicit_guide \%>\% append_units(glyco) \%>\% as_yamlet
 }
 \seealso{
 Other labels: 
@@ -34,3 +34,4 @@ Other labels:
 \code{\link{sub_units}()}
 }
 \concept{labels}
+\keyword{internal}

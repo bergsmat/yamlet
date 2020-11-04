@@ -4,16 +4,16 @@
 \alias{explicit_guide.yamlet}
 \title{Coerce Yamlet Guide to Something More Explicit}
 \usage{
-\method{explicit_guide}{yamlet}(x, default = "guide", data = NULL, ...)
+\method{explicit_guide}{yamlet}(x, ..., default = "guide", data = NULL)
 }
 \arguments{
 \item{x}{yamlet}
 
+\item{...}{passed to \code{\link[dplyr]{select}} to limit scope}
+
 \item{default}{length-one character: the default key}
 
 \item{data}{optional data.frame for testing guides with length > 1}
-
-\item{...}{ignored arguments}
 }
 \value{
 yamlet

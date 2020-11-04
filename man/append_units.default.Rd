@@ -6,25 +6,25 @@
 \usage{
 \method{append_units}{default}(
   x,
+  ...,
   open = getOption("append_units_open", " ("),
   close = getOption("append_units_close", ")"),
-  style = getOption("append_units_style", "plain"),
-  ...
+  style = getOption("append_units_style", "plain")
 )
 }
 \arguments{
 \item{x}{object}
+
+\item{...}{passed to \code{\link{as_latex}}, \code{\link{as_plotmath}}}
 
 \item{open}{character to precede units}
 
 \item{close}{character to follow units}
 
 \item{style}{one of 'plain', 'latex', or 'plotmath'}
-
-\item{...}{passed to \code{\link{as_latex}}, \code{\link{as_plotmath}}}
 }
 \value{
-same class as x with named character label of length four; of sub-class 'latex' or 'plotmath' depending on \code{style}
+same class as x, with sub-class 'latex' or 'plotmath' depending on \code{style}
 }
 \description{
 Units attribute is wrapped in \code{open} and

@@ -32,7 +32,7 @@ meta
 
 ## -----------------------------------------------------------------------------
 x <- data.frame(ID = 1, CONC = 1, RACE = 1)
-x <- decorate(x, meta)
+x <- decorate(x, meta = meta)
 str(x)
 
 ## -----------------------------------------------------------------------------
@@ -41,7 +41,7 @@ as_yamlet(x) # a list with class 'yamlet' (special print method)
 
 ## -----------------------------------------------------------------------------
 file <- file.path(tempdir(), 'out.yaml')
-write_yamlet(x, file )
+write_yamlet(x, con = file )
 file %>% readLines %>% writeLines
 
 ## -----------------------------------------------------------------------------

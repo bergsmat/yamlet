@@ -27,3 +27,4 @@ Other explicit_guide:
 \code{\link{explicit_guide.yamlet}()}
 }
 \concept{explicit_guide}
+\keyword{internal}

@@ -7,7 +7,7 @@
 ggplot_build.dg(x, ...)
 }
 \arguments{
-\item{x}{class 'dg' from \code{\link{ggplot.decorated}}}
+\item{x}{class 'dg' from \code{\link{ggplot.ggready}}}
 
 \item{...}{passed arguments}
 }
@@ -21,7 +21,11 @@ Supports arrangements of ggplot objects.
 }
 \seealso{
 Other dg: 
-\code{\link{ggplot.decorated}()},
-\code{\link{print.dg}()}
+\code{\link{ggplot.ggready}()},
+\code{\link{ggplot.resolved}()},
+\code{\link{ggplot_build.rg}()},
+\code{\link{print.dg}()},
+\code{\link{print.rg}()}
 }
 \concept{dg}
+\keyword{internal}

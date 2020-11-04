@@ -21,8 +21,8 @@ as_classified <- function(x, ...)UseMethod('as_classified')
 #' @param x factor
 #' @param ... ignored arguments
 #' @export
+#' @keywords internal
 #' @family classified
-#' @family interface
 #' @return class 'classified' 'factor'
 #' @examples
 #' class(as_classified(factor(letters)))

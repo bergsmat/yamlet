@@ -4,14 +4,14 @@
 \alias{xtable.decorated}
 \title{Create Export Table for Decorated}
 \usage{
-\method{xtable}{decorated}(x, style = "latex", ...)
+\method{xtable}{decorated}(x, ..., style = "latex")
 }
 \arguments{
 \item{x}{decorated}
 
-\item{style}{passed to \code{\link{footnote}}}
+\item{...}{passed to \code{\link{footnote}} and (if named) \code{\link[xtable]{xtable}}}
 
-\item{...}{passed to \code{\link{footnote}} and \code{\link[xtable]{xtable}}}
+\item{style}{passed to \code{\link{footnote}}}
 }
 \value{
 class 'decorated', 'xtable','data.frame'
@@ -33,6 +33,8 @@ x \%<>\% decorate('auc: [AUC_0-24, ng*h/mL]')
 x \%<>\% decorate('bmi: [Body Mass Index, kg/m^2]')
 x \%<>\% decorate('gen: [Gender, [Male: 1, Female: 0]]')
 y <- xtable(x)
+attr(y, 'footnote')
+y <- xtable(x, auc:bmi)
 attr(y, 'footnote')
 
 }

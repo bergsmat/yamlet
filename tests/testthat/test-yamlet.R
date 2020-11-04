@@ -74,6 +74,7 @@ test_that('more elements than keys gives warning',{
 test_that('yamlet reads length-one character equivalently to vector',{
   expect_identical(as_yam(c('ID:','TIME:')),as_yam('ID:\nTIME:'))
 })
+
 test_that('uninformative nesting is removed',{
   expect_identical(names(unnest(yaml::yaml.load('[foo: 1, bar: 3]'))), c('foo','bar'))
 })
@@ -185,6 +186,7 @@ test_that('io_yamlet methods are reciprocal with default or modified arguments',
     )
   )
 })
+
 test_that('io_table methods are reciprocal with default or modified arguments',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
@@ -202,6 +204,7 @@ test_that('io_table methods are reciprocal with default or modified arguments',{
   rownames(y) <- NULL
   expect_identical(x, y) # lossless 'round-trip'
 })
+
 test_that('io_csv methods are reciprocal with default or modified arguments',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
@@ -223,14 +226,16 @@ test_that('io_csv methods are reciprocal with default or modified arguments',{
   expect_identical(x, y) # lossless 'round-trip'
 
 })
+
 test_that('class attributes are excluded from storage by default',{
   expect_false('class' %in% decorations(Theoph)$Subject)
 })
+
 test_that('yamlet package writes proper yaml with non-default keys',{
   out <- file.path(tempdir(), 'out.yaml')
-  expect_silent(write_yamlet('ID: identifier', out))
-  expect_silent(write_yamlet('ID: identifier', out, default_keys = c('foo','bar')))
-  expect_warning(write_yamlet('ID: identifier', out, default_keys = character(0)))
+  expect_silent(write_yamlet('ID: identifier', con = out))
+  expect_silent(write_yamlet('ID: identifier', con = out, default_keys = c('foo','bar')))
+  expect_warning(write_yamlet('ID: identifier', con = out, default_keys = character(0)))
 
   foo <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
   x <- io_yamlet(foo) # read
@@ -245,6 +250,7 @@ test_that('yamlet package writes proper yaml with non-default keys',{
     'ID: [ label: identifier ]'
   )
 })
+
 test_that('dplyr filter does not drop attributes',{
  # not okay in 3.6.1: filter drops label on factors
   library(dplyr)
@@ -259,6 +265,7 @@ test_that('dplyr filter does not drop attributes',{
     )
   )
 })
+
 test_that('print.dg treats variable as categorical if guide has length > 1',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   library(ggplot2)
@@ -267,6 +274,7 @@ test_that('print.dg treats variable as categorical if guide has length > 1',{
   file %>% decorate %>% filter(!is.na(conc)) %>%
   ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 })
+
 test_that('print.dg uses conditional labels and guides',{
   # needs work to accommodate new paradigm
   file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
@@ -274,6 +282,7 @@ test_that('print.dg uses conditional labels and guides',{
   filter(event == 'conc') %>%
   ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
 })
+
 test_that('io_table accepts nuisance arguments without error',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
@@ -281,6 +290,7 @@ test_that('io_table accepts nuisance arguments without error',{
   expect_silent(foo <- io_table(x, out, foo = 'bar'))
   expect_silent(y <- io_table(foo, as.is = TRUE, foo = 'bar'))
 })
+
 test_that('io_csv accepts nuisance arguments without error',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
@@ -288,6 +298,7 @@ test_that('io_csv accepts nuisance arguments without error',{
   expect_silent(foo <- io_csv(x, out, foo = 'bar'))
   expect_silent(y <- io_csv(foo, as.is = TRUE, foo = 'bar'))
 })
+
 test_that('explicit_guide recognizes encodings, units, formats, and codelists',{
   library(magrittr)
   a <- 'CONC: [ concentration, ng/mL ]' %>% as_yamlet %>% explicit_guide
@@ -320,6 +331,7 @@ test_that('explicit_guide recognizes encodings, units, formats, and codelists',{
    c('label','label','units','label','codelist','label','codelist','label','format')
  )
 })
+
 test_that('factorize_codelist creates class factor and removes attribute codelist',{
  library(magrittr)
  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -331,10 +343,12 @@ test_that('factorize_codelist creates class factor and removes attribute codelis
  )
  expect_true('factor' %in% x$Heart$class)
 })
+
 # test_that('user can specify unit instead of units',{
 #   a <- 'CONC: [ concentration, ng/mL ]' %>% as_yamlet %>% explicit_guide(default = 'unit')
 #   expect_identical(names(a$CONC), c('label','unit'))
 # })
+
 test_that('resolve correctly classifies conditional elements',{
   skip_if_not( l10n_info()$`UTF-8` )
   skip_if(
@@ -352,11 +366,13 @@ test_that('resolve correctly classifies conditional elements',{
   a <- x %>% resolve %>% as_yamlet
   expect_true(setequal(names(a$value), c('label','units')))
 })
+
 test_that('resolve correctly classifies factors',{
   library(magrittr)
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   expect_true(file %>% decorate %>% resolve %$% Heart %>% inherits('factor'))
 })
+
 test_that('filter, select, mutate, group_by, arrange, summarize and [ do not drop subclass decorated',{
   library(dplyr)
   library(magrittr)
@@ -395,6 +411,7 @@ test_that('filter, select, mutate, group_by, arrange, summarize and [ do not dro
   )
 
 })
+
 test_that('conditionalize errors on mixed quotes',{
   library(dplyr)
   library(magrittr)
@@ -419,6 +436,7 @@ test_that('conditionalize alternates single and double quotes',{
     c( "test == '\"cant\"'", "test == \"can't\"")
   )
 })
+
 test_that('conditionalize does not quote numerics',{
   library(dplyr)
   library(magrittr)
@@ -433,6 +451,7 @@ test_that('conditionalize does not quote numerics',{
     "test == 2"
   )
 })
+
 test_that('conitionalize handles factors like character',{
   library(dplyr)
   library(magrittr)
@@ -448,6 +467,7 @@ test_that('conitionalize handles factors like character',{
     c( "test == '\"cant\"'", "test == \"can't\"")
   )
 })
+
 test_that('subset classified does not drop label', {
  a <- as_classified(factor(letters))
  attr(a, 'label') <- 'foo'
@@ -461,6 +481,7 @@ test_that('is_parseable distinguishes udunits from non-udunits',{
     c(TRUE, TRUE, FALSE, TRUE)
   )
 })
+
 test_that('is_pareseable is vectorized',{
   expect_identical(
     is_parseable(c('kg/m2','kg/m^2','foo','kg.m/s2')),
@@ -487,6 +508,7 @@ test_that('is_parseable respects locally-defined units',{
   remove_symbolic_unit('foo')
   expect_false(is_parseable('foo'))
 })
+
 test_that('labels parsed and unparsed, with and without units, display correctly',{
   library(magrittr)
   library(ggplot2)
@@ -607,28 +629,107 @@ plotgroup: [ engine\\ntransmission, [v-shaped\n\nautomatic,v-shaped\n\nmanual,st
     geom_boxplot()
 })
 
+library(magrittr)
+library(dplyr)
+file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+x <- decorate(file)
 test_that(
   'for each named column, or all if none named,
   the data.frame method for modify() assigns a
   value in the attributes environment',{
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  x %<>% modify(title = paste(label, '(', guide, ')'), time)
+  x %>% select(time, conc) %>% as_yamlet
+  expect_identical(attr(x$time,'title'), 'time since start of study ( h )')
+  expect_identical(attr(x$conc,'title'), NULL)
+
+
+  # modify (almost) all columns
+  x %<>% modify(title = paste(label, '(', guide, ')'), -Subject)
+  x %>% select(time, conc) %>% as_yamlet
+  expect_identical(attr(x$time,'title'), 'time since start of study ( h )')
+  expect_identical(attr(x$conc,'title'),  'quinidine serum concentration ( mg/L )')
+  expect_identical(attr(x$Subject,'title'),  NULL)
 
 
 })
 test_that(
-  'modify() makes the the underlying object available as an argument',{
+  'modify() makes the underlying object available as an argument',{
+    file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+    x <- decorate(file)
+    x %<>% modify(`defined values` = sum(!is.na(.)))
+    x %>% select(time) %>% as_yamlet
+    expect_identical(attr(x$time,'defined values'), 1471L)
 
-})
+  })
+
+test_that(
+  'modify() makes the object name available for use and assignment',{
+    file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+    x <- decorate(file)
+    x %<>% modify(time, name = label)
+    x %>% select(2) %>% as_yamlet
+  })
 
 test_that(
   'the data.frame method for modify() gives a warning
   if the assignment target is reserved
   (i.e, class, levels, labels, names)',{
-
+    file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+    x <- decorate(file)
+    expect_warning(x %<>% modify(class = 'numeric', Subject))
 })
 
 test_that(
   'the data.frame method for modify() fails gracefully
   if assignment cannot be made',{
+    file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+    x <- decorate(file)
+    expect_warning(x %<>% modify(title = foo, time))
 
 })
+test_that(
+  'the default method for modify() supports lists',{
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  a <- list(a = 1, b = 1:10, c = letters) %>% modify(length = length(.), b:c)
+  expect_identical(attr(a[['a']],'length'), NULL)
+  expect_identical(attr(a[['c']],'length'), 26L)
+
+  }
+)
+
+test_that(
+  'modifier verbs are limited to dots scope',{
+    library(magrittr)
+    file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+    x <- decorate(file)
+    # as_yamlet
+    expect_equal_to_reference(file = '060.rds', as_yamlet(x, Height))
+    # decorations
+    expect_equal_to_reference(file = '061.rds', decorations(x, Height))
+    # modify
+    expect_equal_to_reference(
+      file = '062.rds',
+      modify(x, Height, label = 'Height (cm)') %>% as_yamlet(Height,Weight)
+    )
+    # resolve
+    as_yamlet(x, Height, Weight)
+    expect_equal_to_reference(
+      file = '063.rds',
+      resolve(x, Height) %>% as_yamlet(Height, Weight)
+    )
+  }
+)
+
+test_that(
+  'io_res resolves guide ambiguity on read',{
+    library(magrittr)
+    file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+    x <- io_csv(file) %>% resolve
+    y <- io_res(file)
+    expect_identical(x, y)
+  }
+)
 

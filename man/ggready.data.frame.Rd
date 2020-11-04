@@ -4,17 +4,17 @@
 \alias{ggready.data.frame}
 \title{Prepare Data Frame for GGplot}
 \usage{
-\method{ggready}{data.frame}(x, parse = getOption("ggready_parse", TRUE), ...)
+\method{ggready}{data.frame}(x, ..., parse = getOption("ggready_parse", TRUE))
 }
 \arguments{
 \item{x}{object}
 
-\item{parse}{passed to \code{\link{append_units}}}
+\item{...}{passed to \code{\link{append_units}} and \code{\link{resolve}}; may include unquoted column names}
 
-\item{...}{passed to \code{\link{append_units}}}
+\item{parse}{passed to \code{\link{append_units}}}
 }
 \value{
-decorated
+ggready
 }
 \description{
 Prepares data.frame for ggplot. Calls
@@ -22,7 +22,7 @@ Prepares data.frame for ggplot. Calls
 units to label using \code{\link{append_units}}
 (passing \code{style = 'plotmath'} if \code{parse}
 is true, else \code{style = 'plain'}).
-Enforces class 'decorated'.
+Enforces class 'ggready'.
 }
 \examples{
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -37,21 +37,21 @@ file \%>\%
  ggready \%>\%
  ggplot(aes(x = time, y = conc, color = Heart)) +
  geom_point()
+file \%>\% decorate \%>\% ggready(time, Heart:glyco) \%>\% as_yamlet
 }
 \seealso{
-Other resolve: 
-\code{\link{ggready}()},
-\code{\link{resolve.data.frame}()},
-\code{\link{resolve}()}
+Other deprecated: 
+\code{\link{alias.data.frame}()},
+\code{\link{append_units}()},
+\code{\link{ggready}()}
 
 Other interface: 
-\code{\link{as_classified.factor}()},
-\code{\link{conditionalize.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
-\code{\link{ggplot.decorated}()},
+\code{\link{ggplot.resolved}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
+\code{\link{io_res.character}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
 \code{\link{io_yamlet.character}()},
@@ -59,8 +59,10 @@ Other interface:
 \code{\link{is_parseable.default}()},
 \code{\link{modify.default}()},
 \code{\link{read_yamlet}()},
-\code{\link{resolve.data.frame}()},
+\code{\link{resolve.decorated}()},
+\code{\link{selected.default}()},
 \code{\link{write_yamlet}()}
 }
+\concept{deprecated}
 \concept{interface}
-\concept{resolve}
+\keyword{internal}
