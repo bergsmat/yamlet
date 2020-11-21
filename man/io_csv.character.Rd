@@ -42,8 +42,7 @@ Other io:
 Other interface: 
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
-\code{\link{ggplot.resolved}()},
-\code{\link{ggready.data.frame}()},
+\code{\link{ggplot.decorated}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_res.character}()},
 \code{\link{io_table.character}()},

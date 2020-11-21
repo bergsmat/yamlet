@@ -28,6 +28,8 @@ Deprecated, in favor of a general strategy using \code{\link{modify}}.
 Other deprecated: 
 \code{\link{alias.data.frame}()},
 \code{\link{ggready.data.frame}()},
+\code{\link{ggready.decorated}()},
+\code{\link{ggready.resolved}()},
 \code{\link{ggready}()}
 
 Other labels: 

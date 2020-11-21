@@ -4,12 +4,14 @@
 \alias{xtable.decorated}
 \title{Create Export Table for Decorated}
 \usage{
-\method{xtable}{decorated}(x, ..., style = "latex")
+\method{xtable}{decorated}(x, ..., label = NULL, style = "latex")
 }
 \arguments{
 \item{x}{decorated}
 
 \item{...}{passed to \code{\link{footnote}} and (if named) \code{\link[xtable]{xtable}}}
+
+\item{label}{passed to \code{\link[xtable]{xtable}}}
 
 \item{style}{passed to \code{\link{footnote}}}
 }

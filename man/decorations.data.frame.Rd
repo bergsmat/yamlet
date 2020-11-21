@@ -21,7 +21,7 @@
 \item{exclude_attr}{attributes to remove from the result}
 }
 \value{
-named list
+named list of class 'decorations'
 }
 \description{
 Retrieve the decorations of a data.frame; i.e., the metadata
@@ -46,11 +46,14 @@ decorations(y, exclude_attr = NULL)
 }
 \seealso{
 Other decorate: 
+\code{\link{as_decorated.default}()},
+\code{\link{as_decorated}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{decorate.list}()},
 \code{\link{decorate}()},
 \code{\link{decorations}()},
+\code{\link{print.decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

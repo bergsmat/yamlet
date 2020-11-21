@@ -1,82 +1,110 @@
-#' Create a New ggplot for a Resolved Data Frame
+#' Create a New ggplot for a Decorated Data Frame
 #'
 #' Creates a new ggplot object for a decorated data.frame.
-#' This is the ggplot() method for class 'resolved'.
-#' It creates a ggplot object with a data.frame version of \code{x},
-#' but reclassifies it as 'rg' so that a custom print method
-#' is invoked; see \code{\link{print.rg}}.
+#' This is the ggplot() method for class 'decorated'.
+#' It creates a ggplot object using the default method,
+#' but reclassifies it as 'decorated_ggplot' so that a custom print method
+#' is invoked; see \code{\link{print.decorated_ggplot}}.
 #'
-#' @param data data.frame or similar; class will be coerced to data.frame
+#' This approach is similar to but more flexible than
+#' the method for \code{\link{ggready}}. Currently,
+#' there is only one method for resolve() (\code{\link{resolve.decorated}})
+#' with the result that all 'resolved' objects inherit 'decorated'
+#' and thus can use \code{\link{ggplot.decorated}}.
+#'
+#' For finer control, you can switch between 'data.frame'
+#' and to 'decorated' using \code{\link{as_decorated}}
+#' (supplies null decorations) and \code{\link{as.data.frame}}
+#' (preserves decorations).
+#'
+#' @param data decorated, see \code{\link{decorate}}
 #' @param ... passed to \code{\link[ggplot2]{ggplot}}
-#' @return return value like \code{\link[ggplot2]{ggplot}} but inheriting 'rg'
+#' @return return value like \code{\link[ggplot2]{ggplot}} but inheriting 'decorated_ggplot'
 #' @export
 #' @importFrom ggplot2 ggplot
-#' @family dg
+#' @family decorated_ggplot
 #' @family interface
-#' @examples
-#' example(print.rg)
-
-ggplot.resolved <- function(data, ...){
-  class(data) <- setdiff(class(data), 'decorated')
-  class(data) <- setdiff(class(data), 'resolved')
-  p <- ggplot(data = data, ...)
-  class(p) <- c('dg',class(p))
-  p
-}
-#' Substitute Expressions, Titles and Labels in ggplots
-#'
-#' At time of printing, default labels will be used as
-#' column names to search \code{data} for more meaningful
-#' labels.  Substitutions, if any, will be the first
-#' non-null corresponding attribute with name 'expression',
-#' 'title', or 'label'.
-#'
-#' @param x class 'rg' from \code{\link{ggplot.resolved}}
-#' @param ... passed arguments
-#' @return see \code{\link[ggplot2]{print.ggplot}}
-#' @export
-#' @family dg
+#' @seealso decorate resolve ggready
 #' @examples
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' library(ggplot2)
 #' library(dplyr)
 #' library(magrittr)
 #' # par(ask = FALSE)
-#' options(yamlet_enclose = c('[ ',' ]'))
 #'
-#' # resolve() promotes factors to a class
-#' # that retains attributes when subsetting,
-#' # so legend has access to the label from Heart,
-#' # even after a filter operation.
+#' x <- decorate(file)
+#' x %<>% filter(!is.na(conc))
 #'
-#' file %>% decorate %>% resolve %>% filter(!is.na(conc)) %>%
-#' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+#' # Manipulate class to switch among ggplot methods.
+#' class(x)
+#' class(data.frame(x))
+#' class(as_decorated(data.frame(x)))
 #'
-#' # No factors created here, but print.dg promotes guide to factor if it can:
+#' # The bare data.frame gives boring labels, unordered groups.
+#' data.frame(x) %>%
+#' ggplot(aes(x = time, y = conc, color = Heart)) +
+#' geom_point()
 #'
-#' file %>% decorate %>% filter(!is.na(conc)) %>%
-#' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+#' # Decorated data.frame uses supplied labels.
+#' # Notice CHF levels are still not ordered.
+#' x %>% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 #'
-#' # facet_wrap() should use decodes where available.
-#' # resolve() makes them available by promoting to
-#' # (a subclass of) factor.
+#' # We can resolve guide for a chance to enrich the output with units.
+#' # Notice CHF levels are now ordered.
+#' x %<>% resolve
+#' suppressWarnings( # because this complains for columns with no units
+#'   x <- modify(x, title = paste0(label, '\n(', units, ')'))
+#' )
+#' x %>% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 #'
-#' file %>% decorate %>% filter(!is.na(conc)) %>% resolve %>%
-#' ggplot(aes(x = time, y = conc)) + geom_point() + facet_wrap(~Creatinine)
+#' # Or something fancier.
+#' x %<>% modify(conc, title = 'conc_serum. (mg*L^-1.)')
+#' x %>% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+#'
+#' # Now render that expression, which was given in spork syntax:
+#' library(spork)
+#' x %<>% modify(conc, expression = as.expression(as_plotmath(as_spork(title))))
+#' x %>% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+
+#' # Similarly, add a fancy label for Heart, and facet by a factor:
+#' x %<>% modify(Heart, expression = as.expression(as_plotmath(as_spork('CHF_1'))))
+#' x %>%
+#' ggplot(aes(x = time, y = conc, color = Heart)) +
+#' geom_point() +
+#' facet_wrap(~Creatinine)
+#'
+#' # ggready handles the units and plotmath implicitly for a 'standard' display:
+#' x %>%
+#' ggready %>%
+#' ggplot(aes(x = time, y = conc, color = Heart)) +
+#' geom_point() +
+#' facet_wrap(~Creatinine)
+#'
+#' Notice that instead of over-writing the label
+#' attribute, we are creating a stack of label
+#' substitutes (title, expression) so that
+#' label is still available as an argument
+#' if we want to try something else.  The
+#' print method by default looks for all of these.
+#' Precedence is expression, title, label, column name.
+#' Precedence can be controlled using
+#' \code{options(decorated_ggplot_search = c(a, b, ...) )}.
 #'
 #' # Here we try a dataset with conditional labels and units.
 #'
 #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
-#'
+#' x <- file %>% decorate
 #' # Note that there are two elements each for value label and value guide.
 #' #'
-#' file %>% decorate %>% as_yamlet
+#' x %>% as_yamlet
+#' x %>% as_yamlet(value)
+#' x %>% resolve %>% as_yamlet(value)
 
 #' # Guide might have been mistaken for an attempt to provide codes/decodes
 #' # for a factor.  However, the keys evaluate to logical on the data.frame.
 #' # Seeing that, we test for one of them being all true, and if so we select it.
 #'
-#' file %>% decorate %>% ggplot(aes(x = time, y = value, color = event)) + geom_point()
+#' x %>% ggplot(aes(x = time, y = value, color = event)) + geom_point()
 #'
 #' # In the above example, we are plotting doses and concentrations, which have
 #' # different labels and units, so we can't improve on the y axis label.
@@ -95,17 +123,45 @@ ggplot.resolved <- function(data, ...){
 #' scale_color_gradientn(colours = rainbow(4))
 
 
-print.rg <- function(x, ...){
-  # fun <- match.fun(labeller)
+ggplot.decorated <- function(data, ...){
+  p <- NextMethod()
+  class(p) <- c('decorated_ggplot',class(p))
+  p
+}
+#' Substitute Expressions, Titles and Labels in ggplots
+#'
+#' At time of printing, default labels will be used as
+#' column names to search \code{data} for more meaningful
+#' labels, taking first available from attributes
+#' with names in \code{search}.
+#'
+#' @param x class 'decorated_ggplot' from \code{\link{ggplot.decorated}}
+#' @param ... passed arguments
+#' @param search attribute names from which to seek label substitutes
+#' @return see \code{\link[ggplot2]{print.ggplot}}
+#' @export
+#' @family decorated_ggplot
+#' @examples
+#' example(ggplot.decorated)
+
+print.decorated_ggplot <- function(
+  x,
+  ...,
+  search = getOption(
+    'decorated_ggplot_search',
+    c('expression','title','label')
+  )
+){
   for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
     lab <- x$labels[[i]]                   # handle one label
-
     if(lab %in% names(x$data)){            # if this is just a bare column name
       col <- x$data[[lab]]
       atr <- attributes(col)
-      label <- atr$label                   # retrieve label
-      if(!is.null(label)){
-        x$labels[[i]] <- label             # replace default label with one from data attributes
+      for( s in rev(search)){              # end with first
+        label <- atr[[s]]                  # retrieve label
+        if(!is.null(label)){
+          x$labels[[i]] <- label           # overwrite default label with one from data attributes
+        }
       }
     }
   }
@@ -118,11 +174,11 @@ print.rg <- function(x, ...){
 #' Substitutes column label, if present, for default.
 #' Supports arrangements of ggplot objects.
 #'
-#' @param x class 'dg' from \code{\link{ggplot.ggready}}
+#' @param x class 'decorated_ggplot' from \code{\link{ggplot.ggready}}
 #' @param ... passed arguments
 #' @return see \code{\link[ggplot2]{ggplot_build}}
 #' @export
 #' @keywords internal
-#' @family dg
+#' @family decorated_ggplot
 
-ggplot_build.rg <- print.rg
+ggplot_build.decorated_ggplot <- print.decorated_ggplot

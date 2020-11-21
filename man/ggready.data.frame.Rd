@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{object}
 
-\item{...}{passed to \code{\link{append_units}} and \code{\link{resolve}}; may include unquoted column names}
+\item{...}{passed to \code{\link{append_units}}; may include unquoted column names}
 
 \item{parse}{passed to \code{\link{append_units}}}
 }
@@ -17,52 +17,28 @@
 ggready
 }
 \description{
-Prepares data.frame for ggplot. Calls
-\code{\link{resolve}} and appends
+Prepares data.frame for ggplot. Appends
 units to label using \code{\link{append_units}}
 (passing \code{style = 'plotmath'} if \code{parse}
 is true, else \code{style = 'plain'}).
 Enforces class 'ggready'.
 }
 \examples{
-file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-x <- decorate(file)
-x <- ggready(x)
-str(x$conc)
-library(magrittr)
-library(ggplot2)
-file \%>\%
- decorate \%>\%
- filter(!is.na(conc)) \%>\%
- ggready \%>\%
- ggplot(aes(x = time, y = conc, color = Heart)) +
- geom_point()
-file \%>\% decorate \%>\% ggready(time, Heart:glyco) \%>\% as_yamlet
+example(ggready)
 }
 \seealso{
 Other deprecated: 
 \code{\link{alias.data.frame}()},
 \code{\link{append_units}()},
+\code{\link{ggready.decorated}()},
+\code{\link{ggready.resolved}()},
 \code{\link{ggready}()}
 
-Other interface: 
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
-\code{\link{ggplot.resolved}()},
-\code{\link{io_csv.character}()},
-\code{\link{io_csv.data.frame}()},
-\code{\link{io_res.character}()},
-\code{\link{io_table.character}()},
-\code{\link{io_table.data.frame}()},
-\code{\link{io_yamlet.character}()},
-\code{\link{io_yamlet.data.frame}()},
-\code{\link{is_parseable.default}()},
-\code{\link{modify.default}()},
-\code{\link{read_yamlet}()},
-\code{\link{resolve.decorated}()},
-\code{\link{selected.default}()},
-\code{\link{write_yamlet}()}
+Other ggready: 
+\code{\link{ggready.decorated}()},
+\code{\link{ggready.resolved}()},
+\code{\link{ggready}()}
 }
 \concept{deprecated}
-\concept{interface}
+\concept{ggready}
 \keyword{internal}

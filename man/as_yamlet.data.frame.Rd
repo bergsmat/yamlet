@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{data.frame}
 
-\item{...}{passed arguments}
+\item{...}{passed to \code{\link{decorations}}}
 }
 \value{
 yamlet
@@ -27,6 +27,7 @@ as_yamlet(x)
 Other as_yamlet: 
 \code{\link{[.yamlet}()},
 \code{\link{as.character.yamlet}()},
+\code{\link{as_yamlet.list}()},
 \code{\link{as_yamlet.yamlet}()}
 }
 \concept{as_yamlet}

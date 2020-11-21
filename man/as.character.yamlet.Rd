@@ -38,6 +38,7 @@ as.character(as_yamlet(foo, exclude_attr = 'class'))
 Other as_yamlet: 
 \code{\link{[.yamlet}()},
 \code{\link{as_yamlet.data.frame}()},
+\code{\link{as_yamlet.list}()},
 \code{\link{as_yamlet.yamlet}()}
 }
 \concept{as_yamlet}

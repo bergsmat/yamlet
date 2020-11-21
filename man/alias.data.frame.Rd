@@ -38,6 +38,8 @@ Other labels:
 Other deprecated: 
 \code{\link{append_units}()},
 \code{\link{ggready.data.frame}()},
+\code{\link{ggready.decorated}()},
+\code{\link{ggready.resolved}()},
 \code{\link{ggready}()}
 }
 \concept{deprecated}

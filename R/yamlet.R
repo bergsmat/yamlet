@@ -280,7 +280,7 @@ as_yamlet.character <- function(x, default_keys = getOption('yamlet_default_keys
 #' Coerces data.frame to yamlet. Assigns class 'yamlet' to a data.frame's decorations.
 #'
 #' @param x data.frame
-#' @param ... passed arguments
+#' @param ... passed to \code{\link{decorations}}
 #' @family as_yamlet
 #' @export
 #' @keywords internal
@@ -294,6 +294,25 @@ as_yamlet.data.frame <- function(x, ...){
   out <- decorations(x,...)
   class(out) <- 'yamlet'
   out
+}
+#' Coerce List to Yamlet
+#'
+#' Coerces list to yamlet. Assigns class 'yamlet'.
+#' Checks that list has names.
+#'
+#' @param x list
+#' @param ... ignored
+#' @family as_yamlet
+#' @export
+#' @keywords internal
+#' @return yamlet
+#' @examples
+#' x <- list(a = 2, b = 3)
+#' as_yamlet(x)
+as_yamlet.list <- function(x, ...){
+  if(is.null(names(x)))stop('list must have names for conversion to yamlet')
+  class(x) <- 'yamlet'
+  x
 }
 #' Coerce Yamlet to Yamlet
 #'

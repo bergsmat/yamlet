@@ -33,11 +33,14 @@ x \%>\% select(Subject) \%>\% as_yamlet
 }
 \seealso{
 Other decorate: 
+\code{\link{as_decorated.default}()},
+\code{\link{as_decorated}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{decorate.list}()},
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
-\code{\link{decorations}()}
+\code{\link{decorations}()},
+\code{\link{print.decorations}()}
 }
 \concept{decorate}

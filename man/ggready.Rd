@@ -16,16 +16,42 @@ see methods
 }
 \description{
 Prepares data for ggplot.
-Generic, with method for data.frame.
+Generic, with methods for data.frame, decorated, and resolved.
 }
 \examples{
-example(ggready.data.frame)
+file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+x <- decorate(file)
+decorations(x, Weight)
+decorations(as.data.frame(x), Weight) # downgrade still has attributes
+class(x)
+class(ggready(as.data.frame(x)))
+class(ggready(x))
+class(ggready(resolve(x)))
+x <- ggready(x)
+str(x$conc)
+library(magrittr)
+library(ggplot2)
+file \%>\%
+ decorate \%>\%
+ filter(!is.na(conc)) \%>\%
+ ggready \%>\%
+ ggplot(aes(x = time, y = conc, color = Heart)) +
+ geom_point()
+file \%>\% decorate \%>\% ggready(time, Heart:glyco) \%>\% as_yamlet
 }
 \seealso{
 Other deprecated: 
 \code{\link{alias.data.frame}()},
 \code{\link{append_units}()},
-\code{\link{ggready.data.frame}()}
+\code{\link{ggready.data.frame}()},
+\code{\link{ggready.decorated}()},
+\code{\link{ggready.resolved}()}
+
+Other ggready: 
+\code{\link{ggready.data.frame}()},
+\code{\link{ggready.decorated}()},
+\code{\link{ggready.resolved}()}
 }
 \concept{deprecated}
+\concept{ggready}
 \keyword{internal}

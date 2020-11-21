@@ -83,17 +83,19 @@ levels(d$Creatinine) # level detail retained as 'guide'
 }
 \seealso{
 Other decorate: 
+\code{\link{as_decorated.default}()},
+\code{\link{as_decorated}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{decorate.list}()},
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
 \code{\link{decorations}()},
+\code{\link{print.decorations}()},
 \code{\link{redecorate}()}
 
 Other interface: 
 \code{\link{decorate.data.frame}()},
-\code{\link{ggplot.resolved}()},
-\code{\link{ggready.data.frame}()},
+\code{\link{ggplot.decorated}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_res.character}()},

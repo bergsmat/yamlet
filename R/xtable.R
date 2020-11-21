@@ -56,6 +56,7 @@ footnote.decorated <- function(x, ..., equal = ':', collapse = '; '){
 #'
 #' @param x decorated
 #' @param ... passed to \code{\link{footnote}} and (if named) \code{\link[xtable]{xtable}}
+#' @param label passed to \code{\link[xtable]{xtable}}
 #' @param style passed to \code{\link{footnote}}
 #' @export
 #' @importFrom xtable xtable
@@ -77,8 +78,8 @@ footnote.decorated <- function(x, ..., equal = ':', collapse = '; '){
 #' y <- xtable(x, auc:bmi)
 #' attr(y, 'footnote')
 #'
-xtable.decorated <- function(x, ..., style = 'latex'){
-  y <- do.call(xtable,c(list(data.frame(x)),named(...)))
+xtable.decorated <- function(x, ..., label = NULL, style = 'latex'){
+  y <- do.call(xtable,c(list(data.frame(x), label = label),named(...)))
   class(y) <- c('decorated', 'xtable', 'data.frame')
   z <- footnote(x, style = style, ...)
   attr(y, 'footnote') <- z

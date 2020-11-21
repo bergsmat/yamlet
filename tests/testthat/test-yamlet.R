@@ -733,3 +733,25 @@ test_that(
   }
 )
 
+test_that(
+  'spread.decorated resolves nested attributes',{
+
+  }
+)
+
+test_that('ggplot.decorated resolves guide by default',{
+
+})
+
+test_that('ggplot.resolved supports smart markup for two-way facet_grid with legend',{
+
+})
+
+test_that('ggplot.resolved attribute path is customizable',{
+
+})
+
+test_that('output of as_decorated inherits class decorated',{
+  x <- as_decorated(list())
+  expect_true(inherits(x,'decorated'))
+})

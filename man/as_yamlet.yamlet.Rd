@@ -26,7 +26,8 @@ as_yamlet(x)
 Other as_yamlet: 
 \code{\link{[.yamlet}()},
 \code{\link{as.character.yamlet}()},
-\code{\link{as_yamlet.data.frame}()}
+\code{\link{as_yamlet.data.frame}()},
+\code{\link{as_yamlet.list}()}
 }
 \concept{as_yamlet}
 \keyword{internal}

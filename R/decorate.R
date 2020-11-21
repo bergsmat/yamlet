@@ -281,7 +281,7 @@ decorations <- function(x,...)UseMethod('decorations')
 #' @param exclude_attr attributes to remove from the result
 #' @export
 #' @family decorate
-#' @return named list
+#' @return named list of class 'decorations'
 #' @examples
 #' library(csv)
 #' library(magrittr)
@@ -332,5 +332,54 @@ decorations.data.frame <- function(
       if(i %in% names(out[[j]])) out[[j]][[i]] <- NULL
     }
   }
+  class(out) <- 'yamlet'
   out
+}
+
+#' Print Decorations
+#'
+#' Prints decorations.  Coerces to yamlet and prints result.
+#'
+#' @param x decorations, i.e. a named list of class 'decorations'
+#' @param ... ignored
+#' @export
+#' @family decorate
+#' @return invisible x (yamlet)
+#' @examples
+#' example(decorations.data.frame)
+print.decorations <- function(x, ...){
+  x <- as_yamlet(x)
+  print(x)
+}
+
+#' Coerce to Decorated
+#'
+#' Coerces to class 'decorated'. Generic, with default method.
+#'
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @family decorate
+#' @return decorated
+#' @examples
+#' class(Puromycin)
+#' class(as_decorated(Puromycin))
+as_decorated <- function(x, ...)UseMethod('as_decorated')
+
+
+#' Coerce to Decorated by Default
+#'
+#' Coerces to class 'decorated' by decorating (by default) with an empty list.
+#'
+#' @param x object
+#' @param meta see \code{\link{decorate.list}}
+#' @param ... passed arguments
+#' @export
+#' @family decorate
+#' @return decorated
+#' @examples
+#' class(Puromycin)
+#' class(as_decorated(Puromycin))
+as_decorated.default <- function(x, meta = '-', ...){
+  decorate(x, meta = meta, ...)
 }

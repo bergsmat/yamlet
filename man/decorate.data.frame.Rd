@@ -41,8 +41,7 @@ decorate.list
 
 Other interface: 
 \code{\link{decorate.character}()},
-\code{\link{ggplot.resolved}()},
-\code{\link{ggready.data.frame}()},
+\code{\link{ggplot.decorated}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_res.character}()},
@@ -58,11 +57,14 @@ Other interface:
 \code{\link{write_yamlet}()}
 
 Other decorate: 
+\code{\link{as_decorated.default}()},
+\code{\link{as_decorated}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
 \code{\link{decorations}()},
+\code{\link{print.decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

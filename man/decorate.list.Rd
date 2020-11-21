@@ -38,11 +38,14 @@ example(decorate.data.frame)
 }
 \seealso{
 Other decorate: 
+\code{\link{as_decorated.default}()},
+\code{\link{as_decorated}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
 \code{\link{decorations}()},
+\code{\link{print.decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}
