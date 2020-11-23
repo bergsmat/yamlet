@@ -40,14 +40,13 @@
 #' class(data.frame(x))
 #' class(as_decorated(data.frame(x)))
 #'
-#' # The bare data.frame gives boring labels, unordered groups.
-#' data.frame(x) %>%
-#' ggplot(aes(x = time, y = conc, color = Heart)) +
-#' geom_point()
+#' # The bare data.frame gives boring labels and unordered groups.
+#' map <- aes(x = time, y = conc, color = Heart)
+#' data.frame(x) %>% ggplot(map) + geom_point()
 #'
 #' # Decorated data.frame uses supplied labels.
 #' # Notice CHF levels are still not ordered.
-#' x %>% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+#' x %>% ggplot(map) + geom_point()
 #'
 #' # We can resolve guide for a chance to enrich the output with units.
 #' # Notice CHF levels are now ordered.
@@ -55,30 +54,23 @@
 #' suppressWarnings( # because this complains for columns with no units
 #'   x <- modify(x, title = paste0(label, '\n(', units, ')'))
 #' )
-#' x %>% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+#' x %>% ggplot(map) + geom_point()
 #'
 #' # Or something fancier.
 #' x %<>% modify(conc, title = 'conc_serum. (mg*L^-1.)')
-#' x %>% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+#' x %>% ggplot(map) + geom_point()
 #'
-#' # Now render that expression, which was given in spork syntax:
+#' # The y-axis title is deliberately given in spork syntax for elegant coercion:
 #' library(spork)
 #' x %<>% modify(conc, expression = as.expression(as_plotmath(as_spork(title))))
-#' x %>% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+#' x %>% ggplot(map) + geom_point()
 
-#' # Similarly, add a fancy label for Heart, and facet by a factor:
-#' x %<>% modify(Heart, expression = as.expression(as_plotmath(as_spork('CHF_1'))))
-#' x %>%
-#' ggplot(aes(x = time, y = conc, color = Heart)) +
-#' geom_point() +
-#' facet_wrap(~Creatinine)
+#' # Add a fancier label for Heart, and facet by a factor:
+#' x %<>% modify(Heart, expression = as.expression(as_plotmath(as_spork('CHF^\\*'))))
+#' x %>% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
 #'
 #' # ggready handles the units and plotmath implicitly for a 'standard' display:
-#' x %>%
-#' ggready %>%
-#' ggplot(aes(x = time, y = conc, color = Heart)) +
-#' geom_point() +
-#' facet_wrap(~Creatinine)
+#' x %>% ggready %>% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
 #'
 #' Notice that instead of over-writing the label
 #' attribute, we are creating a stack of label
@@ -93,30 +85,23 @@
 #' # Here we try a dataset with conditional labels and units.
 #'
 #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
-#' x <- file %>% decorate
-#' # Note that there are two elements each for value label and value guide.
-#' #'
-#' x %>% as_yamlet
-#' x %>% as_yamlet(value)
-#' x %>% resolve %>% as_yamlet(value)
-
-#' # Guide might have been mistaken for an attempt to provide codes/decodes
-#' # for a factor.  However, the keys evaluate to logical on the data.frame.
-#' # Seeing that, we test for one of them being all true, and if so we select it.
+#' x <- file %>% decorate %>% resolve
+#' # Note that value has two elements for label and guide.
+#' x %>% decorations(value)
 #'
-#' x %>% ggplot(aes(x = time, y = value, color = event)) + geom_point()
+#' # The print method defaults to the first, with warning.
+#' map <- aes(x = time, y = value, color = event)
+#' \donttest{
+#' x %>% ggplot(map) + geom_point()
+#' }
 #'
-#' # In the above example, we are plotting doses and concentrations, which have
-#' # different labels and units, so we can't improve on the y axis label.
-#' # But if we subset to just one of these, then only one of the named conditions
-#' # will be always true (and will therefore be promoted).
+#' # If we subset appropriately, the relevant value is substituted.
+#' x %>% filter(event == 'conc') %>% ggplot(map) + geom_point()
 #'
-#' file %>% decorate %>%
-#' filter(event == 'conc') %>%
+#' x %>% filter(event == 'conc') %>%
 #' ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
 #'
-#' file %>% decorate %>%
-#' filter(event == 'dose') %>%
+#' x %>% filter(event == 'dose') %>%
 #' ggplot(aes(x = time, y = value, color = Wt)) +
 #' geom_point() +
 #' scale_y_log10() +
@@ -162,6 +147,22 @@ print.decorated_ggplot <- function(
         if(!is.null(label)){
           x$labels[[i]] <- label           # overwrite default label with one from data attributes
         }
+      }
+      # done with search.  Plural labels?
+      if(length(x$labels[[i]]) > 1){
+        labs <- x$labels[[i]]
+        if(length(names(labs)))labs = paste(
+          paste0(
+            '(',
+            names(labs),
+            ')'
+          ),
+          labs
+        )
+        labs <- paste(labs, collapse = '\n')
+        msg <- paste('using first of', labs, sep = '\n')
+        warning(msg)
+        x$labels[[i]] <- x$labels[[i]][[1]]
       }
     }
   }

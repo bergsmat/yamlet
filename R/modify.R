@@ -42,15 +42,15 @@ modify <- function(x, ...)UseMethod('modify')
 #'
 #' # modify selected columns
 #' x %<>% modify(title = paste(label, '(', guide, ')'), time)
-#' x %>% select(time, conc) %>% as_yamlet
+#' x %>% select(time, conc) %>% decorations
 #'
 #' # modify (almost) all columns
 #' x %<>% modify(title = paste(label, '(', guide, ')'), -Subject)
-#' x %>% select(time, conc) %>% as_yamlet
+#' x %>% select(time, conc) %>% decorations
 #'
 #' # use column itself
 #' x %<>% modify(`defined values` = sum(!is.na(.)))
-#' x %>% select(time) %>% as_yamlet
+#' x %>% select(time) %>% decorations
 #'
 #' # rename column
 #' x %<>% modify(time, name = label)

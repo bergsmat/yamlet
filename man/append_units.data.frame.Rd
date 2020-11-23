@@ -23,8 +23,8 @@ to individual columns.
 \examples{
 library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-file \%>\% decorate \%>\% explicit_guide \%>\% append_units \%>\% as_yamlet
-file \%>\% decorate \%>\% explicit_guide \%>\% append_units(glyco) \%>\% as_yamlet
+file \%>\% decorate \%>\% explicit_guide \%>\% append_units \%>\% decorations(Age, glyco)
+file \%>\% decorate \%>\% explicit_guide \%>\% append_units(glyco) \%>\% decorations(Age, glyco)
 }
 \seealso{
 Other labels: 

@@ -107,8 +107,8 @@ append_units.default <- function(
 #' @examples
 #' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-#' file %>% decorate %>% explicit_guide %>% append_units %>% as_yamlet
-#' file %>% decorate %>% explicit_guide %>% append_units(glyco) %>% as_yamlet
+#' file %>% decorate %>% explicit_guide %>% append_units %>% decorations(Age, glyco)
+#' file %>% decorate %>% explicit_guide %>% append_units(glyco) %>% decorations(Age, glyco)
 
 append_units.data.frame <- function(x, ...){
   vars <- selected(x, ...)

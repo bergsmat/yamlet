@@ -24,8 +24,8 @@ followed by \code{\link{factorize_codelist}}.
 library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
-x \%>\% resolve \%>\% as_yamlet
-x \%>\% resolve(glyco) \%>\% as_yamlet
+x \%>\% resolve \%>\% decorations(Age, glyco)
+x \%>\% resolve(glyco) \%>\% decorations(Age, glyco)
 }
 \seealso{
 Other resolve: 

@@ -28,8 +28,8 @@ resolve <- function(x, ...)UseMethod('resolve')
 #' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)
-#' x %>% resolve %>% as_yamlet
-#' x %>% resolve(glyco) %>% as_yamlet
+#' x %>% resolve %>% decorations(Age, glyco)
+#' x %>% resolve(glyco) %>% decorations(Age, glyco)
 
 resolve.decorated <- function(x, ...){
   x <- explicit_guide(x, ...)

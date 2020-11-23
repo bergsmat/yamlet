@@ -50,9 +50,9 @@ x \%<>\% modify(CONC, label = 'concentration', guide = 'ng/mL')
 x \%<>\% modify(RACE, label = 'race', guide = list(white = 0, black = 1, asian = 2))
 x \%<>\% modify(SEX, label = 'sex', guide = list(female = 0, male = 1))
 x \%<>\% modify(DATE, label  = 'date', guide = '\%Y-\%m-\%d')
-x \%>\% as_yamlet
-x \%>\% explicit_guide \%>\% as_yamlet
-x \%>\% explicit_guide(DATE) \%>\% as_yamlet # limit scope
+x \%>\% decorations
+x \%>\% explicit_guide \%>\% decorations
+x \%>\% explicit_guide(DATE) \%>\% decorations # limit scope
 }
 \seealso{
 Other explicit_guide: 

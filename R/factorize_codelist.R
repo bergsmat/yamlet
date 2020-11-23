@@ -100,9 +100,9 @@ factorize_codelist.character <- function(x,...){
 #' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)
-#' x %>% explicit_guide %>% as_yamlet
-#' x %>% explicit_guide %>% factorize_codelist %>% as_yamlet
-#' x %>% explicit_guide %>% factorize_codelist(Heart:glyco) %>% as_yamlet
+#' x %>% explicit_guide %>% decorations(Age, Race, Heart:glyco)
+#' x %>% explicit_guide %>% factorize_codelist %>% decorations(Age, Race, Heart:glyco)
+#' x %>% explicit_guide %>% factorize_codelist(Heart:glyco) %>% decorations(Age, Race, Heart:glyco)
 
 factorize_codelist.data.frame <- function(x,...){
   for(nm in selected(x,...)){

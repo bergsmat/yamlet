@@ -733,25 +733,233 @@ test_that(
   }
 )
 
-test_that(
-  'spread.decorated resolves nested attributes',{
-
-  }
-)
-
-test_that('ggplot.decorated resolves guide by default',{
-
-})
-
-test_that('ggplot.resolved supports smart markup for two-way facet_grid with legend',{
-
-})
-
-test_that('ggplot.resolved attribute path is customizable',{
-
-})
-
 test_that('output of as_decorated inherits class decorated',{
   x <- as_decorated(list())
   expect_true(inherits(x,'decorated'))
 })
+test_that(
+  'xtable.decorated is stable',{
+    #' library(magrittr)
+    #' library(xtable)
+    #' set.seed(0)
+    #' x <- data.frame(
+    #'  auc = rnorm(100, mean = 2400, sd = 200),
+    #'  bmi = rnorm(100, mean = 20, sd = 5),
+    #'  gen = 0:1
+    #' )
+    #' x %<>% decorate('auc: [AUC_0-24, ng*h/mL]')
+    #' x %<>% decorate('bmi: [Body Mass Index, kg/m^2]')
+    #' x %<>% decorate('gen: [Gender, [Male: 1, Female: 0]]')
+    #' y <- xtable(x)
+    #' attr(y, 'footnote')
+    #' y <- xtable(x, auc:bmi)
+    #' attr(y, 'footnote')
+    #' library(magrittr)
+    #' library(xtable)
+    #' set.seed(0)
+    #' x <- data.frame(
+    #'  auc = rnorm(4, mean = 2400, sd = 200),
+    #'  bmi = rnorm(4, mean = 20, sd = 5),
+    #'  gen = 0:1
+    #' )
+    #' x %<>% decorate('auc: [AUC_0-24, ng*h/mL]')
+    #' x %<>% decorate('bmi: [Body Mass Index, kg/m^2]')
+    #' x %<>% decorate('gen: [Gender, [Male: 1, Female: 0]]')
+    #' x %>% resolve
+    #' x %>% resolve %>% xtable
+    #'
+
+  })
+test_that(
+  'promote is stable',{
+    #' meta <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+    #' x <- read.csv(meta)
+    #' singularity(
+    #'   data = x,
+    #'   list(
+    #'     "event == 'conc'",
+    #'     "event == 'dose'",
+    #'     "event == 'metabolite'"
+    #'   )
+    #' )
+    #' singularity(
+    #'   data = x[x$event == 'dose',],
+    #'   list(
+    #'     "event == 'conc'",
+    #'     "event == 'dose'",
+    #'     "event == 'metabolite'"
+    #'   )
+    #' )
+    #' singularity(
+    #'   data = x[x$event == 'dose',],
+    #'   list(
+    #'     "time >= 0",
+    #'     "event == 'dose'"
+    #'   )
+    #' )
+    #' #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+    #' x <- file %>% decorate
+    #'
+    #' # Note that there are two elements each for value label and value guide.
+    #' x %>% decorations(event, value)
+    #'
+    #' # After filtering, only one set is relevant.
+    #' # promote() identifies and retains such.
+    #' x %>% dplyr:::filter.data.frame(event == 'dose') %>% decorations(value)
+    #' x %>% dplyr:::filter.data.frame(event == 'dose') %>% promote %>% decorations(value)
+    #'
+    #' # If for some reason we do a partial promote, value attributes are unaffected.
+    #' # Nonsense example:
+    #' x %>% dplyr:::filter.data.frame(event == 'dose') %>% promote(event) %>% decorations(value)
+    #'
+    #' # However, the 'decorated' method for filter() calls promote() internally.
+    #' x %>% filter(event == 'dose') %>% decorations(value)
+    #'
+    #' library(magrittr)
+    #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+    #' x <- file %>% decorate
+    #'
+    #' # Note that there are two elements each for value label and value guide.
+    #' x %>% decorations(event, value)
+    #'
+    #' # Filtering promotes the relevant conditional attributes automatically.
+    #' x %>% filter(event == 'dose') %>% decorations(value)
+    #' x %>% filter(event == 'conc') %>% decorations(value)
+    #' library(magrittr)
+    #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+    #' x <- file %>% decorate
+    #' x %>% decorations(event, value)
+    #'
+    #' # Subsetting promotes automatically.
+    #' x[x$event == 'dose',] %>% decorations(event, value)
+    #' x[x$event == 'conc',] %>% decorations(event, value)
+
+  })
+
+test_that('ggready is stable',{
+  #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  #' x <- decorate(file)
+  #' decorations(x, Weight)
+  #' decorations(as.data.frame(x), Weight) # downgrade still has attributes
+  #' class(x)
+  #' class(ggready(as.data.frame(x)))
+  #' class(ggready(x))
+  #' class(ggready(resolve(x)))
+  #' x <- ggready(x)
+  #' library(magrittr)
+  #' library(ggplot2)
+  #'
+  #' # Here we filter on-the-fly
+  #' # without loss of attributes.
+  #' # Notice mg/L rendering; this is actually part of an expression.
+  #' file %>%
+  #'  decorate %>%
+  #'  filter(!is.na(conc)) %>%
+  #'  ggready %>%
+  #'  ggplot(aes(x = time, y = conc, color = Heart)) +
+  #'  geom_point()
+  #'
+  #' # By default ggready resolves everything decorated.
+  #' # But we can intervene to resolve selectively,
+  #' # And further intervene to 'ggready' selectively.
+  #' #
+  #' x <- file %>% decorate %>% filter(!is.na(conc))
+  #' x %>%
+  #' resolve(conc, time) %>%   # Heart left unresolved!
+  #' ggready(conc, Heart) %>%  # time left unreadied!
+  #' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+  #'
+  #' Still, all the labels were actually expressions:
+  #' x %>%
+  #' resolve(conc, time) %>%
+  #' ggready(conc, Heart) %>%
+  #' decorations(conc, time, Heart)
+})
+
+
+test_that('ggplot.resolved is stable',{
+  #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  #' library(ggplot2)
+  #' library(dplyr)
+  #' library(magrittr)
+  #' # par(ask = FALSE)
+  #'
+  #' x <- decorate(file)
+  #' x %<>% filter(!is.na(conc))
+  #'
+  #' # Manipulate class to switch among ggplot methods.
+  #' class(x)
+  #' class(data.frame(x))
+  #' class(as_decorated(data.frame(x)))
+  #'
+  #' # The bare data.frame gives boring labels and unordered groups.
+  #' map <- aes(x = time, y = conc, color = Heart)
+  #' data.frame(x) %>% ggplot(map) + geom_point()
+  #'
+  #' # Decorated data.frame uses supplied labels.
+  #' # Notice CHF levels are still not ordered.
+  #' x %>% ggplot(map) + geom_point()
+  #'
+  #' # We can resolve guide for a chance to enrich the output with units.
+  #' # Notice CHF levels are now ordered.
+  #' x %<>% resolve
+  #' suppressWarnings( # because this complains for columns with no units
+  #'   x <- modify(x, title = paste0(label, '\n(', units, ')'))
+  #' )
+  #' x %>% ggplot(map) + geom_point()
+  #'
+  #' # Or something fancier.
+  #' x %<>% modify(conc, title = 'conc_serum. (mg*L^-1.)')
+  #' x %>% ggplot(map) + geom_point()
+  #'
+  #' # The y-axis title is deliberately given in spork syntax for elegant coercion:
+  #' library(spork)
+  #' x %<>% modify(conc, expression = as.expression(as_plotmath(as_spork(title))))
+  #' x %>% ggplot(map) + geom_point()
+
+  #' # Add a fancier label for Heart, and facet by a factor:
+  #' x %<>% modify(Heart, expression = as.expression(as_plotmath(as_spork('CHF^\\*'))))
+  #' x %>% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
+  #'
+  #' # ggready handles the units and plotmath implicitly for a 'standard' display:
+  #' x %>% ggready %>% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
+  #'
+  #' Notice that instead of over-writing the label
+  #' attribute, we are creating a stack of label
+  #' substitutes (title, expression) so that
+  #' label is still available as an argument
+  #' if we want to try something else.  The
+  #' print method by default looks for all of these.
+  #' Precedence is expression, title, label, column name.
+  #' Precedence can be controlled using
+  #' \code{options(decorated_ggplot_search = c(a, b, ...) )}.
+  #'
+  #' # Here we try a dataset with conditional labels and units.
+  #'
+  #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+  #' x <- file %>% decorate %>% resolve
+  #' # Note that value has two elements for label and guide.
+  #' x %>% decorations(value)
+  #'
+  #' # The print method defaults to the first, with warning.
+  #' map <- aes(x = time, y = value, color = event)
+  #' \donttest{
+  #' x %>% ggplot(map) + geom_point()
+  #' }
+  #'
+  #' # If we subset appropriately, the relevant value is substituted.
+  #' x %>% filter(event == 'conc') %>% ggplot(map) + geom_point()
+  #'
+  #' x %>% filter(event == 'conc') %>%
+  #' ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
+  #'
+  #' x %>% filter(event == 'dose') %>%
+  #' ggplot(aes(x = time, y = value, color = Wt)) +
+  #' geom_point() +
+  #' scale_y_log10() +
+  #' scale_color_gradientn(colours = rainbow(4))
+
+
+})
+
+
