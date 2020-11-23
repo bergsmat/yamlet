@@ -46,6 +46,7 @@ Other interface:
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{is_parseable.default}()},
 \code{\link{modify.default}()},
+\code{\link{promote.default}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.decorated}()},
 \code{\link{write_yamlet}()}

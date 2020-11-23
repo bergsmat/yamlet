@@ -17,17 +17,122 @@ return value like \code{\link[ggplot2]{ggplot}} but inheriting 'decorated_ggplot
 \description{
 Creates a new ggplot object for a decorated data.frame.
 This is the ggplot() method for class 'decorated'.
-}
-\details{
 It creates a ggplot object using the default method,
 but reclassifies it as 'decorated_ggplot' so that a custom print method
 is invoked; see \code{\link{print.decorated_ggplot}}.
 }
+\details{
+This approach is similar to but more flexible than
+the method for \code{\link{ggready}}. Currently,
+there is only one method for resolve() (\code{\link{resolve.decorated}})
+with the result that all 'resolved' objects inherit 'decorated'
+and thus can use \code{\link{ggplot.decorated}}.
+
+For finer control, you can switch between 'data.frame'
+and to 'decorated' using \code{\link{as_decorated}}
+(supplies null decorations) and \code{\link{as.data.frame}}
+(preserves decorations).
+}
 \examples{
-example(print.decorated_ggplot)
+file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+library(ggplot2)
+library(dplyr)
+library(magrittr)
+# par(ask = FALSE)
+
+x <- decorate(file)
+x \%<>\% filter(!is.na(conc))
+
+# Manipulate class to switch among ggplot methods.
+class(x)
+class(data.frame(x))
+class(as_decorated(data.frame(x)))
+
+# The bare data.frame gives boring labels, unordered groups.
+data.frame(x) \%>\%
+ggplot(aes(x = time, y = conc, color = Heart)) +
+geom_point()
+
+# Decorated data.frame uses supplied labels.
+# Notice CHF levels are still not ordered.
+x \%>\% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+
+# We can resolve guide for a chance to enrich the output with units.
+# Notice CHF levels are now ordered.
+x \%<>\% resolve
+suppressWarnings( # because this complains for columns with no units
+  x <- modify(x, title = paste0(label, '\n(', units, ')'))
+)
+x \%>\% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+
+# Or something fancier.
+x \%<>\% modify(conc, title = 'conc_serum. (mg*L^-1.)')
+x \%>\% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+
+# Now render that expression, which was given in spork syntax:
+library(spork)
+x \%<>\% modify(conc, expression = as.expression(as_plotmath(as_spork(title))))
+x \%>\% ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+# Similarly, add a fancy label for Heart, and facet by a factor:
+x \%<>\% modify(Heart, expression = as.expression(as_plotmath(as_spork('CHF_1'))))
+x \%>\%
+ggplot(aes(x = time, y = conc, color = Heart)) +
+geom_point() +
+facet_wrap(~Creatinine)
+
+# ggready handles the units and plotmath implicitly for a 'standard' display:
+x \%>\%
+ggready \%>\%
+ggplot(aes(x = time, y = conc, color = Heart)) +
+geom_point() +
+facet_wrap(~Creatinine)
+
+Notice that instead of over-writing the label
+attribute, we are creating a stack of label
+substitutes (title, expression) so that
+label is still available as an argument
+if we want to try something else.  The
+print method by default looks for all of these.
+Precedence is expression, title, label, column name.
+Precedence can be controlled using
+\code{options(decorated_ggplot_search = c(a, b, ...) )}.
+
+# Here we try a dataset with conditional labels and units.
+
+file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+x <- file \%>\% decorate
+# Note that there are two elements each for value label and value guide.
+#'
+x \%>\% as_yamlet
+x \%>\% as_yamlet(value)
+x \%>\% resolve \%>\% as_yamlet(value)
+# Guide might have been mistaken for an attempt to provide codes/decodes
+# for a factor.  However, the keys evaluate to logical on the data.frame.
+# Seeing that, we test for one of them being all true, and if so we select it.
+
+x \%>\% ggplot(aes(x = time, y = value, color = event)) + geom_point()
+
+# In the above example, we are plotting doses and concentrations, which have
+# different labels and units, so we can't improve on the y axis label.
+# But if we subset to just one of these, then only one of the named conditions
+# will be always true (and will therefore be promoted).
+
+file \%>\% decorate \%>\%
+filter(event == 'conc') \%>\%
+ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
+
+file \%>\% decorate \%>\%
+filter(event == 'dose') \%>\%
+ggplot(aes(x = time, y = value, color = Wt)) +
+geom_point() +
+scale_y_log10() +
+scale_color_gradientn(colours = rainbow(4))
 }
 \seealso{
+decorate resolve ggready
+
 Other decorated_ggplot: 
+\code{\link{ggplot_build.decorated_ggplot}()},
 \code{\link{print.decorated_ggplot}()}
 
 Other interface: 
@@ -42,6 +147,7 @@ Other interface:
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{is_parseable.default}()},
 \code{\link{modify.default}()},
+\code{\link{promote.default}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.decorated}()},
 \code{\link{selected.default}()},

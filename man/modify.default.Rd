@@ -86,6 +86,7 @@ Other interface:
 \code{\link{io_yamlet.character}()},
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{is_parseable.default}()},
+\code{\link{promote.default}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.decorated}()},
 \code{\link{selected.default}()},

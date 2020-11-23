@@ -28,18 +28,13 @@ Enforces classes 'decorated','resolved', and  'ggready'.
 example(ggready)
 }
 \seealso{
-Other deprecated: 
-\code{\link{alias.data.frame}()},
-\code{\link{append_units}()},
-\code{\link{ggready.data.frame}()},
-\code{\link{ggready.resolved}()},
-\code{\link{ggready}()}
-
 Other ggready: 
+\code{\link{ggplot.ggready}()},
+\code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.data.frame}()},
 \code{\link{ggready.resolved}()},
-\code{\link{ggready}()}
+\code{\link{ggready}()},
+\code{\link{print.ggready_ggplot}()}
 }
-\concept{deprecated}
 \concept{ggready}
 \keyword{internal}

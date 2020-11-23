@@ -16,7 +16,7 @@
 \item{style}{passed to \code{\link{footnote}}}
 }
 \value{
-class 'decorated', 'xtable','data.frame'
+class 'decorated_xtable','xtable', 'data.frame'
 }
 \description{
 Creates an export table for decorated data.frame

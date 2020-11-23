@@ -9,7 +9,7 @@ singularity(x, data, ...)
 \arguments{
 \item{x}{list of expressions}
 
-\item{data}{data.frame}
+\item{data}{something coercible to a data environment (typically data.frame)}
 
 \item{...}{ignored}
 }
@@ -17,7 +17,7 @@ singularity(x, data, ...)
 integer, possibly NA
 }
 \description{
-For a list of expressions evaluated on a data.frame
+For a list of expressions evaluated within data,
 this returns the index of the one expression that evaluates
 to an all-true vector (after coercing NA to FALSE).
 Returns 0 if no expressions succeed, and NA_integer_ if
@@ -51,5 +51,12 @@ singularity(
   )
 )
 }
-\concept{lab}
+\seealso{
+Other promote: 
+\code{\link{[.decorated}()},
+\code{\link{filter.decorated}()},
+\code{\link{promote.default}()},
+\code{\link{promote}()}
+}
+\concept{promote}
 \keyword{internal}

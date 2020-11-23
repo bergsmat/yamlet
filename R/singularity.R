@@ -55,9 +55,9 @@ singularity <- function(x, data, ...){
       )
     )
   )
-  defined <- lapply(vals, function(i){
-    if(inherits(i, 'try-error')) return(-1) # i <- FALSE
-    if(!is.logical(i)) return(-1) # i <- as.logical(i)
+  defined <- lapply(vals, function(i){ # must return logical
+    if(inherits(i, 'try-error')) return(FALSE) # i <- FALSE
+    if(!is.logical(i)) return(FALSE) # i <- as.logical(i)
     i[is.na(i)] <- FALSE
     i
   })
@@ -90,6 +90,8 @@ promote <- function(x, ...)UseMethod('promote')
 #' For the plural attributes of each element,
 #' any singularity is promoted to the sole attribute.
 #' Reserved attributes are untouched.
+#' Methods \code{\link{filter.decorated}} and \code{\link{[.decorated]}}
+#' automatically attempt to promote attributes for all elements.
 #' @param x object
 #' @param ... indicated elements
 #' @param .reserved attributes to leave untouched
@@ -98,13 +100,26 @@ promote <- function(x, ...)UseMethod('promote')
 #' @return same class as x
 #' @family promote
 #' @family interface
+#' @seealso filter.decorated [.decorated
 #' @examples
 #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
 #' x <- file %>% decorate
+#'
 #' # Note that there are two elements each for value label and value guide.
-#' x %>% decorations(time, event, value)
-#' x %>% filter(event == 'dose') %>% decorations(time, event, value)
-#' x %>% filter(event == 'dose') %>% promote %>% decorations(time, event, value)
+#' x %>% decorations(event, value)
+#'
+#' # After filtering, only one set is relevant.
+#' # promote() identifies and retains such.
+#' x %>% dplyr:::filter.data.frame(event == 'dose') %>% decorations(value)
+#' x %>% dplyr:::filter.data.frame(event == 'dose') %>% promote %>% decorations(value)
+#'
+#' # If for some reason we do a partial promote, value attributes are unaffected.
+#' # Nonsense example:
+#' x %>% dplyr:::filter.data.frame(event == 'dose') %>% promote(event) %>% decorations(value)
+#'
+#' # However, the 'decorated' method for filter() calls promote() internally.
+#' x %>% filter(event == 'dose') %>% decorations(value)
+#'
 
 promote.default <- function(
   x,
@@ -141,3 +156,88 @@ promote.default <- function(
   }
   x
 }
+
+#' Filter Decorated
+#'
+#' Filters a decorated data.frame.
+#' After a filter operation, promote()
+#' is called to see if ambiguous conditional
+#' attributes can be improved.
+#' @param .data passed to \code{\link[dplyr]{filter}}
+#' @param ... passed to \code{\link[dplyr]{filter}}
+#' @param .preserve passed to \code{\link[dplyr]{filter}}
+#' @param .promote whether to auto-promote plural attributes
+#' @importFrom dplyr filter
+#' @export
+#' @return decorated
+#' @family promote
+#' @keywords internal
+#' @examples
+#' library(magrittr)
+#' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+#' x <- file %>% decorate
+#'
+#' # Note that there are two elements each for value label and value guide.
+#' x %>% decorations(event, value)
+#'
+#' # Filtering promotes the relevant conditional attributes automatically.
+#' x %>% filter(event == 'dose') %>% decorations(value)
+#' x %>% filter(event == 'conc') %>% decorations(value)
+#'
+filter.decorated <- function(
+  .data,
+  ...,
+  .preserve = FALSE,
+  .promote = getOption('yamlet_promote', TRUE)
+){
+  y <- NextMethod()
+  if(.promote) y <- promote(y)
+  y
+}
+
+#' Subset Decorated
+#'
+#' Subsets decorated. Calls \code{\link{promote}}
+#' internally to improve ambiguous conditional
+#' attributes where possible.
+#'
+#' @param x object to subset
+#' @param ... passed to next method
+#' @param .promote whether to auto-promote plural attributes
+#' @return decorated
+#' @export
+#' @keywords internal
+#' @family promote
+#' @examples
+#' library(magrittr)
+#' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+#' x <- file %>% decorate
+#' x %>% decorations(event, value)
+#'
+#' # Subsetting promotes automatically.
+#' x[x$event == 'dose',] %>% decorations(event, value)
+#' x[x$event == 'conc',] %>% decorations(event, value)
+`[.decorated` <- function(
+  x,
+  ...,
+  .promote = getOption('yamlet_promote', TRUE)
+){
+#  stopifnot(inherits(x, 'data.frame'))
+  y <- NextMethod()
+  # y <- decorate(y, data.frame(x))
+  # decorate(y, data.frame(x)) is
+  # problematic, since decorate calls
+  # decorations, which calls this method
+  # decorate -> decorate.list -> as_yamlet -> decorations
+
+  # At this point, we may have lost, rows, columns, both,
+  # or been 'dropped' to one column.
+  # We wish to restore colum-level attributes dropped by subset.
+  nms <- intersect(names(x), names(y))
+  for(nm in nms){
+    attributes(y[[nm]]) <- attributes(x[[nm]])
+  }
+  if(.promote) y <- promote(y)
+  y
+}
+

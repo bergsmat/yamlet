@@ -36,11 +36,7 @@ Other labels:
 \code{\link{sub_units}()}
 
 Other deprecated: 
-\code{\link{append_units}()},
-\code{\link{ggready.data.frame}()},
-\code{\link{ggready.decorated}()},
-\code{\link{ggready.resolved}()},
-\code{\link{ggready}()}
+\code{\link{append_units}()}
 }
 \concept{deprecated}
 \concept{labels}

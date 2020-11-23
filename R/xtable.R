@@ -60,7 +60,7 @@ footnote.decorated <- function(x, ..., equal = ':', collapse = '; '){
 #' @param style passed to \code{\link{footnote}}
 #' @export
 #' @importFrom xtable xtable
-#' @return class 'decorated', 'xtable','data.frame'
+#' @return class 'decorated_xtable','xtable', 'data.frame'
 #' @examples
 #' library(magrittr)
 #' library(xtable)
@@ -80,16 +80,16 @@ footnote.decorated <- function(x, ..., equal = ':', collapse = '; '){
 #'
 xtable.decorated <- function(x, ..., label = NULL, style = 'latex'){
   y <- do.call(xtable,c(list(data.frame(x), label = label),named(...)))
-  class(y) <- c('decorated', 'xtable', 'data.frame')
+  class(y) <- c('decorated_xtable', 'xtable', 'data.frame')
   z <- footnote(x, style = style, ...)
   attr(y, 'footnote') <- z
   y
 }
 
-#' Print Decorated
+#' Print Decorated Xtable
 #'
-#' Prints a decorated data.frame.
-#' If 'xtable' is inherited, supplies a footnote.
+#' Prints a decorated xtable.
+#' Supplies a footnote.
 #' Experimental.
 #'
 #' @export
@@ -115,23 +115,17 @@ xtable.decorated <- function(x, ..., label = NULL, style = 'latex'){
 #' x %>% resolve %>% xtable
 #'
 #'
-print.decorated <- function(x, ...){
-  if(!inherits(x, 'xtable')){
-    NextMethod()
-  }else{
-    y <- NextMethod(print.results=FALSE, comment = FALSE, ...)
-    note <- attr(x,'footnote')
-    y <- sub(
-      fixed = TRUE,
-      '\\end{table}',
-      paste(sep = '\n','\n', note, '\\end{table}'),
-      y
-    )
-    cat(y)
-   return(invisible())
-  }
+print.decorated_xtable <- function(x, ...){
+  y <- NextMethod(print.results=FALSE, comment = FALSE, ...)
+  note <- attr(x,'footnote')
+  y <- sub(
+    fixed = TRUE,
+    '\\end{table}',
+    paste(sep = '\n','\n', note, '\\end{table}'),
+    y
+  )
+  cat(y)
+  return(invisible())
 }
-
-
 
 

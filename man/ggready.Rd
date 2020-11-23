@@ -28,30 +28,43 @@ class(ggready(as.data.frame(x)))
 class(ggready(x))
 class(ggready(resolve(x)))
 x <- ggready(x)
-str(x$conc)
 library(magrittr)
 library(ggplot2)
+
+# Here we filter on-the-fly
+# without loss of attributes.
+# Notice mg/L rendering; this is actually part of an expression.
 file \%>\%
  decorate \%>\%
  filter(!is.na(conc)) \%>\%
  ggready \%>\%
  ggplot(aes(x = time, y = conc, color = Heart)) +
  geom_point()
-file \%>\% decorate \%>\% ggready(time, Heart:glyco) \%>\% as_yamlet
+
+# By default ggready resolves everything decorated.
+# But we can intervene to resolve selectively,
+# And further intervene to 'ggready' selectively.
+#
+x <- file \%>\% decorate \%>\% filter(!is.na(conc))
+x \%>\%
+resolve(conc, time) \%>\%   # Heart left unresolved!
+ggready(conc, Heart) \%>\%  # time left unreadied!
+ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+
+But all the labels were actually expressions:
+x \%>\%
+resolve(conc, time) \%>\%
+ggready(conc, Heart) \%>\%
+decorations(conc, time, Heart)
 }
 \seealso{
-Other deprecated: 
-\code{\link{alias.data.frame}()},
-\code{\link{append_units}()},
-\code{\link{ggready.data.frame}()},
-\code{\link{ggready.decorated}()},
-\code{\link{ggready.resolved}()}
-
 Other ggready: 
+\code{\link{ggplot.ggready}()},
+\code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.data.frame}()},
 \code{\link{ggready.decorated}()},
-\code{\link{ggready.resolved}()}
+\code{\link{ggready.resolved}()},
+\code{\link{print.ggready_ggplot}()}
 }
-\concept{deprecated}
 \concept{ggready}
 \keyword{internal}

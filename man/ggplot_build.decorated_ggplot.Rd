@@ -7,11 +7,11 @@
 ggplot_build.decorated_ggplot(
   x,
   ...,
-  search = getOption("resolved_ggplot_search", c("expression", "title", "label"))
+  search = getOption("decorated_ggplot_search", c("expression", "title", "label"))
 )
 }
 \arguments{
-\item{x}{class 'resolved_ggplot' from \code{\link{ggplot.ggready}}}
+\item{x}{class 'decorated_ggplot' from \code{\link{ggplot.ggready}}}
 
 \item{...}{passed arguments}
 }
@@ -23,5 +23,10 @@ Enable automatic labels and units for ggplot.
 Substitutes column label, if present, for default.
 Supports arrangements of ggplot objects.
 }
-\concept{resolved_ggplot}
+\seealso{
+Other decorated_ggplot: 
+\code{\link{ggplot.decorated}()},
+\code{\link{print.decorated_ggplot}()}
+}
+\concept{decorated_ggplot}
 \keyword{internal}

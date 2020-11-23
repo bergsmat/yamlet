@@ -18,22 +18,22 @@ return value like \code{\link[ggplot2]{ggplot}}
 Creates a new ggplot object for a ggready data.frame.
 This is the ggplot() method for class 'ggready';
 it tries to implement automatic labels and units in axes and legends
-in association with \code{\link{print.dg}}.
+in association with \code{\link{print.ggready_ggplot}}.
 This approach is deprecated in favor of a cleaner
 object hierarchy for classes 'decorated' and 'resolved'.
+See \code{\link{ggplot.decorated}}.
 }
 \examples{
-meta <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-x <- decorate(meta)
-library(ggplot2)
-class(ggplot(data = x) + geom_path(aes(x = time, y = conc)))
-class(ggplot(data = x, aes(x = time, y = conc)) + geom_path())
-example(print.dg)
+example(ggready)
 }
 \seealso{
-Other dg: 
-\code{\link{ggplot_build.dg}()},
-\code{\link{print.dg}()}
+Other ggready: 
+\code{\link{ggplot_build.ggready_ggplot}()},
+\code{\link{ggready.data.frame}()},
+\code{\link{ggready.decorated}()},
+\code{\link{ggready.resolved}()},
+\code{\link{ggready}()},
+\code{\link{print.ggready_ggplot}()}
 }
-\concept{dg}
+\concept{ggready}
 \keyword{internal}
