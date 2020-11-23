@@ -26,10 +26,11 @@ Promotes attributes of list-like objects.
 For the plural attributes of each element,
 any singularity is promoted to the sole attribute.
 Reserved attributes are untouched.
-Methods \code{\link{filter.decorated}} and \code{\link{[.decorated]}}
+Methods \code{\link{filter.decorated}} and \code{\link{[.decorated}}
 automatically attempt to promote attributes for all elements.
 }
 \examples{
+library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
 x <- file \%>\% decorate
 

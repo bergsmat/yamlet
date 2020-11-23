@@ -72,15 +72,15 @@
 #' # ggready handles the units and plotmath implicitly for a 'standard' display:
 #' x %>% ggready %>% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
 #'
-#' Notice that instead of over-writing the label
-#' attribute, we are creating a stack of label
-#' substitutes (title, expression) so that
-#' label is still available as an argument
-#' if we want to try something else.  The
-#' print method by default looks for all of these.
-#' Precedence is expression, title, label, column name.
-#' Precedence can be controlled using
-#' \code{options(decorated_ggplot_search = c(a, b, ...) )}.
+#' # Notice that instead of over-writing the label
+#' # attribute, we are creating a stack of label
+#' # substitutes (title, expression) so that
+#' # label is still available as an argument
+#' # if we want to try something else.  The
+#' # print method by default looks for all of these.
+#' # Precedence is expression, title, label, column name.
+#' # Precedence can be controlled using
+#' # options(decorated_ggplot_search = c(a, b, ...) ).
 #'
 #' # Here we try a dataset with conditional labels and units.
 #'

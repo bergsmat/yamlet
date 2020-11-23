@@ -90,7 +90,7 @@ promote <- function(x, ...)UseMethod('promote')
 #' For the plural attributes of each element,
 #' any singularity is promoted to the sole attribute.
 #' Reserved attributes are untouched.
-#' Methods \code{\link{filter.decorated}} and \code{\link{[.decorated]}}
+#' Methods \code{\link{filter.decorated}} and \code{\link{[.decorated}}
 #' automatically attempt to promote attributes for all elements.
 #' @param x object
 #' @param ... indicated elements
@@ -102,6 +102,7 @@ promote <- function(x, ...)UseMethod('promote')
 #' @family interface
 #' @seealso filter.decorated [.decorated
 #' @examples
+#' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
 #' x <- file %>% decorate
 #'

@@ -51,7 +51,7 @@ resolve(conc, time) \%>\%   # Heart left unresolved!
 ggready(conc, Heart) \%>\%  # time left unreadied!
 ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 
-Still, all the labels were actually expressions:
+# Still, all the labels were actually expressions:
 x \%>\%
 resolve(conc, time) \%>\%
 ggready(conc, Heart) \%>\%
