@@ -26,11 +26,13 @@ slice.decorated <- function(.data, ..., .preserve = FALSE){
 #' Filter Decorated
 #'
 #' Preserves class when filtering decorated.
+#' @param .data see \code{\link[dplyr]{filter}}
+#' @param ... see \code{\link[dplyr]{filter}}
+#' @param preserve see \code{\link[dplyr]{filter}}
 #' @importFrom dplyr filter
 #' @export
 #' @keywords internal
 #' @family dplyr
-#' @inheritParams dplyr::filter
 filter.decorated <- function(.data, ..., .preserve = FALSE){
   as_decorated(NextMethod())
 }

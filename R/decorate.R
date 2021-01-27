@@ -303,7 +303,7 @@ decorations.data.frame <- function(
 ){
   stopifnot(length(exclude_attr) == 0 || is.character(exclude_attr))
   nms <- selected(x, ...)
-  x <- x[, nms, drop = FALSE]
+  x <- x[, as.character(nms), drop = FALSE] # selected may have incompatible class path
   out <- lapply(x, attributes)
   levs_key <- 'guide'
   if(!is.logical(coerce)){

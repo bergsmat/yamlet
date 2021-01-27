@@ -26,6 +26,8 @@
 \item{.preserve}{passed to \code{\link[dplyr]{filter}}}
 
 \item{.promote}{whether to auto-promote plural attributes}
+
+\item{preserve}{see \code{\link[dplyr]{filter}}}
 }
 \value{
 decorated

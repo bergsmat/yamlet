@@ -15,7 +15,8 @@
 data.frame
 }
 \description{
-Coerces items in data.frame with codelist attribute to factor.
+Coerces items in data.frame with codelist attribute to 'classified':
+a factor with a codelist attribute
 }
 \examples{
 library(magrittr)

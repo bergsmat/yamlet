@@ -74,8 +74,12 @@ factorize_codelist.character <- function(x,...){
       # warning('guide for ',item,' contains unlabeled level(s); using level itself')
       labs[labs == ''] <- levs[labs == '']
     }
+    codelist <- as.list(levs)
+    names(codelist) <- labs
     reserve <- attributes(x)
     reserve$codelist <- NULL
+    # proposed:
+    # reserve$codelist <- codelist # fully-specified.  This was <- NULL before 0.6.0
     try(x <- factor(x, levels = levs, labels = labs))
     if(is.factor(x)){
       attributes(x) <- c(reserve, attributes(x))
@@ -88,7 +92,8 @@ factorize_codelist.character <- function(x,...){
 }
 #' Coerce Data Frame Items with Codelists to Factor
 #'
-#' Coerces items in data.frame with codelist attribute to factor.
+#' Coerces items in data.frame with codelist attribute to 'classified':
+#' a factor with a codelist attribute
 #'
 #' @param x data.frame
 #' @param ... passed to \code{\link[dplyr]{select}} to limit scope
@@ -105,11 +110,14 @@ factorize_codelist.character <- function(x,...){
 #' x %>% explicit_guide %>% factorize_codelist(Heart:glyco) %>% decorations(Age, Race, Heart:glyco)
 
 factorize_codelist.data.frame <- function(x,...){
+  my_class <- class(x)
   for(nm in selected(x,...)){
     if('codelist' %in% names(attributes(x[[nm]]))){
-      x[[nm]] <- factorize_codelist(x[[nm]])
+      x[[nm]] <- factorize_codelist(x[[nm]]) # grouped_df can drop subclass!
     }
   }
+  class(x) <- my_class
   x
 }
+
 

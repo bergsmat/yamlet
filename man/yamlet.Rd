@@ -86,7 +86,7 @@ is nested within the attribute sequence. Equivalently:
 
 To get started using yamlet, see \code{?as_yamlet.character} and
 examples there. See also \code{?decorate} which adds yamlet
-values to corresponding items in your data. See also \code{?print.dg}
+values to corresponding items in your data. See also \code{?print.decorated}
 which uses label attributes, if present, as axis labels.
 
 Note: the quinidine and phenobarb datasets in the examples

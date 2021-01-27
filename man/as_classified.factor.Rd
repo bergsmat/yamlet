@@ -17,6 +17,7 @@ class 'classified' 'factor'
 \description{
 Coerce factor to classified.
 Creates a factor that retains attributes during subsetting.
+Deprecated.  Prefer classified().
 }
 \examples{
 class(as_classified(factor(letters)))
@@ -24,7 +25,15 @@ class(as_classified(factor(letters)))
 \seealso{
 Other classified: 
 \code{\link{[.classified}()},
-\code{\link{as_classified}()}
+\code{\link{[<-.classified}()},
+\code{\link{[[.classified}()},
+\code{\link{[[<-.classified}()},
+\code{\link{as_classified}()},
+\code{\link{c.classified}()},
+\code{\link{classified.data.frame}()},
+\code{\link{unclassified.classified}()},
+\code{\link{unclassified.data.frame}()},
+\code{\link{unclassified}()}
 }
 \concept{classified}
 \keyword{internal}

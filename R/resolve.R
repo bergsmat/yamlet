@@ -17,9 +17,9 @@ resolve <- function(x, ...)UseMethod('resolve')
 #' Resolves implicit usage of default key 'guide' to
 #' explicit usage for decorated class.
 #' Simply calls \code{\link{explicit_guide}}
-#' followed by \code{\link{factorize_codelist}}.
+#' followed by \code{\link{classified}}.
 #' @param x object
-#' @param ... passed to \code{\link{explicit_guide}} and \code{\link{factorize_codelist}}
+#' @param ... passed to \code{\link{explicit_guide}} and \code{\link{classified}}
 #' @export
 #' @return class 'resolved' (and inherited classes)
 #' @family resolve
@@ -33,7 +33,7 @@ resolve <- function(x, ...)UseMethod('resolve')
 
 resolve.decorated <- function(x, ...){
   x <- explicit_guide(x, ...)
-  x <- factorize_codelist(x, ...)
+  x <- classified(x, ...)
   class(x) <- union('resolved', class(x))
   x
 }

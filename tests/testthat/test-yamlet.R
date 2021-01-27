@@ -261,7 +261,7 @@ test_that('dplyr filter does not drop attributes',{
   expect_true(
     setequal(
       x %>% filter(!is.na(conc)) %$% Heart %>% attributes %>% names,
-      c('levels','class','label')
+      c('levels','class','label','codelist')
     )
   )
 })
@@ -601,6 +601,7 @@ test_that('column attributes with metacharacters are quoted or escaped on write'
   y <- readLines(sub('csv','yaml',file))
   expect_identical(y, datum)
 })
+
 test_that('ggready supports axis label line breaks',{
   library(yamlet)
   library(ggplot2)
@@ -915,4 +916,46 @@ expect_silent(print(x %>% filter(event == 'conc') %>% ggplot(map) + geom_point()
 
 })
 
+test_that('unclassified is the inverse of classified',{
+  # file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  # x <- decorate(file)
+  # expect_identical(x, defactorize_codelist(factorize_codelist(x)))
+})
 
+test_that('implicit_guide is the inverse of explicit_guide',{
+  # file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  # x <- decorate(file)
+  # expect_identical(x, implicit_guide(explicit_guide(x)))
+})
+
+
+test_that('desolve is the inverse of resolve',{
+  # file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  # x <- decorate(file)
+  # expect_identical(x, desolve(resolve(x)))
+})
+
+test_that('labels and guide elements with colon-space are quoted',{
+  foo <- data.frame(x = 1)
+  attr(foo$x,'label') <- 'foo: x'
+  guide <- list(1)
+  names(guide) <- 'H: M'
+  attr(foo$x, 'guide') <- guide
+  dir <- tempdir()
+  file <- file.path(dir, 'foo.csv')
+  foo %>% io_csv(file)
+  expect_silent(io_csv(file))
+})
+
+test_that('classified methods do not lose attributes',{
+
+})
+test_that('unclassified methods do not lose attributes',{
+
+})
+test_that('classified() works the same on character and factor',{
+
+})
+test_that('classified() accepts labels of length(x) with one-to-one correspondence',{
+
+})

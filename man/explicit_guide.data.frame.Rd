@@ -12,7 +12,7 @@
 )
 }
 \arguments{
-\item{x}{yamlet}
+\item{x}{data.frame}
 
 \item{...}{named arguments passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}; un-named arguments limit scope}
 
@@ -21,7 +21,7 @@
 \item{simplify}{whether to remove guide attribute}
 }
 \value{
-yamlet
+data.frame
 }
 \description{
 Coerces data.frame 'guide' attributes to something more explicit.
@@ -57,7 +57,9 @@ x \%>\% explicit_guide(DATE) \%>\% decorations # limit scope
 \seealso{
 Other explicit_guide: 
 \code{\link{explicit_guide.yamlet}()},
-\code{\link{explicit_guide}()}
+\code{\link{explicit_guide}()},
+\code{\link{implicit_guide.data.frame}()},
+\code{\link{implicit_guide}()}
 }
 \concept{explicit_guide}
 \keyword{internal}

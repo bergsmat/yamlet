@@ -109,7 +109,7 @@ explicit_guide.yamlet <- function(x, ..., default = 'guide', data = NULL){
 #' purges 'guide' attributes from the data.frame,
 #' and then re-decorates using \code{overwrite = TRUE}.
 #'
-#' @param x yamlet
+#' @param x data.frame
 #' @param overwrite passed as TRUE
 #' @param ... named arguments passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}; un-named arguments limit scope
 #' @param simplify whether to remove guide attribute
@@ -117,7 +117,7 @@ explicit_guide.yamlet <- function(x, ..., default = 'guide', data = NULL){
 #' @keywords internal
 #' @importFrom dplyr case_when
 #' @importFrom encode encoded
-#' @return yamlet
+#' @return data.frame
 #' @family explicit_guide
 #' @examples
 #' library(magrittr)
@@ -144,7 +144,7 @@ explicit_guide.data.frame <- function(
 ){
   y <- do.call(as_yamlet, c(list(x), named(...)))
   nms <- selected(x, ...)
-  y <- y[nms]
+  y <- y[as.character(nms)] # selected may have incompatible class path
   y <- do.call(explicit_guide, c(list(y, data = x), named(...)))
   if(simplify){
     for(nm in nms){
@@ -152,6 +152,82 @@ explicit_guide.data.frame <- function(
     }
   }
   x <- do.call(decorate, c(list(x, meta = y, overwrite = TRUE), named(...)))
+  x
+}
+#' Coerce Guide to Something More Implicit
+#'
+#' Coerces 'guide' to something more implicit.  Generic, with methods for
+#' data.frame.  The key 'guide' generally suggests a guide
+#' to interpretation of a data item, such as units, formats, codelists,
+#' and encodings.  The idea here is to replace these with 'guide': i.e.,
+#' to undo the effects of \code{\link{explicit_guide}}.
+#'
+#' @param x object of dispatch
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @return see methods
+#' @family explicit_guide
+#' @md
+implicit_guide <- function(x,...)UseMethod('implicit_guide')
+
+#' Coerce Data Frame Guide to Something More Implicit
+#'
+#' Coerces data.frame guide-like attributes to 'guide'.
+#' The attribute 'guide' generally suggests a guide
+#' to interpretation of a data item, such as units, formats, codelists,
+#' and encodings.  The idea here is to replace these with 'guide':
+#' i.e., to undo the effects of \code{\link{explicit_guide.data.frame}}.
+#' If guide attribute is still present, the explicit attribute is removed.
+#' Otherwise the explicit element is renamed.
+#'
+#'
+#' @param x data.frame
+#' @param ... named arguments ignored; un-named arguments limit scope
+#' @export
+#' @keywords internal
+#' @importFrom dplyr case_when
+#' @importFrom encode encoded
+#' @return yamlet
+#' @family explicit_guide
+#' @examples
+#' library(magrittr)
+#' x <- data.frame(
+#'  ID = 1,
+#'  CONC = 1,
+#'  RACE = 1,
+#'  SEX = 1,
+#'  DATE = 1
+#' )
+#' x %<>% modify(ID, label = 'subject identifier')
+#' x %<>% modify(CONC, label = 'concentration', guide = 'ng/mL')
+#' x %<>% modify(RACE, label = 'race', guide = list(white = 0, black = 1, asian = 2))
+#' x %<>% modify(SEX, label = 'sex', guide = list(female = 0, male = 1))
+#' x %<>% modify(DATE, label  = 'date', guide = '%Y-%m-%d')
+#' x %>% decorations
+#' x %>% explicit_guide %>% decorations
+#' x %>% explicit_guide %>% implicit_guide %>% decorations
+#' x %>% explicit_guide %>% implicit_guide(DATE) %>% decorations # limit scope
+#' x %>% explicit_guide(simplify = FALSE) %>% decorations
+#' x %>% explicit_guide(simplify = FALSE) %>% implicit_guide %>% decorations
+
+implicit_guide.data.frame <- function(
+  x,
+  ...
+){
+  nms <- selected(x, ...)
+  for(nm in nms){
+    attr <- attributes(x[[nm]])
+    anms <- names(attr)
+    anms <- intersect(anms, c('units', 'format', 'codelist', 'encoding'))
+    for(anm in anms){
+      if('guide' %in% anms){
+        attributes(x[[nm]][[anm]]) <- NULL
+      } else {
+        names(attributes(x[[nm]]))[names(attributes(x[[nm]])) == anm] <- 'guide'
+      }
+    }
+  }
   x
 }
 

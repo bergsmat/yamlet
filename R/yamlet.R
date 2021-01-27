@@ -474,6 +474,12 @@ to_yamlet.character <- function(x, ...){
   index <- grepl('[],[]', x)                   # contains collapse meta
   x[index] <- paste0("'",x[index],"'")         # wrapped in '
 
+  # leading colon trapped above
+  # must quote embedded colon-space (multi-char syntactical element)
+  index <- grepl(': +', x)                   # contains collapse meta
+  x[index] <- paste0("'",x[index],"'")         # wrapped in '
+
+
   if(length(x) == 1) return(x)
 
   # multiples get [,,]
