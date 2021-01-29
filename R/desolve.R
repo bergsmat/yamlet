@@ -18,11 +18,10 @@ desolve <- function(x, ...)UseMethod('desolve')
 #' implicit usage for decorated class.
 #' Simply calls \code{\link{unclassified}}
 #' followed by \code{\link{implicit_guide}}.
-#' Strips class 'resolved' if present.
 #' @param x object
 #' @param ... passed to \code{\link{implicit_guide}} and \code{\link{classified}}
 #' @export
-#' @return class 'decorated' (and inherited classes)
+#' @return decorated
 #' @family resolve
 #' @family interface
 #' @examples
@@ -35,6 +34,6 @@ desolve <- function(x, ...)UseMethod('desolve')
 desolve.decorated <- function(x, ...){
   x <- unclassified(x, ...)
   x <- implicit_guide(x, ...)
-  class(x) <- setdiff(class(x),'resolved')
+  #class(x) <- setdiff(class(x),'resolved')
   x
 }

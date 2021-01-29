@@ -4,9 +4,7 @@
 #' This is the ggplot() method for class 'ggready';
 #' it tries to implement automatic labels and units in axes and legends
 #' in association with \code{\link{print.ggready_ggplot}}.
-#' This approach is deprecated in favor of a cleaner
-#' object hierarchy for classes 'decorated' and 'resolved'.
-#' See \code{\link{ggplot.decorated}}.
+#' This approach is deprecated in favor of \code{\link{ggplot.decorated}}.
 #'
 #' @param data data.frame or similar
 #' @param ... passed to \code{\link[ggplot2]{ggplot}}

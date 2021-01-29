@@ -1,6 +1,6 @@
 #' Import Resolved Tables
 #'
-#' Imports 'resolved' tables as comma-separated variable.
+#' Imports tables as comma-separated variable and resolves ambiguous guide elements.
 #' Generic, with character method that extends \code{\link{io_csv}}.
 
 #'@param x object
@@ -14,7 +14,7 @@ io_res <- function(x, ...)UseMethod('io_res')
 
 #' Import Documented Table as Resolved
 #'
-#' Imports a documented table and coerces to class 'resolved'.
+#' Imports a documented table resolve ambiguouous guide elements.
 #' A wrapper for \code{\link{io_csv.character}} that also
 #' reads associated yamlet metadata, if present, and applies it
 #' as attributes. Invokes \code{\link{resolve}} to resolve
@@ -28,7 +28,7 @@ io_res <- function(x, ...)UseMethod('io_res')
 #' @keywords internal
 #' @family io
 #' @family interface
-#' @return data.frame, also inheriting 'resolved' if possible
+#' @return decorated
 #' @examples
 #' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')

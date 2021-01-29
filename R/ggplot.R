@@ -7,13 +7,14 @@
 #' is invoked; see \code{\link{print.decorated_ggplot}}.
 #'
 #' This approach is similar to but more flexible than
-#' the method for \code{\link{ggready}}. Currently,
-#' there is only one method for resolve() (\code{\link{resolve.decorated}})
-#' with the result that all 'resolved' objects inherit 'decorated'
-#' and thus can use \code{\link{ggplot.decorated}}.
-#'
+#' the method for \code{\link{ggready}}.
+# Currently,
+# there is only one method for resolve() (\code{\link{resolve.decorated}})
+# with the result that all 'resolved' objects inherit 'decorated'
+# and thus can use \code{\link{ggplot.decorated}}.
+#
 #' For finer control, you can switch between 'data.frame'
-#' and to 'decorated' using \code{\link{as_decorated}}
+#' and 'decorated' using \code{\link{as_decorated}}
 #' (supplies null decorations) and \code{\link{as.data.frame}}
 #' (preserves decorations).
 #'

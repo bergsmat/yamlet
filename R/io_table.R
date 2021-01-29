@@ -72,7 +72,8 @@ io_table.character <- function(
 #' @param x data.frame
 #' @param file passed to \code{\link{write.table}}
 #' @param ext = extension for metadata equivalent of x
-#' @param coerce logical; whether to coerce factor levels to guide; alternatively, a key for the levels
+# @ 0.6.1, dropping coerce (passed to io_yamlet, which does not implement)
+# @param coerce logical; whether to coerce factor levels to guide; alternatively, a key for the levels
 #' @param con passed to \code{\link{io_yamlet}}
 #' @param useBytes passed to \code{\link{io_yamlet}}
 #' @param default_keys passed to \code{\link{io_yamlet}}
@@ -88,7 +89,7 @@ io_table.data.frame <- function(
   x,
   file = '',
   ext = getOption('yamlet_extension', '.yaml'),
-  coerce = getOption("yamlet_coerce_decorations", FALSE),
+  # coerce = getOption("yamlet_coerce_decorations", FALSE),
   con = stdout(),
   useBytes = FALSE,
   default_keys = getOption(
@@ -112,7 +113,7 @@ io_table.data.frame <- function(
     con = con,
     useBytes = useBytes,
     default_keys = default_keys,
-    coerce = coerce,
+   # coerce = coerce,
     ...
   )
   invisible(file)

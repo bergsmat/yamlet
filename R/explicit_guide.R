@@ -56,6 +56,7 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' library(magrittr)
 #' 'CONC: [ concentration, µg/mL ]' %>% as_yamlet %>% explicit_guide
 #' 'RACE: [ subject race, [ Caucasian: 0, Latin: 1, Black: 2 ]]' %>% as_yamlet %>% explicit_guide
+#' 'RACE: [ subject race, [ Caucasian, Latin, Black ]]' %>% as_yamlet %>% explicit_guide
 #' 'RACE: [ subject race, //0/Caucasian//1/Latin//2/Black// ]' %>% as_yamlet %>% explicit_guide
 #' 'DATE: [ date, "%Y-%m-%d" ]' %>% as_yamlet %>% explicit_guide
 #' 'PRSE: [ standard error, "%" ]' %>% as_yamlet %>% explicit_guide

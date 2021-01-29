@@ -21,7 +21,7 @@ resolve <- function(x, ...)UseMethod('resolve')
 #' @param x object
 #' @param ... passed to \code{\link{explicit_guide}} and \code{\link{classified}}
 #' @export
-#' @return class 'resolved' (and inherited classes)
+#' @return decorated
 #' @family resolve
 #' @family interface
 #' @examples
@@ -34,6 +34,6 @@ resolve <- function(x, ...)UseMethod('resolve')
 resolve.decorated <- function(x, ...){
   x <- explicit_guide(x, ...)
   x <- classified(x, ...)
-  class(x) <- union('resolved', class(x))
+  # class(x) <- union('resolved', class(x))
   x
 }

@@ -1,7 +1,7 @@
 #' Prepare Data for GGplot
 #'
 #' Prepares data for ggplot.
-#' Generic, with methods for data.frame, decorated, and resolved.
+#' Generic, with methods for data.frame, and decorated.
 #' @param x object
 #' @param ... passed arguments
 #' @export
@@ -85,11 +85,12 @@ ggready.data.frame <- function(
 #' units to label using \code{\link{append_units}}
 #' (passing \code{style = 'plotmath'} if \code{parse}
 #' is true, else \code{style = 'plain'}).
-#' Enforces classes 'decorated','resolved', and  'ggready'.
+#' Enforces classes 'decorated' and  'ggready'.
 #'
 #' @param x object
 #' @param ... passed to \code{\link{append_units}} and \code{\link{resolve}}; may include unquoted column names
 #' @param parse passed to \code{\link{append_units}}
+#' @param resolve whether to resolve guide attributes
 #' @export
 #' @importFrom spork as_spork
 #' @importFrom spork plotmathToken
@@ -100,50 +101,54 @@ ggready.data.frame <- function(
 #' example(ggready)
 ggready.decorated <- function(
   x, ... ,
-  parse = getOption('ggready_parse',TRUE)
+  parse = getOption('ggready_parse',TRUE),
+  resolve = TRUE
 ){
-  x <- resolve(x, ...)
+  if(resolve) x <- resolve(x, ...)
   stopifnot(is.logical(parse), length(parse) == 1)
   x <- append_units(x, ..., style = if(parse) 'plotmath' else 'plain')
   class(x) <- union('decorated', class(x))
-  class(x) <- union('resolved', class(x))
+  # class(x) <- union('resolved', class(x))
   class(x) <- union('ggready', class(x))
   x
 }
-#' Prepare Resolved Data Frame for GGplot
-#'
-#' Prepares resolved data.frame for ggplot. Appends
-#' units to label using \code{\link{append_units}}
-#' (passing \code{style = 'plotmath'} if \code{parse}
-#' is true, else \code{style = 'plain'}).
-#' Enforces classes 'decorated','resolved', and  'ggready'.
-#' Unlike \code{\link{ggready.decorated}}, the
-#' method for class resolved does NOT call resolve(),
-#' and so does not second-guess any particular
-#' resolutions you may have already made.
-#'
-#' @param x object
-#' @param ... passed to \code{\link{append_units}} and \code{\link{resolve}}; may include unquoted column names
-#' @param parse passed to \code{\link{append_units}}
-#' @export
-#' @importFrom spork as_spork
-#' @importFrom spork plotmathToken
-#' @return ggready
-#' @keywords internal
-#' @family ggready
-#' @examples
-#' example(ggready)
-ggready.resolved <- function(
-  x, ... ,
-  parse = getOption('ggready_parse',TRUE)
-){
-  stopifnot(is.logical(parse), length(parse) == 1)
-  x <- append_units(x, ..., style = if(parse) 'plotmath' else 'plain')
-  class(x) <- union('decorated', class(x))
-  class(x) <- union('resolved', class(x))
-  class(x) <- union('ggready', class(x))
-  x
-}
+
+
+# As of 0.6.1, deconstructing class resolved.
+# Prepare Resolved Data Frame for GGplot
+#
+# Prepares resolved data.frame for ggplot. Appends
+# units to label using \code{\link{append_units}}
+# (passing \code{style = 'plotmath'} if \code{parse}
+# is true, else \code{style = 'plain'}).
+# Enforces classes 'decorated','resolved', and  'ggready'.
+# Unlike \code{\link{ggready.decorated}}, the
+# method for class resolved does NOT call resolve(),
+# and so does not second-guess any particular
+# resolutions you may have already made.
+#
+# @param x object
+# @param ... passed to \code{\link{append_units}} and \code{\link{resolve}}; may include unquoted column names
+# @param parse passed to \code{\link{append_units}}
+# @export
+# @importFrom spork as_spork
+# @importFrom spork plotmathToken
+# @return ggready
+# @keywords internal
+# @family ggready
+# @examples
+# example(ggready)
+# ggready.resolved <- function(
+#   x, ... ,
+#   parse = getOption('ggready_parse',TRUE)
+# ){
+#   stopifnot(is.logical(parse), length(parse) == 1)
+#   x <- append_units(x, ..., style = if(parse) 'plotmath' else 'plain')
+#   class(x) <- union('decorated', class(x))
+#   class(x) <- union('resolved', class(x))
+#   class(x) <- union('ggready', class(x))
+#   x
+# }
 
 #' @export
 spork::plotmathToken

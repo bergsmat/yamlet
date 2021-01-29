@@ -1,3 +1,4 @@
+library(testthat)
 test_that('yaml package result is stable',{
   expect_equal_to_reference(file = '001.rds', yaml::yaml.load('[ID: ]'))
   expect_equal_to_reference(file = '002.rds', yaml::yaml.load('ID: '))
@@ -917,9 +918,18 @@ expect_silent(print(x %>% filter(event == 'conc') %>% ggplot(map) + geom_point()
 })
 
 test_that('unclassified is the inverse of classified',{
-  # file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-  # x <- decorate(file)
-  # expect_identical(x, defactorize_codelist(factorize_codelist(x)))
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  x %<>% explicit_guide
+  y <- classified(x)
+  z <- unclassified(y)
+  x %>% decorations(Race)
+  y %>% decorations(Race)
+  z %>% decorations(Race)
+  attr(x$Race, 'codelist')
+  attr(y$Race, 'codelist')
+  attr(z$Race, 'codelist')
+  expect_identical(x, z)
 })
 
 test_that('implicit_guide is the inverse of explicit_guide',{
@@ -934,7 +944,7 @@ test_that('desolve is the inverse of resolve',{
   # x <- decorate(file)
   # expect_identical(x, desolve(resolve(x)))
 })
-
+test_that('resolve and desolve retain class',{})
 test_that('labels and guide elements with colon-space are quoted',{
   foo <- data.frame(x = 1)
   attr(foo$x,'label') <- 'foo: x'
@@ -1005,3 +1015,7 @@ test_that('as_yamlet does not capture levels of classified by default',{
 })
 
 test_that('decorations() does not print colon for un-named list',{})
+test_that('filter.decorated retains class', {})
+test_that('promote() retains class decorated', {})
+test_that('class resolved is really necessary', {})
+test_that('decorations() treats factor levels the same for factor and classified',{})

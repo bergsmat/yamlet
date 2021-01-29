@@ -193,6 +193,7 @@ filter.decorated <- function(
 ){
   y <- NextMethod()
   if(.promote) y <- promote(y)
+  y <- as_decorated(y)
   y
 }
 
@@ -239,6 +240,7 @@ filter.decorated <- function(
     attributes(y[[nm]]) <- attributes(x[[nm]])
   }
   if(.promote) y <- promote(y)
+  y <- as_decorated(y)
   y
 }
 

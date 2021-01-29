@@ -271,13 +271,16 @@ decorations <- function(x,...)UseMethod('decorations')
 #' used to decorate it. Returns a list with same names as the data.frame.
 #' By default, \code{class} attributes are excluded from the result,
 #' as this is an attribute you likely don't want to manipulate independently.
-#' Consider carefully whether the default handling of factor levels
-#' (see \code{coerce} argument) is appropriate for your application.
+
+# As of 0.6.1, dropping coerce argument because of conflicts with classified().
+# former help:
+# Consider carefully whether the default handling of factor levels
+# (see \code{coerce} argument) is appropriate for your application.
 
 #'
 #' @param x data.frame
 #' @param ... optional unquoted column names to limit output (passed to \code{\link[dplyr]{select}})
-#' @param coerce logical: whether to coerce factor levels to guide; alternatively, a key for the levels
+# @param coerce logical: whether to coerce factor levels to guide; alternatively, a key for the levels
 #' @param exclude_attr attributes to remove from the result
 #' @export
 #' @family decorate
@@ -291,42 +294,41 @@ decorations <- function(x,...)UseMethod('decorations')
 #' decorations(x)
 #' decorations(y)
 #' decorations(y, conc)
-#' decorations(y, coerce = TRUE)
-#' decorations(y, coerce = 'codelist')
 #' decorations(y, exclude_attr = NULL)
 
 decorations.data.frame <- function(
   x,
   ...,
-  coerce = getOption('yamlet_coerce_decorations', FALSE),
-  exclude_attr = getOption('yamlet_exclude_attr', 'class')
+#  coerce = getOption('yamlet_coerce_decorations', FALSE),
+  exclude_attr = getOption('yamlet_exclude_attr', c('class','levels'))
 ){
+  # coerce <- FALSE
   stopifnot(length(exclude_attr) == 0 || is.character(exclude_attr))
   nms <- selected(x, ...)
   x <- x[, as.character(nms), drop = FALSE] # selected may have incompatible class path
   out <- lapply(x, attributes)
   levs_key <- 'guide'
-  if(!is.logical(coerce)){
-    if(is.character(coerce))
-      if(length(coerce) == 1){
-        levs_key <- coerce
-        coerce <- TRUE
-      }
-  }
-  if(!is.logical(coerce)){
-    warning('coerce value not logical')
-  }else{
-    if(coerce){
-      for(i in seq_along(out)){
-        if('class' %in% names(out[[i]])){
-          if(any(out[[i]]$class == 'factor')){ # factor or ordered factor
-            out[[i]]$class <- NULL
-            names(out[[i]])[names(out[[i]]) == 'levels'] <- levs_key
-          }
-        }
-      }
-    }
-  }
+  # if(!is.logical(coerce)){
+  #   if(is.character(coerce))
+  #     if(length(coerce) == 1){
+  #       levs_key <- coerce
+  #       coerce <- TRUE
+  #     }
+  # }
+  # if(!is.logical(coerce)){
+  #   warning('coerce value not logical')
+  # }else{
+  #   if(coerce){
+  #     for(i in seq_along(out)){
+  #       if('class' %in% names(out[[i]])){
+  #         if(any(out[[i]]$class == 'factor')){ # factor or ordered factor
+  #           out[[i]]$class <- NULL
+  #           names(out[[i]])[names(out[[i]]) == 'levels'] <- levs_key
+  #         }
+  #       }
+  #     }
+  #   }
+  # }
   for(i in exclude_attr){
     for(j in names(out)){
       if(i %in% names(out[[j]])) out[[j]][[i]] <- NULL

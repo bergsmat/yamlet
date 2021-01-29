@@ -78,7 +78,11 @@ classified.default <- function(
   names(codelist) <- levels
 
   # simplify codelist if possible
-  if(all(names(codelist) == unlist(codelist))) names(codelist) <- NULL
+  if(all(names(codelist) == unlist(codelist))) {
+    names(codelist) <- NULL
+    codelist <- unlist(codelist)
+  }
+
 
   # call factor()
   z <- factor(
@@ -292,7 +296,10 @@ as_classified.factor <- function(x, ...){
   names(codelist)[names(codelist) == ''] <- unlist(codelist)[names(codelist) == '']
   if(any(duplicated(names(codelist))))warning('conflicting codelist specifications')
   codelist <- codelist[!duplicated(names(codelist))]
-  if(all(names(codelist) == unlist(codelist)))names(codelist) <- NULL
+  if(all(names(codelist) == unlist(codelist))){
+    names(codelist) <- NULL
+    codelist <- unlist(codelist)
+  }
   attr(y,'codelist') <- codelist
   y
 }

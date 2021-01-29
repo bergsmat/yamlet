@@ -33,7 +33,7 @@ unclassified.classified <- function(x, ...){
   levels <- unlist(codelist)
   labels <- names(codelist)
   if(is.null(labels))labels <- as.character(codelist)
-  y <- levels[match(as.character(x), labels)]
+  y <- labels[match(as.character(x), levels)]
   y <- type.convert(y, as.is = TRUE)
   nms <- names(attributes(x))
   nms <- setdiff(nms, c('class','levels','contrasts'))
