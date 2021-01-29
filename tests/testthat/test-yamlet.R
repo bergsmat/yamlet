@@ -948,14 +948,60 @@ test_that('labels and guide elements with colon-space are quoted',{
 })
 
 test_that('classified methods do not lose attributes',{
+foo <- classified(letters[1:5])
+bar <- classified(LETTERS[1:5])
+attr(foo, 'label') <- 'letters'
+attr(bar, 'label') <- 'LETTERS'
+foo[2:3] <- c('a','b')
+foo[[4]] <- 'c'
+expect_true(
+  setequal(
+    names(attributes(c(foo,bar))),
+    c('levels','class','codelist','label')
+  )
+)
+expect_true(
+  setequal(
+    names(attributes(foo[1:2])),
+    c('levels','class','codelist','label')
+  )
+)
+expect_true(
+  setequal(
+    names(attributes(foo[[2]])),
+    c('levels','class','codelist','label')
+  )
+)
 
 })
 test_that('unclassified methods do not lose attributes',{
-
+  foo <- classified(letters[1:5])
+  attr(foo, 'label') <- 'letters'
+  foo <- unclassified(foo)
+  expect_true(
+    setequal(
+      names(attributes(foo)),
+      c('codelist','label')
+    )
+  )
 })
 test_that('classified() works the same on character and factor',{
-
+expect_identical(classified(LETTERS), classified(factor(LETTERS)))
 })
-test_that('classified() accepts labels of length(x) with one-to-one correspondence',{
-
+test_that('as_yamlet does not capture levels of classified by default',{
+  library(magrittr)
+  library(dplyr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  y <- x
+  y$Heart %<>% classified
+  expect_true(
+    setequal(
+      names(decorations(y, Heart)[[1]]),
+      c('label','guide','codelist')
+    )
+  )
+  decorations(x, Heart)
 })
+
+test_that('decorations() does not print colon for un-named list',{})

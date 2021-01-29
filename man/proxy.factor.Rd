@@ -4,7 +4,7 @@
 \alias{proxy.factor}
 \title{Calculate Substitute Values for Factor Levels}
 \usage{
-\method{proxy}{factor}(x, y, ...)
+\method{proxy}{factor}(x, y = as.numeric(x), ...)
 }
 \arguments{
 \item{x}{factor}
@@ -26,6 +26,11 @@ an order corresponding to levels(x).
 \examples{
 proxy(factor(1:3), letters[1:3])
 proxy(factor(1:3), factor(letters[1:3]))
+proxy(factor(letters[4:6]))
+foo <- classified(letters[1:5])
+as_yamlet(attributes(foo))
+foo <- classified(foo, labels = proxy(foo))
+as_yamlet(attributes(foo))
 }
 \seealso{
 Other proxy: 

@@ -29,7 +29,12 @@ proxy <- function(x,...)UseMethod('proxy')
 #' @examples
 #' proxy(factor(1:3), letters[1:3])
 #' proxy(factor(1:3), factor(letters[1:3]))
-proxy.factor <- function(x, y, ...){
+#' proxy(factor(letters[4:6]))
+#' foo <- classified(letters[1:5])
+#' as_yamlet(attributes(foo))
+#' foo <- classified(foo, labels = proxy(foo))
+#' as_yamlet(attributes(foo))
+proxy.factor <- function(x, y = as.numeric(x), ...){
   if(length(x) != length(y))stop('x and y must have same length')
   if(!(is.factor(y)|is.vector(y)))stop('y must be vector or factor')
   if(!(nrow(distinct(data.frame(x,y))) == length(unique(x)))){
