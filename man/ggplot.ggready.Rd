@@ -19,9 +19,7 @@ Creates a new ggplot object for a ggready data.frame.
 This is the ggplot() method for class 'ggready';
 it tries to implement automatic labels and units in axes and legends
 in association with \code{\link{print.ggready_ggplot}}.
-This approach is deprecated in favor of a cleaner
-object hierarchy for classes 'decorated' and 'resolved'.
-See \code{\link{ggplot.decorated}}.
+This approach is deprecated in favor of \code{\link{ggplot.decorated}}.
 }
 \examples{
 example(ggready)
@@ -31,7 +29,6 @@ Other ggready:
 \code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.data.frame}()},
 \code{\link{ggready.decorated}()},
-\code{\link{ggready.resolved}()},
 \code{\link{ggready}()},
 \code{\link{print.ggready_ggplot}()}
 }

@@ -16,7 +16,7 @@ see methods
 }
 \description{
 Prepares data for ggplot.
-Generic, with methods for data.frame, decorated, and resolved.
+Generic, with methods for data.frame, and decorated.
 }
 \examples{
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -63,7 +63,6 @@ Other ggready:
 \code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.data.frame}()},
 \code{\link{ggready.decorated}()},
-\code{\link{ggready.resolved}()},
 \code{\link{print.ggready_ggplot}()}
 }
 \concept{ggready}

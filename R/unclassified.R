@@ -36,12 +36,17 @@ unclassified.classified <- function(x, ...){
   y <- labels[match(as.character(x), levels)]
   y <- type.convert(y, as.is = TRUE)
   nms <- names(attributes(x))
-  nms <- setdiff(nms, c('class','levels','contrasts'))
+  nms <- setdiff(nms, c('class','levels','contrasts','codelist'))
   for(nm in nms){
     attr(y, nm) <- attr(x, nm)
   }
+  names(labels) <- NULL # clean
+  names(levels) <- NULL # clean
   codelist <- structure(as.list(labels), names = levels)
-  if(all(names(codelist) == unlist(codelist)))names(codelist) <- NULL
+  if(all(names(codelist) == unlist(codelist))){
+    names(codelist) <- NULL
+    codelist <- unlist(codelist)
+  }
   attr(y, 'codelist') <- codelist
   y
 }

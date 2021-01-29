@@ -31,7 +31,6 @@ Other ggready:
 \code{\link{ggplot.ggready}()},
 \code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.decorated}()},
-\code{\link{ggready.resolved}()},
 \code{\link{ggready}()},
 \code{\link{print.ggready_ggplot}()}
 }

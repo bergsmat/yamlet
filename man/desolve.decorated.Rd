@@ -12,14 +12,13 @@
 \item{...}{passed to \code{\link{implicit_guide}} and \code{\link{classified}}}
 }
 \value{
-class 'decorated' (and inherited classes)
+decorated
 }
 \description{
 Un-resolves explicit usage of default key 'guide' to
 implicit usage for decorated class.
 Simply calls \code{\link{unclassified}}
 followed by \code{\link{implicit_guide}}.
-Strips class 'resolved' if present.
 }
 \examples{
 library(magrittr)

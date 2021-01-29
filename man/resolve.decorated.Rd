@@ -12,7 +12,7 @@
 \item{...}{passed to \code{\link{explicit_guide}} and \code{\link{classified}}}
 }
 \value{
-class 'resolved' (and inherited classes)
+decorated
 }
 \description{
 Resolves implicit usage of default key 'guide' to

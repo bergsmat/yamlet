@@ -923,28 +923,41 @@ test_that('unclassified is the inverse of classified',{
   x %<>% explicit_guide
   y <- classified(x)
   z <- unclassified(y)
-  x %>% decorations(Race)
-  y %>% decorations(Race)
-  z %>% decorations(Race)
-  attr(x$Race, 'codelist')
-  attr(y$Race, 'codelist')
-  attr(z$Race, 'codelist')
+  x %>% decorations(Creatinine)
+  y %>% decorations(Creatinine)
+  z %>% decorations(Creatinine)
+  attr(y$Creatinine, 'codelist')
+  identical(
+  attr(x$Creatinine, 'codelist'),
+  attr(z$Creatinine, 'codelist')
+  )
+  str(attr(x$Creatinine,'codelist'))
+  str(attr(z$Creatinine,'codelist'))
+
+  names(names(attr(x$Creatinine,'codelist')))
+  names(names(attr(z$Creatinine,'codelist')))
+
   expect_identical(x, z)
 })
 
 test_that('implicit_guide is the inverse of explicit_guide',{
-  # file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-  # x <- decorate(file)
-  # expect_identical(x, implicit_guide(explicit_guide(x)))
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  expect_identical(x, implicit_guide(explicit_guide(x)))
 })
 
 
 test_that('desolve is the inverse of resolve',{
-  # file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-  # x <- decorate(file)
-  # expect_identical(x, desolve(resolve(x)))
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  expect_identical(x, desolve(resolve(x)))
 })
-test_that('resolve and desolve retain class',{})
+test_that('resolve and desolve retain class',{
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  expect_true(inherits(resolve(x), 'decorated'))
+  expect_true(inherits(desolve(resolve(x)), 'decorated'))
+})
 test_that('labels and guide elements with colon-space are quoted',{
   foo <- data.frame(x = 1)
   attr(foo$x,'label') <- 'foo: x'
@@ -1015,7 +1028,29 @@ test_that('as_yamlet does not capture levels of classified by default',{
 })
 
 test_that('decorations() does not print colon for un-named list',{})
-test_that('filter.decorated retains class', {})
-test_that('promote() retains class decorated', {})
-test_that('class resolved is really necessary', {})
-test_that('decorations() treats factor levels the same for factor and classified',{})
+test_that('filter.decorated retains class', {
+  library(dplyr)
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  expect_true(inherits(x %>% filter(Subject == 1), 'decorated'))
+
+})
+test_that('promote() retains class decorated', {
+  library(dplyr)
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+  x <- decorate(file)
+  x %<>% filter(event == 'dose')
+  decorations(x)
+  expect_true(inherits(x, 'decorated'))
+})
+
+test_that('decorations() treats factor levels the same for factor and classified',{
+  library(dplyr)
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  expect_false('levels' %in% (x %>% decorations(Race) %>% `[[`(1) %>% names))
+  expect_false('levels' %in% (x %>% resolve %>% decorations(Race) %>% `[[`(1) %>% names))
+})

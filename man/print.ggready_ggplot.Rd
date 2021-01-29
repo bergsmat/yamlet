@@ -27,7 +27,6 @@ Other ggready:
 \code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.data.frame}()},
 \code{\link{ggready.decorated}()},
-\code{\link{ggready.resolved}()},
 \code{\link{ggready}()}
 }
 \concept{ggready}

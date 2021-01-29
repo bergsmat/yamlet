@@ -15,7 +15,7 @@ io_res(x, ...)
 See methods.
 }
 \description{
-Imports 'resolved' tables as comma-separated variable.
+Imports tables as comma-separated variable and resolves ambiguous guide elements.
 Generic, with character method that extends \code{\link{io_csv}}.
 }
 \examples{

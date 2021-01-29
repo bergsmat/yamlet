@@ -24,7 +24,6 @@ Other ggready:
 \code{\link{ggplot.ggready}()},
 \code{\link{ggready.data.frame}()},
 \code{\link{ggready.decorated}()},
-\code{\link{ggready.resolved}()},
 \code{\link{ggready}()},
 \code{\link{print.ggready_ggplot}()}
 }

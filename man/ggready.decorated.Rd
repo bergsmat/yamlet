@@ -4,7 +4,7 @@
 \alias{ggready.decorated}
 \title{Prepare Decorated Data Frame for GGplot}
 \usage{
-\method{ggready}{decorated}(x, ..., parse = getOption("ggready_parse", TRUE))
+\method{ggready}{decorated}(x, ..., parse = getOption("ggready_parse", TRUE), resolve = TRUE)
 }
 \arguments{
 \item{x}{object}
@@ -12,6 +12,8 @@
 \item{...}{passed to \code{\link{append_units}} and \code{\link{resolve}}; may include unquoted column names}
 
 \item{parse}{passed to \code{\link{append_units}}}
+
+\item{resolve}{whether to resolve guide attributes}
 }
 \value{
 ggready
@@ -22,7 +24,7 @@ Prepares decorated data.frame for ggplot. Calls
 units to label using \code{\link{append_units}}
 (passing \code{style = 'plotmath'} if \code{parse}
 is true, else \code{style = 'plain'}).
-Enforces classes 'decorated','resolved', and  'ggready'.
+Enforces classes 'decorated' and  'ggready'.
 }
 \examples{
 example(ggready)
@@ -32,7 +34,6 @@ Other ggready:
 \code{\link{ggplot.ggready}()},
 \code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.data.frame}()},
-\code{\link{ggready.resolved}()},
 \code{\link{ggready}()},
 \code{\link{print.ggready_ggplot}()}
 }
