@@ -23,6 +23,7 @@ proxy <- function(x,...)UseMethod('proxy')
 #' @param y factor or vector
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @importFrom dplyr distinct
 #' @family proxy
 #' @return same class as y

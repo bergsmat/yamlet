@@ -171,6 +171,7 @@ unnest.list <- function(x,...){
 #' @param ... passed arguments
 #' @return a named list
 #' @export
+#' @keywords internal
 #' @family yamlet
 #' @examples
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
@@ -418,6 +419,7 @@ as.character.yam <- function(x, ...){
 #' @param x object
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @return length-one character
 #' @family to_yamlet
 to_yamlet <- function(x, ...)UseMethod('to_yamlet')

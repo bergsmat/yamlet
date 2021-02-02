@@ -2,7 +2,7 @@
 % Please edit documentation in R/singularity.R
 \name{promote}
 \alias{promote}
-\title{Promote Something.}
+\title{Promote Something}
 \usage{
 promote(x, ...)
 }

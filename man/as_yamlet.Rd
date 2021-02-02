@@ -35,3 +35,4 @@ Other yamlet:
 \code{\link{print.yamlet}()}
 }
 \concept{yamlet}
+\keyword{internal}

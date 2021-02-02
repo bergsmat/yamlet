@@ -1054,3 +1054,28 @@ test_that('decorations() treats factor levels the same for factor and classified
   expect_false('levels' %in% (x %>% decorations(Race) %>% `[[`(1) %>% names))
   expect_false('levels' %in% (x %>% resolve %>% decorations(Race) %>% `[[`(1) %>% names))
 })
+
+test_that('mimic() is stable',{
+  library(dplyr)
+  library(magrittr)
+  let <- letters[1:5]
+  LET <- LETTERS[1:5]
+  int <- 0L:4L
+  num <- as.numeric(int)
+  fac <- factor(let)
+  css <- classified(let)
+
+  expect_equal_to_reference(mimic(let, let), '086.rds')
+  expect_equal_to_reference(mimic(LET, let), '087.rds')
+  expect_equal_to_reference(mimic(int, let), '088.rds')
+  expect_equal_to_reference(mimic(num, let), '089.rds')
+  expect_equal_to_reference(mimic(fac, let), '090.rds')
+  expect_equal_to_reference(mimic(css, let), '091.rds')
+  expect_equal_to_reference(mimic(character(0)), '092.rds')
+  expect_equal_to_reference(mimic(numeric(0)), '093.rds')
+  expect_equal_to_reference(mimic(LET), '094.rds')
+  x <- data.frame(let, LET)
+  x %<>% mutate(let = mimic(let, LET), LET = mimic(LET))
+  expect_equal_to_reference(str(x), '095.rds')
+
+})

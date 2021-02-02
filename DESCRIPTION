@@ -1,7 +1,7 @@
 Package: yamlet
 Type: Package
 Title: Versatile Curation of Table Metadata
-Version: 0.6.1
+Version: 0.6.2
 Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>
 Description: A YAML-based

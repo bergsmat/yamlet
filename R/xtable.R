@@ -59,6 +59,7 @@ footnote.decorated <- function(x, ..., equal = ':', collapse = '; '){
 #' @param label passed to \code{\link[xtable]{xtable}}
 #' @param style passed to \code{\link{footnote}}
 #' @export
+#' @keywords internal
 #' @importFrom xtable xtable
 #' @return class 'decorated_xtable','xtable', 'data.frame'
 #' @examples

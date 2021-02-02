@@ -3,12 +3,13 @@
 #' Imports tables as comma-separated variable and resolves ambiguous guide elements.
 #' Generic, with character method that extends \code{\link{io_csv}}.
 
-#'@param x object
-#'@param ... passed arguments
-#'@export
-#'@return See methods.
-#'@family io
-#'@examples
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @return See methods.
+#' @family io
+#' @examples
 #' example(io_res.character)
 io_res <- function(x, ...)UseMethod('io_res')
 

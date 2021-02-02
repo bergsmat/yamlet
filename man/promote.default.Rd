@@ -2,7 +2,7 @@
 % Please edit documentation in R/singularity.R
 \name{promote.default}
 \alias{promote.default}
-\title{Promote by Default.}
+\title{Promote by Default}
 \usage{
 \method{promote}{default}(
   x,
@@ -80,3 +80,4 @@ Other interface:
 }
 \concept{interface}
 \concept{promote}
+\keyword{internal}

@@ -36,3 +36,4 @@ Other io:
 \code{\link{io_yamlet}()}
 }
 \concept{io}
+\keyword{internal}

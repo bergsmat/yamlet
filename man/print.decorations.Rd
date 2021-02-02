@@ -33,3 +33,4 @@ Other decorate:
 \code{\link{redecorate}()}
 }
 \concept{decorate}
+\keyword{internal}

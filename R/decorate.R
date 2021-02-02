@@ -346,6 +346,7 @@ decorations.data.frame <- function(
 #' @param ... ignored
 #' @export
 #' @family decorate
+#' @keywords internal
 #' @return invisible x (yamlet)
 #' @examples
 #' example(decorations.data.frame)
@@ -362,6 +363,7 @@ print.decorations <- function(x, ...){
 #' @param ... passed arguments
 #' @export
 #' @family decorate
+#' @keywords internal
 #' @return decorated
 #' @examples
 #' class(Puromycin)
@@ -377,6 +379,7 @@ as_decorated <- function(x, ...)UseMethod('as_decorated')
 #' @param meta see \code{\link{decorate.list}}
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @family decorate
 #' @return decorated
 #' @examples

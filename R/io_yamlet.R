@@ -8,6 +8,7 @@
 #' @param x object
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @return see methods
 #' @family io
 #' @examples

@@ -37,3 +37,4 @@ Other proxy:
 \code{\link{proxy}()}
 }
 \concept{proxy}
+\keyword{internal}

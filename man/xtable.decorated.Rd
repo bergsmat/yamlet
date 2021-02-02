@@ -40,3 +40,4 @@ y <- xtable(x, auc:bmi)
 attr(y, 'footnote')
 
 }
+\keyword{internal}
