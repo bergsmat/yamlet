@@ -21,4 +21,18 @@ Generic, with method \code{\link{classified.default}}
 \examples{
 example(classified.default)
 }
+\seealso{
+Other classified: 
+\code{\link{[.classified}()},
+\code{\link{[<-.classified}()},
+\code{\link{[[.classified}()},
+\code{\link{[[<-.classified}()},
+\code{\link{c.classified}()},
+\code{\link{classified.data.frame}()},
+\code{\link{classified.default}()},
+\code{\link{unclassified.classified}()},
+\code{\link{unclassified.data.frame}()},
+\code{\link{unclassified}()}
+}
+\concept{classified}
 \keyword{internal}

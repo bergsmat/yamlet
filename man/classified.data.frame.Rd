@@ -32,9 +32,9 @@ Other classified:
 \code{\link{[<-.classified}()},
 \code{\link{[[.classified}()},
 \code{\link{[[<-.classified}()},
-\code{\link{as_classified.factor}()},
-\code{\link{as_classified}()},
 \code{\link{c.classified}()},
+\code{\link{classified.default}()},
+\code{\link{classified}()},
 \code{\link{unclassified.classified}()},
 \code{\link{unclassified.data.frame}()},
 \code{\link{unclassified}()}

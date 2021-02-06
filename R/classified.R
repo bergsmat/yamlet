@@ -7,6 +7,7 @@
 #' @export
 #' @return see methods
 #' @keywords internal
+#' @family classified
 #' @examples
 #' example(classified.default)
 classified <- function(x, ...)UseMethod('classified')
@@ -20,8 +21,9 @@ classified <- function(x, ...)UseMethod('classified')
 #' indicating the origin of its levels: it is
 #' constructed from the codelist attribute of x
 #' if available, or from 'levels' and 'labels'
-#' by default. Unlike the case for factor(),
-#' length of labels cannot be one.
+#' by default. Unlike the case for \code{\link{factor}},
+#' length of labels cannot be one (i.e., different from
+#' length of levels).
 #'
 #' @export
 #' @return 'classified' 'factor'
@@ -33,6 +35,7 @@ classified <- function(x, ...)UseMethod('classified')
 #' @param nmax see \code{\link{factor}}
 #' @param ... ignored
 #' @importFrom dplyr distinct
+#' @family classified
 #' @examples
 #' classified(1:3)
 #' classified(1:3, levels = 4:6)
@@ -109,40 +112,40 @@ classified.default <- function(
   z
 }
 
-#' Coerce to Classified
-#'
-#' Coerce something to classified.
-#' Generic, with method for factor.
-#' Deprecated.  Prefer classified().
-#'
-#' @param x object
-#' @param ... passed arguments
-#' @export
-#' @keywords internal
-#' @family classified
-#' @return see methods
-#' @examples
-#' example(as_classified.factor)
-as_classified <- function(x, ...)UseMethod('as_classified')
+# Coerce to Classified
+#
+# Coerce something to classified.
+# Generic, with method for factor.
+# Deprecated.  Prefer classified().
+#
+# @param x object
+# @param ... passed arguments
+# @export
+# @keywords internal
+# @family classified
+# @return see methods
+# @examples
+# example(as_classified.factor)
+# as_classified <- function(x, ...)UseMethod('as_classified')
 
-#' Coerce Factor to Classified
-#'
-#' Coerce factor to classified.
-#' Creates a factor that retains attributes during subsetting.
-#' Deprecated.  Prefer classified().
-#'
-#' @param x factor
-#' @param ... ignored arguments
-#' @export
-#' @keywords internal
-#' @family classified
-#' @return class 'classified' 'factor'
-#' @examples
-#' class(as_classified(factor(letters)))
-as_classified.factor <- function(x, ...){
-  class(x) <- union('classified', class(x))
-  x
-}
+# Coerce Factor to Classified
+#
+# Coerce factor to classified.
+# Creates a factor that retains attributes during subsetting.
+# Deprecated.  Prefer classified().
+#
+# @param x factor
+# @param ... ignored arguments
+# @export
+# @keywords internal
+# @family classified
+# @return class 'classified' 'factor'
+# @examples
+# class(as_classified(factor(letters)))
+# as_classified.factor <- function(x, ...){
+#   class(x) <- union('classified', class(x))
+#   x
+# }
 
 
 # http://adv-r.had.co.nz/S3.html
@@ -259,8 +262,9 @@ as_classified.factor <- function(x, ...){
 #' from the first argument.  Attribute 'levels' is
 #' supplied by next method.  Attribute 'codelist'
 #' is the combined codelists in sequence of
-#' all (dots) arguments, after removing
-#' duplicated names.
+#' all (dots) arguments, after silentl removing
+#' exact duplicates, and then removing
+#' duplicated names with warning.
 #'
 #' @param x classified factor
 #' @param ... passed to next method
@@ -294,6 +298,7 @@ as_classified.factor <- function(x, ...){
   # explicit names
   if(is.null(names(codelist)))names(codelist) <- unlist(codelist)
   names(codelist)[names(codelist) == ''] <- unlist(codelist)[names(codelist) == '']
+  codelist <- codelist[!duplicated(codelist)] # silently remove exact dups
   if(any(duplicated(names(codelist))))warning('conflicting codelist specifications')
   codelist <- codelist[!duplicated(names(codelist))]
   if(all(names(codelist) == unlist(codelist))){

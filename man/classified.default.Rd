@@ -39,8 +39,9 @@ In particular, classified has a codelist attribute
 indicating the origin of its levels: it is
 constructed from the codelist attribute of x
 if available, or from 'levels' and 'labels'
-by default. Unlike the case for factor(),
-length of labels cannot be one.
+by default. Unlike the case for \code{\link{factor}},
+length of labels cannot be one (i.e., different from
+length of levels).
 }
 \examples{
 classified(1:3)
@@ -48,3 +49,17 @@ classified(1:3, levels = 4:6)
 classified(1:3, levels = 1:3)
 classified(1:3, labels = letters[1:3])
 }
+\seealso{
+Other classified: 
+\code{\link{[.classified}()},
+\code{\link{[<-.classified}()},
+\code{\link{[[.classified}()},
+\code{\link{[[<-.classified}()},
+\code{\link{c.classified}()},
+\code{\link{classified.data.frame}()},
+\code{\link{classified}()},
+\code{\link{unclassified.classified}()},
+\code{\link{unclassified.data.frame}()},
+\code{\link{unclassified}()}
+}
+\concept{classified}

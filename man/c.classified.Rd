@@ -20,8 +20,9 @@ Attributes other than levels and codelist are taken
 from the first argument.  Attribute 'levels' is
 supplied by next method.  Attribute 'codelist'
 is the combined codelists in sequence of
-all (dots) arguments, after removing
-duplicated names.
+all (dots) arguments, after silentl removing
+exact duplicates, and then removing
+duplicated names with warning.
 }
 \examples{
 a <- classified(letters[1:3])
@@ -37,9 +38,9 @@ Other classified:
 \code{\link{[<-.classified}()},
 \code{\link{[[.classified}()},
 \code{\link{[[<-.classified}()},
-\code{\link{as_classified.factor}()},
-\code{\link{as_classified}()},
 \code{\link{classified.data.frame}()},
+\code{\link{classified.default}()},
+\code{\link{classified}()},
 \code{\link{unclassified.classified}()},
 \code{\link{unclassified.data.frame}()},
 \code{\link{unclassified}()}
