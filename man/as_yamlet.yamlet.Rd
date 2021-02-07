@@ -23,11 +23,15 @@ x <- as_yamlet(meta)
 as_yamlet(x)
 }
 \seealso{
-Other as_yamlet: 
+Other yamlet: 
 \code{\link{[.yamlet}()},
 \code{\link{as.character.yamlet}()},
+\code{\link{as_yamlet.character}()},
 \code{\link{as_yamlet.data.frame}()},
-\code{\link{as_yamlet.list}()}
+\code{\link{as_yamlet.list}()},
+\code{\link{as_yamlet.yam}()},
+\code{\link{as_yamlet}()},
+\code{\link{print.yamlet}()}
 }
-\concept{as_yamlet}
+\concept{yamlet}
 \keyword{internal}

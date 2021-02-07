@@ -57,7 +57,6 @@ x \%>\% filter(event == 'conc') \%>\% decorations(value)
 Other dplyr: 
 \code{\link{anti_join.decorated}()},
 \code{\link{arrange.decorated}()},
-\code{\link{as_decorated}()},
 \code{\link{full_join.decorated}()},
 \code{\link{group_by.decorated}()},
 \code{\link{inner_join.decorated}()},

@@ -262,7 +262,7 @@ classified.default <- function(
 #' from the first argument.  Attribute 'levels' is
 #' supplied by next method.  Attribute 'codelist'
 #' is the combined codelists in sequence of
-#' all (dots) arguments, after silentl removing
+#' all (dots) arguments, after silently removing
 #' exact duplicates, and then removing
 #' duplicated names with warning.
 #'
@@ -315,11 +315,12 @@ classified.default <- function(
 #' a factor with a codelist attribute.
 #'
 #' @param x data.frame
-#' @param ... passed to \code{\link[dplyr]{select}} to limit scope
+#' @param ... passed to \code{\link[dplyr]{select}} to limit column scope
 #' @export
 #' @keywords internal
 #' @return data.frame
 #' @family classified
+#' @family interface
 #' @examples
 #' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')

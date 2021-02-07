@@ -29,8 +29,7 @@ like x but with 'decorated' as first class element
 \description{
 Decorates a list-like object. Takes metadata
 in yamlet format and loads it onto corresponding
-list elements as attributes. This is the only
-function that creates class 'decorated'.
+list elements as attributes.
 }
 \examples{
 example(decorate.data.frame)
@@ -45,7 +44,6 @@ Other decorate:
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
 \code{\link{decorations}()},
-\code{\link{print.decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

@@ -4,7 +4,7 @@
 \alias{as_decorated.default}
 \title{Coerce to Decorated by Default}
 \usage{
-as_decorated.default(x, meta = "-", ...)
+\method{as_decorated}{default}(x, meta = "-", ...)
 }
 \arguments{
 \item{x}{object}
@@ -32,7 +32,6 @@ Other decorate:
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
 \code{\link{decorations}()},
-\code{\link{print.decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

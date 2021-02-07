@@ -1,8 +1,8 @@
 #' Unclassify Something
 #'
 #' Unclassify something.
-#' Generic, with method for 'classified'.
-#' See \code{\link{classified}}.
+#' Generic, with method \code{\link{unclassified.classified}}.
+#' See also \code{\link{classified}}.
 #'
 #' @param x object
 #' @param ... passed arguments
@@ -15,7 +15,7 @@
 unclassified <- function(x, ...)UseMethod('unclassified')
 
 #' Unclassify Classified
-
+#'
 #' Unclassifies classified.  Uses codelist attribute
 #' to restore original values, preserving other attributes
 #' (and rebuilding codelist).
@@ -55,7 +55,7 @@ unclassified.classified <- function(x, ...){
 #'
 #' Unclassifies data.frame.
 #' Coerces 'classified' items to original values,
-#' arebuilding codelist attribute.
+#' rebuilding codelist attribute.
 #'
 #' @param x data.frame
 #' @param ... passed to \code{\link[dplyr]{select}} to limit scope

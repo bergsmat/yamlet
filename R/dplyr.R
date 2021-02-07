@@ -1,15 +1,15 @@
-#' Coerce to Decorated
-#'
-#' Coerces to decorated by subclassing.
-#' @param x object of dispatch
-#' @param ... passed arguments
-#' @family dplyr
-#' @export
-#' @keywords internal
-as_decorated <- function(x, ...){
-  class(x) <- union('decorated', class(x))
-  x
-}
+# Coerce to Decorated
+#
+# Coerces to decorated by subclassing.
+# @param x object of dispatch
+# @param ... passed arguments
+# @family dplyr
+# @export
+# @keywords internal
+# as_decorated <- function(x, ...){
+#   class(x) <- union('decorated', class(x))
+#   x
+# }
 
 #' Slice Decorated
 #'

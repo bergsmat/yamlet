@@ -40,6 +40,7 @@ identical(a, e)
 decorate.list
 
 Other interface: 
+\code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{desolve.decorated}()},
 \code{\link{ggplot.decorated}()},
@@ -51,6 +52,7 @@ Other interface:
 \code{\link{io_yamlet.character}()},
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{is_parseable.default}()},
+\code{\link{mimic.default}()},
 \code{\link{modify.default}()},
 \code{\link{promote.default}()},
 \code{\link{read_yamlet}()},
@@ -66,7 +68,6 @@ Other decorate:
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
 \code{\link{decorations}()},
-\code{\link{print.decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

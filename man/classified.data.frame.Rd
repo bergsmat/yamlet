@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{data.frame}
 
-\item{...}{passed to \code{\link[dplyr]{select}} to limit scope}
+\item{...}{passed to \code{\link[dplyr]{select}} to limit column scope}
 }
 \value{
 data.frame
@@ -38,6 +38,28 @@ Other classified:
 \code{\link{unclassified.classified}()},
 \code{\link{unclassified.data.frame}()},
 \code{\link{unclassified}()}
+
+Other interface: 
+\code{\link{decorate.character}()},
+\code{\link{decorate.data.frame}()},
+\code{\link{desolve.decorated}()},
+\code{\link{ggplot.decorated}()},
+\code{\link{io_csv.character}()},
+\code{\link{io_csv.data.frame}()},
+\code{\link{io_res.character}()},
+\code{\link{io_table.character}()},
+\code{\link{io_table.data.frame}()},
+\code{\link{io_yamlet.character}()},
+\code{\link{io_yamlet.data.frame}()},
+\code{\link{is_parseable.default}()},
+\code{\link{mimic.default}()},
+\code{\link{modify.default}()},
+\code{\link{promote.default}()},
+\code{\link{read_yamlet}()},
+\code{\link{resolve.decorated}()},
+\code{\link{selected.default}()},
+\code{\link{write_yamlet}()}
 }
 \concept{classified}
+\concept{interface}
 \keyword{internal}

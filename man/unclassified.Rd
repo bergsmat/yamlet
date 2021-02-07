@@ -16,8 +16,8 @@ see methods
 }
 \description{
 Unclassify something.
-Generic, with method for 'classified'.
-See \code{\link{classified}}.
+Generic, with method \code{\link{unclassified.classified}}.
+See also \code{\link{classified}}.
 }
 \examples{
 example(unclassified.classified)

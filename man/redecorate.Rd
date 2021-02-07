@@ -26,9 +26,9 @@ library(magrittr)
 library(csv)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(as.csv(file))
-x \%>\% select(Subject) \%>\% as_yamlet
+x \%>\% select(Subject) \%>\% decorations
 x \%<>\% redecorate('Subject: Patient Identifier')
-x \%>\% select(Subject) \%>\% as_yamlet
+x \%>\% select(Subject) \%>\% decorations
 
 }
 \seealso{
@@ -40,7 +40,6 @@ Other decorate:
 \code{\link{decorate.list}()},
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
-\code{\link{decorations}()},
-\code{\link{print.decorations}()}
+\code{\link{decorations}()}
 }
 \concept{decorate}

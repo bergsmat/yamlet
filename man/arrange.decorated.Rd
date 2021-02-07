@@ -20,7 +20,6 @@ Preserves class when arranging decorated.
 \seealso{
 Other dplyr: 
 \code{\link{anti_join.decorated}()},
-\code{\link{as_decorated}()},
 \code{\link{filter.decorated}()},
 \code{\link{full_join.decorated}()},
 \code{\link{group_by.decorated}()},

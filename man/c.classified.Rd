@@ -20,7 +20,7 @@ Attributes other than levels and codelist are taken
 from the first argument.  Attribute 'levels' is
 supplied by next method.  Attribute 'codelist'
 is the combined codelists in sequence of
-all (dots) arguments, after silentl removing
+all (dots) arguments, after silently removing
 exact duplicates, and then removing
 duplicated names with warning.
 }

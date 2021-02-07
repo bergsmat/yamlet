@@ -17,7 +17,7 @@ data.frame
 \description{
 Unclassifies data.frame.
 Coerces 'classified' items to original values,
-arebuilding codelist attribute.
+rebuilding codelist attribute.
 }
 \examples{
 library(magrittr)

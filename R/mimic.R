@@ -26,8 +26,10 @@ mimic <- function(x, ...)UseMethod('mimic')
 #' @param y vector-like, same length as x
 #' @param ... ignored arguments
 #' @export
+#' @importFrom stats setNames
 #' @return same class as x
 #' @family mimic
+#' @family interface
 #' @examples
 #' example(mimic.classified)
 #'

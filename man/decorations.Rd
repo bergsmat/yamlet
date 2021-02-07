@@ -16,13 +16,13 @@ see methods
 }
 \description{
 Retrieve the decorations of something.
-Generic, with method for data.frame.
+Generic, with method \code{\link{decorations.data.frame}}.
 }
 \examples{
 library(csv)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(as.csv(file))
-decorations(x) # prefer as_yamlet(x)
+decorations(x)
 }
 \seealso{
 Other decorate: 
@@ -33,7 +33,6 @@ Other decorate:
 \code{\link{decorate.list}()},
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
-\code{\link{print.decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

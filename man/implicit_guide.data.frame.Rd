@@ -12,7 +12,7 @@
 \item{...}{named arguments ignored; un-named arguments limit scope}
 }
 \value{
-yamlet
+data.frame
 }
 \description{
 Coerces data.frame guide-like attributes to 'guide'.

@@ -189,7 +189,7 @@ implicit_guide <- function(x,...)UseMethod('implicit_guide')
 #' @keywords internal
 #' @importFrom dplyr case_when
 #' @importFrom encode encoded
-#' @return yamlet
+#' @return data.frame
 #' @family explicit_guide
 #' @examples
 #' library(magrittr)

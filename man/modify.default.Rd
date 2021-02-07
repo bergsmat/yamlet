@@ -75,6 +75,7 @@ Other modify:
 \code{\link{selected}()}
 
 Other interface: 
+\code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{desolve.decorated}()},
@@ -87,6 +88,7 @@ Other interface:
 \code{\link{io_yamlet.character}()},
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{is_parseable.default}()},
+\code{\link{mimic.default}()},
 \code{\link{promote.default}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.decorated}()},

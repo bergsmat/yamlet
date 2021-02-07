@@ -33,7 +33,12 @@ as_yamlet(as_yam(file))
 }
 \seealso{
 Other yamlet: 
+\code{\link{[.yamlet}()},
+\code{\link{as.character.yamlet}()},
 \code{\link{as_yamlet.character}()},
+\code{\link{as_yamlet.data.frame}()},
+\code{\link{as_yamlet.list}()},
+\code{\link{as_yamlet.yamlet}()},
 \code{\link{as_yamlet}()},
 \code{\link{print.yamlet}()}
 }

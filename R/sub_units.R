@@ -14,7 +14,7 @@
 #' @export
 #' @keywords internal
 #' @family labels
-#' @return see methods for append_units
+#' @return see methods for \code{\link{append_units}}
 #' @examples
 #' library(units)
 #' library(magrittr)

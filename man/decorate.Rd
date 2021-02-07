@@ -23,7 +23,7 @@ library(csv)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(as.csv(file))
 identical(decorate(as.csv(file)), decorate(file))
-decorations(x) # but prefer as_yamlet(x)
+decorations(x)
 
 
 }
@@ -36,7 +36,6 @@ Other decorate:
 \code{\link{decorate.list}()},
 \code{\link{decorations.data.frame}()},
 \code{\link{decorations}()},
-\code{\link{print.decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

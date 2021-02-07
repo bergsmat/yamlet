@@ -31,7 +31,7 @@ sub_units(
 \item{math_open, math_close, label_open, label_close, newline}{passed to \code{\link{as_latex.spar}} if style = 'latex'}
 }
 \value{
-see methods for append_units
+see methods for \code{\link{append_units}}
 }
 \description{
 Places units attribute below label attribute.

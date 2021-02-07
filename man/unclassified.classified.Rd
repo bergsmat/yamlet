@@ -2,10 +2,7 @@
 % Please edit documentation in R/unclassified.R
 \name{unclassified.classified}
 \alias{unclassified.classified}
-\title{Unclassify Classified
-Unclassifies classified.  Uses codelist attribute
-to restore original values, preserving other attributes
-(and rebuilding codelist).}
+\title{Unclassify Classified}
 \usage{
 \method{unclassified}{classified}(x, ...)
 }
@@ -18,7 +15,6 @@ to restore original values, preserving other attributes
 vector
 }
 \description{
-Unclassify Classified
 Unclassifies classified.  Uses codelist attribute
 to restore original values, preserving other attributes
 (and rebuilding codelist).

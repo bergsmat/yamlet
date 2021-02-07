@@ -336,10 +336,10 @@ test_that('factorize_codelist creates class factor and removes attribute codelis
  library(magrittr)
  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
  x <- decorate(file)
- x %<>% explicit_guide %>% factorize_codelist %>% as_yamlet(exclude_attr = NULL)
+ x %<>% explicit_guide %>% classified %>% as_yamlet(exclude_attr = NULL)
  expect_identical(
    x$Creatinine %>% names,
-   c('label','levels','class')
+   c('levels','class','label','codelist')
  )
  expect_true('factor' %in% x$Heart$class)
 })
@@ -469,7 +469,7 @@ test_that('conitionalize handles factors like character',{
 })
 
 test_that('subset classified does not drop label', {
- a <- as_classified(factor(letters))
+ a <- classified(factor(letters))
  attr(a, 'label') <- 'foo'
  a <- a[1:3]
  expect_identical(attr(a,'label'), 'foo')
@@ -1079,3 +1079,4 @@ test_that('mimic() is stable',{
   expect_equal_to_reference(str(x), '095.rds')
 
 })
+

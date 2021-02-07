@@ -50,6 +50,11 @@ as_yamlet(c('id: subject\namt: dose'))
 }
 \seealso{
 Other yamlet: 
+\code{\link{[.yamlet}()},
+\code{\link{as.character.yamlet}()},
+\code{\link{as_yamlet.data.frame}()},
+\code{\link{as_yamlet.list}()},
+\code{\link{as_yamlet.yamlet}()},
 \code{\link{as_yamlet.yam}()},
 \code{\link{as_yamlet}()},
 \code{\link{print.yamlet}()}
