@@ -1098,3 +1098,21 @@ test_that('classified may contain NA',{
     classified(c(1,NA), exclude = NULL)
   )
 })
+
+test_that('bind_rows() works for grouped_df containing classified factors',{
+  library(magrittr)
+  library(dplyr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  b <- decorate(file) %>% resolve
+  b %<>% group_by(Subject)
+  expect_silent(bind_rows(b,b))
+
+  a <- data.frame(i = c(1,1,2), x = classified(1:3))
+  b <- data.frame(i = c(2,2,3), x = classified(3:5))
+  a %<>% group_by(i)
+  b %<>% group_by(i)
+  str(a)
+  str(b)
+  bind_rows(a,b) %$% x %>% attributes
+  expect_silent(bind_rows(a,b))
+})
