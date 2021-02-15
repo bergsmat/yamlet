@@ -2,7 +2,7 @@
 % Please edit documentation in R/classified.R
 \name{c.classified}
 \alias{c.classified}
-\title{Combine Classified.}
+\title{Combine Classified}
 \usage{
 \method{c}{classified}(..., recursive = TRUE)
 }

@@ -332,7 +332,7 @@ test_that('explicit_guide recognizes encodings, units, formats, and codelists',{
  )
 })
 
-test_that('factorize_codelist creates class factor and removes attribute codelist',{
+test_that('classified() creates class factor and removes attribute codelist',{
  library(magrittr)
  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
  x <- decorate(file)
@@ -362,7 +362,7 @@ test_that('resolve correctly classifies conditional elements',{
   x %>% as_yamlet
   x %>% explicit_guide %>% as_yamlet
   x %>% select(value) %>% explicit_guide %>% as_yamlet
-  x %>% explicit_guide %>% factorize_codelist %>% as_yamlet
+  x %>% explicit_guide %>% classified %>% as_yamlet
   a <- x %>% resolve %>% as_yamlet
   expect_true(setequal(names(a$value), c('label','units')))
 })
@@ -1080,3 +1080,21 @@ test_that('mimic() is stable',{
 
 })
 
+test_that('subset retains class for decorated inheriting grouped_df',{
+  library(dplyr)
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  x %<>% group_by(Subject)
+  attr(x[['time']], 'foo') <- 'bar'
+  expect_true(inherits(x, 'decorated'))
+  #  also for names<-
+})
+test_that('classified may contain NA',{
+  expect_silent(
+    classified(c(1,NA))
+  )
+  expect_silent(
+    classified(c(1,NA), exclude = NULL)
+  )
+})

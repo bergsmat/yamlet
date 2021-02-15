@@ -2,7 +2,7 @@
 % Please edit documentation in R/classified.R
 \name{[[.classified}
 \alias{[[.classified}
-\title{Element-select Classified.}
+\title{Element-select Classified}
 \usage{
 \method{[[}{classified}(x, ...)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/classified.R
 \name{[[<-.classified}
 \alias{[[<-.classified}
-\title{Assign Element of Classified.}
+\title{Assign Element of Classified}
 \usage{
 \method{[[}{classified}(x, ...) <- value
 }

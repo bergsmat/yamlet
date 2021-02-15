@@ -2,7 +2,7 @@
 % Please edit documentation in R/classified.R
 \name{classified}
 \alias{classified}
-\title{Classify Something.}
+\title{Classify Something}
 \usage{
 classified(x, ...)
 }

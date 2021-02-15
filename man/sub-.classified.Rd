@@ -2,7 +2,7 @@
 % Please edit documentation in R/classified.R
 \name{[.classified}
 \alias{[.classified}
-\title{Subset Classified.}
+\title{Subset Classified}
 \usage{
 \method{[}{classified}(x, ...)
 }

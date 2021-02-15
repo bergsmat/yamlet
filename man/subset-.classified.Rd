@@ -2,7 +2,7 @@
 % Please edit documentation in R/classified.R
 \name{[<-.classified}
 \alias{[<-.classified}
-\title{Assign Subset of Classified.}
+\title{Assign Subset of Classified}
 \usage{
 \method{[}{classified}(x, ...) <- value
 }

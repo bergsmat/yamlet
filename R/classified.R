@@ -1,4 +1,4 @@
-#' Classify Something.
+#' Classify Something
 #'
 #' Classifies something.
 #' Generic, with method \code{\link{classified.default}}
@@ -55,6 +55,12 @@ classified.default <- function(
   # if we have a codelist, use it
   if(!is.null(cl)){
     attr(x,'codelist') <- NULL
+
+    # before working with codelist, honor the exclude request
+    bad <- sapply(cl, function(val)val %in% exclude)
+    cl <- cl[!bad]
+
+    # default levels and labels
     if(missing(levels)){
       levels <- unlist(cl)
     }
@@ -70,18 +76,22 @@ classified.default <- function(
     y <- unique(x, nmax = nmax)
     ind <- order(y)
     levels <- unique(as.character(y)[ind])
+    levels <- setdiff(levels, exclude)
   }
   if(missing(labels)){
     labels <- as.character(levels)
   }
 
-  # in every case, make a good codelist
+  # at this point, levels and labels should have matching length
+  # should be true using defaults
   if(length(levels) != length(labels))stop('classified requires labels and levels of the same length')
+
+  # in every case, make a good codelist
   codelist <- as.list(labels)
   names(codelist) <- levels
 
   # simplify codelist if possible
-  if(all(names(codelist) == unlist(codelist))) {
+  if(identical(paste(names(codelist)), paste(unlist(codelist)))) {
     names(codelist) <- NULL
     codelist <- unlist(codelist)
   }
@@ -153,7 +163,7 @@ classified.default <- function(
 #length, [, [<-, [[, [[<-, c.
 
 
-#' Subset Classified.
+#' Subset Classified
 #'
 #' Subsets classified factor, retaining attributes.
 #' @param x classified factor
@@ -179,7 +189,7 @@ classified.default <- function(
   y
 }
 
-#' Element-select Classified.
+#' Element-select Classified
 #'
 #' Selects element of classified factor, retaining attributes.
 #' @param x classified factor
@@ -205,7 +215,7 @@ classified.default <- function(
   y
 }
 
-#' Assign Subset of Classified.
+#' Assign Subset of Classified
 #'
 #' Assigns subset of classified factor, retaining attributes.
 #' @param x classified factor
@@ -230,7 +240,7 @@ classified.default <- function(
   }
   y
 }
-#' Assign Element of Classified.
+#' Assign Element of Classified
 #'
 #' Assigns element of classified factor, retaining attributes.
 #' @param x classified factor
@@ -255,7 +265,7 @@ classified.default <- function(
   }
   y
 }
-#' Combine Classified.
+#' Combine Classified
 #'
 #' Combines classified factor, retaining attributes.
 #' Attributes other than levels and codelist are taken
