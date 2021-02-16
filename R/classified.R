@@ -291,7 +291,18 @@ classified.default <- function(
 #'
 
 `c.classified` <- function( ..., recursive = TRUE ){
-  y <- NextMethod()
+  c_factor <- function (..., recursive = TRUE) { # i.e. c.factor() from R 4.1.0
+    x <- list(...)
+    y <- unlist(x, recursive = recursive)
+    if (
+      inherits(y, "factor") &&
+      all(vapply(x, inherits,NA, "ordered")) &&
+      (length(unique(lapply(x, levels))) == 1L)
+    ) class(y) <- c("ordered", "factor")
+    y
+  }
+  # y <- NextMethod() # not back-compatible before R 4.1.0
+  y <- c_factor(..., recursive = recursive)
   # class and levels will have been handled
   all <- list(...)
   x <- all[[1]]
