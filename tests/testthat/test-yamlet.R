@@ -1116,3 +1116,24 @@ test_that('bind_rows() works for grouped_df containing classified factors',{
   bind_rows(a,b) %$% x %>% attributes
   expect_silent(bind_rows(a,b))
 })
+
+test_that('gather.decorated respects supplied key and value',{
+  library(magrittr)
+  library(tidyr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  # x %>% gather('key', 'value', time, interval) %>% decorations
+  # x %>% gather('key', 'value', time, interval) %>% names()
+  # x %>% gather(key = 'key', value = 'value', time, interval) %>% names()
+  suppressWarnings(nms <- names(
+    gather(
+      x,
+      key = 'source',
+      value = 'widgets',
+      time,
+      interval
+    )
+  ))
+  expect_true(all(c('source','widgets') %in% nms))
+
+})

@@ -18,6 +18,7 @@
 #' @export
 #' @importFrom dplyr select
 #' @importFrom tidyr gather
+#' @importFrom rlang ensym
 #' @return decorated
 #' @keywords internal
 #' @examples
@@ -37,9 +38,20 @@ gather.decorated <- function(
   convert = FALSE,
   factor_key = FALSE
 ){
-  x <- NextMethod()
-  token <- names(select(x, key))
-  val <- names(select(x, value))
+  # NextMethod()
+  # @ tidyr 1.1.2, NextMethod() i.e. tidyr.data.frame does not respect key/value.
+  class(data) <- setdiff(class(data), 'decorated')
+  x <- gather(
+    data = data,
+    key = !!key,
+    value = !!value,
+    ...,
+    na.rm = na.rm,
+    convert = convert,
+    factor_key = factor_key
+  )
+  token <- names(select(x, !!key))
+  val <- names(select(x, !!value))
   nms <- unique(x[[token]])
   labs <- sapply(nms, function(nm)attr(data[[nm]],'label'))
   names(nms) <- labs
