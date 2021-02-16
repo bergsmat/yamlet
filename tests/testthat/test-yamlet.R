@@ -1137,3 +1137,14 @@ test_that('gather.decorated respects supplied key and value',{
   expect_true(all(c('source','widgets') %in% nms))
 
 })
+test_that('gather.decorated with no arguments is a non-operation',{
+  library(magrittr)
+  library(tidyr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  expect_identical(x, gather(x, key = 'source', value = 'widgets'))
+  expect_identical(x, gather(x, key = 'source', value = 'widgets', !!!character(0)))
+
+})
+
+
