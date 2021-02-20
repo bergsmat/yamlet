@@ -28,6 +28,7 @@ Other classified:
 \code{\link{[.classified}()},
 \code{\link{[[.classified}()},
 \code{\link{[[<-.classified}()},
+\code{\link{as.integer.classified}()},
 \code{\link{c.classified}()},
 \code{\link{classified.data.frame}()},
 \code{\link{classified.default}()},

@@ -41,17 +41,17 @@ mimic.default <- function(x, y = x, ...){
   attributes(x) <- at
 
   # native-type levels
-  z <- factor(x)
+  z <- as.factor(x)
   ind <- match(levels(z), z)
   lev <- x[ind]
-  if(is.factor(x)) lev <- as.character(x)
+  if(is.factor(x)) lev <- as.character(lev)
   lev <- as.list(lev)
 
   # y-type names
   nms <- proxy(z, y)
 
   # reduce
-  if(all(nms == lev)){
+  if(all(nms == unlist(lev))){
     lev <- unlist(lev)
   } else {
     lev <- setNames(lev, nms)
@@ -92,7 +92,19 @@ mimic.default <- function(x, y = x, ...){
 #' mimic(css, let)
 #' mimic(character(0))
 #' mimic(numeric(0))
-#' mimic(LET)
+#' mimic(let, num)
+#' mimic(fac, num)
+#' mimic(css, num)
+#' mimic(num, css)
+#' mimic(let, css)
+#'
+#' util <- c('knife','fork','spoon')
+#' util
+#' factor(util)
+#' classified(util)
+#' mimic(util)
+#' mimic(factor(util))
+#' mimic(classified(util))
 #'
 #' x <- data.frame(let, LET)
 #' library(dplyr)

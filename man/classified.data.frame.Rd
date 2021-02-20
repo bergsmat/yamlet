@@ -32,6 +32,7 @@ Other classified:
 \code{\link{[<-.classified}()},
 \code{\link{[[.classified}()},
 \code{\link{[[<-.classified}()},
+\code{\link{as.integer.classified}()},
 \code{\link{c.classified}()},
 \code{\link{classified.default}()},
 \code{\link{classified}()},

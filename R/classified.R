@@ -361,3 +361,36 @@ classified.data.frame <- function(x,...){
   x
 }
 
+#' Coerce Classified to Integer
+#'
+#' Coerces classified to integer.
+#' Result is like \code{as.integer(as.numeric(x)) + offset}
+#' but has a codelist giving original values. If you need
+#' a simple integer, consider coercing first to numeric.
+#'
+#' @param x classified, see \code{\link{classified}}
+#' @param offset an integer value to add to intermediate result
+#' @param ... ignored
+#' @export
+#' @family classified
+#' @return integer
+#' @examples
+#' library(magrittr)
+#' classified(c('knife','fork','spoon'))
+#' classified(c('knife','fork','spoon')) %>% as.numeric
+#' classified(c('knife','fork','spoon')) %>% as.integer
+#' classified(c('knife','fork','spoon')) %>% as.integer(-1)
+#'
+as.integer.classified <- function(x, offset = 0L, ...){
+  stopifnot(
+    length(offset) == 1,
+    !is.na(offset),
+    as.integer(offset) == offset
+  )
+  offset <- as.integer(offset)
+  y <- as.numeric(x)
+  y <- y + offset
+  z <- mimic(x, y)
+  r <- unclassified(z)
+  r
+}

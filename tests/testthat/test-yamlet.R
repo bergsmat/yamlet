@@ -1146,5 +1146,70 @@ test_that('gather.decorated with no arguments is a non-operation',{
   expect_identical(x, gather(x, key = 'source', value = 'widgets', !!!character(0)))
 
 })
+test_that('mimic is stable',{
+  let <- letters[1:5]
+  LET <- LETTERS[1:5]
+  int <- 0L:4L
+  num <- as.numeric(int)
+  fac <- factor(let)
+  css <- classified(let)
+  expect_equal_to_reference(file = '096.rds',
+    list(
+  mimic(LET, let),
+  mimic(let, let),
+  mimic(num, let),
+  mimic(int, let),
+  mimic(fac, let),
+  mimic(css, let),
+  mimic(character(0)),
+  mimic(numeric(0)),
+  mimic(LET),
+  mimic(let),
+  mimic(num),
+  mimic(int),
+  mimic(fac),
+  mimic(css)
+))
+})
+test_that('factor and character can mimic numeric',{
+  let <- letters[1:5]
+  LET <- LETTERS[1:5]
+  int <- 0L:4L
+  num <- as.numeric(int)
+  fac <- factor(let)
+  css <- classified(let)
+
+  expect_silent(mimic(let, num))
+  expect_silent(mimic(fac, num))
+  expect_silent(mimic(css, num))
+
+  mimic(css, num)
+  unclassified(mimic(css, num))
+  expect_true(is.numeric(unclassified(mimic(css, num))))
+
+  mimic(css, as.character(num))
+  unclassified(mimic(css, as.character(num)))
+  expect_true(is.numeric(unclassified(mimic(css, as.character(num)))))
 
 
+  expect_true(
+    inherits(
+      unclassified(
+        mimic(css, as.numeric(css))
+      ),'integer')
+  )
+  expect_error(mimic(css, as.integer(css)))
+})
+
+test_that('as.integer.classified() returns integer with codelist',{
+  css <- classified(letters[1:3], labels = LETTERS[1:3])
+  int <- as.integer(css)
+  expect_true('codelist' %in% names(attributes(int)))
+  expect_true(inherits(int, 'integer'))
+
+})
+
+test_that('as.integer.classified() is equivalent to as.numeric.classified()',{
+  css <- classified(c('knife','fork','spoon'))
+  expect_true(all(as.integer(css) == as.numeric(css)))
+})
