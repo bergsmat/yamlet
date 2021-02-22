@@ -20,7 +20,8 @@ mimic <- function(x, ...)UseMethod('mimic')
 #' a guide attribute with labels from
 #' corresponding values in y. Any codelist
 #' attribute is removed. No guide is created
-#' for zero-length x.
+#' for zero-length x. If x is a factor,
+#' unused codes are removed from codelist.
 #'
 #' @param x vector-like
 #' @param y vector-like, same length as x
@@ -41,7 +42,7 @@ mimic.default <- function(x, y = x, ...){
   attributes(x) <- at
 
   # native-type levels
-  z <- as.factor(x)
+  z <- factor(x) # not as.factor(x), which retains unused levels if x is factor.
   ind <- match(levels(z), z)
   lev <- x[ind]
   if(is.factor(x)) lev <- as.character(lev)
@@ -67,7 +68,8 @@ mimic.default <- function(x, y = x, ...){
 #' See \code{\link{classified.default}}.
 #' If meaningful and possible, x updates its
 #' codelist attribute with labels from
-#' corresponding values in y.
+#' corresponding values in y. Codes that don't occur
+#' (i.e. unused levels) are removed from the codelist.
 #'
 #' @param x classified
 #' @param y vector-like, same length as x

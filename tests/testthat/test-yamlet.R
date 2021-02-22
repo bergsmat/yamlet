@@ -1213,3 +1213,4 @@ test_that('as.integer.classified() is equivalent to as.numeric.classified()',{
   css <- classified(c('knife','fork','spoon'))
   expect_true(all(as.integer(css) == as.numeric(css)))
 })
+
