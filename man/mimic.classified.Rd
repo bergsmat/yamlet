@@ -21,7 +21,8 @@ Tries to mimic another vector or factor for 'classified'.
 See \code{\link{classified.default}}.
 If meaningful and possible, x updates its
 codelist attribute with labels from
-corresponding values in y.
+corresponding values in y. Codes that don't occur
+(i.e. unused levels) are removed from the codelist.
 }
 \examples{
 let <- letters[1:5]

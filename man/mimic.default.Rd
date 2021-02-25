@@ -22,7 +22,8 @@ If meaningful and possible, x acquires
 a guide attribute with labels from
 corresponding values in y. Any codelist
 attribute is removed. No guide is created
-for zero-length x.
+for zero-length x. If x is a factor,
+unused codes are removed from codelist.
 }
 \examples{
 example(mimic.classified)
