@@ -19,7 +19,7 @@ is_parseable <- function(x,...)UseMethod('is_parseable')
 #' Checks if something is parseable as units.
 #' Tests against the udunits library in \pkg{units}.
 #' See \code{\link[units]{as_units}}.
-#' See also \code{\link[units]{install_symbolic_unit}}
+#' See also \code{\link[units]{install_unit}}
 #' for finer control.
 #'
 #' @param x character
@@ -34,7 +34,7 @@ is_parseable <- function(x,...)UseMethod('is_parseable')
 #' is_parseable(c('kg/m2','kg/m^2','kg.m/s2','µg/L'))
 #' is_parseable('foo')
 #' library(units)
-#' install_symbolic_unit('foo')
+#' install_unit('foo')
 #' is_parseable('foo')
 #'
 is_parseable.default <- function(x,...){
