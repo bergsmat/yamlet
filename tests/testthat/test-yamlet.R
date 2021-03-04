@@ -630,14 +630,12 @@ plotgroup: [ engine\\ntransmission, [v-shaped\n\nautomatic,v-shaped\n\nmanual,st
     geom_boxplot()
 })
 
-library(magrittr)
-library(dplyr)
-file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-x <- decorate(file)
 test_that(
   'for each named column, or all if none named,
   the data.frame method for modify() assigns a
   value in the attributes environment',{
+  library(magrittr)
+  library(dplyr)
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
   x %<>% modify(title = paste(label, '(', guide, ')'), time)
@@ -670,7 +668,7 @@ test_that(
     file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
     x <- decorate(file)
     x %<>% modify(time, name = label)
-    x %>% select(2) %>% as_yamlet
+    expect_identical(names(x)[[2]], 'time since start of study')
   })
 
 test_that(
@@ -1115,6 +1113,7 @@ test_that('bind_rows() works for grouped_df containing classified factors',{
   str(b)
   bind_rows(a,b) %$% x %>% attributes
   expect_silent(bind_rows(a,b))
+  expect_identical(bind_rows(a,b) %$% x %>% attributes %$% codelist, as.character(1:5))
 })
 
 test_that('gather.decorated respects supplied key and value',{
@@ -1213,4 +1212,22 @@ test_that('as.integer.classified() is equivalent to as.numeric.classified()',{
   css <- classified(c('knife','fork','spoon'))
   expect_true(all(as.integer(css) == as.numeric(css)))
 })
+
+test_that('modify() does not search for assignment targets beyond data scope',{
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  x %<>% modify(time, SORT = .data$sort)
+  expect_false('sort' %in% names(attributes(x$time)))
+})
+
+test_that('print.yamlet handles unexpected objects nicely',{
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  x %<>% modify(time, SORT = sort)
+  expect_silent(print(decorations(x,time)))
+})
+
+
 

@@ -16,7 +16,7 @@ see methods
 }
 \description{
 Modifies the attributes of indicated components.
-Generic, with default method.
+Generic, with method \code{\link{modify.default}}.
 }
 \examples{
 example(modify.default)

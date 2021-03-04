@@ -34,6 +34,11 @@ The name of the component itself is available during assignments as
 attribute 'name' (any pre-existing attribute 'name' is temporarily masked).
 After all assignments are complete, the value of 'name' is enforced at the object level.
 Thus, \code{modify} expressions can modify component names.
+
+As currently implemented, the expression is evaluated by
+\code{\link[rlang]{eval_tidy}}, with attributes supplied as
+the \code{data} argument.  Thus, names in the expression
+may be disambiguated, e.g. with \code{.data}.  See examples.
 }
 \examples{
 library(magrittr)
@@ -65,6 +70,14 @@ x \%<>\% modify(title = foo, time)
 # support lists
 list(a = 1, b = 1:10, c = letters) \%>\%
 modify(length = length(.), b:c)
+
+# wrong:  SORT attribute set to base::sort
+x \%<>\% modify(Subject, SORT = sort)
+# decorations(x, Subject) # gives error
+
+# right: SORT set to attribute 'sort' if available
+x \%<>\% modify(Subject, SORT = .data$sort)
+decorations(x, Subject) # SORT set to NULL (removed)
 
 }
 \seealso{
