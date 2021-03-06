@@ -1217,7 +1217,7 @@ test_that('modify() does not search for assignment targets beyond data scope',{
   library(magrittr)
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
-  x %<>% modify(time, SORT = .data$sort)
+  suppressWarnings(x %<>% modify(time, SORT = .data$sort))
   expect_false('sort' %in% names(attributes(x$time)))
 })
 
@@ -1226,7 +1226,14 @@ test_that('print.yamlet handles unexpected objects nicely',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
   x %<>% modify(time, SORT = sort)
-  expect_silent(print(decorations(x,time)))
+  print(decorations(x,time))
+})
+
+test_that('subset decorated succeeds when dimensions are dropped',{
+  library(magrittr)
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  expect_silent(x[1,1])
 })
 
 

@@ -4,82 +4,14 @@
 \alias{promote.default}
 \title{Promote by Default}
 \usage{
-\method{promote}{default}(
-  x,
-  ...,
-  .reserved = getOption("yamlet_promote_reserved", c("class", "levels", "labels",
-    "names"))
-)
+\method{promote}{default}(x, ...)
 }
 \arguments{
 \item{x}{object}
 
-\item{...}{indicated elements}
-
-\item{.reserved}{attributes to leave untouched}
-}
-\value{
-same class as x
+\item{...}{other arguments}
 }
 \description{
-Promotes attributes of list-like objects.
-For the plural attributes of each element,
-any singularity is promoted to the sole attribute.
-Reserved attributes are untouched.
-Methods \code{\link{filter.decorated}} and \code{\link{[.decorated}}
-automatically attempt to promote attributes for all elements.
+Promotes by default.  Currently a non-operation.
 }
-\examples{
-library(magrittr)
-file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
-x <- file \%>\% decorate
-
-# Note that there are two elements each for value label and value guide.
-x \%>\% decorations(event, value)
-
-# After filtering, only one set is relevant.
-# promote() identifies and retains such.
-x \%>\% dplyr:::filter.data.frame(event == 'dose') \%>\% decorations(value)
-x \%>\% dplyr:::filter.data.frame(event == 'dose') \%>\% promote \%>\% decorations(value)
-
-# If for some reason we do a partial promote, value attributes are unaffected.
-# Nonsense example:
-x \%>\% dplyr:::filter.data.frame(event == 'dose') \%>\% promote(event) \%>\% decorations(value)
-
-# However, the 'decorated' method for filter() calls promote() internally.
-x \%>\% filter(event == 'dose') \%>\% decorations(value)
-
-}
-\seealso{
-filter.decorated [.decorated
-
-Other promote: 
-\code{\link{[.decorated}()},
-\code{\link{filter.decorated}()},
-\code{\link{promote}()},
-\code{\link{singularity}()}
-
-Other interface: 
-\code{\link{classified.data.frame}()},
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
-\code{\link{desolve.decorated}()},
-\code{\link{ggplot.decorated}()},
-\code{\link{io_csv.character}()},
-\code{\link{io_csv.data.frame}()},
-\code{\link{io_res.character}()},
-\code{\link{io_table.character}()},
-\code{\link{io_table.data.frame}()},
-\code{\link{io_yamlet.character}()},
-\code{\link{io_yamlet.data.frame}()},
-\code{\link{is_parseable.default}()},
-\code{\link{mimic.default}()},
-\code{\link{modify.default}()},
-\code{\link{read_yamlet}()},
-\code{\link{resolve.decorated}()},
-\code{\link{selected.default}()},
-\code{\link{write_yamlet}()}
-}
-\concept{interface}
-\concept{promote}
 \keyword{internal}

@@ -1,19 +1,20 @@
-#' Subset Decorated
-#'
-#' Subsets 'decorated', retaining attributes.
-#' @param x decorated
-#' @param ... passed to next method
-#' @export
-#' @keywords internal
-#' @family decorated
-#' @return decorated
-#' @examples
-#' a <- as_decorated(as.list(setNames(letters[1:3], LETTERS[1:3])))
-#' attr(a$B, 'label') <- 'foo'
-#' a <- a[1:3]
-#' attributes(a)
+# See singularity.R for [.decorated
+# Subset Decorated
+#
+# Subsets 'decorated', retaining attributes.
+# @param x decorated
+# @param ... passed to next method
+# @export
+# @keywords internal
+# @family decorated
+# @return decorated
+# @examples
+# a <- as_decorated(as.list(setNames(letters[1:3], LETTERS[1:3])))
+# attr(a$B, 'label') <- 'foo'
+# a <- a[1:3]
+# attributes(a)
 
-`[.decorated` <- function(x, ...)as_decorated(NextMethod())
+# `[.decorated` <- function(x, ...)as_decorated(NextMethod())
 
 #' Assign Subset of Decorated
 #'

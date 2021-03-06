@@ -55,7 +55,8 @@ singularity(
 Other promote: 
 \code{\link{[.decorated}()},
 \code{\link{filter.decorated}()},
-\code{\link{promote.default}()},
+\code{\link{promote.data.frame}()},
+\code{\link{promote.list}()},
 \code{\link{promote}()}
 }
 \concept{promote}

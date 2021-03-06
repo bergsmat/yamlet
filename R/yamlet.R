@@ -731,19 +731,19 @@ print.yamlet <- function(x, ...){
   render.default <- function(x, indent = 0, name = NULL, ...){
     margin <-  paste(rep(' ',indent), collapse = '')
     leader <- paste0(margin, '- ',name)
-    data <- paste(x, collapse = ', ')
+    data <- paste(format(x), collapse = ', ')
     msg <- paste0(leader,': ', data)
     writeLines(msg)
   }
-  render.function <- function(x, indent = 0, name = NULL, ...){
-    margin <-  paste(rep(' ',indent), collapse = '')
-    leader <- paste0(margin, '- ',name)
-    data <- format(x)
-    data <- paste0(margin, '    ', data)
-    msg <- paste0(leader,': >')
-    msg <- c(msg,)
-    writeLines(msg)
-  }
+  # render.function <- function(x, indent = 0, name = NULL, ...){
+  #   margin <-  paste(rep(' ',indent), collapse = '')
+  #   leader <- paste0(margin, '- ',name)
+  #   data <- format(x)
+  #   data <- paste0(margin, '    ', data)
+  #   msg <- paste0(leader,': |')
+  #   msg <- c(msg,data)
+  #   writeLines(msg)
+  # }
   if(!length(x)){
     writeLines('0 length object of class yamlet')
     invisible(x)

@@ -86,13 +86,24 @@ promote <- function(x, ...)UseMethod('promote')
 
 #' Promote by Default
 #'
+#' Promotes by default.  Currently a non-operation.
+#'
+#' @param x object
+#' @param ... other arguments
+#' @export
+#' @keywords internal
+promote.default <- function(x, ...)x
+
+#'
+#' Promote a List
+#'
 #' Promotes attributes of list-like objects.
 #' For the plural attributes of each element,
 #' any singularity is promoted to the sole attribute.
 #' Reserved attributes are untouched.
 #' Methods \code{\link{filter.decorated}} and \code{\link{[.decorated}}
 #' automatically attempt to promote attributes for all elements.
-#' @param x object
+#' @param x list, or list-like
 #' @param ... indicated elements
 #' @param .reserved attributes to leave untouched
 #' @export
@@ -123,7 +134,7 @@ promote <- function(x, ...)UseMethod('promote')
 #' x %>% filter(event == 'dose') %>% decorations(value)
 #'
 
-promote.default <- function(
+promote.list <- function(
   x,
   ...,
   .reserved = getOption(
@@ -158,6 +169,20 @@ promote.default <- function(
   }
   x
 }
+
+#' Promote Data Frame
+#'
+#' Promotes a data.frame by calling \code{\link{promote.list}}.
+#'
+#' @param x data.frame
+#' @param ... passed arguments
+#' @export
+#' @return same class as x
+#' @keywords internal
+#' @family promote
+#' @examples
+#' example(promote.list)
+promote.data.frame <- function(x, ...)promote.list(x, ...)
 
 #' Filter Decorated
 #'
@@ -197,6 +222,10 @@ filter.decorated <- function(
   y <- as_decorated(y)
   y
 }
+#' a <- as_decorated(as.list(setNames(letters[1:3], LETTERS[1:3])))
+#' attr(a$B, 'label') <- 'foo'
+#' a <- a[1:3]
+#' attributes(a)
 
 #' Subset Decorated
 #'
@@ -204,13 +233,14 @@ filter.decorated <- function(
 #' internally to improve ambiguous conditional
 #' attributes where possible.
 #'
-#' @param x object to subset
+#' @param x decorated
 #' @param ... passed to next method
 #' @param .promote whether to auto-promote plural attributes
-#' @return decorated
+#' @return decorated (unless dimension is dropped)
 #' @export
 #' @keywords internal
 #' @family promote
+#' @family decorated
 #' @examples
 #' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
@@ -220,6 +250,16 @@ filter.decorated <- function(
 #' # Subsetting promotes automatically.
 #' x[x$event == 'dose',] %>% decorations(event, value)
 #' x[x$event == 'conc',] %>% decorations(event, value)
+#'
+#' # Dimension may be dropped
+#' x[1,1]
+#'
+#' # Conventional subsetting
+#' a <- as_decorated(as.list(setNames(letters[1:3], LETTERS[1:3])))
+#' attr(a$B, 'label') <- 'foo'
+#' a <- a[1:3]
+#' attributes(a)
+#'
 `[.decorated` <- function(
   x,
   ...,
@@ -241,7 +281,7 @@ filter.decorated <- function(
     attributes(y[[nm]]) <- attributes(x[[nm]])
   }
   if(.promote) y <- promote(y)
-  y <- as_decorated(y)
+  if(is.list(y)) y <- as_decorated(y)
   y
 }
 

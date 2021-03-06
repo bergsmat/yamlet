@@ -65,18 +65,23 @@ modify <- function(x, ...)UseMethod('modify')
 #' \dontrun{
 #' \donttest{
 #' x %<>% modify(title = foo, time)
-#'}}
+#' }}
 #' # support lists
 #' list(a = 1, b = 1:10, c = letters) %>%
 #' modify(length = length(.), b:c)
 #'
-#' # wrong:  SORT attribute set to base::sort
-#' x %<>% modify(Subject, SORT = sort)
-#' # decorations(x, Subject) # gives error
+#'x %<>% select(Subject) %>% modify(label = NULL, `defined values` = NULL)
 #'
-#' # right: SORT set to attribute 'sort' if available
-#' x %<>% modify(Subject, SORT = .data$sort)
-#' decorations(x, Subject) # SORT set to NULL (removed)
+#' # distinguish data and environment
+#' location <- 'environment'
+#' x %>% modify(where = location) %>% decorations
+#' x %>% modify(where = .env$location) %>% decorations
+#' \dontrun{
+#' \donttest{
+#' x%>% modify(where = .data$location) %>% decorations
+#' }}
+#' x %>% modify(location = 'attributes', where = location) %>% decorations
+#' x %>% modify(location = 'attributes', where = .data$location) %>% decorations
 #'
 modify.default <- function(
   x,
@@ -100,11 +105,11 @@ modify.default <- function(
      attr <- attributes(x[[var]])
      attr <- attr[names(attr) != ''] # see ?list2env
      attr <- c(attr, list(. = x[[var]]))
-     env <- list2env(attr)
+     # env <- list2env(attr)
      # expr <- rlang::quo_set_env(quo = expr, env = env)
-     mask <- new_data_mask(env)
+     # mask <- new_data_mask(env)
       tryCatch(
-        attr(x[[var]], mod) <- rlang::eval_tidy(expr, data = mask),
+        attr(x[[var]], mod) <- rlang::eval_tidy(expr, data = attr),
         error = function(e)warning(var, ': ', e)
       )
     }

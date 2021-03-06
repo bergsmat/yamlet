@@ -60,7 +60,7 @@ Other interface:
 \code{\link{is_parseable.default}()},
 \code{\link{mimic.default}()},
 \code{\link{modify.default}()},
-\code{\link{promote.default}()},
+\code{\link{promote.list}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.decorated}()},
 \code{\link{selected.default}()},

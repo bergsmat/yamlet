@@ -33,7 +33,6 @@ Preserves class when grouping decorated.
 Other dplyr: 
 \code{\link{anti_join.decorated}()},
 \code{\link{arrange.decorated}()},
-\code{\link{filter.decorated}()},
 \code{\link{full_join.decorated}()},
 \code{\link{inner_join.decorated}()},
 \code{\link{left_join.decorated}()},

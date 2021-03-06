@@ -46,7 +46,6 @@ Preserves class when joining decorated.
 \seealso{
 Other dplyr: 
 \code{\link{arrange.decorated}()},
-\code{\link{filter.decorated}()},
 \code{\link{full_join.decorated}()},
 \code{\link{group_by.decorated}()},
 \code{\link{inner_join.decorated}()},

@@ -71,13 +71,18 @@ x \%<>\% modify(title = foo, time)
 list(a = 1, b = 1:10, c = letters) \%>\%
 modify(length = length(.), b:c)
 
-# wrong:  SORT attribute set to base::sort
-x \%<>\% modify(Subject, SORT = sort)
-# decorations(x, Subject) # gives error
+x \%<>\% select(Subject) \%>\% modify(label = NULL, `defined values` = NULL)
 
-# right: SORT set to attribute 'sort' if available
-x \%<>\% modify(Subject, SORT = .data$sort)
-decorations(x, Subject) # SORT set to NULL (removed)
+# distinguish data and environment
+location <- 'environment'
+x \%>\% modify(where = location) \%>\% decorations
+x \%>\% modify(where = .env$location) \%>\% decorations
+\dontrun{
+\donttest{
+x\%>\% modify(where = .data$location) \%>\% decorations
+}}
+x \%>\% modify(location = 'attributes', where = location) \%>\% decorations
+x \%>\% modify(location = 'attributes', where = .data$location) \%>\% decorations
 
 }
 \seealso{
@@ -102,7 +107,7 @@ Other interface:
 \code{\link{io_yamlet.data.frame}()},
 \code{\link{is_parseable.default}()},
 \code{\link{mimic.default}()},
-\code{\link{promote.default}()},
+\code{\link{promote.list}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.decorated}()},
 \code{\link{selected.default}()},
