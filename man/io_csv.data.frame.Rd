@@ -8,7 +8,6 @@
   x,
   file = "",
   ext = getOption("yamlet_extension", ".yaml"),
-  coerce = getOption("yamlet_coerce_decorations", FALSE),
   con = stdout(),
   useBytes = FALSE,
   default_keys = getOption("yamlet_default_keys", list("label", "guide")),
@@ -21,8 +20,6 @@
 \item{file}{passed to \code{\link[csv]{as.csv.data.frame}} (by method dispatch)}
 
 \item{ext}{= extension for metadata equivalent of x}
-
-\item{coerce}{logical; whether to coerce factor levels to guide; alternatively, a key for the levels}
 
 \item{con}{passed to \code{\link{io_yamlet}}}
 
