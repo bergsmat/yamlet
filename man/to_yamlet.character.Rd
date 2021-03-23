@@ -15,13 +15,16 @@
 length-one character
 }
 \description{
-Coerces character to yamlet storage format. Named character is processed as a named list.
+Coerces character to yamlet storage format.
+Named character is processed as a named list.
+NA_character is treated as the string 'NA'.
 }
 \examples{
 to_yamlet('foo')
 to_yamlet(c('a','b'))
 to_yamlet(c(a = 'a',b = 'b'))
 to_yamlet(c(no = 'n', yes = 'y'))
+to_yamlet(NA)
 }
 \seealso{
 Other to_yamlet: 

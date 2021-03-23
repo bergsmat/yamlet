@@ -21,6 +21,9 @@ Coerces list to yamlet storage format. Operates recursively on list members.
 to_yamlet(list())
 to_yamlet(list(a = 1, b = 2, c = NULL))
 to_yamlet(list(a = 1, b = list(c = 3, d = list(e = 4, f = 'g', 'h'))))
+to_yamlet(setNames(1:3, c('a','b',NA)))
+to_yamlet(setNames(c(1,2,NA), c('a','b','c')))
+
 }
 \seealso{
 Other to_yamlet: 

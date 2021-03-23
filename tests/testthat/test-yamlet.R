@@ -1236,5 +1236,8 @@ test_that('subset decorated succeeds when dimensions are dropped',{
   expect_silent(x[1,1])
 })
 
-
+test_that('NA names and values in lists can be converted to yamlet',{
+  expect_silent(to_yamlet(setNames(1:3, c('a','b',NA))))
+  expect_silent(to_yamlet(setNames(c(1,2,NA), c('a','b','c'))))
+})
 

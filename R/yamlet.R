@@ -444,7 +444,9 @@ to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
 #'
 #' Coerce Character to Yamlet Storage Format
 #'
-#' Coerces character to yamlet storage format. Named character is processed as a named list.
+#' Coerces character to yamlet storage format.
+#' Named character is processed as a named list.
+#' NA_character is treated as the string 'NA'.
 #' @param x character
 #' @param ... ignored
 #' @export
@@ -456,12 +458,18 @@ to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
 #' to_yamlet(c('a','b'))
 #' to_yamlet(c(a = 'a',b = 'b'))
 #' to_yamlet(c(no = 'n', yes = 'y'))
+#' to_yamlet(NA)
 
 to_yamlet.character <- function(x, ...){
+
   if(!is.null(names(x))){
     x <- as.list(x)
     return(to_yamlet(x))
   }
+
+  # treat NA_character as 'NA'.
+  x <- paste(x)
+
   # quote strings beginning with ' " [] {} > | * & ! % # ` @ ,. ? : -
   index <- grepl("^'", x)                       # starts with '
   x[index] <- paste0('"',x[index], '"')         # wrapped in "
@@ -518,8 +526,9 @@ to_yamlet.NULL <- function(x, ...)''
 #' to_yamlet(list())
 #' to_yamlet(list(a = 1, b = 2, c = NULL))
 #' to_yamlet(list(a = 1, b = list(c = 3, d = list(e = 4, f = 'g', 'h'))))
-
-
+#' to_yamlet(setNames(1:3, c('a','b',NA)))
+#' to_yamlet(setNames(c(1,2,NA), c('a','b','c')))
+#'
 to_yamlet.list <- function(x, ...){
   # convert each member to yamlet
   if(length(x) == 0) x <- list(NULL)
