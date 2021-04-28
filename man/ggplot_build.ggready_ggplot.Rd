@@ -4,7 +4,7 @@
 \alias{ggplot_build.ggready_ggplot}
 \title{Enable Automatic Labels and Units for ggplot}
 \usage{
-ggplot_build.ggready_ggplot(x, ...)
+\method{ggplot_build}{ggready_ggplot}(x, ...)
 }
 \arguments{
 \item{x}{class 'ggready_ggplot' from \code{\link{ggplot.ggready}}}

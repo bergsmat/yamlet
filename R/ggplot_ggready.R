@@ -62,8 +62,11 @@ print.ggready_ggplot <- function(x, ...){
 #' @param ... passed arguments
 #' @return see \code{\link[ggplot2]{ggplot_build}}
 #' @export
+#' @importFrom ggplot2 ggplot_build
+#' @method ggplot_build ggready_ggplot
 #' @keywords internal
 #' @family ggready
 
 ggplot_build.ggready_ggplot <- print.ggready_ggplot
+
 

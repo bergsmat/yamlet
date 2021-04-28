@@ -180,6 +180,8 @@ print.decorated_ggplot <- function(
 #' @param ... passed arguments
 #' @return see \code{\link[ggplot2]{ggplot_build}}
 #' @export
+#' @method ggplot_build decorated_ggplot
+#' @importFrom ggplot2 ggplot_build
 #' @keywords internal
 #' @family decorated_ggplot
 

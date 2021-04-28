@@ -4,7 +4,7 @@
 \alias{ggplot_build.decorated_ggplot}
 \title{Enable Automatic Labels and Units for ggplot}
 \usage{
-ggplot_build.decorated_ggplot(
+\method{ggplot_build}{decorated_ggplot}(
   x,
   ...,
   search = getOption("decorated_ggplot_search", c("expression", "title", "label"))

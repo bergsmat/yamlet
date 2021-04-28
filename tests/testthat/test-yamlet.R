@@ -630,10 +630,7 @@ plotgroup: [ engine\\ntransmission, [v-shaped\n\nautomatic,v-shaped\n\nmanual,st
     geom_boxplot()
 })
 
-test_that(
-  'for each named column, or all if none named,
-  the data.frame method for modify() assigns a
-  value in the attributes environment',{
+test_that('for each named column, or all if none named, the data.frame method for modify() assigns a value in the attributes environment',{
   library(magrittr)
   library(dplyr)
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -653,8 +650,8 @@ test_that(
 
 
 })
-test_that(
-  'modify() makes the underlying object available as an argument',{
+
+test_that('modify() makes the underlying object available as an argument',{
     file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
     x <- decorate(file)
     x %<>% modify(`defined values` = sum(!is.na(.)))
@@ -663,44 +660,36 @@ test_that(
 
   })
 
-test_that(
-  'modify() makes the object name available for use and assignment',{
+test_that('modify() makes the object name available for use and assignment',{
     file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
     x <- decorate(file)
     x %<>% modify(time, name = label)
     expect_identical(names(x)[[2]], 'time since start of study')
   })
 
-test_that(
-  'the data.frame method for modify() gives a warning
-  if the assignment target is reserved
-  (i.e, class, levels, labels, names)',{
+test_that('the data.frame method for modify() gives a warning if the assignment target is reserved (i.e, class, levels, labels, names)',{
     file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
     x <- decorate(file)
     expect_warning(x %<>% modify(class = 'numeric', Subject))
 })
 
-test_that(
-  'the data.frame method for modify() fails gracefully
-  if assignment cannot be made',{
+test_that('the data.frame method for modify() fails gracefully if assignment cannot be made',{
     file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
     x <- decorate(file)
     expect_warning(x %<>% modify(title = foo, time))
 
 })
-test_that(
-  'the default method for modify() supports lists',{
+
+test_that('the default method for modify() supports lists',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
   a <- list(a = 1, b = 1:10, c = letters) %>% modify(length = length(.), b:c)
   expect_identical(attr(a[['a']],'length'), NULL)
   expect_identical(attr(a[['c']],'length'), 26L)
 
-  }
-)
+  })
 
-test_that(
-  'modifier verbs are limited to dots scope',{
+test_that('modifier verbs are limited to dots scope',{
     library(magrittr)
     file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
     x <- decorate(file)
@@ -719,18 +708,15 @@ test_that(
       file = '063.rds',
       resolve(x, Height) %>% as_yamlet(Height, Weight)
     )
-  }
-)
+  })
 
-test_that(
-  'io_res resolves guide ambiguity on read',{
+test_that('io_res resolves guide ambiguity on read',{
     library(magrittr)
     file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
     x <- io_csv(file) %>% resolve
     y <- io_res(file)
     expect_identical(x, y)
-  }
-)
+  })
 
 test_that('output of as_decorated inherits class decorated',{
   x <- as_decorated(list())
@@ -757,7 +743,6 @@ expect_equal_to_reference(file = '065.rds', y)
 expect_equal_to_reference(file = '066.rds', resolve(x))
 expect_equal_to_reference(file = '067.rds', xtable(resolve(x)))
 })
-
 
 test_that('promote is stable',{
 library(magrittr)
@@ -944,18 +929,19 @@ test_that('implicit_guide is the inverse of explicit_guide',{
   expect_identical(x, implicit_guide(explicit_guide(x)))
 })
 
-
 test_that('desolve is the inverse of resolve',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
   expect_identical(x, desolve(resolve(x)))
 })
+
 test_that('resolve and desolve retain class',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
   expect_true(inherits(resolve(x), 'decorated'))
   expect_true(inherits(desolve(resolve(x)), 'decorated'))
 })
+
 test_that('labels and guide elements with colon-space are quoted',{
   foo <- data.frame(x = 1)
   attr(foo$x,'label') <- 'foo: x'
@@ -995,6 +981,7 @@ expect_true(
 )
 
 })
+
 test_that('unclassified methods do not lose attributes',{
   foo <- classified(letters[1:5])
   attr(foo, 'label') <- 'letters'
@@ -1006,9 +993,11 @@ test_that('unclassified methods do not lose attributes',{
     )
   )
 })
+
 test_that('classified() works the same on character and factor',{
 expect_identical(classified(LETTERS), classified(factor(LETTERS)))
 })
+
 test_that('as_yamlet does not capture levels of classified by default',{
   library(magrittr)
   library(dplyr)
@@ -1026,6 +1015,7 @@ test_that('as_yamlet does not capture levels of classified by default',{
 })
 
 test_that('decorations() does not print colon for un-named list',{})
+
 test_that('filter.decorated retains class', {
   library(dplyr)
   library(magrittr)
@@ -1034,6 +1024,7 @@ test_that('filter.decorated retains class', {
   expect_true(inherits(x %>% filter(Subject == 1), 'decorated'))
 
 })
+
 test_that('promote() retains class decorated', {
   library(dplyr)
   library(magrittr)
@@ -1088,6 +1079,7 @@ test_that('subset retains class for decorated inheriting grouped_df',{
   expect_true(inherits(x, 'decorated'))
   #  also for names<-
 })
+
 test_that('classified may contain NA',{
   expect_silent(
     classified(c(1,NA))
@@ -1109,8 +1101,8 @@ test_that('bind_rows() works for grouped_df containing classified factors',{
   b <- data.frame(i = c(2,2,3), x = classified(3:5))
   a %<>% group_by(i)
   b %<>% group_by(i)
-  str(a)
-  str(b)
+  # str(a)
+  # str(b)
   bind_rows(a,b) %$% x %>% attributes
   expect_silent(bind_rows(a,b))
   expect_identical(bind_rows(a,b) %$% x %>% attributes %$% codelist, as.character(1:5))
@@ -1136,6 +1128,7 @@ test_that('gather.decorated respects supplied key and value',{
   expect_true(all(c('source','widgets') %in% nms))
 
 })
+
 test_that('gather.decorated with no arguments is a non-operation',{
   library(magrittr)
   library(tidyr)
@@ -1143,8 +1136,8 @@ test_that('gather.decorated with no arguments is a non-operation',{
   x <- decorate(file)
   expect_identical(x, gather(x, key = 'source', value = 'widgets'))
   expect_identical(x, gather(x, key = 'source', value = 'widgets', !!!character(0)))
-
 })
+
 test_that('mimic is stable',{
   let <- letters[1:5]
   LET <- LETTERS[1:5]
@@ -1170,6 +1163,7 @@ test_that('mimic is stable',{
   mimic(css)
 ))
 })
+
 test_that('factor and character can mimic numeric',{
   let <- letters[1:5]
   LET <- LETTERS[1:5]
@@ -1205,7 +1199,6 @@ test_that('as.integer.classified() returns integer with codelist',{
   int <- as.integer(css)
   expect_true('codelist' %in% names(attributes(int)))
   expect_true(inherits(int, 'integer'))
-
 })
 
 test_that('as.integer.classified() is equivalent to as.numeric.classified()',{
@@ -1227,6 +1220,7 @@ test_that('print.yamlet handles unexpected objects nicely',{
   x <- decorate(file)
   x %<>% modify(time, SORT = sort)
   print(decorations(x,time))
+  expect_equal_to_reference(file = '097.rds', decorations(x, time))
 })
 
 test_that('subset decorated succeeds when dimensions are dropped',{
@@ -1241,3 +1235,34 @@ test_that('NA names and values in lists can be converted to yamlet',{
   expect_silent(to_yamlet(setNames(c(1,2,NA), c('a','b','c'))))
 })
 
+test_that('subplots respect metadata assignments',{
+
+  library(ggplot2)
+  library(magrittr)
+  library(dplyr)
+  library(gridExtra)
+  a <- io_csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
+  b <- io_csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
+  c <- as.csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
+  d <- as.csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
+
+  x <-
+    a %>% filter(event == 'conc') %>%
+    ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
+    b %>% filter(!is.na(conc)) %>%
+    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
+
+  y <-
+    a %>% filter(event == 'conc') %>%
+    ggplot2:::ggplot.default(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
+    d %>% filter(!is.na(conc)) %>%
+    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
+
+  grid.arrange(x, y)
+
+  p <- x %>% ggplot_build
+  q <- p %>% ggplot_gtable
+  plot(q)
+  expect_equal_to_reference(file = '098.rds', p)
+
+})
