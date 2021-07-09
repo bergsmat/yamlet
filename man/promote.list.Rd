@@ -61,6 +61,7 @@ Other promote:
 \code{\link{singularity}()}
 
 Other interface: 
+\code{\link{as.data.frame.yamlet}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},

@@ -34,6 +34,7 @@ Other parseable:
 \code{\link{is_parseable}()}
 
 Other interface: 
+\code{\link{as.data.frame.yamlet}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},

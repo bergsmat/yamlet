@@ -46,6 +46,7 @@ Other io:
 \code{\link{io_yamlet}()}
 
 Other interface: 
+\code{\link{as.data.frame.yamlet}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},

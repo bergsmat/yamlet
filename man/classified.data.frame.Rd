@@ -41,6 +41,7 @@ Other classified:
 \code{\link{unclassified}()}
 
 Other interface: 
+\code{\link{as.data.frame.yamlet}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{desolve.decorated}()},

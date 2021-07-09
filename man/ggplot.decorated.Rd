@@ -118,6 +118,7 @@ Other decorated_ggplot:
 \code{\link{print.decorated_ggplot}()}
 
 Other interface: 
+\code{\link{as.data.frame.yamlet}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},

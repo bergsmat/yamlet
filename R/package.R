@@ -12,7 +12,7 @@
 #'
 #' Storage format for 'yamlet' is a text file containing
 #' well-formed yaml.  Technically, it is a map of sequences.
-#' Though well formed, it need not be complete attibutes
+#' Though well formed, it need not be complete: attributes
 #' or their names may be missing.
 #'
 #' In the simplest case, the data specification consists
