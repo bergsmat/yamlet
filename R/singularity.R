@@ -278,7 +278,16 @@ filter.decorated <- function(
   # We wish to restore colum-level attributes dropped by subset.
   nms <- intersect(names(x), names(y))
   for(nm in nms){
-    attributes(y[[nm]]) <- attributes(x[[nm]])
+    xat <- attributes(x[[nm]])
+    if('names' %in% names(xat)){
+      have <- length(xat[['names']])
+      need <- length(y[[nm]])
+      if (have != need){
+        warning('not updating names')
+        xat[['names']] <- NULL
+      }
+    }
+    attributes(y[[nm]]) <- xat
   }
   if(.promote) y <- promote(y)
   if(is.list(y)) y <- as_decorated(y)

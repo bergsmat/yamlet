@@ -38,13 +38,21 @@ is passed the cell-specific metadata as well as \code{sep} and \code{def}.
 }
 \examples{
 
-# Read sample data from file.
+library(magrittr)
+
 file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
-meta <- read_yamlet(file)
-as.data.frame(meta)
-file <- system.file(package = 'yamlet', 'extdata','phenobarb.yaml')
-meta <- read_yamlet(file)
-as.data.frame(meta)
+file \%>\% read_yamlet \%>\% explicit_guide \%>\% as.data.frame
+file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
+
+# phenobarb.yaml has conditional metadata that benefits
+# from interpretation in the context of the data itself.
+# thus, we
+# * read the whole 'decorated' object (not just yaml),
+# * resolve the 'guide' ambiguity,
+# extract the best-guess decorations, and
+# convert to data.frame.
+
+file \%>\% io_csv \%>\% resolve \%>\% decorations \%>\% as.data.frame
 
 }
 \seealso{
