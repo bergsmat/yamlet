@@ -41,16 +41,36 @@ as_yam <- function(x, ...)UseMethod('as_yam')
 as_yam.character <- function(
   x,
   as.named.list,
+  handlers = list(seq = parsimonious),
   ...
 ){
   if(length(x) == 1 & file.exists(x[[1]])){
     allowed <- c(names(formals(read_yaml)), names(formals(yaml.load)))
     args <- list(...)
     args <- args[names(args) %in% allowed ]
-    args <- c(list(x), args)
-    y <- do.call(read_yaml, args) # as.named.list TRUE by default
+    args <- c(
+      list(
+        file = x,
+        as.named.list = TRUE,
+        handlers = handlers
+      ),
+      args
+    )
+    y <- do.call(read_yaml, args)
   }else{
-    y <- try(yaml.load(paste(x, collapse = '\n')))
+    allowed <- c(names(formals(yaml.load)))
+    args <- list(...)
+    args <- args[names(args) %in% allowed ]
+    dat <- paste(x, collapse = '\n')
+    args <- c(
+      list(
+        string = dat,
+        handlers = handlers,
+        as.named.list = TRUE
+      ),
+      args
+    )
+    y <- try(do.call(yaml.load, args))
   }
   if(!inherits(y, 'list')){
     if(length(x) == 1){
@@ -63,7 +83,8 @@ as_yam.character <- function(
   # each member of y must be a list
   for(m in seq_along(y)) y[[m]] <- as.list(y[[m]])
 
-  y[] <- lapply(y, unnest)
+  # un-nesting is now applied at parsing using 'parsimonious'
+  # y[] <- lapply(y, unnest)
   y[] <- lapply(y, as.list)
 
   if('_keys' %in% names(y)){
@@ -82,6 +103,7 @@ as_yam.character <- function(
 #' that DOES have a name should become that element
 #' and have that name (recursively, from depth).
 #' Collapses uninformative levels of nested lists.
+#' Formerly used in as_yam; now superceded by \code{\link{parsimonious.list}}.
 #'
 #' @param x object
 #' @return named list

@@ -1266,3 +1266,42 @@ test_that('subplots respect metadata assignments',{
   expect_equal_to_reference(file = '098.rds', p)
 
 })
+
+test_that('a length one sequence resolves parsimoniously',{
+  y <- as_yamlet('RACE: [ race, [ Asian: 1 ]]')
+  expect_equal(names(y[[1]][2]), 'guide')
+})
+
+
+test_that('resolve has no effect on resolved item',{
+
+})
+
+test_that('read_yamlet and write_yamlet reproduce block quote',{
+
+})
+
+
+test_that('gather.decorated works with unquoted argument names',{
+
+})
+
+test_that('class "guided" or similar supports concatenation of guides',{
+
+})
+
+test_that('variables with units support unit math',{
+
+})
+
+test_that('write_yamlet uses canonical attribute order by default',{
+
+})
+
+test_that('class "decorated" persists after merges, joins, enumerations',{
+
+})
+
+test_that('moot redecorate warnings are suppressed',{
+
+})

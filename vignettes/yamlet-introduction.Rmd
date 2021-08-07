@@ -228,11 +228,11 @@ str(x)
 
 We saw earlier that `as_yamlet()` can 
 pull "decorations" off a data frame and 
-present them as **yamlet**.  
+present them as **yamlet**. 
+this is the default behavior of `decorations()`.
 
 ```{r}
-# decorations(x) # just a list
-as_yamlet(x) # a list with class 'yamlet' (special print method)
+decorations(x)
 ```
 
 `write_yamlet()` calls `as_yamlet()` on its

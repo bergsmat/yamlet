@@ -275,7 +275,7 @@ filter.decorated <- function(
 
   # At this point, we may have lost, rows, columns, both,
   # or been 'dropped' to one column.
-  # We wish to restore colum-level attributes dropped by subset.
+  # We wish to restore column-level attributes dropped by subset.
   nms <- intersect(names(x), names(y))
   for(nm in nms){
     xat <- attributes(x[[nm]])

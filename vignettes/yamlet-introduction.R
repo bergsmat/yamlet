@@ -36,8 +36,7 @@ x <- decorate(x, meta = meta)
 str(x)
 
 ## -----------------------------------------------------------------------------
-# decorations(x) # just a list
-as_yamlet(x) # a list with class 'yamlet' (special print method)
+decorations(x)
 
 ## -----------------------------------------------------------------------------
 file <- file.path(tempdir(), 'out.yaml')

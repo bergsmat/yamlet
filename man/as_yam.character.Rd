@@ -4,7 +4,7 @@
 \alias{as_yam.character}
 \title{Coerce Character to Yam}
 \usage{
-\method{as_yam}{character}(x, as.named.list, ...)
+\method{as_yam}{character}(x, as.named.list, handlers = list(seq = parsimonious), ...)
 }
 \arguments{
 \item{x}{length-one filepath or actual data}
