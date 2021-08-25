@@ -1,47 +1,67 @@
 library(testthat)
+library(magrittr)
+library(yaml)
 test_that('yaml package result is stable',{
-  expect_equal_to_reference(file = '001.rds', yaml::yaml.load('[ID: ]'))
-  expect_equal_to_reference(file = '002.rds', yaml::yaml.load('ID: '))
-  expect_equal_to_reference(file = '003.rds', yaml::yaml.load('[  ID: ]'))
-  expect_equal_to_reference(file = '004.rds', yaml::yaml.load('[ ID: ]'))
-  expect_equal_to_reference(file = '005.rds', yaml::yaml.load('RACE'))
-  expect_equal_to_reference(file = '006.rds', yaml::yaml.load('RACE:'))
-  expect_equal_to_reference(file = '007.rds', yaml::yaml.load('? RACE'))
-  expect_equal_to_reference(file = '008.rds', yaml::yaml.load('[{RACE: }, ID: ]'))
-  expect_equal_to_reference(file = '009.rds', yaml::yaml.load('[? RACE, ? ID]'))
-  expect_equal_to_reference(file = '010.rds', yaml::yaml.load('[RACE: , ID: ]'))
-  expect_equal_to_reference(file = '011.rds', yaml::yaml.load('RACE: [ race, [ foo: bar, hey: baz ]]'))
-  expect_equal_to_reference(file = '012.rds', yaml::yaml.load('RACE: [ race, [ {foo: bar}, {hey: baz} ]]'))
-  expect_equal_to_reference(file = '013.rds', yaml::yaml.load('RACE: [ race, [ {foo: bar}, hey: baz ]]'))
-  expect_equal_to_reference(file = '014.rds', yaml::yaml.load('RACE: [ race, [ {foo: bar}, ? baz ]]'))
-  expect_equal_to_reference(file = '015.rds', yaml::yaml.load('RACE: [ race, [ {foo: bar},  baz: ]]'))
-  expect_equal_to_reference(file = '016.rds', yaml::yaml.load('RACE: [ race, [ {foo: bar}, hey: ]]'))
-  expect_equal_to_reference(file = '017.rds', yaml::yaml.load('RACE: [ race, [ bar, baz ]]'))
-  expect_equal_to_reference(file = '018.rds', yaml::yaml.load('RACE: [ race, [ {foo: bar} ]]'))
-  expect_equal_to_reference(file = '019.rds', yaml::yaml.load('RACE: [ label: race, [ foo: bar ]]'))
-  expect_equal_to_reference(file = '020.rds', yaml::yaml.load('RACE: [ label: race, [ foo: bar, hey: baz ]]'))
-  expect_equal_to_reference(file = '021.rds', yaml::yaml.load('RACE: [ label: race, [ foo: bar, baz ]]'))
-  expect_equal_to_reference(file = '022.rds', yaml::yaml.load('1'))                       # a length-one vector
-  expect_equal_to_reference(file = '023.rds', yaml::yaml.load('a'))                       # a length-one vector
-  expect_equal_to_reference(file = '024.rds', yaml::yaml.load('a:'))                      # a length-one named list
-  expect_equal_to_reference(file = '025.rds', yaml::yaml.load('a: '))                     # a length-one named list
-  expect_equal_to_reference(file = '026.rds', yaml::yaml.load('? a'))                     # a length-one named list
-  expect_equal_to_reference(file = '027.rds', yaml::yaml.load('[ 0]'))                    # a length-one sequence, represented as a vector
-  expect_equal_to_reference(file = '028.rds', yaml::yaml.load('[ 0, 1]'))                 # a sequence, represented as a vector
-  expect_equal_to_reference(file = '029.rds', yaml::yaml.load('a: 0'))                    # a length-one mapping, represented as a length-one named list
-  expect_equal_to_reference(file = '030.rds', yaml::yaml.load('[a: 0]'))                  # a list of named list * recursive
-  expect_equal_to_reference(file = '031.rds', yaml::yaml.load('[a: 0, b: 1]'))            # a list of named lists *
-  expect_equal_to_reference(file = '032.rds', yaml::yaml.load('[a: [0,1,2], b: 1]'))      # a list of lists *
-  expect_equal_to_reference(file = '033.rds', yaml::yaml.load('[a: [0,1,2], 5 ]'))        # a list of one list and one int
-  expect_equal_to_reference(file = '034.rds', yaml::yaml.load('[ [ [ [d: [0, 1, 2]]]]]')) # a list of named list * recursive
+  expect_equal_to_reference(file = '001.rds', yaml.load('[ID: ]'))
+  expect_equal_to_reference(file = '002.rds', yaml.load('ID: '))
+  expect_equal_to_reference(file = '003.rds', yaml.load('[  ID: ]'))
+  expect_equal_to_reference(file = '004.rds', yaml.load('[ ID: ]'))
+  expect_equal_to_reference(file = '005.rds', yaml.load('RACE'))
+  expect_equal_to_reference(file = '006.rds', yaml.load('RACE:'))
+  expect_equal_to_reference(file = '007.rds', yaml.load('? RACE'))
+  expect_equal_to_reference(file = '008.rds', yaml.load('[{RACE: }, ID: ]'))
+  expect_equal_to_reference(file = '009.rds', yaml.load('[? RACE, ? ID]'))
+  expect_equal_to_reference(file = '010.rds', yaml.load('[RACE: , ID: ]'))
+  expect_equal_to_reference(file = '011.rds', yaml.load('RACE: [ race, [ foo: bar, hey: baz ]]'))
+  expect_equal_to_reference(file = '012.rds', yaml.load('RACE: [ race, [ {foo: bar}, {hey: baz} ]]'))
+  expect_equal_to_reference(file = '013.rds', yaml.load('RACE: [ race, [ {foo: bar}, hey: baz ]]'))
+  expect_equal_to_reference(file = '014.rds', yaml.load('RACE: [ race, [ {foo: bar}, ? baz ]]'))
+  expect_equal_to_reference(file = '015.rds', yaml.load('RACE: [ race, [ {foo: bar},  baz: ]]'))
+  expect_equal_to_reference(file = '016.rds', yaml.load('RACE: [ race, [ {foo: bar}, hey: ]]'))
+  expect_equal_to_reference(file = '017.rds', yaml.load('RACE: [ race, [ bar, baz ]]'))
+  expect_equal_to_reference(file = '018.rds', yaml.load('RACE: [ race, [ {foo: bar} ]]'))
+  expect_equal_to_reference(file = '019.rds', yaml.load('RACE: [ label: race, [ foo: bar ]]'))
+  expect_equal_to_reference(file = '020.rds', yaml.load('RACE: [ label: race, [ foo: bar, hey: baz ]]'))
+  expect_equal_to_reference(file = '021.rds', yaml.load('RACE: [ label: race, [ foo: bar, baz ]]'))
+  expect_equal_to_reference(file = '022.rds', yaml.load('1'))                       # a length-one vector
+  expect_equal_to_reference(file = '023.rds', yaml.load('a'))                       # a length-one vector
+  expect_equal_to_reference(file = '024.rds', yaml.load('a:'))                      # a length-one named list
+  expect_equal_to_reference(file = '025.rds', yaml.load('a: '))                     # a length-one named list
+  expect_equal_to_reference(file = '026.rds', yaml.load('? a'))                     # a length-one named list
+  expect_equal_to_reference(file = '027.rds', yaml.load('[ 0]'))                    # a length-one sequence, represented as a vector
+  expect_equal_to_reference(file = '028.rds', yaml.load('[ 0, 1]'))                 # a sequence, represented as a vector
+  expect_equal_to_reference(file = '029.rds', yaml.load('a: 0'))                    # a length-one mapping, represented as a length-one named list
+  expect_equal_to_reference(file = '030.rds', yaml.load('[a: 0]'))                  # a list of named list * recursive
+  expect_equal_to_reference(file = '031.rds', yaml.load('[a: 0, b: 1]'))            # a list of named lists *
+  expect_equal_to_reference(file = '032.rds', yaml.load('[a: [0,1,2], b: 1]'))      # a list of lists *
+  expect_equal_to_reference(file = '033.rds', yaml.load('[a: [0,1,2], 5 ]'))        # a list of one list and one int
+  expect_equal_to_reference(file = '034.rds', yaml.load('[ [ [ [d: [0, 1, 2]]]]]')) # a list of named list * recursive
 })
 
 test_that('as_yamlet result is stable',{
   expect_equal_to_reference(file = '035.rds', as_yamlet('RACE: [white: 0, 1 ]'))         # surprising, but correct.
   expect_equal_to_reference(file = '036.rds', as_yamlet('RACE: [race, [white: 0, 1 ]]'))
-  expect_equal_to_reference(file = '037.rds', as_yamlet('RACE: [ race, [ foo: bar ]]'))
-  expect_equal_to_reference(file = '038.rds', ('RACE: [ label: race, [ foo: bar ]]'))    # must not be label, label; must not drop foo
+  expect_equal_to_reference(
+    file = '037.rds', # @ 0.7.7 this was runaway parsimony
+    as_yamlet(
+      'RACE: [ race, [ foo: bar ]]' # @ 0.7.8 we see (correctly) label, guide not label, foo
+    )
+  )
+})
+
+test_that('as_yamlet result is still stable',{
+
+  yaml.load('foo: bar')
+  yaml.load('foo: bar', handlers = list(seq = parsimonious))
+  yaml.load('[foo: bar]')
+  yaml.load('[foo: bar]', handlers = list(seq = parsimonious))
+  yaml.load('RACE: [ label: race, [ foo: bar ]]')
+  yaml.load('RACE: [ label: race, [ foo: bar ]]', handlers = list(seq = parsimonious))
+  as_yamlet('RACE: [ label: race, [ foo: bar ]]')
+  as_yamlet('RACE: [ label: race, [ foo: bar, hey: baz ]]')
+  expect_equal_to_reference(file = '038.rds',as_yamlet('RACE: [ label: race, [ foo: bar ]]'))    # must not be label, label; must not drop foo
   expect_equal_to_reference(file = '039.rds', as_yamlet('RACE: [ label: race, [ foo: bar, hey: baz ]]'))
+
 })
 
 test_that('unnest result is stable',{
@@ -53,19 +73,95 @@ test_that('unnest result is stable',{
 # should BE that element
 # and HAVE that name
 # recursively, starting at depth
-expect_equal_to_reference(file = '040.rds', to_yamlet(unnest(yaml::yaml.load('1'))))
-expect_equal_to_reference(file = '041.rds', to_yamlet(unnest(yaml::yaml.load('a'))))
-expect_equal_to_reference(file = '042.rds', to_yamlet(unnest(yaml::yaml.load('a:')))) #
-expect_equal_to_reference(file = '043.rds', to_yamlet(unnest(yaml::yaml.load('a: ')))) #
-expect_equal_to_reference(file = '044.rds', to_yamlet(unnest(yaml::yaml.load('? a')))) #
-expect_equal_to_reference(file = '045.rds', to_yamlet(unnest(yaml::yaml.load('[ 0]'))))
-expect_equal_to_reference(file = '046.rds', to_yamlet(unnest(yaml::yaml.load('[ 0, 1]'))))
-expect_equal_to_reference(file = '047.rds', to_yamlet(unnest(yaml::yaml.load('a: 0')))) #
-expect_equal_to_reference(file = '048.rds', to_yamlet(unnest(yaml::yaml.load('[a: 0]')))) #
-expect_equal_to_reference(file = '049.rds', to_yamlet(unnest(yaml::yaml.load('[a: 0, b: 1]'))))
-expect_equal_to_reference(file = '050.rds', to_yamlet(unnest(yaml::yaml.load('[a: [0,1,2], b: 1]'))))
-expect_equal_to_reference(file = '051.rds', to_yamlet(unnest(yaml::yaml.load('[a: [0,1,2], 5 ]') )))
-expect_equal_to_reference(file = '052.rds', to_yamlet(unnest(yaml::yaml.load('[ [ [ [d: [0, 1, 2]]]]]')))) #
+  library(magrittr)
+  'a: [[d: [0, 1, 2]]]' %>% as_yamlet %>% to_yamlet # correct "[ a: [ label: [ d: [ 0, 1, 2 ]]]]"
+
+  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load # expected
+  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load %>% unnest # runaway parsimony
+  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load %>% unnest %>% to_yamlet # runaway parsimony
+  '[ [ [ [d: [0, 1, 2]]]]]' %>%
+    yaml.load(
+      TRUE,
+      list(
+        seq = parsimonious,
+        map = function(x)lapply(x, unclass)
+      )
+    ) # restrained parsimony
+
+  '[ [ [ [d: [0, 1, 2]]]]]' %>%
+    yaml.load(
+      TRUE,
+      list(
+        seq = parsimonious,
+        map = function(x)lapply(x, unclass)
+      )
+    ) %>%
+    to_yamlet # not collapsed if all singlets get brackets
+
+  'a:  [[d: [0, 1, 2]]]' %>% as_yamlet %>% to_yamlet # correct "[ a: [ label: [ d: [ 0, 1, 2 ]]]]"
+  'a: [[[d: [0, 1, 2]]]]' %>% as_yamlet %>% to_yamlet # correct "[ a: [ label: [ [ d: [ 0, 1, 2 ]]]]]"
+
+
+
+
+
+
+  # consider:
+  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load %>% unnest # runaway parsimony
+
+  # this is runaway parsimony.
+  # As of 0.7.8, we want to assume that the user had good reason for deep nesting.
+  # We replace unnest() with parsimonious, which only operates at depth.
+  # As a test, to_yamlet should give back the original, or something close to it.
+  'RACE: [ label: race, [ foo: bar ]]' %>% as_yamlet
+  'a: [ [ [ [d: [0, 1, 2]]]]]' %>% as_yamlet
+  'a: [ [ [ [d: [0, 1, 2]]]]]' %>% as_yamlet %>% to_yamlet
+
+  expect_identical(
+    '1' %>% yaml.load %>% unnest,
+    '1' %>% yaml.load(handlers = list(seq = parsimonious))
+  )
+  h <- list(seq = parsimonious, map = function(x)lapply(x, unclass))
+  expect_equal_to_reference(file = '040.rds', '1' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '040.rds', '1' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '041.rds', 'a' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '041.rds', 'a' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '042.rds', 'a:' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '042.rds', 'a:' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '043.rds', 'a: ' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '043.rds', 'a: ' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '044.rds', '? a' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '044.rds', '? a' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '045.rds', '[ 0]' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '045.rds', '[ 0]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '046.rds', '[ 0, 1]' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '046.rds', '[ 0, 1]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '047.rds', 'a: 0' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '047.rds', 'a: 0' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '048.rds', '[a: 0]' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '048.rds', '[a: 0]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '049.rds', '[a: 0, b: 1]' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '049.rds', '[a: 0, b: 1]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '050.rds', '[a: [0,1,2], b: 1]' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '050.rds', '[a: [0,1,2], b: 1]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  expect_equal_to_reference(file = '051.rds', '[a: [0,1,2], 5 ]' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '051.rds', '[a: [0,1,2], 5 ]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
+  # here we see runaway parsimony using unnested, but restrained parsimony using parsimonious:
+  expect_equal_to_reference(file = '052.rds',  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load %>% unnest %>% to_yamlet)
+  expect_equal_to_reference(file = '052b.rds', '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
+
 })
 
 test_that('more elements than keys gives warning',{
@@ -77,7 +173,7 @@ test_that('yamlet reads length-one character equivalently to vector',{
 })
 
 test_that('uninformative nesting is removed',{
-  expect_identical(names(unnest(yaml::yaml.load('[foo: 1, bar: 3]'))), c('foo','bar'))
+  expect_identical(names(unnest(yaml.load('[foo: 1, bar: 3]'))), c('foo','bar'))
 })
 
 test_that('key priority by source is explicit > object > argument > option > default',{
@@ -86,7 +182,22 @@ test_that('key priority by source is explicit > object > argument > option > def
   options(yamlet_default_keys = 'option')
   expect_identical(names(as_yamlet('a: value')$a), 'option')
   expect_identical(names(as_yamlet('a: value', default_keys = 'argument')$a), 'argument')
-  expect_identical(names(as_yamlet('a: value\n_keys: object', default_keys = 'argument')$a), 'object')
+
+
+
+  as_yamlet('a: ')
+
+  expect_identical(
+    names(as_yamlet('a: value\n_keys: object', default_keys = 'argument')$a),
+    'object'
+  )
+
+
+
+
+
+
+
   expect_identical(names(as_yamlet('a: [explicit: value]\n_keys: object', default_keys = 'argument')$a), 'explicit')
   options(yamlet_default_keys = old)
 })

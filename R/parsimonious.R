@@ -95,13 +95,15 @@ parsimonious.list <- function(x, ...){
 
   # reduce if any targets, and not extensive
   if(!extensive & any(targets)){
-    subs <- sapply(x[targets], `[[`, i = 1)
-    nms <- sapply(x, names)
-    bad <- sapply(nms, is.null)
-    nms[bad] <- ''
-    nms <- unlist(nms)
-    x[targets] <- subs
-    if(!all(bad)) names(x) <- nms
+    y <- list()
+    for(i in seq_along(x)){
+      if(targets[[i]]) {
+        y[[i]] <- x[[i]]
+      } else {
+        y[[i]] <- x[i]
+      }
+    }
+    x <- do.call(c, y)
   }
 
   # if there were no lists or null, then convert to vector

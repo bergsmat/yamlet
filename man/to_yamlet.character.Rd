@@ -17,7 +17,7 @@ length-one character
 \description{
 Coerces character to yamlet storage format.
 Named character is processed as a named list.
-NA_character is treated as the string 'NA'.
+NA_character_ is treated as the string 'NA'.
 }
 \examples{
 to_yamlet('foo')
@@ -31,6 +31,7 @@ Other to_yamlet:
 \code{\link{to_yamlet.NULL}()},
 \code{\link{to_yamlet.default}()},
 \code{\link{to_yamlet.list}()},
+\code{\link{to_yamlet.yamlet}()},
 \code{\link{to_yamlet}()}
 }
 \concept{to_yamlet}

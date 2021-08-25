@@ -41,7 +41,7 @@ as_yam <- function(x, ...)UseMethod('as_yam')
 as_yam.character <- function(
   x,
   as.named.list,
-  handlers = list(seq = parsimonious),
+  handlers = list(seq = parsimonious, map = function(x)lapply(x, unclass)),
   ...
 ){
   if(length(x) == 1 & file.exists(x[[1]])){
@@ -70,8 +70,14 @@ as_yam.character <- function(
       ),
       args
     )
-    y <- try(do.call(yaml.load, args))
+    y <- do.call(yaml.load, args)
   }
+  # should just be a bare list
+  y <- unclass(y)
+
+  # its members should be bare lists
+  y[] <- lapply(y, unclass)
+
   if(!inherits(y, 'list')){
     if(length(x) == 1){
       stop('x is not YAML or path to YAML')
@@ -80,12 +86,12 @@ as_yam.character <- function(
     }
   }
 
-  # each member of y must be a list
-  for(m in seq_along(y)) y[[m]] <- as.list(y[[m]])
+  # ? each member of y must be a list
+  # for(m in seq_along(y)) y[[m]] <- as.list(y[[m]])
 
   # un-nesting is now applied at parsing using 'parsimonious'
   # y[] <- lapply(y, unnest)
-  y[] <- lapply(y, as.list)
+  # y[] <- lapply(y, as.list)
 
   if('_keys' %in% names(y)){
     k <- y$`_keys`
@@ -463,12 +469,27 @@ to_yamlet <- function(x, ...)UseMethod('to_yamlet')
 
 to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
 
+#' Coerce Yamlet to Yamlet Storage Format
+#'
+#' Coerces yamlet to yamlet storage format by unclassing to list.
+#' @param x object
+#' @param ... ignored
+#' @export
+#' @keywords internal
+#' @return length-one character
+#' @family to_yamlet
+#' @examples
+#' library(magrittr)
+#'  'a: [[d: [0, 1, 2]]]' %>% as_yamlet %>% to_yamlet
+
+to_yamlet.yamlet <- function(x,...)to_yamlet(unclass(x))
+
 #'
 #' Coerce Character to Yamlet Storage Format
 #'
 #' Coerces character to yamlet storage format.
 #' Named character is processed as a named list.
-#' NA_character is treated as the string 'NA'.
+#' NA_character_ is treated as the string 'NA'.
 #' @param x character
 #' @param ... ignored
 #' @export
@@ -572,13 +593,21 @@ to_yamlet.list <- function(x, ...){
   # separate members with commas
   out <- unlist(out) # converts empty list to NULL
   if(is.null(out)) out <- ''
+
   if(length(out) == 1){ # a singlet
-    if(length(names(out))){ # not all singlets have names
-      if(names(out) != ''){ # a singlet may have an empty name
+
+    # maybe *all* singlets need brackets
+
+   # if(length(names(out))){ # not all singlets have names
+   #  if(names(out) != ''){ # a singlet may have an empty name
         out <-paste0('[ ', out, ' ]') # named singlets need brackets
-      }
-    }
+   #   }
+   # }
+
+
   }
+
+
   if(length(out) > 1){ # sequences need brackets
     out <- paste(out, collapse = ', ')
     out <- paste0('[ ', out, ' ]')
