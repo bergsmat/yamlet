@@ -54,6 +54,10 @@ parsimonious <- function(x, ...)UseMethod('parsimonious')
 #' '[1, 2]' %>% yaml.load
 #' '[1, 2]' %>% yaml.load(handlers = list(seq = parsimonious))
 #'
+#' # Respects mixed-length vector types:
+#' 'RACE: [ race, [white, black, asian ]]' %>% yaml.load
+#' 'RACE: [ race, [white, black, asian ]]' %>% yaml.load(handlers = list(seq = parsimonious))
+#'
 #' # Anonymous elements get a blank name:
 #' '[a: 1, 2]' %>% yaml.load %>% sapply(names)
 #' '[a: 1, 2]' %>% yaml.load(handlers = list(seq = parsimonious)) %>% names
@@ -66,14 +70,23 @@ parsimonious <- function(x, ...)UseMethod('parsimonious')
 #' yaml.load('-')
 #' yaml.load('-', handlers = list(seq = parsimonious))
 #'
-#' # Limited to first encounter:
+#' # Limited to first (most deeply nested) encounter:
 #' '[[[a: 1]]]' %>% yaml.load
 #' '[[[a: 1]]]' %>% yaml.load(handlers = list(seq = parsimonious))
-
+#'
+#' # Works for mixed-depth nesting:
+#' 'ITEM: [ label: item, [ foo: bar, hey: baz ]]' %>% yaml.load
+#' 'ITEM: [ label: item, [ foo: bar, hey: baz ]]' %>% yaml.load(handlers = list(seq = parsimonious))
 
 parsimonious.list <- function(x, ...){
+  # are any of these lists parsimonious?
+  parsimonious <- sapply(x, inherits, 'parsimonious')
+
   # are any members longer than one element?
-  extensive <- any(sapply(x, length)) > 1
+  plural <- sapply(x, length) > 1
+
+  # are any non-parsimonious members plural?
+  extensive <- any(!parsimonious & plural)
 
   # is this list anonymous?
   # anonymous <- is.null(names(x))
@@ -83,9 +96,6 @@ parsimonious.list <- function(x, ...){
 
   # do we have any NULL?
   isNull <- sapply(x, is.null)
-
-  # are any of these lists parsimonious?
-  parsimonious <- sapply(x, inherits, 'parsimonious')
 
   # targets are non-parsimonious lists
   targets <- isList & !parsimonious
@@ -107,7 +117,7 @@ parsimonious.list <- function(x, ...){
   }
 
   # if there were no lists or null, then convert to vector
-  if(!any(isList) & !any(isNull)) x <- unlist(x)
+  if(!any(isList) & !any(isNull) & !any(parsimonious)) x <- unlist(x)
 
   class(x) <- union('parsimonious', class(x))
   x

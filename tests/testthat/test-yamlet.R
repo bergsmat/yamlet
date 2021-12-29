@@ -51,16 +51,25 @@ test_that('as_yamlet result is stable',{
 
 test_that('as_yamlet result is still stable',{
 
-  yaml.load('foo: bar')
-  yaml.load('foo: bar', handlers = list(seq = parsimonious))
-  yaml.load('[foo: bar]')
-  yaml.load('[foo: bar]', handlers = list(seq = parsimonious))
-  yaml.load('RACE: [ label: race, [ foo: bar ]]')
-  yaml.load('RACE: [ label: race, [ foo: bar ]]', handlers = list(seq = parsimonious))
-  as_yamlet('RACE: [ label: race, [ foo: bar ]]')
-  as_yamlet('RACE: [ label: race, [ foo: bar, hey: baz ]]')
+  # yaml.load('foo: bar')
+  # yaml.load('foo: bar', handlers = list(seq = parsimonious))
+  # yaml.load('[foo: bar]')
+  # yaml.load('[foo: bar]', handlers = list(seq = parsimonious))
+  #
+  # yaml.load('RACE: [ label: race, [ foo: bar ]]')
+  # yaml.load('RACE: [ label: race, [ foo: bar ]]', handlers = list(seq = parsimonious))
+  #
+  # yaml.load('RACE: [ label: race, [ foo: bar, hey: baz ]]')
+  # yaml.load('RACE: [ label: race, [ foo: bar, hey: baz ]]', handlers = list(seq = parsimonious))
+  #
+  # as_yamlet('RACE: [ label: race, [ foo: bar ]]')
+  # as_yamlet('RACE: [ label: race, [ foo: bar, hey: baz ]]')
+  #
+  # as_yam('RACE: [ label: race, [ foo: bar ]]') %>% str
+  # as_yam('RACE: [ label: race, [ foo: bar, hey: baz ]]') %>% str
+
   expect_equal_to_reference(file = '038.rds',as_yamlet('RACE: [ label: race, [ foo: bar ]]'))    # must not be label, label; must not drop foo
-  expect_equal_to_reference(file = '039.rds', as_yamlet('RACE: [ label: race, [ foo: bar, hey: baz ]]'))
+  expect_equal_to_reference(file = '039.rds', as_yamlet('RACE: [ label: race, [ foo: bar, hey: baz ]]')) # 'label: race' must reduce in presence of plural list
 
 })
 
@@ -177,29 +186,22 @@ test_that('uninformative nesting is removed',{
 })
 
 test_that('key priority by source is explicit > object > argument > option > default',{
-  expect_identical(names(as_yamlet('a: value')$a), 'label')
+  expect_identical(names(as_yamlet('a: value')$a), 'label') # default
   old <- getOption('yamlet_default_keys')
   options(yamlet_default_keys = 'option')
-  expect_identical(names(as_yamlet('a: value')$a), 'option')
-  expect_identical(names(as_yamlet('a: value', default_keys = 'argument')$a), 'argument')
-
-
-
-  as_yamlet('a: ')
-
-  expect_identical(
-    names(as_yamlet('a: value\n_keys: object', default_keys = 'argument')$a),
-    'object'
-  )
-
-
-
-
-
-
-
-  expect_identical(names(as_yamlet('a: [explicit: value]\n_keys: object', default_keys = 'argument')$a), 'explicit')
+  expect_identical(names(as_yamlet('a: value')$a), 'option') # option
+  expect_identical(names(as_yamlet('a: value', default_keys = 'argument')$a), 'argument') # argument
+  expect_identical(names(as_yamlet('a: value\n_keys: object', default_keys = 'argument')$a),'object')
+  expect_identical(names(as_yamlet('a: [explicit: value]\n_keys: object', default_keys = 'argument')$a),'explicit')
   options(yamlet_default_keys = old)
+})
+
+test_that('mixed-length vector types are respected',{
+  expect_equal_to_reference(file = '099.rds', as_yamlet('RACE: [ race, [white, black, asian ]]'))
+})
+
+test_that('mixed-depth nesting is supported',{
+  expect_equal_to_reference(file = '100.rds', as_yamlet('ITEM: [ label: item, [ foo: bar, hey: baz ]]'))
 })
 
 test_that('default decorations are equivalent to explicit requests',{
@@ -1416,3 +1418,11 @@ test_that('class "decorated" persists after merges, joins, enumerations',{
 test_that('moot redecorate warnings are suppressed',{
 
 })
+
+test_that('column named *n* can be decorated',{
+
+}
+
+test_that('column named *scenario* can have label *Scenario* even if there is a column with this name',{
+
+}

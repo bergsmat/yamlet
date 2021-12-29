@@ -91,7 +91,9 @@ as_yam.character <- function(
 
   # un-nesting is now applied at parsing using 'parsimonious'
   # y[] <- lapply(y, unnest)
-  # y[] <- lapply(y, as.list)
+
+  # but list coercion still important ...
+  y[] <- lapply(y, as.list)
 
   if('_keys' %in% names(y)){
     k <- y$`_keys`

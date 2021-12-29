@@ -58,9 +58,17 @@ library(yaml)
 yaml.load('-')
 yaml.load('-', handlers = list(seq = parsimonious))
 
-# Limited to first encounter:
+# Limited to first (most deeply nested) encounter:
 '[[[a: 1]]]' \%>\% yaml.load
 '[[[a: 1]]]' \%>\% yaml.load(handlers = list(seq = parsimonious))
+
+# Works for mixed-depth nesting:
+'RACE: [ label: race, [ foo: bar, hey: baz ]]' \%>\% yaml.load
+'RACE: [ label: race, [ foo: bar, hey: baz ]]' \%>\% yaml.load(handlers = list(seq = parsimonious))
+
+# Respects mixed-length vector types:
+'RACE: [ race, [white, black, asian ]]' \%>\% yaml.load
+'RACE: [ race, [white, black, asian ]]' \%>\% yaml.load(handlers = list(seq = parsimonious))
 }
 \seealso{
 Other parsimonious: 
