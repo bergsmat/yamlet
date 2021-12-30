@@ -46,6 +46,10 @@ library(yaml)
 '[1, 2]' \%>\% yaml.load
 '[1, 2]' \%>\% yaml.load(handlers = list(seq = parsimonious))
 
+# Respects mixed-length vector types:
+'RACE: [ race, [white, black, asian ]]' \%>\% yaml.load
+'RACE: [ race, [white, black, asian ]]' \%>\% yaml.load(handlers = list(seq = parsimonious))
+
 # Anonymous elements get a blank name:
 '[a: 1, 2]' \%>\% yaml.load \%>\% sapply(names)
 '[a: 1, 2]' \%>\% yaml.load(handlers = list(seq = parsimonious)) \%>\% names
@@ -63,12 +67,8 @@ yaml.load('-', handlers = list(seq = parsimonious))
 '[[[a: 1]]]' \%>\% yaml.load(handlers = list(seq = parsimonious))
 
 # Works for mixed-depth nesting:
-'RACE: [ label: race, [ foo: bar, hey: baz ]]' \%>\% yaml.load
-'RACE: [ label: race, [ foo: bar, hey: baz ]]' \%>\% yaml.load(handlers = list(seq = parsimonious))
-
-# Respects mixed-length vector types:
-'RACE: [ race, [white, black, asian ]]' \%>\% yaml.load
-'RACE: [ race, [white, black, asian ]]' \%>\% yaml.load(handlers = list(seq = parsimonious))
+'ITEM: [ label: item, [ foo: bar, hey: baz ]]' \%>\% yaml.load
+'ITEM: [ label: item, [ foo: bar, hey: baz ]]' \%>\% yaml.load(handlers = list(seq = parsimonious))
 }
 \seealso{
 Other parsimonious: 

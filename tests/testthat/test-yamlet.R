@@ -73,116 +73,12 @@ test_that('as_yamlet result is still stable',{
 
 })
 
-test_that('unnest result is stable',{
-# each element of a list
-#  that is itself a list
-#  and does not have a name
-#  but has exactly one element
-#  that DOES have a name
-# should BE that element
-# and HAVE that name
-# recursively, starting at depth
-  library(magrittr)
-  'a: [[d: [0, 1, 2]]]' %>% as_yamlet %>% to_yamlet # correct "[ a: [ label: [ d: [ 0, 1, 2 ]]]]"
-
-  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load # expected
-  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load %>% unnest # runaway parsimony
-  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load %>% unnest %>% to_yamlet # runaway parsimony
-  '[ [ [ [d: [0, 1, 2]]]]]' %>%
-    yaml.load(
-      TRUE,
-      list(
-        seq = parsimonious,
-        map = function(x)lapply(x, unclass)
-      )
-    ) # restrained parsimony
-
-  '[ [ [ [d: [0, 1, 2]]]]]' %>%
-    yaml.load(
-      TRUE,
-      list(
-        seq = parsimonious,
-        map = function(x)lapply(x, unclass)
-      )
-    ) %>%
-    to_yamlet # not collapsed if all singlets get brackets
-
-  'a:  [[d: [0, 1, 2]]]' %>% as_yamlet %>% to_yamlet # correct "[ a: [ label: [ d: [ 0, 1, 2 ]]]]"
-  'a: [[[d: [0, 1, 2]]]]' %>% as_yamlet %>% to_yamlet # correct "[ a: [ label: [ [ d: [ 0, 1, 2 ]]]]]"
-
-
-
-
-
-
-  # consider:
-  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load %>% unnest # runaway parsimony
-
-  # this is runaway parsimony.
-  # As of 0.7.8, we want to assume that the user had good reason for deep nesting.
-  # We replace unnest() with parsimonious, which only operates at depth.
-  # As a test, to_yamlet should give back the original, or something close to it.
-  'RACE: [ label: race, [ foo: bar ]]' %>% as_yamlet
-  'a: [ [ [ [d: [0, 1, 2]]]]]' %>% as_yamlet
-  'a: [ [ [ [d: [0, 1, 2]]]]]' %>% as_yamlet %>% to_yamlet
-
-  expect_identical(
-    '1' %>% yaml.load %>% unnest,
-    '1' %>% yaml.load(handlers = list(seq = parsimonious))
-  )
-  h <- list(seq = parsimonious, map = function(x)lapply(x, unclass))
-  expect_equal_to_reference(file = '040.rds', '1' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '040.rds', '1' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '041.rds', 'a' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '041.rds', 'a' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '042.rds', 'a:' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '042.rds', 'a:' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '043.rds', 'a: ' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '043.rds', 'a: ' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '044.rds', '? a' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '044.rds', '? a' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '045.rds', '[ 0]' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '045.rds', '[ 0]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '046.rds', '[ 0, 1]' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '046.rds', '[ 0, 1]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '047.rds', 'a: 0' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '047.rds', 'a: 0' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '048.rds', '[a: 0]' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '048.rds', '[a: 0]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '049.rds', '[a: 0, b: 1]' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '049.rds', '[a: 0, b: 1]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '050.rds', '[a: [0,1,2], b: 1]' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '050.rds', '[a: [0,1,2], b: 1]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  expect_equal_to_reference(file = '051.rds', '[a: [0,1,2], 5 ]' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '051.rds', '[a: [0,1,2], 5 ]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-  # here we see runaway parsimony using unnested, but restrained parsimony using parsimonious:
-  expect_equal_to_reference(file = '052.rds',  '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load %>% unnest %>% to_yamlet)
-  expect_equal_to_reference(file = '052b.rds', '[ [ [ [d: [0, 1, 2]]]]]' %>% yaml.load( TRUE, h ) %>% to_yamlet)
-
-})
-
 test_that('more elements than keys gives warning',{
   expect_warning(as_yamlet('RACE: [label: race, guide: [white: 0, black: 1 ], categorical, 0]\nID: [1, 2, 3]'))
 })
 
 test_that('yamlet reads length-one character equivalently to vector',{
   expect_identical(as_yam(c('ID:','TIME:')),as_yam('ID:\nTIME:'))
-})
-
-test_that('uninformative nesting is removed',{
-  expect_identical(names(unnest(yaml.load('[foo: 1, bar: 3]'))), c('foo','bar'))
 })
 
 test_that('key priority by source is explicit > object > argument > option > default',{
@@ -230,6 +126,9 @@ test_that('non-default import is equivalent',{
   expect_identical(b, c)
 })
 
+# debug(yamlet:::to_yamlet.list)
+# as.character(as_yamlet('ITEM: description'))
+
 test_that('interconversion to and from storage is conservative',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
@@ -267,8 +166,9 @@ test_that('read_yamlet and write_yamlet are reciprocal',{
 test_that('decorate will not overwrite existing attributes',{
   foo <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(foo)
-  expect_warning(y <- decorate(x))
-  expect_identical(x, y)
+  expect_warning(y <- decorate(x, 'Subject: subject identifier'))
+  expect_silent(y <- redecorate(x, 'Subject: subject identifier'))
+
 })
 
 test_that('decorate ignores anonymous attributes',{
@@ -380,22 +280,6 @@ test_that('dplyr filter does not drop attributes',{
   )
 })
 
-test_that('print.dg treats variable as categorical if guide has length > 1',{
-  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-  library(ggplot2)
-  library(dplyr)
-  library(magrittr)
-  file %>% decorate %>% filter(!is.na(conc)) %>%
-  ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
-})
-
-test_that('print.dg uses conditional labels and guides',{
-  file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
-  file %>% decorate %>%
-  filter(event == 'conc') %>%
-  ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
-})
-
 test_that('io_table accepts nuisance arguments without error',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
@@ -456,11 +340,6 @@ test_that('classified() creates class factor and removes attribute codelist',{
  )
  expect_true('factor' %in% x$Heart$class)
 })
-
-# test_that('user can specify unit instead of units',{
-#   a <- 'CONC: [ concentration, ng/mL ]' %>% as_yamlet %>% explicit_guide(default = 'unit')
-#   expect_identical(names(a$CONC), c('label','unit'))
-# })
 
 test_that('resolve correctly classifies conditional elements',{
   skip_if_not( l10n_info()$`UTF-8` )
@@ -622,19 +501,6 @@ test_that('is_parseable respects locally-defined units',{
   expect_false(is_parseable('foo'))
 })
 
-test_that('labels parsed and unparsed, with and without units, display correctly',{
-  library(magrittr)
-  library(ggplot2)
-  Theoph %<>% as.data.frame
-  Theoph %<>% as_decorated
-  options(yamlet_enclose = c('[',']'))
-  Theoph$conc %<>% structure(label = 'CO[2] concentration', units = 'µg/m^2')
-  Theoph$Time %<>% structure(label = 'time since administration', units = 'h')
-  ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
-  options(yamlet_label_parse = TRUE)
-  ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
-})
-
 test_that('all valid spork print as axis label',{
   library(magrittr)
   library(dplyr)
@@ -678,29 +544,6 @@ test_that('R reserved words survive in print.dg labels',{
   )
 })
 
-test_that('ggplot.decorated works with multiple layers',{
-  library(yamlet)
-  library(ggplot2)
-  library(magrittr)
-  library(csv)
-  a <- io_csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
-  b <- io_csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
-  c <- as.csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
-  d <- as.csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
-
-  x <-
-    a %>% filter(event == 'conc') %>%
-    ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
-    b %>% filter(!is.na(conc)) %>%
-    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
-  y <-
-    c %>% filter(event == 'conc') %>%
-    ggplot2:::ggplot.default(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
-    d %>% filter(!is.na(conc)) %>%
-    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
-
-})
-
 test_that('column attributes with metacharacters are quoted or escaped on write',{
   library(magrittr)
   library(dplyr)
@@ -714,33 +557,6 @@ test_that('column attributes with metacharacters are quoted or escaped on write'
   x %>% io_csv(file)
   y <- readLines(sub('csv','yaml',file))
   expect_identical(y, datum)
-})
-
-test_that('ggready supports axis label line breaks',{
-  library(yamlet)
-  library(ggplot2)
-  library(magrittr)
-  library(dplyr)
-  library(encode)
-  data(mtcars)
-  mtcars %>%
-    select(mpg, vs, am) %>%
-    data.frame %>%
-    mutate(
-      plotgroup = case_when(
-        vs == 0 & am == 0 ~ 'v-shaped\nautomatic',
-        vs == 0 & am == 1 ~ 'v-shaped\nmanual',
-        vs == 1 & am == 0 ~ 'straight\nautomatic',
-        vs == 1 & am == 1 ~ 'straight\nmanual'
-      )
-    ) %>%
-    redecorate("
-mpg: [ milage, mi/gal ]
-plotgroup: [ engine\\ntransmission, [v-shaped\n\nautomatic,v-shaped\n\nmanual,straight\n\nautomatic,straight\n\nmanual]]
-") %>%
-    ggready %>%
-    ggplot(aes(x = plotgroup, y = mpg)) +
-    geom_boxplot()
 })
 
 test_that('for each named column, or all if none named, the data.frame method for modify() assigns a value in the attributes environment',{
@@ -789,6 +605,7 @@ test_that('the data.frame method for modify() gives a warning if the assignment 
 test_that('the data.frame method for modify() fails gracefully if assignment cannot be made',{
     file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
     x <- decorate(file)
+    if(exists('foo'))rm(foo)
     expect_warning(x %<>% modify(title = foo, time))
 
 })
@@ -1127,8 +944,6 @@ test_that('as_yamlet does not capture levels of classified by default',{
   decorations(x, Heart)
 })
 
-test_that('decorations() does not print colon for un-named list',{})
-
 test_that('filter.decorated retains class', {
   library(dplyr)
   library(magrittr)
@@ -1177,8 +992,8 @@ test_that('mimic() is stable',{
   expect_equal_to_reference(mimic(numeric(0)), '093.rds')
   expect_equal_to_reference(mimic(LET), '094.rds')
   x <- data.frame(let, LET)
-  x %<>% mutate(let = mimic(let, LET), LET = mimic(LET))
-  expect_equal_to_reference(str(x), '095.rds')
+  # x %<>% mutate(let = mimic(let, LET), LET = mimic(LET))
+  expect_equal_to_reference(x, '095.rds')
 
 })
 
@@ -1332,7 +1147,7 @@ test_that('print.yamlet handles unexpected objects nicely',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
   x %<>% modify(time, SORT = sort)
-  print(decorations(x,time))
+  # print(decorations(x,time))
   expect_equal_to_reference(file = '097.rds', decorations(x, time))
 })
 
@@ -1385,17 +1200,35 @@ test_that('a length one sequence resolves parsimoniously',{
   expect_equal(names(y[[1]][2]), 'guide')
 })
 
+test_that('column named *n* can be decorated',{
 
-test_that('resolve has no effect on resolved item',{
+})
+
+test_that('column named *scenario* can have label *Scenario* even if there is a column with this name',{
+
+})
+
+test_that('write_yamlet uses canonical attribute order by default',{
+
+})
+
+test_that('moot redecorate warnings are suppressed',{
+
+})
+
+test_that('class "decorated" persists after merges, joins, enumerations',{
+
+})
+
+test_that('decorations() does not print colon for un-named list',{
+
+})
+
+test_that('gather.decorated works with unquoted argument names',{
 
 })
 
 test_that('read_yamlet and write_yamlet reproduce block quote',{
-
-})
-
-
-test_that('gather.decorated works with unquoted argument names',{
 
 })
 
@@ -1407,22 +1240,4 @@ test_that('variables with units support unit math',{
 
 })
 
-test_that('write_yamlet uses canonical attribute order by default',{
 
-})
-
-test_that('class "decorated" persists after merges, joins, enumerations',{
-
-})
-
-test_that('moot redecorate warnings are suppressed',{
-
-})
-
-test_that('column named *n* can be decorated',{
-
-}
-
-test_that('column named *scenario* can have label *Scenario* even if there is a column with this name',{
-
-}

@@ -598,15 +598,18 @@ to_yamlet.list <- function(x, ...){
 
   if(length(out) == 1){ # a singlet
 
-    # maybe *all* singlets need brackets
+   # maybe *all* singlets need brackets.
+   bracket_all <- FALSE # adjust if necessary
+   has_name    <- as.logical(length(names(out))) # not all singlets have names
+   if(has_name){
+     if(names(out) == ''){                       # a singlet may have an empty name
+       has_name <- FALSE
+     }
+   }
 
-   # if(length(names(out))){ # not all singlets have names
-   #  if(names(out) != ''){ # a singlet may have an empty name
-        out <-paste0('[ ', out, ' ]') # named singlets need brackets
-   #   }
-   # }
-
-
+   if(bracket_all | has_name){
+     out <-paste0('[ ', out, ' ]') # named singlets may need brackets
+   }
   }
 
 
