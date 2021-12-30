@@ -1201,11 +1201,20 @@ test_that('a length one sequence resolves parsimoniously',{
 })
 
 test_that('column named *n* can be decorated',{
-
+  library(magrittr)
+  library(dplyr)
+  x <- data.frame(n = 1)
+  x %<>% decorate('"n": count')
+  expect_identical('count',decorations(x)$n$label)
 })
 
 test_that('column named *scenario* can have label *Scenario* even if there is a column with this name',{
-
+  library(magrittr)
+  library(dplyr)
+  x <- data.frame(scenario = 1, Scenario = 1)
+  x %<>% decorate('scenario: Scenario')
+  x %<>% decorate('Scenario: scenario')
+  expect_identical('Scenario', decorations(x)$scenario$label)
 })
 
 test_that('write_yamlet uses canonical attribute order by default',{
