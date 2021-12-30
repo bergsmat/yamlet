@@ -865,6 +865,7 @@ read_yamlet <- function(
 #' @param useBytes passed to \code{\link{writeLines}}
 #' @param default_keys character: default keys for the first n anonymous members of each element
 #' @param fileEncoding if \code{con} is character, passed to \code{\link{file}} as \code{encoding}
+#' @param sort whether to coerce attribute order using \code{\link{canonical.yamlet}}
 #' @export
 #' @family interface
 #' @seealso \code{\link{decorate.list}}
@@ -891,9 +892,11 @@ write_yamlet <- function(
     list('label','guide')
   ),
   fileEncoding = getOption('encoding'),
+  sort = TRUE,
   ...
 ){
   x <- as_yamlet(x, default_keys = default_keys)
+  if(sort) x <- canonical(x, keys = default_keys, ...)
   y <- as.character(x, default_keys = default_keys, ...)
   if(is.character(con)){
     con <- file(con, 'w', encoding = fileEncoding)

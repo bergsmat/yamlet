@@ -1218,7 +1218,12 @@ test_that('column named *scenario* can have label *Scenario* even if there is a 
 })
 
 test_that('write_yamlet uses canonical attribute order by default',{
-
+  x <- data.frame(x = 1, y = 1, z = factor('a'))
+  x %<>% decorate('
+  x: [ guide: mm, desc: this, label: foo ]
+  "y": [ guide: bar, desc: other ]
+  ')
+  expect_equal_to_reference(file = '101.rds', write_yamlet(x))
 })
 
 test_that('moot redecorate warnings are suppressed',{

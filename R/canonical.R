@@ -78,6 +78,7 @@ canonical.decorated <- function(
 #' decorations(x)
 #' decorations(canonical(x))
 #' canonical(decorations(x))
+#' write_yamlet(x)
 #'
 
 canonical.yamlet <- function(
