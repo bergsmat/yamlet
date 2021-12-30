@@ -1,3 +1,4 @@
+# retired tests
 test_that('unnest result is stable',{
   # each element of a list
   #  that is itself a list
@@ -107,3 +108,16 @@ test_that('uninformative nesting is removed',{
 #   expect_identical(names(a$CONC), c('label','unit'))
 # })
 
+test_that('labels parsed and unparsed, with and without units, display correctly',{
+  library(magrittr)
+  library(ggplot2)
+  Theoph %<>% as.data.frame
+  Theoph %<>% as_decorated
+  options(yamlet_enclose = c('[',']'))
+  Theoph$conc %<>% structure(label = 'CO[2] concentration', units = 'µg/m^2')
+  Theoph$Time %<>% structure(label = 'time since administration', units = 'h')
+  options(yamlet_label_parse = FALSE) # no longer used anywhere
+  ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
+  options(yamlet_label_parse = TRUE)
+  ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
+})

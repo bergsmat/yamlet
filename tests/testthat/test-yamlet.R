@@ -126,9 +126,6 @@ test_that('non-default import is equivalent',{
   expect_identical(b, c)
 })
 
-# debug(yamlet:::to_yamlet.list)
-# as.character(as_yamlet('ITEM: description'))
-
 test_that('interconversion to and from storage is conservative',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
@@ -836,19 +833,19 @@ test_that('unclassified is the inverse of classified',{
   x %<>% explicit_guide
   y <- classified(x)
   z <- unclassified(y)
-  x %>% decorations(Creatinine)
-  y %>% decorations(Creatinine)
-  z %>% decorations(Creatinine)
-  attr(y$Creatinine, 'codelist')
-  identical(
-  attr(x$Creatinine, 'codelist'),
-  attr(z$Creatinine, 'codelist')
-  )
-  str(attr(x$Creatinine,'codelist'))
-  str(attr(z$Creatinine,'codelist'))
-
-  names(names(attr(x$Creatinine,'codelist')))
-  names(names(attr(z$Creatinine,'codelist')))
+  # x %>% decorations(Creatinine)
+  # y %>% decorations(Creatinine)
+  # z %>% decorations(Creatinine)
+  # attr(y$Creatinine, 'codelist')
+  # identical(
+  # attr(x$Creatinine, 'codelist'),
+  # attr(z$Creatinine, 'codelist')
+  # )
+  # str(attr(x$Creatinine,'codelist'))
+  # str(attr(z$Creatinine,'codelist'))
+  #
+  # names(names(attr(x$Creatinine,'codelist')))
+  # names(names(attr(z$Creatinine,'codelist')))
 
   expect_identical(x, z)
 })
@@ -1163,38 +1160,6 @@ test_that('NA names and values in lists can be converted to yamlet',{
   expect_silent(to_yamlet(setNames(c(1,2,NA), c('a','b','c'))))
 })
 
-test_that('subplots respect metadata assignments',{
-
-  library(ggplot2)
-  library(magrittr)
-  library(dplyr)
-  library(gridExtra)
-  a <- io_csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
-  b <- io_csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
-  c <- as.csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
-  d <- as.csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
-
-  x <-
-    a %>% filter(event == 'conc') %>%
-    ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
-    b %>% filter(!is.na(conc)) %>%
-    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
-
-  y <-
-    a %>% filter(event == 'conc') %>%
-    ggplot2:::ggplot.default(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
-    d %>% filter(!is.na(conc)) %>%
-    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
-
-  grid.arrange(x, y)
-
-  p <- x %>% ggplot_build
-  q <- p %>% ggplot_gtable
-  plot(q)
-  expect_equal_to_reference(file = '098.rds', p)
-
-})
-
 test_that('a length one sequence resolves parsimoniously',{
   y <- as_yamlet('RACE: [ race, [ Asian: 1 ]]')
   expect_equal(names(y[[1]][2]), 'guide')
@@ -1223,15 +1188,33 @@ test_that('write_yamlet uses canonical attribute order by default',{
   x: [ guide: mm, desc: this, label: foo ]
   "y": [ guide: bar, desc: other ]
   ')
-  expect_equal_to_reference(file = '101.rds', write_yamlet(x))
+  expect_equal_to_reference(file = '101.rds', foo <- write_yamlet(x))
 })
 
 test_that('moot redecorate warnings are suppressed',{
+  x <- data.frame(x = 1, y = 1, z = factor('a'))
+  x %<>% decorate('
+  x: [ guide: mm, desc: this, label: foo ]
+  "y": [ guide: bar, desc: other ]
+  ')
+  expect_silent(x %>% decorate(decorations(x)))
+  expect_warning(x %>% decorate('x: bar'))
+  expect_silent(x %>% decorate('x: bar', overwrite = TRUE))
 
 })
 
 test_that('class "decorated" persists after merges, joins, enumerations',{
-
+  library(magrittr)
+  library(dplyr)
+  x <- data.frame(foo = 1, bar = 2)
+  x %<>% decorate('foo: [distance, mm]')
+  x %<>% decorate('bar: [height, mm]')
+  expect_true(inherits(x, 'decorated'))
+  expect_true(inherits(full_join(x,x), 'decorated'))
+  expect_true(inherits(left_join(x,x), 'decorated'))
+  expect_true(inherits(left_join(x, as.data.frame(x)), 'decorated'))
+  expect_false(inherits(full_join(as.data.frame(x), x), 'decorated'))
+  expect_true(inherits(what = 'decorated', merge(x,x)))
 })
 
 test_that('decorations() does not print colon for un-named list',{

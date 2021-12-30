@@ -236,7 +236,7 @@ as_yamlet.yam <- function(x, default_keys = getOption('yamlet_default_keys',list
   k <- attr(x,'keys')
   if(is.null(k))k <- as.list(default_keys)
   stopifnot(length(k) == length(unlist(k)))
-  if(!is.character(unlist(k))){
+  if(!is.character(unlist(k)) & !identical(k,list())){
     warning('default keys do not appear to be character: ignoring')
     k <- list()
   }
@@ -602,7 +602,7 @@ to_yamlet.list <- function(x, ...){
    bracket_all <- FALSE # adjust if necessary
    has_name    <- as.logical(length(names(out))) # not all singlets have names
    if(has_name){
-     if(names(out) == ''){                       # a singlet may have an empty name
+     if(is.na(names(out)) | names(out) == ''){  # a singlet may have an empty name
        has_name <- FALSE
      }
    }

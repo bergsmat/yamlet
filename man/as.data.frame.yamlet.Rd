@@ -57,6 +57,7 @@ file \%>\% io_csv \%>\% resolve \%>\% decorations \%>\% as.data.frame
 }
 \seealso{
 Other interface: 
+\code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},

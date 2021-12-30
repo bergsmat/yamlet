@@ -22,9 +22,10 @@ canonical <- function(x, ...)UseMethod('canonical')
 #' @param ... ignored
 #' @export
 #' @family canonical
+#' @family interface
 #' @return decorated
 #' @examples
-#'
+#' library(magrittr)
 #' x <- data.frame(x = 1, y = 1, z = factor('a'))
 #' x %<>% decorate('
 #' x: [ guide: mm, desc: this, label: foo ]
@@ -68,7 +69,7 @@ canonical.decorated <- function(
 #' @family canonical
 #' @return decorated
 #' @examples
-#'
+#' library(magrittr)
 #' x <- data.frame(x = 1, y = 1, z = factor('a'))
 #' x %<>% decorate('
 #' x: [ guide: mm, desc: this, label: foo ]

@@ -11,6 +11,7 @@ write_yamlet(
   useBytes = FALSE,
   default_keys = getOption("yamlet_default_keys", list("label", "guide")),
   fileEncoding = getOption("encoding"),
+  sort = TRUE,
   ...
 )
 }
@@ -26,6 +27,8 @@ write_yamlet(
 \item{default_keys}{character: default keys for the first n anonymous members of each element}
 
 \item{fileEncoding}{if \code{con} is character, passed to \code{\link{file}} as \code{encoding}}
+
+\item{sort}{whether to coerce attribute order using \code{\link{canonical.yamlet}}}
 
 \item{...}{passed to \code{\link{as_yamlet}}}
 }
@@ -53,6 +56,7 @@ identical(read_yamlet(meta), read_yamlet(tmp))
 
 Other interface: 
 \code{\link{as.data.frame.yamlet}()},
+\code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},

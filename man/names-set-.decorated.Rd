@@ -29,7 +29,8 @@ Other decorated:
 \code{\link{[.decorated}()},
 \code{\link{[<-.decorated}()},
 \code{\link{[[.decorated}()},
-\code{\link{[[<-.decorated}()}
+\code{\link{[[<-.decorated}()},
+\code{\link{merge.decorated}()}
 }
 \concept{decorated}
 \keyword{internal}

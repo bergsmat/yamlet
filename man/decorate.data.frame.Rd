@@ -41,6 +41,7 @@ decorate.list
 
 Other interface: 
 \code{\link{as.data.frame.yamlet}()},
+\code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{desolve.decorated}()},

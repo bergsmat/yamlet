@@ -29,6 +29,7 @@ Other decorated:
 \code{\link{[.decorated}()},
 \code{\link{[<-.decorated}()},
 \code{\link{[[.decorated}()},
+\code{\link{merge.decorated}()},
 \code{\link{names<-.decorated}()}
 }
 \concept{decorated}

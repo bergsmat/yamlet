@@ -5,6 +5,7 @@ test_that('print.dg treats variable as categorical if guide has length > 1',{
   library(magrittr)
   file %>% decorate %>% filter(!is.na(conc)) %>%
     ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
+  # look for legend: congestive heart failure (mod/no/sev)
 })
 
 test_that('print.dg uses conditional labels and guides',{
@@ -12,20 +13,9 @@ test_that('print.dg uses conditional labels and guides',{
   file %>% decorate %>%
     filter(event == 'conc') %>%
     ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point()
+  # look for y axis: serum phenobarbital concentration (only true if event == conc)
 })
 
-test_that('labels parsed and unparsed, with and without units, display correctly',{
-  library(magrittr)
-  library(ggplot2)
-  Theoph %<>% as.data.frame
-  Theoph %<>% as_decorated
-  options(yamlet_enclose = c('[',']'))
-  Theoph$conc %<>% structure(label = 'CO[2] concentration', units = 'µg/m^2')
-  Theoph$Time %<>% structure(label = 'time since administration', units = 'h')
-  ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
-  options(yamlet_label_parse = TRUE)
-  ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
-})
 
 test_that('ggplot.decorated works with multiple layers',{
   library(yamlet)
@@ -42,12 +32,13 @@ test_that('ggplot.decorated works with multiple layers',{
     ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
     b %>% filter(!is.na(conc)) %>%
     geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
+  # nonsensical, but shows injection of new layer with categories
   y <-
     c %>% filter(event == 'conc') %>%
     ggplot2:::ggplot.default(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
     d %>% filter(!is.na(conc)) %>%
     geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
-
+  # as above, without the benefit of metadata (see reduced axis labels)
 })
 
 test_that('ggready supports axis label line breaks',{
@@ -75,5 +66,36 @@ plotgroup: [ engine\\ntransmission, [v-shaped\n\nautomatic,v-shaped\n\nmanual,st
     ggready %>%
     ggplot(aes(x = plotgroup, y = mpg)) +
     geom_boxplot()
+  # note that x axis labels are 2-line, as is x-axis category labels
 })
 
+test_that('subplots respect metadata assignments',{
+  library(ggplot2)
+  library(magrittr)
+  library(dplyr)
+  library(gridExtra)
+  a <- io_csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
+  b <- io_csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
+  c <- as.csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
+  d <- as.csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
+
+  x <-
+    a %>% filter(event == 'conc') %>%
+    ggplot(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
+    b %>% filter(!is.na(conc)) %>%
+    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
+
+  y <-
+    a %>% filter(event == 'conc') %>%
+    ggplot2:::ggplot.default(aes(x = time, y = value, color = ApgarInd)) + geom_point() +
+    d %>% filter(!is.na(conc)) %>%
+    geom_point(data = ., aes(x = time/10, y = conc*10, color = Heart))
+
+  grid.arrange(x, y)
+  # note informative axis labels in first panel
+  p <- x %>% ggplot_build
+  q <- p %>% ggplot_gtable
+  plot(q)
+  expect_equal_to_reference(file = '098.rds', p)
+
+})
