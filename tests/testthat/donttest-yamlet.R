@@ -121,3 +121,8 @@ test_that('labels parsed and unparsed, with and without units, display correctly
   options(yamlet_label_parse = TRUE)
   ggplot(data = Theoph, aes(x = Time, y = conc)) + geom_point()
 })
+
+test_that('gather.decorated works with unquoted argument names',{
+  # behavior seems inconsistent, perhaps due to versions of dplyr.
+  # works canonically at present.  See example for gather.decorated().
+})

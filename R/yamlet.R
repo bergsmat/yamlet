@@ -436,7 +436,7 @@ as.character.yam <- function(x, ...){
   if(!identical(k, list('label','guide'))){
     x <- c(x, list(`_keys` = k))
   }
-  out <- paste0(names(x), ': ', sapply(x, to_yamlet))
+  out <- paste0(names(x), ': ', sapply(x, to_yamlet, ...))
 }
 
 #' Coerce to Yamlet Storage Format
@@ -469,7 +469,7 @@ to_yamlet <- function(x, ...)UseMethod('to_yamlet')
 #' to_yamlet(c(a = 4,b = 5.8))
 #' to_yamlet(TRUE)
 
-to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
+to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character, ...))
 
 #' Coerce Yamlet to Yamlet Storage Format
 #'
@@ -484,7 +484,7 @@ to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character))
 #' library(magrittr)
 #'  'a: [[d: [0, 1, 2]]]' %>% as_yamlet %>% to_yamlet
 
-to_yamlet.yamlet <- function(x,...)to_yamlet(unclass(x))
+to_yamlet.yamlet <- function(x,...)to_yamlet(unclass(x), ...)
 
 #'
 #' Coerce Character to Yamlet Storage Format
@@ -492,7 +492,14 @@ to_yamlet.yamlet <- function(x,...)to_yamlet(unclass(x))
 #' Coerces character to yamlet storage format.
 #' Named character is processed as a named list.
 #' NA_character_ is treated as the string 'NA'.
+#'
+#' If block is TRUE, an attempt will be made
+#' to represent character strings as literal
+#' block scalars if they contain
+#' newlines (experimental in yamlet >= 0.8).
+#'
 #' @param x character
+#' @param block whether to write block scalars
 #' @param ... ignored
 #' @export
 #' @keywords internal
@@ -505,7 +512,7 @@ to_yamlet.yamlet <- function(x,...)to_yamlet(unclass(x))
 #' to_yamlet(c(no = 'n', yes = 'y'))
 #' to_yamlet(NA)
 
-to_yamlet.character <- function(x, ...){
+to_yamlet.character <- function(x, block = FALSE, ...){
 
   if(!is.null(names(x))){
     x <- as.list(x)
@@ -534,7 +541,11 @@ to_yamlet.character <- function(x, ...){
   index <- grepl(': +', x)                   # contains collapse meta
   x[index] <- paste0("'",x[index],"'")         # wrapped in '
 
-
+  if(block){
+     has_newline <- grepl('\n', x)
+     x[has_newline] <- gsub('\n','\n  ', x[has_newline])
+     x[has_newline] <- paste0('|\n  ', x[has_newline])
+  }
   if(length(x) == 1) return(x)
 
   # multiples get [,,]
@@ -579,7 +590,7 @@ to_yamlet.list <- function(x, ...){
   if(length(x) == 0) x <- list(NULL)
   nms <- names(x)
   nms <- sapply(nms, to_yamlet) # assures individual treatment
-  out <- lapply(x, to_yamlet)
+  out <- lapply(x, to_yamlet, ...)
   # if member not null (''), attach name using colon-space,
   # else using ? name
   # if name is '', do not attach
@@ -796,8 +807,11 @@ print.yamlet <- function(x, ...){
   render.default <- function(x, indent = 0, name = NULL, ...){
     margin <-  paste(rep(' ',indent), collapse = '')
     leader <- paste0(margin, '- ',name)
-    data <- paste(format(x), collapse = ', ')
+   #data <- paste(format(x), collapse = ', ')
+    data <- paste(x, collapse = ', ')
+    # don't print colon if name is null
     msg <- paste0(leader,': ', data)
+    if(is.null(name)) msg <- paste0(leader, data)
     writeLines(msg)
   }
   # render.function <- function(x, indent = 0, name = NULL, ...){
@@ -866,6 +880,7 @@ read_yamlet <- function(
 #' @param default_keys character: default keys for the first n anonymous members of each element
 #' @param fileEncoding if \code{con} is character, passed to \code{\link{file}} as \code{encoding}
 #' @param sort whether to coerce attribute order using \code{\link{canonical.yamlet}}
+#' @param block whether to write block scalars
 #' @export
 #' @family interface
 #' @seealso \code{\link{decorate.list}}
@@ -893,11 +908,12 @@ write_yamlet <- function(
   ),
   fileEncoding = getOption('encoding'),
   sort = TRUE,
+  block = FALSE,
   ...
 ){
   x <- as_yamlet(x, default_keys = default_keys)
   if(sort) x <- canonical(x, keys = default_keys, ...)
-  y <- as.character(x, default_keys = default_keys, ...)
+  y <- as.character(x, default_keys = default_keys, block = block, ...)
   if(is.character(con)){
     con <- file(con, 'w', encoding = fileEncoding)
     on.exit(close(con))

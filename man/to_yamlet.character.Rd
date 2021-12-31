@@ -4,10 +4,12 @@
 \alias{to_yamlet.character}
 \title{Coerce Character to Yamlet Storage Format}
 \usage{
-\method{to_yamlet}{character}(x, ...)
+\method{to_yamlet}{character}(x, block = FALSE, ...)
 }
 \arguments{
 \item{x}{character}
+
+\item{block}{whether to write block scalars}
 
 \item{...}{ignored}
 }
@@ -18,6 +20,12 @@ length-one character
 Coerces character to yamlet storage format.
 Named character is processed as a named list.
 NA_character_ is treated as the string 'NA'.
+}
+\details{
+If block is TRUE, an attempt will be made
+to represent character strings as literal
+block scalars if they contain
+newlines (experimental in yamlet >= 0.8).
 }
 \examples{
 to_yamlet('foo')

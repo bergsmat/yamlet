@@ -1215,26 +1215,52 @@ test_that('class "decorated" persists after merges, joins, enumerations',{
   expect_true(inherits(left_join(x, as.data.frame(x)), 'decorated'))
   expect_false(inherits(full_join(as.data.frame(x), x), 'decorated'))
   expect_true(inherits(what = 'decorated', merge(x,x)))
+  # if(require(wrangle)){
+  #   expect_true(inherits(what = 'decorated', enumerate(x, foo, bar)))
+  # } # check gives warning
 })
 
 test_that('decorations() does not print colon for un-named list',{
-
-})
-
-test_that('gather.decorated works with unquoted argument names',{
-
+  x <- data.frame(foo = c('a','b','c'))
+  x %<>% decorate('foo: [title, [[1,2],[2,3]]]')
+  foo <- capture_output(decorations(x), print = TRUE)
+  foo <- sub(':','', foo) # remove the only expected colon
+  expect_false(grepl(':', foo))
 })
 
 test_that('read_yamlet and write_yamlet reproduce block quote',{
-
+  x <- read_yamlet('
+    x:
+      background: |
+        x is so happy
+        a variable of note
+        it wants to help you
+      sentence: >
+        Sometimes we don\'t really
+        care where the line breaks
+        are.')
+  expect_equal_to_reference(
+    file = '102.rds',
+    capture_output(
+      print = TRUE,
+      write_yamlet(x)
+    )
+  )
+  expect_equal_to_reference(
+    file = '103.rds',
+    capture_output(
+      print = TRUE,
+      write_yamlet(x, block = TRUE)
+    )
+  )
 })
 
 test_that('class "guided" or similar supports concatenation of guides',{
-
+  # Use vctrs to achieve consistent attribute treatment.
 })
 
 test_that('variables with units support unit math',{
-
+  # write converters for guided -> units and back
 })
 
 

@@ -308,6 +308,8 @@ decorations.data.frame <- function(
   ...,
 #  coerce = getOption('yamlet_coerce_decorations', FALSE),
   exclude_attr = getOption('yamlet_exclude_attr', c('class','levels'))
+# and possibly comment, dim, dimnames, names, row.names, and tsp
+# see help for attributes
 ){
   # coerce <- FALSE
   stopifnot(length(exclude_attr) == 0 || is.character(exclude_attr))

@@ -12,6 +12,7 @@ write_yamlet(
   default_keys = getOption("yamlet_default_keys", list("label", "guide")),
   fileEncoding = getOption("encoding"),
   sort = TRUE,
+  block = FALSE,
   ...
 )
 }
@@ -29,6 +30,8 @@ write_yamlet(
 \item{fileEncoding}{if \code{con} is character, passed to \code{\link{file}} as \code{encoding}}
 
 \item{sort}{whether to coerce attribute order using \code{\link{canonical.yamlet}}}
+
+\item{block}{whether to write block scalars}
 
 \item{...}{passed to \code{\link{as_yamlet}}}
 }
