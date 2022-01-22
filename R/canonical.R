@@ -48,7 +48,7 @@ canonical.decorated <- function(
   for(i in seq_len(ncol(x))){
     at <- attributes(x[[i]])
     nms <- names(at)
-    use <- intersect(keys, nms)
+    use <- unlist(intersect(keys, nms))
     at <- at[use]
     if(length(nms)) attributes(x[[i]]) <- at
   }
@@ -92,7 +92,7 @@ canonical.yamlet <- function(
   }
   for(i in seq_along(x)){
     nms <- names(x[[i]])
-    use <- intersect(keys, nms)
+    use <- unlist(intersect(keys, nms))
     if(length(nms)) x[[i]] <- x[[i]][use]
   }
   x

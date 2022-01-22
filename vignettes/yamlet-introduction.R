@@ -33,7 +33,16 @@ meta
 ## -----------------------------------------------------------------------------
 x <- data.frame(ID = 1, CONC = 1, RACE = 1)
 x <- decorate(x, meta = meta)
-str(x)
+decorations(x)
+
+## -----------------------------------------------------------------------------
+x <- data.frame(ID = 1, CONC = 1, RACE = 1)
+x <- decorate(x,'
+ID: subject identifier
+CONC: [ concentration, ng/mL ]
+RACE: [ race, [white: 0, black: 1, asian: 2 ]]
+')
+decorations(x)
 
 ## -----------------------------------------------------------------------------
 decorations(x)
