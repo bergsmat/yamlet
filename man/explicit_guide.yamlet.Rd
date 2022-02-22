@@ -4,14 +4,19 @@
 \alias{explicit_guide.yamlet}
 \title{Coerce Yamlet Guide to Something More Explicit}
 \usage{
-\method{explicit_guide}{yamlet}(x, ..., default = "guide", data = NULL)
+\method{explicit_guide}{yamlet}(
+  x,
+  ...,
+  test = getOption("yamlet_infer_guide", yamlet::infer_guide),
+  data = NULL
+)
 }
 \arguments{
 \item{x}{yamlet}
 
 \item{...}{passed to \code{\link[dplyr]{select}} to limit scope}
 
-\item{default}{length-one character: the default key}
+\item{test}{function or function name; supply non-default or globally set \code{options(yamlet_infer_guide = )}.}
 
 \item{data}{optional data.frame for testing guides with length > 1}
 }
@@ -26,27 +31,21 @@ and encodings.  The idea here is to replace 'guide' with something
 explicit in case required downstream.
 }
 \details{
-The key 'guide' is replaced as follows for the first test
-that succeeds, or replaced with the default if none do.
-
-* If the value of 'guide' is of length greater than
-one (and data is not supplied), key becomes 'codelist'.
-* If the value of 'guide' \code{\link{is_parseable}},
-key becomes 'units'.
-* If the value of 'guide' contains two or more percent signs,
-key becomes 'format' (i.e. a 'format' string for a date or time class).
-* If the value of 'guide' is (\code{\link[encode]{encoded}}),
-key becomes 'encoding'.
-
-If \code{data} is supplied, guides with length greater than one
+If \code{data} is supplied, guides that are lists
 are checked to see if they evaluate to conditions in data context
 (see \code{\link{isConditional.list}}).
 If so, inferences are based on the first guide element rather
 than the guide as a whole.
+
+This method iterates across the guide elements, renaming them
+as specified by the value of \code{test}. (default: \code{\link{infer_guide}}).
+\code{test} should be a function (or name of one) that accepts x, data, and dots.
+If a data.frame is passed to exlicit_guide(), the relevant column will
+be passed as data to \code{test}.
 }
 \examples{
 library(magrittr)
-'CONC: [ concentration, µg/mL ]' \%>\% as_yamlet \%>\% explicit_guide
+'CONC: [ concentration, Âµg/mL ]' \%>\% as_yamlet \%>\% explicit_guide
 'RACE: [ subject race, [ Caucasian: 0, Latin: 1, Black: 2 ]]' \%>\% as_yamlet \%>\% explicit_guide
 'RACE: [ subject race, [ Caucasian, Latin, Black ]]' \%>\% as_yamlet \%>\% explicit_guide
 'RACE: [ subject race, //0/Caucasian//1/Latin//2/Black// ]' \%>\% as_yamlet \%>\% explicit_guide
@@ -59,7 +58,8 @@ Other explicit_guide:
 \code{\link{explicit_guide.data.frame}()},
 \code{\link{explicit_guide}()},
 \code{\link{implicit_guide.data.frame}()},
-\code{\link{implicit_guide}()}
+\code{\link{implicit_guide}()},
+\code{\link{infer_guide}()}
 }
 \concept{explicit_guide}
 \keyword{internal}

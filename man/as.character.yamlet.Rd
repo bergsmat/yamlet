@@ -4,10 +4,12 @@
 \alias{as.character.yamlet}
 \title{Coerce Yamlet to Character}
 \usage{
-\method{as.character}{yamlet}(x, ...)
+\method{as.character}{yamlet}(x, sort = TRUE, ...)
 }
 \arguments{
 \item{x}{yamlet}
+
+\item{sort}{whether to coerce attribute order using \code{\link{canonical.yamlet}}}
 
 \item{...}{passed to \code{\link{as.character.yam}} and \code{\link{as_yam.yamlet}}}
 }

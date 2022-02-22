@@ -6,14 +6,14 @@
 \usage{
 \method{canonical}{decorated}(
   x,
-  keys = getOption("yamlet_default_keys", list("label", "guide")),
+  default_keys = getOption("yamlet_default_keys", list("label", "guide")),
   ...
 )
 }
 \arguments{
 \item{x}{decorated}
 
-\item{keys}{attribute names in preferred order}
+\item{default_keys}{attribute names in preferred order}
 
 \item{...}{ignored}
 }
@@ -22,7 +22,7 @@ decorated
 }
 \description{
 Enforces canonical attribute order for class 'decorated'.
-Set of keys will be augmented with all observed attribute names
+Set of default_keys will be augmented with all observed attribute names
 and will be expanded or reduced as necessary for each
 data item.
 }

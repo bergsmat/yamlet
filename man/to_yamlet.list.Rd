@@ -4,12 +4,14 @@
 \alias{to_yamlet.list}
 \title{Coerce list to yamlet Storage Format}
 \usage{
-\method{to_yamlet}{list}(x, ...)
+\method{to_yamlet}{list}(x, ..., bracket_all = FALSE)
 }
 \arguments{
 \item{x}{object}
 
 \item{...}{ignored}
+
+\item{bracket_all}{FALSE at top level, but TRUE recursively downward; supports 'ITEM: definition' which would otherwise be bracketted}
 }
 \value{
 length-one character

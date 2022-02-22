@@ -574,6 +574,7 @@ to_yamlet.NULL <- function(x, ...)''
 #' Coerces list to yamlet storage format. Operates recursively on list members.
 #' @param x object
 #' @param ... ignored
+#' @param bracket_all FALSE at top level, but TRUE recursively downward; supports 'ITEM: definition' which would otherwise be bracketted
 #' @export
 #' @keywords internal
 #' @return length-one character
@@ -585,12 +586,12 @@ to_yamlet.NULL <- function(x, ...)''
 #' to_yamlet(setNames(1:3, c('a','b',NA)))
 #' to_yamlet(setNames(c(1,2,NA), c('a','b','c')))
 #'
-to_yamlet.list <- function(x, ...){
+to_yamlet.list <- function(x, ..., bracket_all = FALSE){
   # convert each member to yamlet
   if(length(x) == 0) x <- list(NULL)
   nms <- names(x)
   nms <- sapply(nms, to_yamlet) # assures individual treatment
-  out <- lapply(x, to_yamlet, ...)
+  out <- lapply(x, to_yamlet, ..., bracket_all = TRUE)
   # if member not null (''), attach name using colon-space,
   # else using ? name
   # if name is '', do not attach
@@ -610,7 +611,7 @@ to_yamlet.list <- function(x, ...){
   if(length(out) == 1){ # a singlet
 
    # maybe *all* singlets need brackets.
-   bracket_all <- FALSE # adjust if necessary
+   # bracket_all <- length(x) > 1 # i.e. not for 'sex: Sex' but perhaps for 'sex: [Sex, M ]'
    has_name    <- as.logical(length(names(out))) # not all singlets have names
    if(has_name){
      if(is.na(names(out)) | names(out) == ''){  # a singlet may have an empty name
@@ -638,6 +639,7 @@ to_yamlet.list <- function(x, ...){
 #' Coerces yamlet to character.  See also \code{\link{as_yamlet.character}}.
 #'
 #' @param x yamlet
+#' @param sort whether to coerce attribute order using \code{\link{canonical.yamlet}}
 #' @param ... passed to \code{\link{as.character.yam}} and \code{\link{as_yam.yamlet}}
 #' @export
 #' @keywords internal
@@ -660,8 +662,13 @@ to_yamlet.list <- function(x, ...){
 #' as.character(as_yamlet(foo))
 #' as.character(as_yamlet(foo, exclude_attr = 'class'))
 #'
-as.character.yamlet <- function(x,...){
-  y <- as_yam(x,...)
+as.character.yamlet <- function(
+  x,
+  sort = TRUE,
+  ...
+){
+  if(sort) x <- canonical(x, ...)
+  y <- as_yam(x, ...)
   z <- as.character(y, ...)
   z
 }
@@ -869,17 +876,16 @@ read_yamlet <- function(
 }
 #' Write Yamlet
 #'
-#' Writes yamlet to file. Similar to \code{\link{io_yamlet.data.frame}}
+#' Writes yamlet to file. Similar to \code{\link{io_yamlet.yamlet}}
 #' but returns invisible storage format instead of invisible storage location.
 #'
 #' @param x something that can be coerced to class 'yamlet', like a yamlet object or a decorated data.frame
-#' @param ... passed to \code{\link{as_yamlet}}
+#' @param ... passed to \code{\link{as_yamlet}} and to \code{\link{as.character.yamlet}}
 #' @param con passed to \code{\link{writeLines}}
 #' @param eol end-of-line; passed to \code{\link{writeLines}} as \code{sep}
 #' @param useBytes passed to \code{\link{writeLines}}
 #' @param default_keys character: default keys for the first n anonymous members of each element
 #' @param fileEncoding if \code{con} is character, passed to \code{\link{file}} as \code{encoding}
-#' @param sort whether to coerce attribute order using \code{\link{canonical.yamlet}}
 #' @param block whether to write block scalars
 #' @export
 #' @family interface
@@ -907,12 +913,10 @@ write_yamlet <- function(
     list('label','guide')
   ),
   fileEncoding = getOption('encoding'),
-  sort = TRUE,
   block = FALSE,
   ...
 ){
-  x <- as_yamlet(x, default_keys = default_keys)
-  if(sort) x <- canonical(x, keys = default_keys, ...)
+  x <- as_yamlet(x, default_keys = default_keys, ...)
   y <- as.character(x, default_keys = default_keys, block = block, ...)
   if(is.character(con)){
     con <- file(con, 'w', encoding = fileEncoding)

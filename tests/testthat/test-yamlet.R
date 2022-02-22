@@ -93,7 +93,10 @@ test_that('key priority by source is explicit > object > argument > option > def
 })
 
 test_that('mixed-length vector types are respected',{
-  expect_equal_to_reference(file = '099.rds', as_yamlet('RACE: [ race, [white, black, asian ]]'))
+  expect_equal_to_reference(
+    file = '099.rds',
+    as_yamlet('RACE: [ race, [white, black, asian ]]')
+  )
 })
 
 test_that('mixed-depth nesting is supported',{
@@ -109,7 +112,6 @@ test_that('default decorations are equivalent to explicit requests',{
 })
 
 test_that('non-default import is equivalent',{
-  library(magrittr)
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   b <- decorate(file, source = FALSE) %>% resolve
   c <- decorate(
@@ -850,16 +852,16 @@ test_that('unclassified is the inverse of classified',{
   expect_identical(x, z)
 })
 
-test_that('implicit_guide is the inverse of explicit_guide',{
-  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-  x <- decorate(file)
-  expect_identical(x, implicit_guide(explicit_guide(x)))
-})
-
 test_that('desolve is the inverse of resolve',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   x <- decorate(file)
   expect_identical(x, desolve(resolve(x)))
+})
+
+test_that('implicit_guide is the inverse of explicit_guide',{
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  expect_identical(x, implicit_guide(explicit_guide(x)))
 })
 
 test_that('resolve and desolve retain class',{
@@ -1188,7 +1190,7 @@ test_that('write_yamlet uses canonical attribute order by default',{
   x: [ guide: mm, desc: this, label: foo ]
   "y": [ guide: bar, desc: other ]
   ')
-  expect_equal_to_reference(file = '101.rds', foo <- write_yamlet(x))
+  expect_equal_to_reference(file = '101.rds', capture.output(write_yamlet(x)))
 })
 
 test_that('moot redecorate warnings are suppressed',{
@@ -1255,6 +1257,72 @@ test_that('read_yamlet and write_yamlet reproduce block quote',{
   )
 })
 
+test_that('decorated retains class when ungrouped', {
+  expect_true(inherits(ungroup(as_decorated(group_by(Theoph, Subject))), 'decorated'))
+})
+
+test_that('length-one codelists are not confused with units',{
+  x <- data.frame(race = 2, sex = 'M', conc = 1, time = 0)
+  x %<>% decorate('
+    race: [ Race, [ Asian: 2 ]]
+    sex: [ Sex,  [M]  ]
+  ')
+  #x %>% resolve %>% decorations
+  expect_identical(
+    'codelist',
+    x %>% resolve %>% decorations %$% race %>% names %>% extract2(2)
+  )
+  expect_identical(
+    'codelist',
+    x %>% resolve %>% decorations %$% sex %>% names %>% extract2(2)
+  )
+  expect_equal_to_reference(
+    file = '104.rds',
+    'sex: [ Sex,  M  ]' %>% yaml.load(handlers = list(seq = parsimonious))
+  )
+  expect_equal_to_reference(
+    file = '105.rds',
+    'sex: [ Sex,[ M ]]' %>% yaml.load(handlers = list(seq = parsimonious))
+  )
+  expect_equal_to_reference(
+    file = '106.rds',
+    'sex: [ Sex,[ M, F ]]' %>% yaml.load(handlers = list(seq = parsimonious))
+  )
+})
+
+test_that('un-named codelists are back-transformed consistently',{
+
+  expect_identical(
+    'sex: Sex',
+    capture.output(write_yamlet(as_yamlet('sex: Sex')))
+  )
+  expect_identical(
+    'sex: [ Sex, M ]',
+    capture.output(write_yamlet(as_yamlet('sex: [ Sex, M ]')))
+  )
+  expect_identical(
+    'sex: [ Sex, [ M ]]',
+    capture.output(write_yamlet(as_yamlet('sex: [ Sex, [ M ]]')))
+  )
+  expect_identical(
+    'sex: [ Sex, [ M, F ]]',
+    capture.output(write_yamlet(as_yamlet('sex: [ Sex, [ M, F ]]')))
+  )
+})
+
+test_that('named codelists are back-transformed consistently',{
+
+  expect_identical(
+    'sex: [ Sex, [ Male: M ]]',
+    capture.output(write_yamlet(as_yamlet('sex: [ Sex, [ Male: M ]]')))
+  )
+
+  expect_identical(
+    'sex: [ Sex, [ Male: M, Female: F ]]',
+    capture.output(write_yamlet(as_yamlet('sex: [ Sex, [ Male: M, Female: F ]]')))
+  )
+})
+
 test_that('class "guided" or similar supports concatenation of guides',{
   # Use vctrs to achieve consistent attribute treatment.
 })
@@ -1262,5 +1330,4 @@ test_that('class "guided" or similar supports concatenation of guides',{
 test_that('variables with units support unit math',{
   # write converters for guided -> units and back
 })
-
 

@@ -13,12 +13,12 @@ canonical <- function(x, ...)UseMethod('canonical')
 #' Sort Decorations
 #'
 #' Enforces canonical attribute order for class 'decorated'.
-#' Set of keys will be augmented with all observed attribute names
+#' Set of default_keys will be augmented with all observed attribute names
 #' and will be expanded or reduced as necessary for each
 #' data item.
 #'
 #' @param x decorated
-#' @param keys attribute names in preferred order
+#' @param default_keys attribute names in preferred order
 #' @param ... ignored
 #' @export
 #' @family canonical
@@ -39,16 +39,16 @@ canonical <- function(x, ...)UseMethod('canonical')
 
 canonical.decorated <- function(
   x,
-  keys = getOption('yamlet_default_keys',list('label','guide')),
+  default_keys = getOption('yamlet_default_keys',list('label','guide')),
   ...
 ){
   for(i in seq_len(ncol(x))){
-    keys <- union(keys, names(attributes(x[[i]])))
+    default_keys <- union(default_keys, names(attributes(x[[i]])))
   }
   for(i in seq_len(ncol(x))){
     at <- attributes(x[[i]])
     nms <- names(at)
-    use <- unlist(intersect(keys, nms))
+    use <- unlist(intersect(default_keys, nms))
     at <- at[use]
     if(length(nms)) attributes(x[[i]]) <- at
   }
@@ -58,12 +58,12 @@ canonical.decorated <- function(
 #' Sort Yamlet
 #'
 #' Enforces canonical attribute order for class 'yamlet'.
-#' Set of keys will be augmented with all observed attribute names
+#' Set of default_keys will be augmented with all observed attribute names
 #' and will be expanded or reduced as necessary for each
 #' data item.
 #'
 #' @param x yamlet
-#' @param keys attribute names in preferred order
+#' @param default_keys attribute names in preferred order
 #' @param ... ignored
 #' @export
 #' @family canonical
@@ -84,15 +84,15 @@ canonical.decorated <- function(
 
 canonical.yamlet <- function(
   x,
-  keys = getOption('yamlet_default_keys',list('label','guide')),
+  default_keys = getOption('yamlet_default_keys',list('label','guide')),
   ...
 ){
   for(i in seq_along(x)){
-    keys <- union(keys, names(x[[i]]))
+    default_keys <- union(default_keys, names(x[[i]]))
   }
   for(i in seq_along(x)){
     nms <- names(x[[i]])
-    use <- unlist(intersect(keys, nms))
+    use <- unlist(intersect(default_keys, nms))
     if(length(nms)) x[[i]] <- x[[i]][use]
   }
   x

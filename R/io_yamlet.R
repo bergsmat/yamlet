@@ -63,7 +63,7 @@ io_yamlet.character <- function(
 #' @param useBytes passed to \code{\link{writeLines}}
 #' @param default_keys character: default keys for the first n anonymous members of each element
 #' @param fileEncoding if \code{con} is character, passed to \code{\link{file}} as \code{encoding}
-#' @param ... passed to \code{\link{as_yamlet}}
+#' @param ... passed to \code{\link{as.character.yamlet}}
 #' @export
 #' @keywords internal
 #' @family io

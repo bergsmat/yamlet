@@ -117,7 +117,9 @@ parsimonious.list <- function(x, ...){
   }
 
   # if there were no lists or null, then convert to vector
-  if(!any(isList) & !any(isNull) & !any(parsimonious)) x <- unlist(x)
+  # 2022-02-21 @v8.2, this simplification seems not to support
+  # length-one un-named codelists, such as 'sex: [ Sex, [M] ]'
+  # if(!any(isList) & !any(isNull) & !any(parsimonious)) x <- unlist(x)
 
   class(x) <- union('parsimonious', class(x))
   x

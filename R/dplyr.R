@@ -77,6 +77,20 @@ group_by.decorated <- function(
   as_decorated(NextMethod())
 }
 
+#' Ungroup Decorated
+#'
+#' Preserves class when ungrouping decorated.
+#' @importFrom dplyr ungroup
+#' @export
+#' @keywords internal
+#' @family dplyr
+#' @inheritParams dplyr::ungroup
+ungroup.decorated <- function(
+  x, ...
+){
+  as_decorated(NextMethod())
+}
+
 #' Mutate Decorated
 #'
 #' Preserves class when mutating decorated.

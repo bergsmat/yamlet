@@ -40,7 +40,8 @@ Other dplyr:
 \code{\link{select.decorated}()},
 \code{\link{semi_join.decorated}()},
 \code{\link{summarise.decorated}()},
-\code{\link{summarize.decorated}()}
+\code{\link{summarize.decorated}()},
+\code{\link{ungroup.decorated}()}
 }
 \concept{dplyr}
 \keyword{internal}

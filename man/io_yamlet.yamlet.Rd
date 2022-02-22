@@ -27,7 +27,7 @@
 
 \item{fileEncoding}{if \code{con} is character, passed to \code{\link{file}} as \code{encoding}}
 
-\item{...}{passed to \code{\link{as_yamlet}}}
+\item{...}{passed to \code{\link{as.character.yamlet}}}
 }
 \value{
 invisible description of con: i.e., a file path

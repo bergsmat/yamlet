@@ -45,7 +45,7 @@ unclassified.classified <- function(x, ...){
   codelist <- structure(as.list(labels), names = levels)
   if(all(names(codelist) == unlist(codelist))){
     names(codelist) <- NULL
-    codelist <- unlist(codelist)
+    # codelist <- unlist(codelist) # @ 0.8.2 codelist remains list
   }
   attr(y, 'codelist') <- codelist
   y
