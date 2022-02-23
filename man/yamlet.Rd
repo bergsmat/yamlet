@@ -84,6 +84,10 @@ is nested within the attribute sequence. Equivalently:
 
 \code{race: [label: race, guide: [white: 0, black: 1, asian: 2, ? other ]]}
 
+If you have a codelist of length one, you should still enclose it in brackets:
+
+\code{sex: [Sex, [ M ]]}
+
 To get started using yamlet, see \code{?as_yamlet.character} and
 examples there. See also \code{?decorate} which adds yamlet
 values to corresponding items in your data. See also \code{?print.decorated}
