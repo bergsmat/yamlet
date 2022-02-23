@@ -748,7 +748,7 @@ encode.yamlet <- function(x, ..., target = 'guide', data = NULL){
           }
         }
         try <- list2encoding(as.list(t))
-        if(class(try) == 'character'){
+        if(inherits(try, 'character')){
           if(length(try) == 1){
             if(encoded(try)){
               x[[i]][[target]] <- try
