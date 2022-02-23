@@ -54,6 +54,7 @@ gather.decorated <- function(
     convert = convert,
     factor_key = factor_key
   )
+  x <- ungroup(x) # @0.4.9, to select only one column without autoselection of groups
   if(key %in% names(x)){
     token <- names(select(x, !!key))
     val <- names(select(x, !!value))
