@@ -49,8 +49,8 @@ gather.decorated <- function(
   # probably need to quote key and value before using.
   # https://tidyeval.tidyverse.org/sec-up-to-speed.html#writing-functions
 
-  key <- sym(key)
-  value <- sym(value)
+  key <- enquo(key)
+  value <- enquo(value)
 
   x <- gather(
     data = data,
