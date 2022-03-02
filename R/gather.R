@@ -18,7 +18,7 @@
 #' @export
 #' @importFrom dplyr select
 #' @importFrom tidyr gather
-#' @importFrom rlang ensym
+#' @importFrom rlang ensym sym
 #' @return decorated
 #' @keywords internal
 #' @examples
@@ -45,6 +45,13 @@ gather.decorated <- function(
   if(length(args) == 0) return(data)
   #if(length(args[[1]] == 0)) return(data)
   class(data) <- setdiff(class(data), 'decorated')
+
+  # probably need to quote key and value before using.
+  # https://tidyeval.tidyverse.org/sec-up-to-speed.html#writing-functions
+
+  key <- sym(key)
+  value <- sym(value)
+
   x <- gather(
     data = data,
     key = !!key,
@@ -54,8 +61,8 @@ gather.decorated <- function(
     convert = convert,
     factor_key = factor_key
   )
-  x <- ungroup(x) # @0.4.9, to select only one column without autoselection of groups
-  if(key %in% names(x)){
+  x <- ungroup(x) # @0.8.4, to select only one column without autoselection of groups
+  if(as.character(key) %in% names(x)){
     token <- names(select(x, !!key))
     val <- names(select(x, !!value))
     nms <- unique(x[[token]])
