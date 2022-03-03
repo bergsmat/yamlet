@@ -18,7 +18,7 @@
 #' @export
 #' @importFrom dplyr select
 #' @importFrom tidyr gather
-#' @importFrom rlang ensym sym
+#' @importFrom rlang ensym sym enquo as_label
 #' @return decorated
 #' @keywords internal
 #' @examples
@@ -61,9 +61,9 @@ gather.decorated <- function(
     convert = convert,
     factor_key = factor_key
   )
-  x <- ungroup(x) # @0.8.4, to select only one column without autoselection of groups
-  if(as.character(key) %in% names(x)){
-    token <- names(select(x, !!key))
+  #x <- ungroup(x) # @0.8.4, to select only one column without autoselection of groups
+  if(as_label(key) %in% names(x)){
+    token <- names(select(ungroup(x), !!key))
     val <- names(select(x, !!value))
     nms <- unique(x[[token]])
     labs <- sapply(nms, function(nm)attr(data[[nm]],'label'))
