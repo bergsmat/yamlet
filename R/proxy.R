@@ -37,7 +37,8 @@ proxy <- function(x,...)UseMethod('proxy')
 #' as_yamlet(attributes(foo))
 proxy.factor <- function(x, y = as.numeric(x), ...){
   if(length(x) != length(y))stop('x and y must have same length')
-  if(!(is.factor(y)|is.vector(y)))stop('y must be vector or factor')
+# if(!(is.factor(y)|is.vector(y)))stop('y must be vector or factor')
+  if(!(is.atomic(y)))stop('y must be atomic')
   if(!(nrow(distinct(data.frame(x,y))) == length(unique(x)))){
     stop('one-to-one correspondence of x and y not detected')
   }

@@ -4,12 +4,18 @@
 \alias{classified.data.frame}
 \title{Classify Data Frame}
 \usage{
-\method{classified}{data.frame}(x, ...)
+\method{classified}{data.frame}(x, ..., exclude = NA, ordered = is.ordered(x), nmax = NA)
 }
 \arguments{
 \item{x}{data.frame}
 
-\item{...}{passed to \code{\link[dplyr]{select}} to limit column scope}
+\item{...}{passed to \code{\link[dplyr]{select}} to limit column scope; also passed to \code{\link{classified.default}} to modify behavior}
+
+\item{exclude}{see \code{\link{factor}}}
+
+\item{ordered}{see \code{\link{factor}}}
+
+\item{nmax}{see \code{\link{factor}}}
 }
 \value{
 data.frame

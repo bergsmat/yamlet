@@ -59,6 +59,8 @@ classified.default <- function(
     # before working with codelist, honor the exclude request
     bad <- sapply(cl, function(val)val %in% exclude)
     cl <- cl[!bad]
+    # mimic non-NA exclude behavior:
+    if(length(exclude) == 0) cl <- c(cl, NA)
 
     # default levels and labels
     if(missing(levels)){
@@ -318,11 +320,14 @@ classified.default <- function(
   }
   # explicit names
   if(is.null(names(codelist)))names(codelist) <- unlist(codelist)
-  names(codelist)[names(codelist) == ''] <- unlist(codelist)[names(codelist) == '']
+
+  # codelist names can be be NA but not blank
+  names(codelist)[which(names(codelist) == '')] <- unlist(codelist)[which(names(codelist) == '')]
   codelist <- codelist[!duplicated(codelist)] # silently remove exact dups
   if(any(duplicated(names(codelist))))warning('conflicting codelist specifications')
   codelist <- codelist[!duplicated(names(codelist))]
-  if(all(names(codelist) == unlist(codelist))){
+  #if(all(names(codelist) == unlist(codelist))){
+  if(identical(names(codelist), as.character(unlist(codelist)))){
     names(codelist) <- NULL
     codelist <- unlist(codelist)
   }
@@ -336,7 +341,10 @@ classified.default <- function(
 #' a factor with a codelist attribute.
 #'
 #' @param x data.frame
-#' @param ... passed to \code{\link[dplyr]{select}} to limit column scope
+#' @param ... passed to \code{\link[dplyr]{select}} to limit column scope; also passed to \code{\link{classified.default}} to modify behavior
+#' @param exclude see \code{\link{factor}}
+#' @param ordered see \code{\link{factor}}
+#' @param nmax see \code{\link{factor}}
 #' @export
 #' @keywords internal
 #' @return data.frame
@@ -350,11 +358,23 @@ classified.default <- function(
 #' x %>% explicit_guide %>% classified %>% decorations(Age, Race, Heart:glyco)
 #' x %>% explicit_guide %>% classified(Heart:glyco) %>% decorations(Age, Race, Heart:glyco)
 
-classified.data.frame <- function(x,...){
+classified.data.frame <- function(
+  x,
+  ...,
+  exclude = NA,
+  ordered = is.ordered(x),
+  nmax = NA
+){
   my_class <- class(x)
   for(nm in selected(x,...)){
     if('codelist' %in% names(attributes(x[[nm]]))){
-      x[[nm]] <- classified(x[[nm]]) # grouped_df can drop subclass!
+      # grouped_df can drop subclass!
+      x[[nm]] <- classified(
+        x[[nm]],
+        exclude = exclude,
+        ordered = ordered,
+        nmax = nmax
+      )
     }
   }
   class(x) <- my_class
