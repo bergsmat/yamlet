@@ -32,7 +32,7 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' This method iterates across the guide elements, renaming them
 #' as specified by the value of \code{test}. (default: \code{\link{infer_guide}}).
 #' \code{test} should be a function (or name of one) that accepts x, data, and dots.
-#' If a data.frame is passed to exlicit_guide(), the relevant column will
+#' If a data.frame is passed to explicit_guide(), the relevant column will
 #' be passed as data to \code{test}.
 
 #' @param x yamlet
@@ -120,12 +120,12 @@ explicit_guide.yamlet <- function(
 #' @family explicit_guide
 #' @examples
 #' infer_guide('a') # recognized unit
-#' infer_guide('z') # unrecognized as unit, evaluates to codelist
+#' infer_guide('z') # unrecognized as unit, evaluates to guide
 #' \dontrun{
 #' # evaluates to codelist but data suggests otherwise (warning)
 #' infer_guide(letters, data = LETTERS)
 #' }
-#' infer_guide(c(1,2,3))                   # codelist
+#' infer_guide(c(1,2,3))                   # guide
 #' infer_guide(list('a','b','c'))          # codelist
 #' infer_guide(list(a = 1, b = 2, c = 3))  # codelist
 #' infer_guide(list(a = 1))                # codelist

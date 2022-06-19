@@ -95,7 +95,7 @@ classified.default <- function(
   # simplify codelist if possible
   if(identical(paste(names(codelist)), paste(unlist(codelist)))) {
     names(codelist) <- NULL
-    codelist <- unlist(codelist)
+    # codelist <- unlist(codelist) # @v0.8.9 for consistency with other methods
   }
 
 

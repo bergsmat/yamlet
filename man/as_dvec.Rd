@@ -15,11 +15,12 @@ as_dvec(x, ...)
 dvec
 }
 \description{
-Coerces to Decorated Vector. Generic with methods
+Coerces to Decorated Vector. Generic, with methods
+\code{\link{as_dvec.logical}},
 \code{\link{as_dvec.integer}},
 \code{\link{as_dvec.numeric}},
-\code{\link{as_dvec.character}}, and
-\code{\link{as_dvec.logical}}.
+\code{\link{as_dvec.complex}}, and
+\code{\link{as_dvec.character}}.
 }
 \examples{
 as_dvec(0)
@@ -30,7 +31,10 @@ Other dvec:
 \code{\link{[<-.dvec}()},
 \code{\link{[[.dvec}()},
 \code{\link{[[<-.dvec}()},
+\code{\link{as.data.frame.dvec}()},
 \code{\link{as_dvec.character}()},
+\code{\link{as_dvec.complex}()},
+\code{\link{as_dvec.dvec}()},
 \code{\link{as_dvec.integer}()},
 \code{\link{as_dvec.logical}()},
 \code{\link{as_dvec.numeric}()},

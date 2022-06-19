@@ -148,12 +148,18 @@ decorate.character <- function(
 #' in yamlet format and loads it onto corresponding
 #' list elements as attributes.
 #'
+#' As of v0.8.8, attribute persistence is supported 
+#' by optionally coercing decorated items to class 'dvec'
+#' where suitable methods exist.  \code{persistence}
+#' is false by default for the list method
+#' but true by default for the data.frame method.
+#' See also \code{\link{decorate.data.frame}}.
 #'
 #' @param x object inheriting from \code{list}
 #' @param meta file path for corresponding yaml metadata, or a yamlet or something coercible to yamlet; an attempt will be made to guess the file path if x has a 'source' attribute (as for \code{\link[csv]{as.csv}})
 #' @param ... passed to \code{\link{as_yamlet.character}} (by method dispatch)
 #' @param ext file extension for metadata file, if relevant
-# @param coerce whether to coerce to factor where guide has length > 1
+#' @param persistence whether to coerce decorated items to 'dvec' where suitable method exists
 #' @param overwrite whether to overwrite attributes that are already present (else give warning)
 #' @return like x but with 'decorated' as first class element
 #' @export
@@ -167,7 +173,7 @@ decorate.list <- function(
   meta = NULL,
   ...,
   ext = getOption('yamlet_extension', '.yaml'),
-  #coerce = getOption('yamlet_coerce', FALSE),
+  persistence = FALSE,
   overwrite = getOption('yamlet_overwrite', FALSE)
 ){
   if(is.null(meta)) meta <- attr(x, 'source')
@@ -203,6 +209,14 @@ decorate.list <- function(
           }
         }
         attr(x[[item]], attrb) <- val[[attrb]]
+        # since this is really the only place we
+        # assign an attribute, it is a good place
+        # to coerce to dvec.  A bit redundant 
+        # if more than one attribute, 
+        # but safer and perhaps not too expensive.
+        if(persistence){
+          try(silent = TRUE, x[[item]] <- as_dvec(x[[item]]))
+        }
       }
     }
   }
@@ -216,12 +230,21 @@ decorate.list <- function(
 #'
 #' Decorates a data.frame. Expects metadata in yamlet
 #' format, and loads it onto columns as attributes.
+#' 
+#' As of v0.8.8, the data.frame method for decorate()
+#' coerces affected columns using \code{\link{as_dvec}}
+#' if \code{persistence} is true and a suitable method 
+#' exists.  'vctrs' methods are implemented for class 
+#' \code{dvec} to help attributes persist during 
+#' tidyverse operations. Details are described in
+#' \code{\link{c.dvec}}. Disable this functionality
+#' with \code{options(yamlet_persistence = FALSE)}.
 
 #'
 #' @param x data.frame
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
 #' @param ... passed to \code{\link{decorate.list}}
-# @param coerce whether to coerce to factor where guide is a list
+#' @param persistence whether to coerce decorated columns to 'dvec' where suitable method exists
 #' @return class 'decorated' 'data.frame'
 #' @export
 #' @family interface
@@ -245,12 +268,13 @@ decorate.list <- function(
 decorate.data.frame <- function(
   x,
   meta = NULL,
-  ...
-  # coerce = getOption('yamlet_coerce',FALSE),
+  ...,
+  persistence = getOption('yamlet_persistence', TRUE)
 )decorate.list(
   x,
   meta = meta,
-  ...
+  ...,
+  persistence = persistence
 )
 
 #' Retrieve Decorations

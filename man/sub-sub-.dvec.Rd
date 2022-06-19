@@ -18,8 +18,7 @@ dvec
 Selects element of decorated vector, retaining attributes.
 }
 \examples{
-a <- as_dvec(letters[1:3])
-attr(a, 'label') <- 'foo'
+a <- as_dvec(letters[1:3], label = 'foo')
 a <- a[[2]]
 attributes(a)
 }
@@ -28,7 +27,10 @@ Other dvec:
 \code{\link{[.dvec}()},
 \code{\link{[<-.dvec}()},
 \code{\link{[[<-.dvec}()},
+\code{\link{as.data.frame.dvec}()},
 \code{\link{as_dvec.character}()},
+\code{\link{as_dvec.complex}()},
+\code{\link{as_dvec.dvec}()},
 \code{\link{as_dvec.integer}()},
 \code{\link{as_dvec.logical}()},
 \code{\link{as_dvec.numeric}()},

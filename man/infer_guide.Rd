@@ -42,12 +42,12 @@ a codelist with elements not present.
 }
 \examples{
 infer_guide('a') # recognized unit
-infer_guide('z') # unrecognized as unit, evaluates to codelist
+infer_guide('z') # unrecognized as unit, evaluates to guide
 \dontrun{
 # evaluates to codelist but data suggests otherwise (warning)
 infer_guide(letters, data = LETTERS)
 }
-infer_guide(c(1,2,3))                   # codelist
+infer_guide(c(1,2,3))                   # guide
 infer_guide(list('a','b','c'))          # codelist
 infer_guide(list(a = 1, b = 2, c = 3))  # codelist
 infer_guide(list(a = 1))                # codelist

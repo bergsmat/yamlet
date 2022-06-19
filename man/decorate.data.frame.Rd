@@ -4,7 +4,12 @@
 \alias{decorate.data.frame}
 \title{Decorate Data Frame}
 \usage{
-\method{decorate}{data.frame}(x, meta = NULL, ...)
+\method{decorate}{data.frame}(
+  x,
+  meta = NULL,
+  ...,
+  persistence = getOption("yamlet_persistence", TRUE)
+)
 }
 \arguments{
 \item{x}{data.frame}
@@ -12,6 +17,8 @@
 \item{meta}{file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute}
 
 \item{...}{passed to \code{\link{decorate.list}}}
+
+\item{persistence}{whether to coerce decorated columns to 'dvec' where suitable method exists}
 }
 \value{
 class 'decorated' 'data.frame'
@@ -19,6 +26,16 @@ class 'decorated' 'data.frame'
 \description{
 Decorates a data.frame. Expects metadata in yamlet
 format, and loads it onto columns as attributes.
+}
+\details{
+As of v0.8.8, the data.frame method for decorate()
+coerces affected columns using \code{\link{as_dvec}}
+if \code{persistence} is true and a suitable method 
+exists.  'vctrs' methods are implemented for class 
+\code{dvec} to help attributes persist during 
+tidyverse operations. Details are described in
+\code{\link{c.dvec}}. Disable this functionality
+with \code{options(yamlet_persistence = FALSE)}.
 }
 \examples{
 library(csv)

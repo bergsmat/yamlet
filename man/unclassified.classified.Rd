@@ -4,12 +4,14 @@
 \alias{unclassified.classified}
 \title{Unclassify Classified}
 \usage{
-\method{unclassified}{classified}(x, ...)
+\method{unclassified}{classified}(x, ..., persistence = getOption("yamlet_persistence", TRUE))
 }
 \arguments{
 \item{x}{classified}
 
 \item{...}{ignored}
+
+\item{persistence}{whether to reclass as dvec}
 }
 \value{
 vector

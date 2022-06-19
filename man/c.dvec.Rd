@@ -32,8 +32,8 @@ are removed.  If the result has only blank names,
 these are removed as well.
 }
 \examples{
-a <- as_dvec(letters[1:3])
-b <- as_dvec(letters[3:5])
+a <- as_dvec(letters[1:3], label = 'foo')
+b <- as_dvec(letters[3:5], label = 'foo')
 c <- c(a,b)
 c
 class(c)
@@ -45,7 +45,10 @@ Other dvec:
 \code{\link{[<-.dvec}()},
 \code{\link{[[.dvec}()},
 \code{\link{[[<-.dvec}()},
+\code{\link{as.data.frame.dvec}()},
 \code{\link{as_dvec.character}()},
+\code{\link{as_dvec.complex}()},
+\code{\link{as_dvec.dvec}()},
 \code{\link{as_dvec.integer}()},
 \code{\link{as_dvec.logical}()},
 \code{\link{as_dvec.numeric}()},

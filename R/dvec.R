@@ -1,10 +1,11 @@
 #' Coerce to Decorated Vector
 #'
-#' Coerces to Decorated Vector. Generic with methods
+#' Coerces to Decorated Vector. Generic, with methods
+#' \code{\link{as_dvec.logical}},
 #' \code{\link{as_dvec.integer}},
 #' \code{\link{as_dvec.numeric}},
-#' \code{\link{as_dvec.character}}, and
-#' \code{\link{as_dvec.logical}}.
+#' \code{\link{as_dvec.complex}}, and
+#' \code{\link{as_dvec.character}}.
 #' @param x object of dispatch
 #' @param ... ignored arguments
 #' @export
@@ -16,62 +17,122 @@ as_dvec <- function(x, ...)UseMethod('as_dvec')
 
 #' Coerce Logical to Decorated Vector
 #'
-#' Coerces logical to decorated Vector. Expects values TRUE and/or FALSE,
-#' and coerces these to character.  Assigns class 'dvec'.
+#' Coerces logical to decorated vector.
+#' Assigns class 'dvec' and any named attributes in dots.
 #' @param x logical
-#' @param ... ignored arguments
+#' @param ... attributes to assign
 #' @export
 #' @family dvec
 #' @return dvec
 #' @examples
-#' as_dvec(FALSE:TRUE)
-as_dvec.logical <- function(x, ...){
-  x <- as.character(x)
+#' as_dvec(c(FALSE, TRUE))
+as_dvec.logical <- function(
+    x,
+    ...
+){
+  at <- list(...)
+  nms <- names(at)
+  nms <- nms[nms != '']
+  for(nm in nms)attr(x, nm) <- at[[nm]]
+
   class(x) <- 'dvec'
   x
 }
 
 #' Coerce Integer to Decorated Vector
 #'
-#' Coerces integer to decorated Vector.  Assigns class 'dvec'.
+#' Coerces integer to decorated vector.  Assigns class 'dvec' and any named attributes in dots.
 #' @param x integer
-#' @param ... ignored arguments
+#' @param ... attributes to assign
 #' @export
 #' @family dvec
 #' @return dvec
 #' @examples
 #' as_dvec(1:3)
 as_dvec.integer <- function(x, ...){
+  at <- list(...)
+  nms <- names(at)
+  nms <- nms[nms != '']
+  for(nm in nms)attr(x, nm) <- at[[nm]]
   class(x) <- 'dvec'
   x
 }
 
 #' Coerce Numeric to Decorated Vector
 #'
-#' Coerces numeric to decorated Vector.  Assigns class 'dvec'.
+#' Coerces numeric to decorated vector.  Assigns class 'dvec' and any named attributes in dots.
 #' @param x numeric
-#' @param ... ignored arguments
+#' @param ... attributes to assign
 #' @export
 #' @family dvec
 #' @return dvec
 #' @examples
 #' as_dvec(c(10.3, 1.2))
+#'
 as_dvec.numeric <- function(x, ...){
+  at <- list(...)
+  nms <- names(at)
+  nms <- nms[nms != '']
+  for(nm in nms)attr(x, nm) <- at[[nm]]
+    class(x) <- 'dvec'
+  x
+}
+
+#' Coerce Complex to Decorated Vector
+#'
+#' Coerces complex to decorated vector.  Assigns class 'dvec' and any named attributes in dots.
+#' @param x complex
+#' @param ... attributes to assign
+#' @export
+#' @family dvec
+#' @return dvec
+#' @examples
+#' as_dvec(c(complex(1), complex(2)))
+as_dvec.complex <- function(x, ...){
+  at <- list(...)
+  nms <- names(at)
+  nms <- nms[nms != '']
+  for(nm in nms)attr(x, nm) <- at[[nm]]
   class(x) <- 'dvec'
   x
 }
 
 #' Coerce Character to Decorated Vector
 #'
-#' Coerces character to decorated Vector.  Assigns class 'dvec'.
+#' Coerces character to decorated vector.  Assigns class 'dvec' and any named attributes in dots.
 #' @param x character
-#' @param ... ignored arguments
+#' @param ... attributes to assign
 #' @export
 #' @family dvec
 #' @return dvec
 #' @examples
 #' as_dvec(letters)
 as_dvec.character <- function(x, ...){
+  at <- list(...)
+  nms <- names(at)
+  nms <- nms[nms != '']
+  for(nm in nms)attr(x, nm) <- at[[nm]]
+  class(x) <- 'dvec'
+  x
+}
+
+#' Coerce Decorated Vector to Decorated Vector
+#'
+#' Coerces decorated vector to decorated vector.
+#' Assigns any named attributes in dots.
+#' @param x character
+#' @param ... attributes to assign
+#' @export
+#' @family dvec
+#' @return dvec
+#' @examples
+#' as_dvec(as_dvec(letters[1:3]), label = 'Letters')
+#' as_dvec(as_dvec(letters[1:3], label = 'Letters'))
+as_dvec.dvec <- function(x, ...){
+  at <- list(...)
+  nms <- names(at)
+  nms <- nms[nms != '']
+  for(nm in nms)attr(x, nm) <- at[[nm]]
   class(x) <- 'dvec'
   x
 }
@@ -103,14 +164,16 @@ length.dvec <- function(x)NextMethod()
 #' @family dvec
 #' @return dvec
 #' @examples
-#' a <- as_dvec(letters[1:3])
-#' attr(a, 'label') <- 'foo'
+#' a <- as_dvec(letters, label = 'foo')
 #' a <- a[1:3]
 #' attributes(a)
+#' names(a) <- a
+#' a[1:2]
 
 `[.dvec` <- function(x, ...){
   y <- NextMethod()
-  attributes(y) <- attributes(x)
+  dropped <- setdiff(names(attributes(x)), names(attributes(y)))
+  attributes(y)[dropped] <- attributes(x)[dropped]
   y
 }
 
@@ -124,14 +187,14 @@ length.dvec <- function(x)NextMethod()
 #' @family dvec
 #' @return dvec
 #' @examples
-#' a <- as_dvec(letters[1:3])
-#' attr(a, 'label') <- 'foo'
+#' a <- as_dvec(letters[1:3], label = 'foo')
 #' a <- a[[2]]
 #' attributes(a)
 
 `[[.dvec` <- function(x, ...){
   y <- NextMethod()
-  attributes(y) <- attributes(x)
+  dropped <- setdiff(names(attributes(x)), names(attributes(y)))
+  attributes(y)[dropped] <- attributes(x)[dropped]
   y
 }
 
@@ -145,7 +208,7 @@ length.dvec <- function(x)NextMethod()
 #' @family dvec
 #' @return dvec
 #' @examples
-#' a <- as_dvec(letters[1:3])
+#' a <- as_dvec(letters[1:3], label = 'foo')
 #' a[2:3] <- 'a'
 #' str(a)
 #' class(a)
@@ -166,7 +229,7 @@ length.dvec <- function(x)NextMethod()
 #' @family dvec
 #' @return dvec
 #' @examples
-#' a <- as_dvec(letters[1:3])
+#' a <- as_dvec(letters[1:3], label = 'foo')
 #' a[[3]] <- 'a'
 #' str(a)
 #' class(a)
@@ -202,8 +265,8 @@ length.dvec <- function(x)NextMethod()
 #' @family dvec
 #' @return dvec
 #' @examples
-#' a <- as_dvec(letters[1:3])
-#' b <- as_dvec(letters[3:5])
+#' a <- as_dvec(letters[1:3], label = 'foo')
+#' b <- as_dvec(letters[3:5], label = 'foo')
 #' c <- c(a,b)
 #' c
 #' class(c)
@@ -259,7 +322,8 @@ reconcile.list <- function(x, ...){
     nms,
     function(nm)arbitrate(
       left_attr[[nm]],
-      right_attr[[nm]]
+      right_attr[[nm]],
+      tag = nm
     )
   )
   best
@@ -360,14 +424,14 @@ arbitrate.namedList <- function(x, y, ...){
 #' @export
 #' @keywords internal
 #' @return list if y is list, else x
-arbitrate.default <- function(x, y, ...){
+arbitrate.default <- function(x, y, tag = '', ...){
   if(is.null(y)) return(x)
   # so y is not NULL.  if list, promote x and re-evaluate.
   if(is.list(y)) return(arbitrate(as.list(x), y))
   # so y is not null and not list.  Presumably vector. Hopefully scalar.
   if(identical(x, y)) return(x)
   warning(
-    'mismatched attributes: ignoring \'',
+    'mismatched ', tag, ' attributes: ignoring \'',
     paste(y, collapse = ', '),
     '\' in favor of \'',
     paste(x, collapse = ', '),
@@ -403,5 +467,103 @@ format.dvec <- function(x, ...){
 print.dvec <- function(x, ...){
   x <- unclass(x)
   x <- NextMethod()
+  x
+}
+
+#' Coerce Decorated Vector to Data Frame
+#'
+#' Coerces decorated vector to data.frame.
+#'
+#' @param x dvec
+#' @param row.names passed to next method
+#' @param optional passed to next method
+#' @param ... passed to next method
+#' @param nm name for new column
+#' @export
+#' @family dvec
+#' @return data.frame
+#' @examples
+#' as.data.frame(as_dvec(letters[1:3]))
+#' L <- as_dvec(letters[1:3], label = 'My Letters')
+#' d <- data.frame(letters = L )
+#' str(d)
+as.data.frame.dvec <- function (x, row.names = NULL, optional = FALSE, ..., nm = deparse1(substitute(x)))
+{
+  force(nm)
+  nrows <- length(x)
+  if (!(is.null(row.names) || (is.character(row.names) && length(row.names) ==
+                               nrows))) {
+    warning(gettextf("'row.names' is not a character vector of length %d -- omitting it. Will be an error!",
+                     nrows), domain = NA)
+    row.names <- NULL
+  }
+  if (is.null(row.names)) {
+    if (nrows == 0L)
+      row.names <- character()
+    else if (length(row.names <- names(x)) != nrows || anyDuplicated(row.names))
+      row.names <- .set_row_names(nrows)
+  }
+  if (!is.null(names(x)))
+    names(x) <- NULL
+  value <- list(x)
+  if (!optional)
+    names(value) <- nm
+  attributes(value[[1]]) <- attributes(x) # sole difference from as.data.frame.vector
+  structure(value, row.names = row.names, class = "data.frame")
+}
+
+#' Coerce dvec to units
+#' 
+#' Coerces dvec to units. If x has a units attribute,
+#' it is used to create class 'units'. It is an error if 
+#' x has no units attribute.
+#' @importFrom units as_units
+#' @method as_units dvec
+#' @param x dvec
+#' @param ... ignored
+#' @export
+#' @examples 
+#' library(magrittr)
+#' a <- data.frame(id = 1:4, wt = c(70, 80, 70, 80), sex = c(0,1,0,1))
+#' a %<>% decorate('wt: [ body weight, kg ]')
+#' a %<>% decorate('sex: [ sex, [ female: 0, male: 1]]')
+#' a %<>% decorate('id: identifier')
+#' a %<>% resolve
+#' a$wt %>% as_units
+as_units.dvec <- function(x, ...){
+  value <- attr(x, 'units')
+  if(is.null(value))stop('x must have non-null value of attribute: units')
+  attr(x, 'units') <- NULL
+  x <- unclass(x)
+  units(x) <- value
+  x
+}
+
+#' @export
+units::as_units
+
+#' Coerce units to dvec
+#' 
+#' Coerces units to dvec.
+#' @param x units
+#' @param ... passed arguments
+#' @export
+#' @importFrom units drop_units
+#' @examples 
+#' library(magrittr)
+#' library(dplyr)
+#' a <- data.frame(id = 1:4, wt = c(70, 80, 70, 80), sex = c(0,1,0,1))
+#' a %<>% decorate('wt: [ body weight, kg ]')
+#' a %<>% decorate('sex: [ sex, [ female: 0, male: 1]]')
+#' a %<>% decorate('id: identifier')
+#' a %<>% resolve
+#' a %<>% mutate(wt = as_units(wt))
+#' a %<>% mutate(wt = as_dvec(wt))
+#' str(a$wt)
+as_dvec.units <- function(x, ...){
+  units <- deparse_unit(x)
+  x <- drop_units(x)
+  attr(x, 'units') <- units
+  x <- as_dvec(x)
   x
 }

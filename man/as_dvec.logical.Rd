@@ -9,17 +9,17 @@
 \arguments{
 \item{x}{logical}
 
-\item{...}{ignored arguments}
+\item{...}{attributes to assign}
 }
 \value{
 dvec
 }
 \description{
-Coerces logical to decorated Vector. Expects values TRUE and/or FALSE,
-and coerces these to character.  Assigns class 'dvec'.
+Coerces logical to decorated vector.
+Assigns class 'dvec' and any named attributes in dots.
 }
 \examples{
-as_dvec(FALSE:TRUE)
+as_dvec(c(FALSE, TRUE))
 }
 \seealso{
 Other dvec: 
@@ -27,7 +27,10 @@ Other dvec:
 \code{\link{[<-.dvec}()},
 \code{\link{[[.dvec}()},
 \code{\link{[[<-.dvec}()},
+\code{\link{as.data.frame.dvec}()},
 \code{\link{as_dvec.character}()},
+\code{\link{as_dvec.complex}()},
+\code{\link{as_dvec.dvec}()},
 \code{\link{as_dvec.integer}()},
 \code{\link{as_dvec.numeric}()},
 \code{\link{as_dvec}()},

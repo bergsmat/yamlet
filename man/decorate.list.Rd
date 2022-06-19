@@ -9,6 +9,7 @@
   meta = NULL,
   ...,
   ext = getOption("yamlet_extension", ".yaml"),
+  persistence = FALSE,
   overwrite = getOption("yamlet_overwrite", FALSE)
 )
 }
@@ -21,6 +22,8 @@
 
 \item{ext}{file extension for metadata file, if relevant}
 
+\item{persistence}{whether to coerce decorated items to 'dvec' where suitable method exists}
+
 \item{overwrite}{whether to overwrite attributes that are already present (else give warning)}
 }
 \value{
@@ -30,6 +33,14 @@ like x but with 'decorated' as first class element
 Decorates a list-like object. Takes metadata
 in yamlet format and loads it onto corresponding
 list elements as attributes.
+}
+\details{
+As of v0.8.8, attribute persistence is supported 
+by optionally coercing decorated items to class 'dvec'
+where suitable methods exist.  \code{persistence}
+is false by default for the list method
+but true by default for the data.frame method.
+See also \code{\link{decorate.data.frame}}.
 }
 \examples{
 example(decorate.data.frame)

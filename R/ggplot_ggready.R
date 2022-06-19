@@ -49,6 +49,11 @@ print.ggready_ggplot <- function(x, ...){
       }
     }
   }
+  # for(col in names(x$data)){
+  #   if(inherits(x$data[[col]],'dvec')){
+  #     x$data[[col]] <- unclass(x$data[[col]]) # class dvec confuses ggplot: "Don't know how to automatically pick scale for object of type dvec. Defaulting to continuous."
+  #   }
+  # }
   NextMethod()
 }
 

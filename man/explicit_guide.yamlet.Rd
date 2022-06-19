@@ -40,7 +40,7 @@ than the guide as a whole.
 This method iterates across the guide elements, renaming them
 as specified by the value of \code{test}. (default: \code{\link{infer_guide}}).
 \code{test} should be a function (or name of one) that accepts x, data, and dots.
-If a data.frame is passed to exlicit_guide(), the relevant column will
+If a data.frame is passed to explicit_guide(), the relevant column will
 be passed as data to \code{test}.
 }
 \examples{

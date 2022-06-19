@@ -4,7 +4,7 @@
 \alias{arbitrate.default}
 \title{Arbitrate Default}
 \usage{
-\method{arbitrate}{default}(x, y, ...)
+\method{arbitrate}{default}(x, y, tag = "", ...)
 }
 \arguments{
 \item{x}{left attribute}

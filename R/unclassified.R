@@ -21,6 +21,7 @@ unclassified <- function(x, ...)UseMethod('unclassified')
 #' (and rebuilding codelist).
 #' @param x classified
 #' @param ... ignored
+#' @param persistence whether to reclass as dvec
 #' @export
 #' @importFrom utils type.convert
 #' @keywords internal
@@ -28,7 +29,7 @@ unclassified <- function(x, ...)UseMethod('unclassified')
 #' @return vector
 #' @examples
 #' example(unclassified.data.frame)
-unclassified.classified <- function(x, ...){
+unclassified.classified <- function(x, ..., persistence = getOption('yamlet_persistence', TRUE)){
   codelist <- attr(x, 'codelist')
   levels <- unlist(codelist)
   labels <- names(codelist)
@@ -48,6 +49,7 @@ unclassified.classified <- function(x, ...){
     # codelist <- unlist(codelist) # @ 0.8.2 codelist remains list
   }
   attr(y, 'codelist') <- codelist
+  if(persistence) y <- as_dvec(y)
   y
 }
 
@@ -75,6 +77,7 @@ unclassified.data.frame <- function(x,...){
   for(nm in selected(x,...)){
     if(inherits(x[[nm]], 'classified')){
       x[[nm]] <- unclassified(x[[nm]])
+      
     }
   }
   class(x) <- my_class

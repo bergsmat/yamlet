@@ -9,16 +9,17 @@
 \arguments{
 \item{x}{numeric}
 
-\item{...}{ignored arguments}
+\item{...}{attributes to assign}
 }
 \value{
 dvec
 }
 \description{
-Coerces numeric to decorated Vector.  Assigns class 'dvec'.
+Coerces numeric to decorated vector.  Assigns class 'dvec' and any named attributes in dots.
 }
 \examples{
 as_dvec(c(10.3, 1.2))
+
 }
 \seealso{
 Other dvec: 
@@ -26,7 +27,10 @@ Other dvec:
 \code{\link{[<-.dvec}()},
 \code{\link{[[.dvec}()},
 \code{\link{[[<-.dvec}()},
+\code{\link{as.data.frame.dvec}()},
 \code{\link{as_dvec.character}()},
+\code{\link{as_dvec.complex}()},
+\code{\link{as_dvec.dvec}()},
 \code{\link{as_dvec.integer}()},
 \code{\link{as_dvec.logical}()},
 \code{\link{as_dvec}()},
