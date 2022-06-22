@@ -33,8 +33,14 @@ Other dvec:
 \code{\link{as_dvec.numeric}()},
 \code{\link{as_dvec}()},
 \code{\link{c.dvec}()},
+\code{\link{classified.dvec}()},
+\code{\link{desolve.dvec}()},
+\code{\link{explicit_guide.data.frame}()},
 \code{\link{format.dvec}()},
-\code{\link{print.dvec}()}
+\code{\link{implicit_guide.dvec}()},
+\code{\link{print.dvec}()},
+\code{\link{resolve.dvec}()},
+\code{\link{unclassified.dvec}()}
 }
 \concept{dvec}
-\keyword{inernal}
+\keyword{internal}

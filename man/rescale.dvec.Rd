@@ -18,3 +18,4 @@
 \description{
 Rescales dvec
 }
+\keyword{internal}

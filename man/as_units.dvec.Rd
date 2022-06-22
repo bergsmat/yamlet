@@ -2,7 +2,7 @@
 % Please edit documentation in R/dvec.R
 \name{as_units.dvec}
 \alias{as_units.dvec}
-\title{Coerce dvec to units}
+\title{Coerce Decorated Vector to Units}
 \usage{
 \method{as_units}{dvec}(x, ...)
 }
@@ -25,3 +25,4 @@ a \%<>\% decorate('id: identifier')
 a \%<>\% resolve
 a$wt \%>\% as_units
 }
+\keyword{internal}

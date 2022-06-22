@@ -36,3 +36,4 @@ Other decorated:
 \code{\link{names<-.decorated}()}
 }
 \concept{decorated}
+\keyword{internal}

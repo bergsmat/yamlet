@@ -18,7 +18,7 @@ resolve <- function(x, ...)UseMethod('resolve')
 #' explicit usage for decorated class.
 #' Simply calls \code{\link{explicit_guide}}
 #' followed by \code{\link{classified}}.
-#' @param x object
+#' @param x decorated
 #' @param ... passed to \code{\link{explicit_guide}} and \code{\link{classified}}
 #' @export
 #' @return decorated
@@ -35,5 +35,34 @@ resolve.decorated <- function(x, ...){
   x <- explicit_guide(x, ...)
   x <- classified(x, ...)
   # class(x) <- union('resolved', class(x))
+  x
+}
+#' Resolve Guide for Decorated Vector
+#'
+#' Resolves implicit usage of default key 'guide' to
+#' explicit usage for class dvec.
+#' Simply calls \code{\link{explicit_guide}}
+#' followed by \code{\link{classified}} if x has a codelist attribute.
+#' @param x dvec
+#' @param ... passed to \code{\link{explicit_guide}} and \code{\link{classified}}
+#' @export
+#' @keywords internal
+#' @return dvec or classified
+#' @family resolve
+#' @family dvec
+#' @examples
+#' library(magrittr)
+#' x <- as_dvec(1:3)
+#' attr(x, 'guide') <- list(a = 1, b = 2, c = 3)
+#' x %>% str
+#' x %>% classified %>% str
+#' x %>% explicit_guide %>% classified %>% str
+#' x %>% resolve %>% str
+
+resolve.dvec <- function(x, ...){
+  x <- explicit_guide(x, ...)
+  if('codelist' %in% names(attributes(x))){
+    x <- classified(x, ...)
+  }
   x
 }

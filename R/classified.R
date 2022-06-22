@@ -359,11 +359,11 @@ classified.default <- function(
 #' x %>% explicit_guide %>% classified(Heart:glyco) %>% decorations(Age, Race, Heart:glyco)
 
 classified.data.frame <- function(
-  x,
-  ...,
-  exclude = NA,
-  ordered = is.ordered(x),
-  nmax = NA
+    x,
+    ...,
+    exclude = NA,
+    ordered = is.ordered(x),
+    nmax = NA
 ){
   my_class <- class(x)
   for(nm in selected(x,...)){
@@ -379,6 +379,48 @@ classified.data.frame <- function(
   }
   class(x) <- my_class
   x
+}
+#' Classify Decorated Vector
+#'
+#' Coerces dvec to 'classified':
+#' a factor with a codelist attribute.
+#' Results may differ if explicit_guide()
+#' is called first.
+#'
+#' @param x dvec
+#' @param ... un-named arguments ignored.  Named arguments passed to \code{\link{classified.default}} to modify behavior
+#' @param exclude see \code{\link{factor}}
+#' @param ordered see \code{\link{factor}}
+#' @param nmax see \code{\link{factor}}
+#' @export
+#' @keywords internal
+#' @return classified
+#' @family classified
+#' @family dvec
+#' @examples
+#' library(magrittr)
+#' x <- as_dvec(1:3)
+#' attr(x, 'guide') <- list(a = 1, b = 2, c = 3)
+#' x %>% str
+#' x %>% classified %>% str
+#' x %>% explicit_guide %>% classified %>% str
+
+classified.dvec <- function(
+    x,
+    ...,
+    exclude = NA,
+    ordered = is.ordered(x),
+    nmax = NA
+){
+  y <- unclass(x)
+  y <- classified(
+    y,
+    exclude = exclude,
+    ordered = ordered,
+    nmax = nmax,
+    ...
+  )
+  y
 }
 
 #' Coerce Classified to Integer

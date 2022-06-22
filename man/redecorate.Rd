@@ -43,3 +43,4 @@ Other decorate:
 \code{\link{decorations}()}
 }
 \concept{decorate}
+\keyword{internal}

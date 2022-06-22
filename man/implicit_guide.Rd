@@ -24,9 +24,11 @@ to undo the effects of \code{\link{explicit_guide}}.
 \seealso{
 Other explicit_guide: 
 \code{\link{explicit_guide.data.frame}()},
+\code{\link{explicit_guide.dvec}()},
 \code{\link{explicit_guide.yamlet}()},
 \code{\link{explicit_guide}()},
 \code{\link{implicit_guide.data.frame}()},
+\code{\link{implicit_guide.dvec}()},
 \code{\link{infer_guide}()}
 }
 \concept{explicit_guide}

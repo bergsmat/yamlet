@@ -9,6 +9,7 @@
 #' @param x object of dispatch
 #' @param ... ignored arguments
 #' @export
+#' @keywords internal
 #' @family dvec
 #' @return dvec
 #' @examples
@@ -22,6 +23,7 @@ as_dvec <- function(x, ...)UseMethod('as_dvec')
 #' @param x logical
 #' @param ... attributes to assign
 #' @export
+#' @keywords internal
 #' @family dvec
 #' @return dvec
 #' @examples
@@ -45,6 +47,7 @@ as_dvec.logical <- function(
 #' @param x integer
 #' @param ... attributes to assign
 #' @export
+#' @keywords internal
 #' @family dvec
 #' @return dvec
 #' @examples
@@ -64,6 +67,7 @@ as_dvec.integer <- function(x, ...){
 #' @param x numeric
 #' @param ... attributes to assign
 #' @export
+#' @keywords internal
 #' @family dvec
 #' @return dvec
 #' @examples
@@ -84,6 +88,7 @@ as_dvec.numeric <- function(x, ...){
 #' @param x complex
 #' @param ... attributes to assign
 #' @export
+#' @keywords internal
 #' @family dvec
 #' @return dvec
 #' @examples
@@ -103,6 +108,7 @@ as_dvec.complex <- function(x, ...){
 #' @param x character
 #' @param ... attributes to assign
 #' @export
+#' @keywords internal
 #' @family dvec
 #' @return dvec
 #' @examples
@@ -123,6 +129,7 @@ as_dvec.character <- function(x, ...){
 #' @param x character
 #' @param ... attributes to assign
 #' @export
+#' @keywords internal
 #' @family dvec
 #' @return dvec
 #' @examples
@@ -147,7 +154,7 @@ as_dvec.dvec <- function(x, ...){
 #'
 #' @param x decorated vector
 #' @export
-#' @keywords inernal
+#' @keywords internal
 #' @family dvec
 #' @return integer
 #' @examples
@@ -480,6 +487,7 @@ print.dvec <- function(x, ...){
 #' @param ... passed to next method
 #' @param nm name for new column
 #' @export
+#' @keywords internal
 #' @family dvec
 #' @return data.frame
 #' @examples
@@ -512,7 +520,7 @@ as.data.frame.dvec <- function (x, row.names = NULL, optional = FALSE, ..., nm =
   structure(value, row.names = row.names, class = "data.frame")
 }
 
-#' Coerce dvec to units
+#' Coerce Decorated Vector to Units
 #' 
 #' Coerces dvec to units. If x has a units attribute,
 #' it is used to create class 'units'. It is an error if 
@@ -522,6 +530,7 @@ as.data.frame.dvec <- function (x, row.names = NULL, optional = FALSE, ..., nm =
 #' @param x dvec
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @examples 
 #' library(magrittr)
 #' a <- data.frame(id = 1:4, wt = c(70, 80, 70, 80), sex = c(0,1,0,1))
@@ -542,12 +551,13 @@ as_units.dvec <- function(x, ...){
 #' @export
 units::as_units
 
-#' Coerce units to dvec
+#' Coerce Units to Decorated Vector
 #' 
 #' Coerces units to dvec.
 #' @param x units
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @importFrom units drop_units
 #' @examples 
 #' library(magrittr)

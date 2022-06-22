@@ -23,9 +23,12 @@ example(resolve.decorated)
 }
 \seealso{
 Other resolve: 
+\code{\link{desolve.classified}()},
 \code{\link{desolve.decorated}()},
+\code{\link{desolve.dvec}()},
 \code{\link{desolve}()},
-\code{\link{resolve.decorated}()}
+\code{\link{resolve.decorated}()},
+\code{\link{resolve.dvec}()}
 }
 \concept{resolve}
 \keyword{internal}

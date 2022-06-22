@@ -66,6 +66,7 @@ canonical.decorated <- function(
 #' @param default_keys attribute names in preferred order
 #' @param ... ignored
 #' @export
+#' @keywords internal
 #' @family canonical
 #' @return decorated
 #' @examples

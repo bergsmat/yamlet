@@ -7,9 +7,9 @@
 \method{desolve}{decorated}(x, ...)
 }
 \arguments{
-\item{x}{object}
+\item{x}{decorated}
 
-\item{...}{passed to \code{\link{implicit_guide}} and \code{\link{classified}}}
+\item{...}{passed to \code{\link{implicit_guide}} and \code{\link{unclassified}}}
 }
 \value{
 decorated
@@ -29,8 +29,11 @@ x \%>\% resolve(glyco, Race) \%>\% desolve \%>\% decorations(Age, glyco, Race)
 }
 \seealso{
 Other resolve: 
+\code{\link{desolve.classified}()},
+\code{\link{desolve.dvec}()},
 \code{\link{desolve}()},
 \code{\link{resolve.decorated}()},
+\code{\link{resolve.dvec}()},
 \code{\link{resolve}()}
 
 Other interface: 

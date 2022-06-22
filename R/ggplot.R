@@ -192,6 +192,7 @@ ggplot_build.decorated_ggplot <- print.decorated_ggplot
 #' Determines scale type for dvec.
 #' @param x dvec
 #' @export
+#' @keywords internal
 #' @importFrom ggplot2 scale_type
 #' @method scale_type dvec
 scale_type.dvec <- function(x)scale_type(unclass(x))
@@ -204,6 +205,7 @@ scale_type.dvec <- function(x)scale_type(unclass(x))
 #' @param from numeric
 #' @param ... passed arguments
 #' @export
+#' @keywords internal
 #' @importFrom scales rescale
 #' @method rescale dvec
 rescale.dvec <- function(

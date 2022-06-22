@@ -8,6 +8,7 @@
 #' @param ... passed arguments
 #' @param overwrite passed to \code{\link{decorate}}
 #' @export
+#' @keywords internal
 #' @family decorate
 #' @return a list-like object, typically data.frame
 #' @examples

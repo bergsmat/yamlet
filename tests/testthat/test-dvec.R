@@ -215,17 +215,7 @@ test_that('yamlet persistence can be disabled',{
   options(yamlet_persistence = TRUE)
   expect_false(inherits(a$a, 'dvec'))
 })
-test_that('all yamlet generics have dvec methods where appropriate',{
-  # units
-  # decorate
-  # decorations
-  # desolve/resolve?
-  # explicit_guide/implicit_guide?
-  # mimic?
-  # modify?
-  #
-  
-})
+
 test_that('dvec and units are inter-changeable',{
   library(magrittr)
   library(dplyr)
@@ -241,6 +231,12 @@ test_that('dvec and units are inter-changeable',{
   expect_true(inherits(a$wt,'dvec'))
   expect_identical('body weight', attr(a$wt, 'label'))
 })
+
+test_that('dvec of both fundamental types can be resolved/desolved',{
+  
+})
+
+
 test_that('easy to compare data to guide levels',{})
 test_that('easy to add NA to guide levels',{})
 

@@ -12,3 +12,4 @@
 \description{
 Determines scale type for dvec.
 }
+\keyword{internal}

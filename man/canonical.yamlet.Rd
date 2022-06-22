@@ -46,3 +46,4 @@ Other canonical:
 \code{\link{canonical}()}
 }
 \concept{canonical}
+\keyword{internal}

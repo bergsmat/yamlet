@@ -190,8 +190,8 @@ infer_guide <- function(
 #' and then re-decorates using \code{overwrite = TRUE}.
 #'
 #' @param x data.frame
-#' @param overwrite passed as TRUE
 #' @param ... named arguments passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}; un-named arguments limit scope
+#' @param overwrite passed as TRUE
 #' @param simplify whether to remove guide attribute
 #' @export
 #' @keywords internal
@@ -199,6 +199,7 @@ infer_guide <- function(
 #' @importFrom encode encoded
 #' @return data.frame
 #' @family explicit_guide
+#' @family dvec
 #' @examples
 #' library(magrittr)
 #' x <- data.frame(
@@ -217,10 +218,10 @@ infer_guide <- function(
 #' x %>% explicit_guide %>% decorations
 #' x %>% explicit_guide(DATE) %>% decorations # limit scope
 explicit_guide.data.frame <- function(
-  x,
-  ...,
-  overwrite = getOption('explicit_guide_overwrite',TRUE),
-  simplify = getOption('explicit_guide_simplify', TRUE)
+    x,
+    ...,
+    overwrite = getOption('explicit_guide_overwrite',TRUE),
+    simplify = getOption('explicit_guide_simplify', TRUE)
 ){
   y <- do.call(as_yamlet, c(list(x), named(...)))
   nms <- selected(x, ...)
@@ -234,6 +235,65 @@ explicit_guide.data.frame <- function(
   x <- do.call(decorate, c(list(x, meta = y, overwrite = TRUE), named(...)))
   x
 }
+
+#' Coerce Decorated Vector Guide to Something More Explicit
+#'
+#' Coerces dvec 'guide' attribute to something more explicit.
+#' The attribute 'guide' generally suggests a guide
+#' to interpretation of a data item, such as units, formats, codelists,
+#' and encodings.  The idea here is to replace 'guide' with something
+#' explicit in case required downstream.
+#'
+#' @param x dvec
+#' @param ... named arguments passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}; un-named arguments ignored
+#' @param overwrite passed as TRUE
+#' @param simplify whether to remove guide attribute
+#' @export
+#' @keywords internal
+#' @importFrom dplyr case_when
+#' @importFrom encode encoded
+#' @return dvec
+#' @family explicit_guide
+#' @examples
+#' library(magrittr)
+#' x <- data.frame(
+#'  ID = as_dvec(1),
+#'  CONC = as_dvec(1),
+#'  RACE = as_dvec(1),
+#'  SEX = as_dvec(1),
+#'  DATE = as_dvec(1)
+#' )
+#' x %<>% modify(ID, label = 'subject identifier')
+#' x %<>% modify(CONC, label = 'concentration', guide = 'ng/mL')
+#' x %<>% modify(RACE, label = 'race', guide = list(white = 0, black = 1, asian = 2))
+#' x %<>% modify(SEX, label = 'sex', guide = list(female = 0, male = 1))
+#' x %<>% modify(DATE, label  = 'date', guide = '%Y-%m-%d')
+#' x %>% decorations
+#' x %>% explicit_guide %>% decorations
+#' x %>% explicit_guide(DATE) %>% decorations # limit scope
+#' x %$% DATE %>% explicit_guide
+explicit_guide.dvec <- function(
+    x,
+    ...,
+    overwrite = getOption('explicit_guide_overwrite',TRUE),
+    simplify = getOption('explicit_guide_simplify', TRUE)
+){
+  y <- data.frame(x = x)
+  y <- do.call(
+    explicit_guide,
+    c(
+      list(
+        x = y, 
+        overwrite = overwrite, 
+        simplify = simplify
+      ),
+      named(...)
+    )
+  )
+  y <- y$x
+  y
+}
+
 #' Coerce Guide to Something More Implicit
 #'
 #' Coerces 'guide' to something more implicit.  Generic, with methods for
@@ -292,8 +352,8 @@ implicit_guide <- function(x,...)UseMethod('implicit_guide')
 #' x %>% explicit_guide(simplify = FALSE) %>% implicit_guide %>% decorations
 
 implicit_guide.data.frame <- function(
-  x,
-  ...
+    x,
+    ...
 ){
   nms <- selected(x, ...)
   for(nm in nms){
@@ -309,5 +369,59 @@ implicit_guide.data.frame <- function(
     }
   }
   x
+}
+
+#' Coerce Decorated Vector Guide to Something More Implicit
+#'
+#' Coerces dvec guide-like attributes to 'guide'.
+#' The attribute 'guide' generally suggests a guide
+#' to interpretation of a data item, such as units, formats, codelists,
+#' and encodings.  The idea here is to replace these with 'guide':
+#' i.e., to undo the effects of \code{\link{explicit_guide.dvec}}.
+#' If guide attribute is still present, the explicit attribute is removed.
+#' Otherwise the explicit element is renamed.
+#'
+#'
+#' @param x dvec
+#' @param ... ignored
+#' @export
+#' @keywords internal
+#' @importFrom dplyr case_when
+#' @importFrom encode encoded
+#' @return dvec
+#' @family explicit_guide
+#' @family dvec
+#' @examples
+#' library(magrittr)
+#' x <- data.frame(
+#'  ID = as_dvec(1),
+#'  CONC = as_dvec(1),
+#'  RACE = as_dvec(1),
+#'  SEX = as_dvec(1),
+#'  DATE = as_dvec(1)
+#' )
+#' x %<>% modify(ID, label = 'subject identifier')
+#' x %<>% modify(CONC, label = 'concentration', guide = 'ng/mL')
+#' x %<>% modify(RACE, label = 'race', guide = list(white = 0, black = 1, asian = 2))
+#' x %<>% modify(SEX, label = 'sex', guide = list(female = 0, male = 1))
+#' x %<>% modify(DATE, label  = 'date', guide = '%Y-%m-%d')
+#' x %>% decorations
+#' x %>% explicit_guide %>% decorations
+#' x %>% explicit_guide %>% implicit_guide %>% decorations
+#' x %>% explicit_guide %>% implicit_guide(DATE) %>% decorations # limit scope
+#' x %>% explicit_guide(simplify = FALSE) %>% decorations
+#' x %>% explicit_guide(simplify = FALSE) %>% implicit_guide %>% decorations
+#' x %<>% explicit_guide
+#' a <- x$DATE
+#' str(a)
+#' str(a %>% implicit_guide)
+implicit_guide.dvec <- function(
+    x,
+    ...
+){
+  y <- data.frame(x = x)
+  y <- implicit_guide(y)
+  y <- y$x
+  y
 }
 

@@ -8,6 +8,7 @@
 #' @param ... passed to \code{\link{merge}}
 #' @return class 'decorated' 'data.frame'
 #' @export
+#' @keywords internal
 #' @family decorated
 #' @examples
 #' library(magrittr)
