@@ -341,7 +341,8 @@ classified.default <- function(
 #' a factor with a codelist attribute.
 #'
 #' @param x data.frame
-#' @param ... passed to \code{\link[dplyr]{select}} to limit column scope; also passed to \code{\link{classified.default}} to modify behavior
+#' @param ... passed to \code{\link[dplyr]{select}} to limit column scope
+#; also passed to \code{\link{classified.default}} to modify behavior
 #' @param exclude see \code{\link{factor}}
 #' @param ordered see \code{\link{factor}}
 #' @param nmax see \code{\link{factor}}
@@ -455,4 +456,78 @@ as.integer.classified <- function(x, offset = 0L, ...){
   z <- mimic(x, y)
   r <- unclassified(z)
   r
+}
+
+#' Create Classified from Classified
+#'
+#' See \code{\link{classified.default}}.
+#' Currently, calling classified on a
+#' classified object is a non-operation.
+#'
+#' @export
+#' @return 'classified' 'factor'
+#' @param x classified
+#' @param ... ignored
+#' @keywords internal
+#' @family classified
+#' @examples
+#' 
+#' a <- 4:6
+#' attr(a, 'codelist') <- list(d = 4, e = 5, f = 6, g = 7)
+#' b <- classified(a)
+#' a
+#' b
+#' class(b)
+#' classified(b)
+#' identical(b, classified(b))
+
+classified.classified <- function(
+    x,
+    levels,
+    labels,
+    exclude = NA,
+    ordered = is.ordered(x),
+    nmax = NA,
+    ...
+){
+  cl <- attr(x,'codelist')
+  # if we have a codelist, use it
+  if(is.null(cl))stop('classified factor should have a codelist attribute')
+  attr(x,'codelist' ) <- NULL
+  class(x) <- setdiff(class(x),'classified')
+  # now x is a regular factor
+  if(missing(levels)) levels = attr(x, 'levels')
+  if(missing(labels)) labels = attr(x, 'levels')
+  
+  # call factor()
+  z <- factor(
+    x = x,
+    levels = levels,
+    labels = labels,
+    exclude = exclude,
+    ordered = ordered,
+    nmax = nmax
+  )
+  
+  # z should not be much different from x
+  # enforce attributes
+  nms <- names(attributes(x))
+  nms <- setdiff(nms, c('class','levels'))
+  for(nm in nms){
+    attr(z, nm) <- attr(x, nm)
+  }
+  
+  # reconcile codelist
+  codelist <- as.list(levels(z))
+  nms <- names(cl)[match(levels, codelist)]
+  names(codelist) <- nms
+  
+  # attach codelist
+  attr(z, 'codelist') <- codelist
+  
+  # enforce class
+  class(z) <- union('classified', class(z))
+  
+  # return
+  z
 }

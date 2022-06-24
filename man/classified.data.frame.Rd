@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{data.frame}
 
-\item{...}{passed to \code{\link[dplyr]{select}} to limit column scope; also passed to \code{\link{classified.default}} to modify behavior}
+\item{...}{passed to \code{\link[dplyr]{select}} to limit column scope}
 
 \item{exclude}{see \code{\link{factor}}}
 
@@ -40,6 +40,7 @@ Other classified:
 \code{\link{[[<-.classified}()},
 \code{\link{as.integer.classified}()},
 \code{\link{c.classified}()},
+\code{\link{classified.classified}()},
 \code{\link{classified.default}()},
 \code{\link{classified.dvec}()},
 \code{\link{classified}()},
