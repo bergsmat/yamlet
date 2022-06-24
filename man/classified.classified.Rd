@@ -4,15 +4,7 @@
 \alias{classified.classified}
 \title{Create Classified from Classified}
 \usage{
-\method{classified}{classified}(
-  x,
-  levels,
-  labels,
-  exclude = NA,
-  ordered = is.ordered(x),
-  nmax = NA,
-  ...
-)
+\method{classified}{classified}(x, ...)
 }
 \arguments{
 \item{x}{classified}

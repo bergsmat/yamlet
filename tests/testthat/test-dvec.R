@@ -232,15 +232,54 @@ test_that('dvec and units are inter-changeable',{
   expect_identical('body weight', attr(a$wt, 'label'))
 })
 
-test_that('dvec of both fundamental types can be resolved/desolved',{
-  
+test_that('both fundamental types can be resolved/desolved',{
+  a <- data.frame(id = 1:4, wt = c(70, 80, 70, 80), sex = c(0L,1L,0L,1L))
+  a %<>% decorate('wt: [ body weight, kg ]')
+  a %<>% decorate('sex: [ sex, [ female: 0, male: 1]]')
+  a %<>% decorate('id: identifier')
+  a
+  b <- desolve(resolve(a))
+  identical(decorations(a), decorations(b))
+  identical(attributes(a), attributes(b))
+  identical(names(a), names(b))
+  identical(a[[1]], b[[1]])
+  identical(a[[2]], b[[2]])
+  identical(a[[3]], b[[3]])
+  str(a[[3]])
+  str(b[[3]])
+  expect_identical(
+    a,
+    a %>% resolve %>% desolve
+  )
 })
 
+test_that('as.integer.classified() respects yamlet_persistence',{
+  options(yamlet_persistence = FALSE)
+  expect_identical(
+    c('knife','fork','spoon') %>%
+      classified %>%
+      as.integer %>%
+      class,
+    'integer'
+  )
 
-test_that('easy to compare data to guide levels',{})
-test_that('easy to add NA to guide levels',{})
-
-
+  options(yamlet_persistence = NULL)
+  expect_identical(
+    c('knife','fork','spoon') %>%
+      classified %>%
+      as.integer %>%
+      class,
+    'dvec'
+  )
+  
+  expect_identical(
+    c('knife','fork','spoon') %>%
+      classified %>%
+      as.integer(persistence = FALSE) %>%
+      class,
+    'integer'
+  )
+})
 
 
 

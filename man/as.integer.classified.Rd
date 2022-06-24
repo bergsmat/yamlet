@@ -4,22 +4,29 @@
 \alias{as.integer.classified}
 \title{Coerce Classified to Integer}
 \usage{
-\method{as.integer}{classified}(x, offset = 0L, ...)
+\method{as.integer}{classified}(
+  x,
+  offset = 0L,
+  ...,
+  persistence = getOption("yamlet_persistence", TRUE)
+)
 }
 \arguments{
 \item{x}{classified, see \code{\link{classified}}}
 
 \item{offset}{an integer value to add to intermediate result}
 
-\item{...}{ignored}
+\item{...}{passed to \code{\link{as.numeric}}, code{\link{as.integer}}, and code{\link{desolve}}}
+
+\item{persistence}{whether to return 'dvec' (is.integer(): TRUE) or just integer.}
 }
 \value{
-integer
+integer (possibly of class dvec)
 }
 \description{
 Coerces classified to integer.
 Result is like \code{as.integer(as.numeric(x)) + offset}
-but has a codelist giving original values. If you need
+but has a guide giving original values. If you need
 a simple integer, consider coercing first to numeric.
 }
 \examples{
@@ -28,6 +35,24 @@ classified(c('knife','fork','spoon'))
 classified(c('knife','fork','spoon')) \%>\% as.numeric
 classified(c('knife','fork','spoon')) \%>\% as.integer
 classified(c('knife','fork','spoon')) \%>\% as.integer(-1)
+
+options(yamlet_persistence = FALSE)
+c('knife','fork','spoon') \%>\% 
+  classified \%>\%
+  as.integer \%>\% 
+  class
+  
+options(yamlet_persistence = NULL)
+c('knife','fork','spoon') \%>\% 
+  classified \%>\%
+  as.integer \%>\% 
+  class
+  
+c('knife','fork','spoon') \%>\% 
+  classified \%>\%
+  as.integer(persistence = FALSE) \%>\% 
+  class
+  
 
 }
 \seealso{

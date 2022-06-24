@@ -428,33 +428,60 @@ classified.dvec <- function(
 #'
 #' Coerces classified to integer.
 #' Result is like \code{as.integer(as.numeric(x)) + offset}
-#' but has a codelist giving original values. If you need
+#' but has a guide giving original values. If you need
 #' a simple integer, consider coercing first to numeric.
 #'
 #' @param x classified, see \code{\link{classified}}
 #' @param offset an integer value to add to intermediate result
-#' @param ... ignored
+#' @param ... passed to \code{\link{as.numeric}}, code{\link{as.integer}}, and code{\link{desolve}}
+#' @param persistence whether to return 'dvec' (is.integer(): TRUE) or just integer.
 #' @export
 #' @family classified
-#' @return integer
+#' @return integer (possibly of class dvec)
 #' @examples
 #' library(magrittr)
 #' classified(c('knife','fork','spoon'))
 #' classified(c('knife','fork','spoon')) %>% as.numeric
 #' classified(c('knife','fork','spoon')) %>% as.integer
 #' classified(c('knife','fork','spoon')) %>% as.integer(-1)
+#' 
+#' options(yamlet_persistence = FALSE)
+#' c('knife','fork','spoon') %>% 
+#'   classified %>%
+#'   as.integer %>% 
+#'   class
+#'   
+#' options(yamlet_persistence = NULL)
+#' c('knife','fork','spoon') %>% 
+#'   classified %>%
+#'   as.integer %>% 
+#'   class
+#'   
+#' c('knife','fork','spoon') %>% 
+#'   classified %>%
+#'   as.integer(persistence = FALSE) %>% 
+#'   class
+#'   
 #'
-as.integer.classified <- function(x, offset = 0L, ...){
+as.integer.classified <- function(x, offset = 0L, ..., persistence = getOption('yamlet_persistence', TRUE)){
   stopifnot(
     length(offset) == 1,
     !is.na(offset),
     as.integer(offset) == offset
   )
   offset <- as.integer(offset)
-  y <- as.numeric(x)
+  y <- as.numeric(x, ...)
+  y <- as.integer(y, ...) # explicitly casting to int as of 0.9.0
   y <- y + offset
   z <- mimic(x, y)
-  r <- unclassified(z)
+# r <- unclassified(z)
+  r <- desolve(z, persistence = TRUE, ...) # gives guide instead of codelist at 0.9.0
+  # at this point, r should be dvec
+  # passing persistence to desolve fails because there is no 
+  # vector method for implicit_guide (only a data.frame method)
+  if(!persistence) {
+    r <- unclass(r)
+  }
   r
 }
 
@@ -481,53 +508,40 @@ as.integer.classified <- function(x, offset = 0L, ...){
 #' classified(b)
 #' identical(b, classified(b))
 
-classified.classified <- function(
-    x,
-    levels,
-    labels,
-    exclude = NA,
-    ordered = is.ordered(x),
-    nmax = NA,
-    ...
-){
-  cl <- attr(x,'codelist')
-  # if we have a codelist, use it
-  if(is.null(cl))stop('classified factor should have a codelist attribute')
-  attr(x,'codelist' ) <- NULL
-  class(x) <- setdiff(class(x),'classified')
-  # now x is a regular factor
-  if(missing(levels)) levels = attr(x, 'levels')
-  if(missing(labels)) labels = attr(x, 'levels')
-  
-  # call factor()
-  z <- factor(
-    x = x,
-    levels = levels,
-    labels = labels,
-    exclude = exclude,
-    ordered = ordered,
-    nmax = nmax
-  )
-  
-  # z should not be much different from x
-  # enforce attributes
-  nms <- names(attributes(x))
-  nms <- setdiff(nms, c('class','levels'))
-  for(nm in nms){
-    attr(z, nm) <- attr(x, nm)
-  }
-  
-  # reconcile codelist
-  codelist <- as.list(levels(z))
-  nms <- names(cl)[match(levels, codelist)]
-  names(codelist) <- nms
-  
-  # attach codelist
-  attr(z, 'codelist') <- codelist
-  
-  # enforce class
-  class(z) <- union('classified', class(z))
-  
-  # return
-  z
+classified.classified <- function(x, ...)x
+
+# Abbreviate Classified
+# 
+# Abbreviated class name for 'classified'.
+# 
+# @export
+# @importFrom vctrs vec_ptype_abbr
+# @method vec_ptype_abbr classified
+# @return character
+# @keywords internal
+# @param x classified
+# @param ... ignored
+# @examples
+# cat(vec_ptype_abbr(classified(0)))
+# vec_ptype_abbr.classified <- function(x, ...) {
+#   "clsfd"
+# }
+
+#' @importFrom pillar type_sum
+#' @export
+pillar::type_sum
+
+#' Summarize Type of Classified
+#' 
+#' Summarizes type of classified.
+#' 
+#' @param x classified
+#' @importFrom pillar type_sum
+#' @export
+#' @keywords internal
+#' @method type_sum classified
+#' @examples 
+#' type_sum(classified(0))
+type_sum.classified <- function(x){
+  'clfac'
 }

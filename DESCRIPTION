@@ -17,7 +17,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: yaml, csv (>= 0.5.4), encode, units, spork,
- ggplot2, scales, dplyr (>= 0.8.1), rlang, xtable, tidyr, vctrs
+ ggplot2, scales, dplyr (>= 0.8.1), rlang, xtable, tidyr, vctrs, pillar
 RoxygenNote: 7.2.0
 VignetteBuilder: knitr
 Suggests: testthat (>= 2.1.0), magrittr, table1, knitr, rmarkdown, gridExtra

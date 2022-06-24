@@ -577,3 +577,25 @@ as_dvec.units <- function(x, ...){
   x <- as_dvec(x)
   x
 }
+
+#' Abbreviate Decorated Vector
+#' 
+#' Abbreviated class name for dvec.
+#' 
+#' @export
+#' @importFrom vctrs vec_ptype_abbr
+#' @method vec_ptype_abbr dvec
+#' @return character
+#' @keywords internal
+#' @param x classified
+#' @param ... ignored
+#' @examples
+#' cat(vec_ptype_abbr(as_dvec(0)))
+vec_ptype_abbr.dvec <- function(x, ...) {
+  "dvec"
+}
+
+# # https://vctrs.r-lib.org/articles/s3-vector.html
+#' @importFrom vctrs vec_ptype_abbr
+#' @export
+vctrs::vec_ptype_abbr

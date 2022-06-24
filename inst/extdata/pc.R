@@ -12,7 +12,8 @@ library(dplyr)
 library(tidyr)
 library(wrangle)
 ex <- 'ex.xpt.gz' %>% gzfile %>% read_xpt
-vs <- 'dm.xpt.gz' %>% gzfile %>% read_xpt
+
+
 dm <- 'dm.xpt.gz' %>% gzfile %>% read_xpt
 
 dm %>% data.frame %>% head(3)
@@ -41,6 +42,10 @@ dm %<>% mutate(
     as.integer(-2)
 ) %>% select(-ACTARMCD)
 
+dm %>% head
+dm %>% implicit_guide %>% resolve %>% head
+dm %>% resolve %>% head
+
 dm %>% modify(SUBJID, guide = NULL) %>% decorations
 
 dm %>% enumerate(SEX)
@@ -63,37 +68,45 @@ RFSTDTC: [ guide: "%Y-%m-%d" ]
 AGE:     [ guide: year ]
 ')
 dm %>% head
-dm %>% decorations(SEX, RACE)
-dm %>% resolve %>% head
-dm %>% resolve %>% resolve %>% head
-dm %>% resolve %>% decorations(SEX, RACE)
-dm %>% resolve %>% resolve %>% decorations(SEX, RACE)
-dm %>% resolve %>% head
-dm %>% resolve %>% desolve %>% head
-dm %>% resolve(SEX) %>% head
-dm %>% resolve(SEX) %>% resolve %>% head
-dm %>% resolve(SEX) %>% resolve %>% resolve %>% head
-dm %<>% head
-dm %<>% select(SEX)
 
 
+vs <- 'vs.xpt.gz' %>% gzfile %>% read_xpt
+vs %>% data.frame %>% head
+vs %>% constant
+vs %<>% select(-(names(constant(vs))))
+vs %>% enumerate(VSTESTCD, VSTEST, VSSTRESU, VSSTAT)
+vs %<>% filter(VSSTAT == '') %>% select(-VSSTAT)
+vs %>% enumerate(VSTESTCD, VSTEST, VSSTRESU, VSPOS)
+vs %<>% filter(VSTESTCD %in% c('HEIGHT', 'WEIGHT'))
+vs %>% constant
+vs %<>% select(-(names(constant(vs))))
+length(unique(vs$USUBJID))
+length(unique(vs$USUBJID[vs$VSBLFL == 'Y']))
+vs %>% group_by(USUBJID, VSTESTCD, VISITNUM) %>% status
+vs %>% filter(VSTESTCD == 'HEIGHT') %>% nrow
+vs %>% 
+  filter(VSTESTCD == 'WEIGHT') %>% 
+  group_by(USUBJID) %>% 
+  filter(!any(VSBLFL == 'Y')) %>% data.frame
+vs$VSBLFL[with(vs, USUBJID == '01-702-1082' & VSTESTCD == 'WEIGHT' & VISITNUM == 1)] <- 'Y'
+vs %<>% filter(VSTESTCD %in% c('HEIGHT', 'WEIGHT'))
+vs %>% enumerate(VSTESTCD, VSBLFL)
+vs %<>% filter(VSTESTCD == 'HEIGHT' | VSBLFL == 'Y')
+vs %>% enumerate(VSTESTCD)
+vs %>% data.frame %>% head
+vs %<>% select(USUBJID, VSTESTCD, VSSTRESN)
+vs %<>% pivot_wider(names_from=VSTESTCD, values_from = VSSTRESN)
+vs %<>% redecorate('
+HEIGHT: [ Baseline Height, cm ]
+WEIGHT: [ Baseline Weight, kg ]
+')
+vs %>% decorations
 
-a <- 4:6
-attr(a, 'guide') <- c('d','e','f')
-a
-classified(a)
-class(classified(a))
-str(classified(a))
+dm %>% head
+vs %>% head
+vs %>% decorations
 
-b <- 4:6
-attr(b, 'codelist') <- list(d = 4, e = 5, f = 6)
-b
-classified(b)
-class(classified(b))
-str(classified(b))
-
-
-
-
-
-
+dm %<>% mutate(USUBJID = SUBJID %>% resolve %>% as.character)
+dm %<>% safe_join(vs) %>% select(-USUBJID)
+dm %>% decorations(-SUBJID)
+dm %>% head
