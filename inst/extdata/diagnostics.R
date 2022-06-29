@@ -21,36 +21,36 @@ x %<>% rename(ID = SUBJID)
 x %>% decorations(-ID)
 x %>% enumerate(ACTARM, EVID, DV == 0)
 x %<>% filter(ACTARM > 0)
-x %<>% filter(EVID == 1 | MDV == 0)
+#x %<>% filter(EVID == 1 | MDV == 0)
 x %>% group_by(ID, TIME, EVID) %>% status
 
-# mod <- nlmixr(
-#   data = x,
-#   est = 'saem',
-#   object = function(){
-#     ini({
-#       lCl      <- log(200)   # log Cl (L/hr)
-#       lVc      <- log(5000)  # log Vc (L)
-#       lKA      <- log(2)     # log Ka (1/hr)
-#       prop.err <- .01        # prop.err
-#       eta.Vc   ~ 0.1         # BSV Vc
-#     })
-#     model({
-#       Cl <- exp(lCl)
-#       Vc <- exp(lVc+ eta.Vc)
-#       KA <- exp(lKA )
-#       kel <- Cl / Vc
-#       d/dt(depot) = - KA * depot
-#       d/dt(centr) =   KA * depot - kel * centr
-#       cp = centr / Vc
-#       cp ~ prop(prop.err)
-#     })
-#   }
-# )
-# 
-# sapply(mod, class)
-# mod %<>% mutate(across(where(is.numeric), signif, digits = 4))
-# mod %>% as.data.frame %>% saveRDS('mod.Rds')
+mod <- nlmixr(
+  data = x,
+  est = 'saem',
+  object = function(){
+    ini({
+      lCl      <- log(200)   # log Cl (L/hr)
+      lVc      <- log(5000)  # log Vc (L)
+      lKA      <- log(2)     # log Ka (1/hr)
+      prop.err <- .01        # prop.err
+      eta.Vc   ~ 0.1         # BSV Vc
+    })
+    model({
+      Cl <- exp(lCl)
+      Vc <- exp(lVc+ eta.Vc)
+      KA <- exp(lKA )
+      kel <- Cl / Vc
+      d/dt(depot) = - KA * depot
+      d/dt(centr) =   KA * depot - kel * centr
+      cp = centr / Vc
+      cp ~ prop(prop.err)
+    })
+  }
+)
+
+sapply(mod, class)
+mod %<>% mutate(across(where(is.numeric), signif, digits = 4))
+mod %>% as.data.frame %>% saveRDS('mod.Rds')
 mod <- readRDS('mod.Rds')
 
 head(x)

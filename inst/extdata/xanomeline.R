@@ -166,10 +166,10 @@ MDV: [ Missing Dependent Value, [ DV not missing: 0, DV missing: 1]]
 pc  <- io_csv('pc.csv')
 pc %>% decorations(-SUBJID)
 
-pc %<>% mutate(AMT = 0, MDV = 0, EVID = ifelse(DV == 0, 2, 0), CMT = 2)   
+pc %<>% mutate(AMT = 0, MDV = 0, EVID = 0, CMT = 2)   
 pc %<>% redecorate(ex)
 pc %>% head
-pc %<>% redecorate('EVID: [ Event Type, [Other: 2, Observation: 0]]')
+pc %<>% redecorate('EVID: [ Event Type, [Observation: 0]]')
 is.integer(pc$VISIT)
 is.double(ex$VISIT)
 x <- bind_rows(
