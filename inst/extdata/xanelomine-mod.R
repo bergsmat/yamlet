@@ -1,5 +1,5 @@
 #' ---
-#' title:  Diagnostic Plots for a PopPK Model
+#' title:  Integrate Xanelomine Analysis Dataset with Model Output
 #' output: html_document
 #' theme: united
 #' highlight: tango
