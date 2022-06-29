@@ -51,3 +51,21 @@ x %<>% filter(EVID == 1 | MDV == 0)
 # 
 # mod %>% saveRDS('mod.Rds')
 mod <- readRDS('mod.Rds')
+
+head(x)
+mod %<>% data.frame
+head(mod)
+intersect(names(mod), names(x))
+mod$ID %<>% as.character %>% as.integer
+nrow(x)
+mod %>% group_by(ID, TIME) %>% status
+mod$DV <- NULL
+x %>% group_by(ID, TIME, -EVID) %>% status
+
+
+
+x %<>% left_join(mod)
+nrow(x)
+x %>% head(2)
+
+

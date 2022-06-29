@@ -1461,14 +1461,24 @@ is.integer(pc$VISIT)</code></pre>
   AGE, SEX, RACE, HEIGHT, WEIGHT
 )
 
+x$MDV[x$DV &lt;= 0] &lt;- 1
+
+x %&lt;&gt;% arrange(SUBJID, TIME, EVID)
+x %&gt;% group_by(SUBJID, TIME, EVID) %&gt;% status</code></pre>
+<pre><code>## Source: local data frame [5,910 x 15]
+## Groups:  SUBJID TIME EVID 
+## NAs: 0
+## duplicates: 0
+## unsorted: 0</code></pre>
+<pre class="r"><code>x %&gt;% io_csv(&#39;xanomeline.csv&#39;)
 x %&gt;% head</code></pre>
 <pre><code>##   SUBJID ACTARM VISIT TIME TAD EVID CMT AMT DV MDV AGE SEX RACE HEIGHT WEIGHT
-## 1   1001      0     3    0   0    0   2   0  0   0  76   0    0 170.18  73.03
-## 2   1001      0     3    1   1    0   2   0  0   0  76   0    0 170.18  73.03
-## 3   1001      0     3    2   2    0   2   0  0   0  76   0    0 170.18  73.03
-## 4   1001      0     3    4   4    0   2   0  0   0  76   0    0 170.18  73.03
-## 5   1001      0     3    8   8    0   2   0  0   0  76   0    0 170.18  73.03
-## 6   1001      0     3   12  12    0   2   0  0   0  76   0    0 170.18  73.03</code></pre>
+## 1   1001      0     3    0   0    0   2   0  0   1  76   0    0 170.18  73.03
+## 2   1001      0     3    0  NA    1   1   0  0   1  76   0    0 170.18  73.03
+## 3   1001      0     3    1   1    0   2   0  0   1  76   0    0 170.18  73.03
+## 4   1001      0     3    2   2    0   2   0  0   1  76   0    0 170.18  73.03
+## 5   1001      0     3    4   4    0   2   0  0   1  76   0    0 170.18  73.03
+## 6   1001      0     3    8   8    0   2   0  0   1  76   0    0 170.18  73.03</code></pre>
 <pre class="r"><code>x %&gt;% decorations(-SUBJID)</code></pre>
 <pre><code>## - ACTARM
 ##  - label: Description of Actual Arm
@@ -1531,11 +1541,7 @@ x %&gt;% head</code></pre>
 ## - WEIGHT
 ##  - label: Baseline Weight
 ##  - guide: kg</code></pre>
-<pre class="r"><code>x$MDV[x$DV &lt;= 0] &lt;- 1
-
-x %&gt;% io_csv(&#39;xanomeline.csv&#39;)
-
-sessionInfo()</code></pre>
+<pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R Under development (unstable) (2022-06-15 r82492 ucrt)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
 ## Running under: Windows 10 x64 (build 19044)

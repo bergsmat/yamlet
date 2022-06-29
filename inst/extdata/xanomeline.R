@@ -186,10 +186,13 @@ x %<>% select(
   AGE, SEX, RACE, HEIGHT, WEIGHT
 )
 
-x %>% head
-x %>% decorations(-SUBJID)
 x$MDV[x$DV <= 0] <- 1
 
+x %<>% arrange(SUBJID, TIME, EVID)
+x %>% group_by(SUBJID, TIME, EVID) %>% status
+
 x %>% io_csv('xanomeline.csv')
+x %>% head
+x %>% decorations(-SUBJID)
 
 sessionInfo()
