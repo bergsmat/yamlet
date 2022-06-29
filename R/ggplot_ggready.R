@@ -39,13 +39,14 @@ ggplot.ggready <- function(data, ...){
 print.ggready_ggplot <- function(x, ...){
   for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
     lab <- x$labels[[i]]                   # handle one label
-
-    if(lab %in% names(x$data)){            # if this is just a bare column name
-      col <- x$data[[lab]]
-      atr <- attributes(col)
-      label <- atr$label                   # retrieve label
-      if(!is.null(label)){
-        x$labels[[i]] <- label             # replace default label with one from data attributes
+    if(length(lab)){                       # not null or empty expression
+      if(lab %in% names(x$data)){          # if this is just a bare column name
+        col <- x$data[[lab]]
+        atr <- attributes(col)
+        label <- atr$label                 # retrieve label
+        if(!is.null(label)){
+          x$labels[[i]] <- label           # replace default label with one from data attributes
+        }
       }
     }
   }
