@@ -15,7 +15,6 @@ library(nlmixr)
 library(yamlet)
 library(datetime)
 
-
 x <- io_csv('xanomeline.csv')
 x %>% head
 x %<>% rename(ID = SUBJID)
@@ -23,7 +22,7 @@ x %>% decorations(-ID)
 x %>% enumerate(ACTARM, EVID, DV == 0)
 x %<>% filter(ACTARM > 0)
 x %<>% filter(EVID == 1 | MDV == 0)
-
+x %>% group_by(ID, TIME, EVID) %>% status
 
 # mod <- nlmixr(
 #   data = x,
@@ -49,23 +48,34 @@ x %<>% filter(EVID == 1 | MDV == 0)
 #   }
 # )
 # 
-# mod %>% saveRDS('mod.Rds')
+# sapply(mod, class)
+# mod %<>% mutate(across(where(is.numeric), signif, digits = 4))
+# mod %>% as.data.frame %>% saveRDS('mod.Rds')
 mod <- readRDS('mod.Rds')
 
 head(x)
-mod %<>% data.frame
 head(mod)
 intersect(names(mod), names(x))
 mod$ID %<>% as.character %>% as.integer
 nrow(x)
 mod %>% group_by(ID, TIME) %>% status
+x   %>% group_by(ID, TIME, EVID) %>% status
+mod$ID %<>% as_dvec
+mod$TIME %<>% as_dvec
 mod$DV <- NULL
-x %>% group_by(ID, TIME, -EVID) %>% status
-
-
-
 x %<>% left_join(mod)
 nrow(x)
 x %>% head(2)
-
-
+x %>% enumerate(EVID, is.na(IPRED), TIME == 0)
+x %>% filter(is.na(IPRED), TIME != 0)
+# x %>% filter(ID == 1254)
+x %<>% mutate(IPRED = ifelse(TIME == 0 & is.na(IPRED), 0, 1))
+x %<>% filter(!is.na(IPRED))
+x %>% enumerate(EVID)
+x %>% head
+x %>%
+  ggready %>% # decorations(IPRED, DV, ACTARM)
+  ggplot(aes(IPRED, DV, color = ACTARM)) + 
+  geom_point() +
+  facet_wrap(~VISIT)
+  

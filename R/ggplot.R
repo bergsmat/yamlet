@@ -140,32 +140,35 @@ print.decorated_ggplot <- function(
 ){
   for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
     lab <- x$labels[[i]]                   # handle one label
-    if(lab %in% names(x$data)){            # if this is just a bare column name
-      col <- x$data[[lab]]
-      atr <- attributes(col)
-      for( s in rev(search)){              # end with first
-        label <- atr[[s]]                  # retrieve label
-        if(!is.null(label)){
-          x$labels[[i]] <- label           # overwrite default label with one from data attributes
+    if(length(lab)){                       # i.e. not null or empty expression
+      if(lab %in% names(x$data)){            # if this is just a bare column name
+        col <- x$data[[lab]]
+        atr <- attributes(col)
+        for( s in rev(search)){              # end with first
+          label <- atr[[s]]                  # retrieve label
+          if(!is.null(label)){
+            x$labels[[i]] <- label           # overwrite default label with one from data attributes
+          }
+        }
+        # done with search.  Plural labels?
+        if(length(x$labels[[i]]) > 1){
+          labs <- x$labels[[i]]
+          if(length(names(labs)))labs = paste(
+            paste0(
+              '(',
+              names(labs),
+              ')'
+            ),
+            labs
+          )
+          labs <- paste(labs, collapse = '\n')
+          msg <- paste('using first of', labs, sep = '\n')
+          warning(msg)
+          x$labels[[i]] <- x$labels[[i]][[1]]
         }
       }
-      # done with search.  Plural labels?
-      if(length(x$labels[[i]]) > 1){
-        labs <- x$labels[[i]]
-        if(length(names(labs)))labs = paste(
-          paste0(
-            '(',
-            names(labs),
-            ')'
-          ),
-          labs
-        )
-        labs <- paste(labs, collapse = '\n')
-        msg <- paste('using first of', labs, sep = '\n')
-        warning(msg)
-        x$labels[[i]] <- x$labels[[i]][[1]]
-      }
-    }
+   }
+    
   }
   NextMethod()
 }

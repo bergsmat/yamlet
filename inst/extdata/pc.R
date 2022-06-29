@@ -180,7 +180,7 @@ pc %<>% mutate(AMT = AMT * 0, MDV = MDV * 0, EVID = EVID * 0, CMT = CMT + 1)
 pc %<>% mutate(TIME = TIME + TAD)
 pc %<>% arrange(SUBJID, TIME)
 pc %>% head
-pc %<>% redecorate('EVID: [ Event Type, [Observation: 0]]')
+pc %<>% redecorate('EVID: [ Event Type, [Other: 2, Observation: 0]]')
 
 pc %>% decorations(-SUBJID)
 
