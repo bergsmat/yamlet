@@ -11,7 +11,18 @@ NULL
 #' @keywords internal
 #' @export
 vec_cast.dvec.dvec <- function(x, to, ...) {
-  as_dvec(x, ...)
+  # as_dvec(x, ...) # during join, adds x_arg, to_arg, and 'call' attributes
+  # logical, integer, double, complex, character
+  at <- attributes(x) # save these
+  y <- x
+  if(is.logical(to))   y <- as.logical(x)
+  if(is.integer(to))   y <- as.integer(x)
+  if(is.double(to))    y <- as.double(x)
+  if(is.complex(to))   y <- as.complex(x)
+  if(is.character(to)) y <- as.character(x)
+  attributes(y) <- at
+  y <- as_dvec(y)
+  y
 }
 
 #' Cast to dvec from logical
@@ -25,7 +36,7 @@ vec_cast.dvec.dvec <- function(x, to, ...) {
 vec_cast.dvec.logical <- function(x, to, ...){
   # to dvec from logical
   # validate input?
-  as_dvec(x, ...)
+  as_dvec(x)
 }
 
 #' Cast to logical from dvec
@@ -37,7 +48,7 @@ vec_cast.dvec.logical <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.logical.dvec <- function(x, to, ...){
-  as.logical(x, ...)
+  as.logical(x)
 }
 
 #' Cast to dvec from integer
@@ -49,7 +60,7 @@ vec_cast.logical.dvec <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.dvec.integer <- function(x, to, ...){
-  as_dvec(x, ...)
+  as_dvec(x)
 }
 
 #' Cast to integer from dvec
@@ -61,7 +72,7 @@ vec_cast.dvec.integer <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.integer.dvec <- function(x, to, ...){
-  as.integer(x, ...)
+  as.integer(x)
 }
 
 #' Cast to dvec from double
@@ -73,7 +84,7 @@ vec_cast.integer.dvec <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.dvec.double <- function(x, to, ...){
-  as_dvec(x, ...)
+  as_dvec(x)
 }
 
 #' Cast to double from dvec
@@ -85,7 +96,7 @@ vec_cast.dvec.double <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.double.dvec <- function(x, to, ...){
-  as.double(x, ...)
+  as.double(x)
 }
 
 #' Cast to dvec from character
@@ -97,7 +108,7 @@ vec_cast.double.dvec <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.dvec.character <- function(x, to, ...){
-  as_dvec(x, ...)
+  as_dvec(x)
 }
 
 #' Cast to character from dvec
@@ -109,7 +120,7 @@ vec_cast.dvec.character <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.character.dvec <- function(x, to, ...){
-  as.character(x, ...)
+  as.character(x)
 }
 
 #' Cast to dvec from complex
@@ -121,7 +132,7 @@ vec_cast.character.dvec <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.dvec.complex <- function(x, to, ...){
-  as_dvec(x, ...)
+  as_dvec(x)
 }
 
 #' Cast to complex from dvec
@@ -133,5 +144,5 @@ vec_cast.dvec.complex <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.complex.dvec <- function(x, to, ...){
-  as.complex(x, ...)
+  as.complex(x)
 }
