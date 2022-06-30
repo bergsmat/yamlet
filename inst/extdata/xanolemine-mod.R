@@ -136,5 +136,5 @@ x %>%
   theme(aspect.ratio = 1) +
   geom_abline(aes(slope = 1, intercept = 0))
 
-x %>% io_csv('xanelomine-mod.csv')
+x %>% io_csv('xanolemine-mod.csv')
 
