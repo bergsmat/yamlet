@@ -281,7 +281,23 @@ test_that('as.integer.classified() respects yamlet_persistence',{
   )
 })
 
-
+test_that('left_join.decorated works for y; tibble, and data.frame, and decorated',{
+  x <- data.frame(
+    id = c(1,1,1,2,2,2)
+  )
+  y <- data.frame(
+    id = c(1,2),
+    sex = c(0,1)
+  )
+  x %>% left_join(y)
+  x %<>% decorate('id: subject')
+  x %>% left_join(y)
+  x %>% left_join(as_tibble(y))
+  as_tibble(x) %>% left_join(y)
+  y %<>% decorate('id: subject')
+  y %<>% decorate('sex: sex')
+  x %>% left_join(as_decorated(y))
+})
 
 
 

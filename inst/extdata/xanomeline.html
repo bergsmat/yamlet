@@ -11,7 +11,7 @@
 
 <meta name="author" content="tim.bergsma" />
 
-<meta name="date" content="2022-06-29" />
+<meta name="date" content="2022-07-01" />
 
 <title>Assemble Xanomeline Dataset</title>
 
@@ -365,7 +365,7 @@ pre code {
 
 <h1 class="title toc-ignore">Assemble Xanomeline Dataset</h1>
 <h4 class="author">tim.bergsma</h4>
-<h4 class="date">2022-06-29</h4>
+<h4 class="date">2022-07-01</h4>
 
 </div>
 
@@ -1336,7 +1336,8 @@ MDV: [ Missing Dependent Value, [ DV not missing: 0, DV missing: 1]]
 &#39;)
 
 # pc simulated in pc.R
-pc  &lt;- io_csv(&#39;pc.csv&#39;)
+pc  &lt;- &#39;pc.csv.gz&#39; %&gt;% gzfile %&gt;% read.csv(na.strings = &#39;.&#39;)
+pc %&lt;&gt;% decorate(&#39;pc.yaml&#39;)
 pc %&gt;% decorations(-SUBJID)</code></pre>
 <pre><code>## - VISIT
 ##  - label: Visit Number

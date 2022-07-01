@@ -28,7 +28,7 @@ library(metaplot)
 library(plotscale)
 
 x <- 'xanolemine-mod.csv.gz' %>% gzfile %>% read.csv(na.strings = '.')
-x %<>% decorate( read_yamlet('xanolemine-mod.yaml'))
+x %<>% decorate('xanolemine-mod.yaml')
 x %<>% filter(cp > 1)
 x %<>% ggready(parse = F)
 x %>% enumerate(DV == 0, IPRED == 0)
