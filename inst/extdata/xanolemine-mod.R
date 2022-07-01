@@ -127,14 +127,14 @@ x$IPRED[x$TIME == 0 & is.na(x$IPRED)] <- 0
 x %<>% filter(!is.na(IPRED))
 x %>% enumerate(EVID)
 x %>% head
-x %>%
-  ggready(parse = FALSE) %>% # decorations(IPRED, DV, ACTARM)
-  ggplot(aes(IPRED, DV, color = ACTARM)) + 
-  geom_point(alpha = 0.5) +
-  facet_wrap(~VISIT, ncol = 2) +
-  theme_bw() +
-  theme(aspect.ratio = 1) +
-  geom_abline(aes(slope = 1, intercept = 0))
+# x %>%
+#   ggready(parse = FALSE) %>% # decorations(IPRED, DV, ACTARM)
+#   ggplot(aes(IPRED, DV, color = ACTARM)) + 
+#   geom_point(alpha = 0.5) +
+#   facet_wrap(~VISIT, ncol = 2) +
+#   theme_bw() +
+#   theme(aspect.ratio = 1) +
+#   geom_abline(aes(slope = 1, intercept = 0))
 
 x %>% io_csv('xanolemine-mod.csv')
 

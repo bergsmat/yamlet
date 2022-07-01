@@ -10,19 +10,26 @@ NULL
 #' @param ... passed arguments
 #' @keywords internal
 #' @export
+#' @importFrom vctrs vec_data
 vec_cast.dvec.dvec <- function(x, to, ...) {
+  # https://github.com/r-lib/rlang/issues/1432
   # as_dvec(x, ...) # during join, adds x_arg, to_arg, and 'call' attributes
   # logical, integer, double, complex, character
-  at <- attributes(x) # save these
-  y <- x
-  if(is.logical(to))   y <- as.logical(x)
-  if(is.integer(to))   y <- as.integer(x)
-  if(is.double(to))    y <- as.double(x)
-  if(is.complex(to))   y <- as.complex(x)
-  if(is.character(to)) y <- as.character(x)
-  attributes(y) <- at
-  y <- as_dvec(y)
-  y
+  # at <- attributes(x) # save these
+  # y <- x
+  # if(is.logical(to))   y <- as.logical(x)
+  # if(is.integer(to))   y <- as.integer(x)
+  # if(is.double(to))    y <- as.double(x)
+  # if(is.complex(to))   y <- as.complex(x)
+  # if(is.character(to)) y <- as.character(x)
+  # attributes(y) <- at
+  # y <- as_dvec(y)
+  # y
+
+  out <- vec_cast(vec_data(x), vec_data(to), ...)
+  attributes(out) <- attributes(x)
+  as_dvec(out)
+
 }
 
 #' Cast to dvec from logical
