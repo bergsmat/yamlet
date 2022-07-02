@@ -17,7 +17,7 @@
 decorated
 }
 \description{
-Imports a documented table resolve ambiguouous guide elements.
+Imports a documented table and resolves ambiguous guide elements.
 A wrapper for \code{\link{io_csv.character}} that also
 reads associated yamlet metadata, if present, and applies it
 as attributes. Invokes \code{\link{resolve}} to resolve

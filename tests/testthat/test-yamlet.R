@@ -1421,3 +1421,14 @@ test_that('classified does not re-classify',{
     x %>% resolve(age) %>% resolve
   )
 })
+
+test_that('io_csv.character allows user to over-ride meta',{
+  # issue 3
+  expect_silent(
+    x <- io_csv(
+      system.file(package = 'yamlet','extdata/phenobarb.csv'),
+      meta = system.file(package = 'yamlet','extdata/quinidine.yaml')
+    )
+  )
+  expect_identical(NULL, attr(x$Wt, 'label'))
+})

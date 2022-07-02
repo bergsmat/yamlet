@@ -4,12 +4,14 @@
 \alias{io_csv.character}
 \title{Import Documented Table as CSV}
 \usage{
-\method{io_csv}{character}(x, ext = getOption("yamlet_extension", ".yaml"), ...)
+\method{io_csv}{character}(x, ext = getOption("yamlet_extension", ".yaml"), meta = NULL, ...)
 }
 \arguments{
 \item{x}{character file path; passed to \code{\link[csv]{as.csv.character}} (by method dispatch)}
 
 \item{ext}{extension for metadata equivalent of x}
+
+\item{meta}{explicit file path for metadata}
 
 \item{...}{passed to \code{\link[csv]{as.csv.character}} and to \code{\link{decorate}}}
 }

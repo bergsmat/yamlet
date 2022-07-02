@@ -289,14 +289,14 @@ test_that('left_join.decorated works for y; tibble, and data.frame, and decorate
     id = c(1,2),
     sex = c(0,1)
   )
-  x %>% left_join(y)
+  expect_identical(3, x %>% left_join(y) %$% sex %>% sum)
   x %<>% decorate('id: subject')
-  x %>% left_join(y)
-  x %>% left_join(as_tibble(y))
-  as_tibble(x) %>% left_join(y)
+  expect_identical(3, x %>% left_join(y) %$% sex %>% sum)
+  expect_identical(3, x %>% left_join(as_tibble(y)) %$% sex %>% sum)
+  expect_identical(3, as_tibble(x) %>% left_join(y) %$% sex %>% sum)
   y %<>% decorate('id: subject')
   y %<>% decorate('sex: sex')
-  x %>% left_join(as_decorated(y))
+  expect_identical(3, x %>% left_join(y) %$% sex %>% sum)
 })
 
 
