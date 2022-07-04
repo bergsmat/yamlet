@@ -525,21 +525,30 @@ to_yamlet.character <- function(x, block = FALSE, ...){
   # quote strings beginning with ' " [] {} > | * & ! % # ` @ ,. ? : -
   index <- grepl("^'", x)                       # starts with '
   x[index] <- paste0('"',x[index], '"')         # wrapped in "
+  
+  # leading single quote has been double-quoted
+  # test conditions for silngle quoting.
+  
+  quotable <- rep(FALSE, length(x))
+  
   index <- grepl('^[][{}>|*&!%#`@,.?:-]', x)    # starts with special
-  x[index] <- paste0("'",x[index],"'")          # wrapped in '
+  quotable[index] <- TRUE  # paste0("'",x[index],"'")
 
   # quote yes, no, y, n
   index <- x %in% c('yes','no','y','n')
-  x[index] <- paste0("'",x[index],"'")
+  quotable[index] <- TRUE 
 
   # must quote existing ][, to disambiguate
   index <- grepl('[],[]', x)                   # contains collapse meta
-  x[index] <- paste0("'",x[index],"'")         # wrapped in '
+  quotable[index] <- TRUE
 
   # leading colon trapped above
   # must quote embedded colon-space (multi-char syntactical element)
   index <- grepl(': +', x)                   # contains collapse meta
-  x[index] <- paste0("'",x[index],"'")         # wrapped in '
+  quotable[index] <- TRUE
+  
+  # implement one instance of single-quotes
+  x[quotable] <- paste0("'", x[quotable], "'")
 
   if(block){
      has_newline <- grepl('\n', x)

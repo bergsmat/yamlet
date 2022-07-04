@@ -11,7 +11,7 @@
 
 <meta name="author" content="tim.bergsma" />
 
-<meta name="date" content="2022-07-01" />
+<meta name="date" content="2022-07-04" />
 
 <title>Assemble Xanomeline Dataset</title>
 
@@ -365,7 +365,7 @@ pre code {
 
 <h1 class="title toc-ignore">Assemble Xanomeline Dataset</h1>
 <h4 class="author">tim.bergsma</h4>
-<h4 class="date">2022-07-01</h4>
+<h4 class="date">2022-07-04</h4>
 
 </div>
 
@@ -1336,8 +1336,7 @@ MDV: [ Missing Dependent Value, [ DV not missing: 0, DV missing: 1]]
 &#39;)
 
 # pc simulated in pc.R
-pc  &lt;- &#39;pc.csv.gz&#39; %&gt;% gzfile %&gt;% read.csv(na.strings = &#39;.&#39;)
-pc %&lt;&gt;% decorate(&#39;pc.yaml&#39;)
+pc  &lt;- &#39;pc.csv&#39; %&gt;% io_csv
 pc %&gt;% decorations(-SUBJID)</code></pre>
 <pre><code>## - VISIT
 ##  - label: Visit Number
@@ -1571,7 +1570,7 @@ x %&gt;% head</code></pre>
 ## [13] fansi_1.0.3         highr_0.9           pkgconfig_2.0.3    
 ## [16] data.table_1.14.2   checkmate_2.1.0     RcppParallel_5.1.5 
 ## [19] lifecycle_1.0.1     compiler_4.3.0      stringr_1.4.0      
-## [22] csv_0.6.1           munsell_0.5.0       qs_0.25.3          
+## [22] csv_0.6.2           munsell_0.5.0       qs_0.25.3          
 ## [25] htmltools_0.5.2     sys_3.4             sass_0.4.1         
 ## [28] yaml_2.3.5          pillar_1.7.0        crayon_1.5.1       
 ## [31] jquerylib_0.1.4     ellipsis_0.3.2      cachem_1.0.6       

@@ -1432,3 +1432,14 @@ test_that('io_csv.character allows user to over-ride meta',{
   )
   expect_identical(NULL, attr(x$Wt, 'label'))
 })
+
+test_that('[ can be the first character of a code or decode',{
+  # issue 2
+  x <- data.frame(range = '[min,max]')
+  expect_silent(x %<>% decorate('range: [ Range, [ "[minimum,maximum]": "[min,max]" ]]'))
+  expect_silent(decorations(x))
+  where <- tempdir()
+  x %>% io_csv(file.path(where, 'bracket.csv'))
+  y <- io_csv(file.path(where, 'bracket.csv'), source = FALSE)
+  expect_identical(x,y)
+})

@@ -163,8 +163,7 @@ MDV: [ Missing Dependent Value, [ DV not missing: 0, DV missing: 1]]
 ')
 
 # pc simulated in pc.R
-pc  <- 'pc.csv.gz' %>% gzfile %>% read.csv(na.strings = '.')
-pc %<>% decorate('pc.yaml')
+pc  <- 'pc.csv' %>% io_csv
 pc %>% decorations(-SUBJID)
 
 pc %<>% mutate(AMT = 0, MDV = 0, EVID = 0, CMT = 2)   
