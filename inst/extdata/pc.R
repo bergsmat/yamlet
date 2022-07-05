@@ -202,15 +202,15 @@ mod <- RxODE({
   d/dt(centr) =  KA*depot - kel * centr;
   cp = centr/V2 * (1 + cp.err);
 })
-mod2 <- RxODE({
-  CL = exp(TCl)*(WEIGHT/70)^0.75;
-  V2 = exp(TV2) *(WEIGHT/70);
-  KA = exp(TKA)
-  kel = CL/V2;
-  d/dt(depot) = -KA*depot;
-  d/dt(centr) =  KA*depot - kel * centr;
-  cp = centr/V2 * (1 + cp.err);
-})
+# mod2 <- RxODE({
+#   CL = exp(TCl)*(WEIGHT/70)^0.75;
+#   V2 = exp(TV2) *(WEIGHT/70);
+#   KA = exp(TKA)
+#   kel = CL/V2;
+#   d/dt(depot) = -KA*depot;
+#   d/dt(centr) =  KA*depot - kel * centr;
+#   cp = centr/V2 * (1 + cp.err);
+# })
 
 theta <- c(TKA=log(2.3), TCl=log(187), TV2=log(5380))  # central 
 
@@ -220,35 +220,35 @@ sigma <- lotri(cp.err ~ .01)
 set.seed(0)
 ipred  <- rxSolve(mod, theta, x%>% rename(ID=SUBJID), omega=omega, sigma=sigma)
 ipred %>% ggplot(aes(time, cp)) + geom_point()
-set.seed(0)
-pred  <- rxSolve(mod2, theta, x%>% rename(ID=SUBJID), omega=omega, sigma=sigma)
-pred %>% ggplot(aes(time, cp)) + geom_point()
+# set.seed(0)
+# pred  <- rxSolve(mod2, theta, x%>% rename(ID=SUBJID), omega=omega, sigma=sigma)
+# pred %>% ggplot(aes(time, cp)) + geom_point()
 
 
 x %<>% safe_join(ipred %>% select(SUBJID = id, TIME = time, IPRED = cp)) 
-x %<>% safe_join(pred %>% select(SUBJID = id, TIME = time, PRED = cp)) 
+# x %<>% safe_join(pred %>% select(SUBJID = id, TIME = time, PRED = cp)) 
 
 
 x %>% head
 x %>% decorations(-SUBJID)
-x %<>% decorate('
-IPRED: [Individual Prediction, ng/mL]
-PRED: [Population Prediction, ng/mL]
-')
+# x %<>% decorate('
+# IPRED: [Individual Prediction, ng/mL]
+# PRED: [Population Prediction, ng/mL]
+# ')
 
-x %>% 
-  ggready %>%
-  ggplot(aes(PRED, IPRED, color = ACTARM)) + 
-  geom_point()
+# x %>% 
+#   ggready %>%
+#   ggplot(aes(PRED, IPRED, color = ACTARM)) + 
+#   geom_point()
+# 
 
-
-x %>% 
-  filter(ACTARM > 0) %>%
-  ggready %>%
-  ggplot(aes(TAD, IPRED, color = SUBJID)) + 
-  geom_line() +
-  theme(legend.position = 'none') +
-  facet_wrap(~VISIT)
+# x %>% 
+#   filter(ACTARM > 0) %>%
+#   ggready %>%
+#   ggplot(aes(TAD, IPRED, color = SUBJID)) + 
+#   geom_line() +
+#   theme(legend.position = 'none') +
+#   facet_wrap(~VISIT)
 
 x %>% head
 pc <- x %>% 

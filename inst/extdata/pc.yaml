@@ -2,4 +2,4 @@ SUBJID: [ Subject Identifier for the Study, [ 01-709-1001: 1001, 01-710-1002: 10
 VISIT: [ Visit Number, [ BASELINE: 3, WEEK 2: 4, WEEK 24: 12 ]]
 TIME: [ Time, h ]
 TAD: [ Time After Dose, h ]
-DV: [ Xanomeline Plasma Concentration, ng/mL ]
+DV: Xanomeline Plasma Concentration
