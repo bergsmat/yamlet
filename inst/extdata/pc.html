@@ -1670,8 +1670,8 @@ x %&gt;% head</code></pre>
 ## #   IPRED &lt;dbl&gt;</code></pre>
 <pre class="r"><code>pc &lt;- x %&gt;% 
   filter(EVID == 0) %&gt;%
-  select(SUBJID, VISIT, TIME, TAD, DV = IPRED) 
-pc$DV %&lt;&gt;% as_dvec(label = &#39;Xanomeline Plasma Concentration&#39;)
+  select(SUBJID, VISIT, TIME, TAD, DV = IPRED)
+pc$DV %&lt;&gt;% as_dvec(label = &#39;Xanomeline Plasma Concentration&#39;, guide = &#39;ng/mL&#39;)
 pc$DV %&lt;&gt;% signif(4)
 
 

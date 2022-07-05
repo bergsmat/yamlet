@@ -253,8 +253,8 @@ x %>% decorations(-SUBJID)
 x %>% head
 pc <- x %>% 
   filter(EVID == 0) %>%
-  select(SUBJID, VISIT, TIME, TAD, DV = IPRED) 
-pc$DV %<>% as_dvec(label = 'Xanomeline Plasma Concentration')
+  select(SUBJID, VISIT, TIME, TAD, DV = IPRED)
+pc$DV %<>% as_dvec(label = 'Xanomeline Plasma Concentration', guide = 'ng/mL')
 pc$DV %<>% signif(4)
 
 
