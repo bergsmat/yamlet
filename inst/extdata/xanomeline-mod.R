@@ -1,5 +1,5 @@
 #' ---
-#' title:  Integrate Xanelomine Analysis Dataset with Model Output
+#' title:  Integrate Xanomeline Analysis Dataset with Model Output
 #' output: html_document
 #' theme: united
 #' highlight: tango
@@ -16,8 +16,11 @@ library(yamlet)
 library(datetime)
 library(csv)
 
-x <- 'xanomeline.csv.gz' %>% gzfile %>% read.csv(na.strings = '.')
-x %<>% decorate('xanomeline.yaml')
+file <- gzfile('xanomeline.csv.gz')
+file %>% readLines %>% writeLines('xanomeline.csv')
+x <- io_csv('xanomeline.csv')
+close(file)
+unlink('xanomeline.csv')
 x %>% head
 x %<>% rename(ID = SUBJID)
 x %>% decorations(-ID)
@@ -136,5 +139,13 @@ x %>% head
 #   theme(aspect.ratio = 1) +
 #   geom_abline(aes(slope = 1, intercept = 0))
 
-x %>% io_csv('xanolemine-mod.csv')
+x %>% io_csv('xanomeline-mod.csv')
+file <- 'xanomeline-mod.csv.gz'
+unlink(file)
+file %<>% gzfile
+'xanomeline-mod.csv' %>% readLines %>% writeLines(file)
+close(file)
+unlink('xanomeline-mod.csv')
+
+sessionInfo()
 

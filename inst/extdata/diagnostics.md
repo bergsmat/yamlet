@@ -1,7 +1,7 @@
 ---
-title:  Xanelomine Model Diagnostic Plots
+title:  Xanomeline Model Diagnostic Plots
 author: Tim Bergsma
-date: "01 July, 2022"
+date: "05 July, 2022"
 output:
   powerpoint_presentation:
     toc: FALSE

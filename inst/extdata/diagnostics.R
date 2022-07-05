@@ -1,5 +1,5 @@
 #' ---
-#' title:  Xanelomine Model Diagnostic Plots
+#' title:  Xanomeline Model Diagnostic Plots
 #' author: Tim Bergsma
 #' date: "`r format(Sys.time(), '%d %B, %Y')`"
 #' output:
@@ -27,8 +27,12 @@ library(yamlet)
 library(metaplot)
 library(plotscale)
 
-x <- 'xanolemine-mod.csv.gz' %>% gzfile %>% read.csv(na.strings = '.')
-x %<>% decorate('xanolemine-mod.yaml')
+file <- gzfile('xanomeline-mod.csv.gz')
+file %>% readLines %>% writeLines('xanomeline-mod.csv')
+x <- io_csv('xanomeline-mod.csv')
+close(file)
+unlink('xanomeline-mod.csv')
+
 x %<>% filter(cp > 1)
 x %<>% ggready(parse = F)
 x %>% enumerate(DV == 0, IPRED == 0)

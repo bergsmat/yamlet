@@ -11,7 +11,7 @@
 
 <meta name="author" content="tim.bergsma" />
 
-<meta name="date" content="2022-07-04" />
+<meta name="date" content="2022-07-05" />
 
 <title>Assemble Xanomeline Dataset</title>
 
@@ -365,7 +365,7 @@ pre code {
 
 <h1 class="title toc-ignore">Assemble Xanomeline Dataset</h1>
 <h4 class="author">tim.bergsma</h4>
-<h4 class="date">2022-07-04</h4>
+<h4 class="date">2022-07-05</h4>
 
 </div>
 
@@ -1471,6 +1471,14 @@ x %&gt;% group_by(SUBJID, TIME, EVID) %&gt;% status</code></pre>
 ## duplicates: 0
 ## unsorted: 0</code></pre>
 <pre class="r"><code>x %&gt;% io_csv(&#39;xanomeline.csv&#39;)
+file &lt;- &#39;xanomeline.csv.gz&#39;
+unlink(file)
+file %&lt;&gt;% gzfile
+&#39;xanomeline.csv&#39; %&gt;% readLines %&gt;% writeLines(file)
+close(file)
+unlink(&#39;xanomeline.csv&#39;)
+
+
 x %&gt;% head</code></pre>
 <pre><code>##   SUBJID ACTARM VISIT TIME TAD EVID CMT AMT DV MDV AGE SEX RACE HEIGHT WEIGHT
 ## 1   1001      0     3    0   0    0   2   0  0   1  76   0    0 170.18  73.03

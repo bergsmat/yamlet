@@ -11,9 +11,9 @@
 
 <meta name="author" content="tim.bergsma" />
 
-<meta name="date" content="2022-07-01" />
+<meta name="date" content="2022-07-05" />
 
-<title>Integrate Xanelomine Analysis Dataset with Model Output</title>
+<title>Integrate Xanomeline Analysis Dataset with Model Output</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -363,10 +363,10 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">Integrate Xanelomine Analysis Dataset with
+<h1 class="title toc-ignore">Integrate Xanomeline Analysis Dataset with
 Model Output</h1>
 <h4 class="author">tim.bergsma</h4>
-<h4 class="date">2022-07-01</h4>
+<h4 class="date">2022-07-05</h4>
 
 </div>
 
@@ -403,8 +403,11 @@ library(yamlet)</code></pre>
 <pre class="r"><code>library(datetime)
 library(csv)
 
-x &lt;- &#39;xanomeline.csv.gz&#39; %&gt;% gzfile %&gt;% read.csv(na.strings = &#39;.&#39;)
-x %&lt;&gt;% decorate(&#39;xanomeline.yaml&#39;)
+file &lt;- gzfile(&#39;xanomeline.csv.gz&#39;)
+file %&gt;% readLines %&gt;% writeLines(&#39;xanomeline.csv&#39;)
+x &lt;- io_csv(&#39;xanomeline.csv&#39;)
+close(file)
+unlink(&#39;xanomeline.csv&#39;)
 x %&gt;% head</code></pre>
 <pre><code>##   SUBJID ACTARM VISIT TIME TAD EVID CMT AMT DV MDV AGE SEX RACE HEIGHT WEIGHT
 ## 1   1001      0     3    0   0    0   2   0  0   1  76   0    0 170.18  73.03
@@ -815,7 +818,59 @@ x %&gt;% enumerate(EVID)</code></pre>
 #   theme(aspect.ratio = 1) +
 #   geom_abline(aes(slope = 1, intercept = 0))
 
-x %&gt;% io_csv(&#39;xanolemine-mod.csv&#39;)</code></pre>
+x %&gt;% io_csv(&#39;xanomeline-mod.csv&#39;)
+file &lt;- &#39;xanomeline-mod.csv.gz&#39;
+unlink(file)
+file %&lt;&gt;% gzfile
+&#39;xanomeline-mod.csv&#39; %&gt;% readLines %&gt;% writeLines(file)
+close(file)
+unlink(&#39;xanomeline-mod.csv&#39;)
+
+sessionInfo()</code></pre>
+<pre><code>## R Under development (unstable) (2022-06-15 r82492 ucrt)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 10 x64 (build 19044)
+## 
+## Matrix products: default
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.utf8 
+## [2] LC_CTYPE=English_United States.utf8   
+## [3] LC_MONETARY=English_United States.utf8
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.utf8    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] csv_0.6.2      datetime_0.1.4 yamlet_0.9.0   nlmixr_2.0.7   ggplot2_3.3.6 
+##  [6] wrangle_0.5.7  tidyr_1.2.0    dplyr_1.0.9    magrittr_2.0.3 haven_2.5.0   
+## 
+## loaded via a namespace (and not attached):
+##  [1] gtable_0.3.0        n1qn1_6.0.1-10      xfun_0.31          
+##  [4] bslib_0.3.1         RApiSerialize_0.1.0 lattice_0.20-45    
+##  [7] vctrs_0.4.1         tools_4.3.0         generics_0.1.2     
+## [10] parallel_4.3.0      tibble_3.1.7        fansi_1.0.3        
+## [13] highr_0.9           pkgconfig_2.0.3     data.table_1.14.2  
+## [16] checkmate_2.1.0     RcppParallel_5.1.5  lifecycle_1.0.1    
+## [19] compiler_4.3.0      stringr_1.4.0       munsell_0.5.0      
+## [22] qs_0.25.3           htmltools_0.5.2     sys_3.4            
+## [25] sass_0.4.1          yaml_2.3.5          pillar_1.7.0       
+## [28] crayon_1.5.1        jquerylib_0.1.4     ellipsis_0.3.2     
+## [31] cachem_1.0.6        nlme_3.1-157        brew_1.0-7         
+## [34] tidyselect_1.1.2    digest_0.6.29       lotri_0.4.2        
+## [37] stringi_1.7.6       purrr_0.3.4         forcats_0.5.1      
+## [40] fastmap_1.1.0       grid_4.3.0          colorspace_2.0-3   
+## [43] cli_3.3.0           RxODE_1.1.5         latexpdf_0.1.7     
+## [46] utf8_1.2.2          withr_2.5.0         scales_1.2.0       
+## [49] backports_1.4.1     rmarkdown_2.14      png_0.1-7          
+## [52] hms_1.1.1           stringfish_0.15.7   memoise_2.0.1      
+## [55] evaluate_0.15       knitr_1.39          spork_0.2.2        
+## [58] PreciseSums_0.5     rlang_1.0.2         Rcpp_1.0.8.3       
+## [61] xtable_1.8-4        encode_0.3.6        glue_1.6.2         
+## [64] lbfgsb3c_2020-3.2   rstudioapi_0.13     jsonlite_1.8.0     
+## [67] R6_2.5.1            units_0.8-0</code></pre>
 
 
 
