@@ -42,11 +42,11 @@ A wrapper for \code{\link[csv]{as.csv.data.frame}}.
 }
 \details{
 You should be able to supply exactly the connections you want for 
-\code{file} (the data file) and \code{con} (the metadata file)
+\code{file} (the data file) and \code{meta} (the metadata file)
 if \code{gz} is FALSE. If \code{gz} is NULL, it will be 
 guessed from file (TRUE for character ending with '.gz' or '.GZ').
 If TRUE, character \code{file} will have '.gz' extension enforced,
-but any '.gz' ('.GZ') will be stripped when calculating \code{con}.
+but any '.gz' ('.GZ') will be stripped when calculating \code{meta}.
 }
 \examples{
 example(io_csv)

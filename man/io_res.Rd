@@ -17,7 +17,7 @@ See methods.
 \description{
 Inter-converts between tables as comma-separated variable 
 and fully resolved data frames.
-Generic, with character and data.frame methods that extend \code{\link{io_csv}}
+Generic, with character and data.frame methods that extend \code{\link{io_csv}}.
 }
 \examples{
 example(io_res.character)
