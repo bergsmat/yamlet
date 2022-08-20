@@ -78,7 +78,7 @@ io_table.character <- function(
 #' @param ext = extension for metadata equivalent of x
 # @ 0.6.1, dropping coerce (passed to io_yamlet, which does not implement)
 # @param coerce logical; whether to coerce factor levels to guide; alternatively, a key for the levels
-#' @param con passed to \code{\link{io_yamlet}}
+#' @param meta passed as \code{con} to \code{\link{io_yamlet}}
 #' @param useBytes passed to \code{\link{io_yamlet}}
 #' @param default_keys passed to \code{\link{io_yamlet}}
 #' @param ... passed to \code{\link{write.table}} (if accepted) and to \code{\link{io_yamlet}}
@@ -94,7 +94,7 @@ io_table.data.frame <- function(
   file = '',
   ext = getOption('yamlet_extension', '.yaml'),
   # coerce = getOption("yamlet_coerce_decorations", FALSE),
-  con = stdout(),
+  meta = stdout(),
   useBytes = FALSE,
   default_keys = getOption(
     'yamlet_default_keys',
@@ -108,13 +108,13 @@ io_table.data.frame <- function(
   do.call(utils::write.table, args)
   if(is.character(file)){
     if(file != ''){
-      con <- sub('\\.[^.]*$','',file) # remove last dot and any trailing chars
-      con <- paste0(con, ext)
+      meta <- sub('\\.[^.]*$','',file) # remove last dot and any trailing chars
+      meta <- paste0(meta, ext)
     }
   }
   io_yamlet(
     x,
-    con = con,
+    con = meta,
     useBytes = useBytes,
     default_keys = default_keys,
    # coerce = coerce,

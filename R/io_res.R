@@ -1,7 +1,8 @@
-#' Import Resolved Tables
+#' Import and Export Resolved Tables
 #'
-#' Imports tables as comma-separated variable and resolves ambiguous guide elements.
-#' Generic, with character method that extends \code{\link{io_csv}}.
+#' Inter-converts between tables as comma-separated variable 
+#' and fully resolved data frames.
+#' Generic, with character and data.frame methods that extend \code{\link{io_csv}}.
 
 #' @param x object
 #' @param ... passed arguments
@@ -44,6 +45,42 @@ io_res.character <- function(
   ...
 ){
   d <- io_csv(x = x, ext = ext, ...)
-  d<- resolve(d)
+  d <- resolve(d)
   d
+}
+
+
+#' Export Resolved Table
+#'
+#' Exports a documented table. "Desolves" attributes
+#' to standard form, then writes data and metadata to storage.
+#' A short-cut for \code{(io_csv(desolve(x))}.
+#'
+#' @param x decorated; passed to \code{\link{io_csv.data.frame}}
+#' @param file passed to \code{\link{io_csv.data.frame}}
+#' @param ... passed to \code{\link{io_csv.character}} and \code{\link{desolve.decorated}}
+#' @export
+#' @keywords internal
+#' @family io
+#' @family interface
+#' @return decorated (invisible)
+#' @examples
+#' library(magrittr)
+#' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+#' x <- io_res(file)
+#' tmp <- tempfile(fileext = '.csv')
+#' io_res(x, tmp)
+#' a <- io_csv(tmp, source = FALSE)
+#' b <- io_csv(file, source = FALSE)
+#' stopifnot(identical(a, b))
+
+
+io_res.decorated <- function(
+    x,
+    file = '',
+    ...
+){
+  d <- desolve(x, ...)
+  d <- io_csv(d, file = file, ...)
+  invisible(d)
 }

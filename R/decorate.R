@@ -134,7 +134,7 @@ decorate.character <- function(
   if(is.character(meta) & length(meta) == 1){
     meta <- try(as_yamlet(meta,...))
   }
-  if(class(meta) != 'yamlet') stop('could not interpret meta: ', meta)
+  if(!inherits(meta, 'yamlet')) stop('could not interpret meta: ', meta)
   decorate(
     y,
     meta = meta,
@@ -186,7 +186,7 @@ decorate.list <- function(
     meta <- paste0(meta, ext)
     meta <- try(as_yamlet(meta, ...))
   }
-  if(class(meta) != 'yamlet') stop('could not interpret meta: ', meta)
+  if(!inherits(meta, 'yamlet')) stop('could not interpret meta: ', meta)
 
   for(item in names(x)){ # if list has no names, nothing happens
     if(item %in% names(meta)){ # if list has names, name '' should not be reached
