@@ -191,16 +191,10 @@ x$MDV[x$DV <= 0] <- 1
 x %<>% arrange(SUBJID, TIME, EVID)
 x %>% group_by(SUBJID, TIME, EVID) %>% status
 
-x %>% io_csv('xanomeline.csv')
-file <- 'xanomeline.csv.gz'
-unlink(file)
-file %<>% gzfile
-'xanomeline.csv' %>% readLines %>% writeLines(file)
-close(file)
-unlink('xanomeline.csv')
-
+x %>% io_csv('xanomeline.csv', gz = TRUE)
 
 x %>% head
 x %>% decorations(-SUBJID)
 
 sessionInfo()
+
