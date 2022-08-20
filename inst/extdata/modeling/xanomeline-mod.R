@@ -16,11 +16,7 @@ library(yamlet)
 library(datetime)
 library(csv)
 
-file <- gzfile('xanomeline.csv.gz')
-file %>% readLines %>% writeLines('xanomeline.csv')
-x <- io_csv('xanomeline.csv')
-close(file)
-unlink('xanomeline.csv')
+x <- io_csv('../xanomeline.csv', gz = TRUE)
 x %>% head
 x %<>% rename(ID = SUBJID)
 x %>% decorations(-ID)
@@ -109,9 +105,8 @@ set.seed(0)
 # tad: [Time Since Most Recent Dose, h]
 # dosenum: Dose Number
 # ')
-# mod %>% io_csv('mod.csv')
-mod <- 'mod.csv.gz' %>% gzfile %>% read.csv(na.strings = '.')
-mod %<>% decorate('mod.yaml')
+# mod %>% io_csv('mod.csv', gz = TRUE)
+mod <- io_csv('mod.csv', gz = TRUE)
 head(x)
 head(mod)
 intersect(names(mod), names(x))
@@ -139,13 +134,7 @@ x %>% head
 #   theme(aspect.ratio = 1) +
 #   geom_abline(aes(slope = 1, intercept = 0))
 
-x %>% io_csv('xanomeline-mod.csv')
-file <- 'xanomeline-mod.csv.gz'
-unlink(file)
-file %<>% gzfile
-'xanomeline-mod.csv' %>% readLines %>% writeLines(file)
-close(file)
-unlink('xanomeline-mod.csv')
+x %>% io_csv('xanomeline-mod.csv', gz = TRUE)
 
 sessionInfo()
 

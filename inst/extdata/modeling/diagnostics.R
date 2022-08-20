@@ -27,11 +27,7 @@ library(yamlet)
 library(metaplot)
 library(plotscale)
 
-file <- gzfile('xanomeline-mod.csv.gz')
-file %>% readLines %>% writeLines('xanomeline-mod.csv')
-x <- io_csv('xanomeline-mod.csv')
-close(file)
-unlink('xanomeline-mod.csv')
+x <- io_csv('xanomeline-mod.csv', gz = TRUE)
 
 x %<>% filter(cp > 1)
 x %<>% ggready(parse = F)
@@ -137,21 +133,23 @@ trendpair <- function(
 #+ DV-IPRED-ACTARM-VISIT, fig.width = 9.69, fig.height = 4.3, fig.cap = 'DV-IPRED-ACTARM-VISIT.png'
 #(
   x %>%
-  ggplot(aes(IPRED, DV, color = ACTARM)) + 
-  geom_point(alpha = 0.5) +
-  facet_wrap(~VISIT, ncol = 3) +
+  ggplot(aes(IPRED, DV, color = ACTARM, pch = ACTARM)) + 
+    geom_point(alpha = .5, size = 1.5) +
+   # geom_point(alpha = .2, size = 2) +
+    scale_shape_manual(values = c(1,3))+
+    facet_wrap(~VISIT, ncol = 3) +
   theme_bw() +
   theme(aspect.ratio = 1, legend.position = 'top', legend.title = element_blank()) +
   geom_abline(aes(slope = 1, intercept = 0))
   #) %>% devsize(3,3,verbose = T)
 #'
-#' ## DV vs IPRED
+#' ## Observations vs. Individual Predictions
 #' 
-#+ DV-IPRED, fig.width = 3.65, fig.height = 3.52, fig.cap = "x %>% isoplot(DV, PRED)"
+#+ DV-PRED, fig.width = 3.65, fig.height = 3.52, fig.cap = "x %>% isoplot(DV, PRED)"
 x %>% isoplot(DV, PRED)
 #'
-#' ## DV vs IPRED log-log
-#+ DV-IPRED-LOG, fig.width = 3.65, fig.height = 3.52, fig.cap = "x %>% isoplot(DV, PRED, trans = 'log10')"
+#' ## DV vs PRED log-log
+#+ DV-PRED-LOG, fig.width = 3.65, fig.height = 3.52, fig.cap = "x %>% isoplot(DV, PRED, trans = 'log10')"
 x %>% isoplot(DV, PRED, trans = 'log10')
 #'
 #' ## DV vs PRED and IPRED

@@ -1,7 +1,7 @@
 ---
 title:  Xanomeline Model Diagnostic Plots
 author: Tim Bergsma
-date: "05 July, 2022"
+date: "20 August, 2022"
 output:
   powerpoint_presentation:
     toc: FALSE
@@ -23,15 +23,15 @@ output:
 ![DV-IPRED-ACTARM-VISIT.png](diagnostics_files/figure-pptx/DV-IPRED-ACTARM-VISIT-1.png)
 
 
-## DV vs IPRED
+## Observations vs. Individual Predictions
 
 
-![x %>% isoplot(DV, PRED)](diagnostics_files/figure-pptx/DV-IPRED-1.png)
+![x %>% isoplot(DV, PRED)](diagnostics_files/figure-pptx/DV-PRED-1.png)
 
 
-## DV vs IPRED log-log
+## DV vs PRED log-log
 
-![x %>% isoplot(DV, PRED, trans = 'log10')](diagnostics_files/figure-pptx/DV-IPRED-LOG-1.png)
+![x %>% isoplot(DV, PRED, trans = 'log10')](diagnostics_files/figure-pptx/DV-PRED-LOG-1.png)
 
 
 ## DV vs PRED and IPRED
