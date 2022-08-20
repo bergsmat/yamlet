@@ -2,7 +2,7 @@
 % Please edit documentation in R/io_res.R
 \name{io_res}
 \alias{io_res}
-\title{Import Resolved Tables}
+\title{Import and Export Resolved Tables}
 \usage{
 io_res(x, ...)
 }
@@ -15,8 +15,9 @@ io_res(x, ...)
 See methods.
 }
 \description{
-Imports tables as comma-separated variable and resolves ambiguous guide elements.
-Generic, with character method that extends \code{\link{io_csv}}.
+Inter-converts between tables as comma-separated variable 
+and fully resolved data frames.
+Generic, with character and data.frame methods that extend \code{\link{io_csv}}
 }
 \examples{
 example(io_res.character)
@@ -27,6 +28,7 @@ Other io:
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},
 \code{\link{io_res.character}()},
+\code{\link{io_res.decorated}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
 \code{\link{io_table}()},

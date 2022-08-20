@@ -8,7 +8,7 @@
   x,
   file = "",
   ext = getOption("yamlet_extension", ".yaml"),
-  con = stdout(),
+  meta = stdout(),
   useBytes = FALSE,
   default_keys = getOption("yamlet_default_keys", list("label", "guide")),
   ...
@@ -21,7 +21,7 @@
 
 \item{ext}{= extension for metadata equivalent of x}
 
-\item{con}{passed to \code{\link{io_yamlet}}}
+\item{meta}{passed as \code{con} to \code{\link{io_yamlet}}}
 
 \item{useBytes}{passed to \code{\link{io_yamlet}}}
 
@@ -45,6 +45,7 @@ Other io:
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_csv}()},
 \code{\link{io_res.character}()},
+\code{\link{io_res.decorated}()},
 \code{\link{io_res}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table}()},
@@ -64,6 +65,7 @@ Other interface:
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_res.character}()},
+\code{\link{io_res.decorated}()},
 \code{\link{io_table.character}()},
 \code{\link{io_yamlet.character}()},
 \code{\link{io_yamlet.data.frame}()},

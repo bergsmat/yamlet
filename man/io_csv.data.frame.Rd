@@ -8,7 +8,8 @@
   x,
   file = "",
   ext = getOption("yamlet_extension", ".yaml"),
-  con = stdout(),
+  meta = stdout(),
+  gz = NULL,
   useBytes = FALSE,
   default_keys = getOption("yamlet_default_keys", list("label", "guide")),
   ...
@@ -21,7 +22,9 @@
 
 \item{ext}{= extension for metadata equivalent of x}
 
-\item{con}{passed to \code{\link{io_yamlet}}}
+\item{meta}{passed as \code{con} to \code{\link{io_yamlet}}}
+
+\item{gz}{logical; guessed by default from \code{x}; if TRUE, '.gz' extension enforced present for (character) \code{file} and absent for default \code{meta}}
 
 \item{useBytes}{passed to \code{\link{io_yamlet}}}
 
@@ -37,14 +40,23 @@ Exports a data.frame as comma-separated variable,
 as well as a yamlet version of its decorations.
 A wrapper for \code{\link[csv]{as.csv.data.frame}}.
 }
+\details{
+You should be able to supply exactly the connections you want for 
+\code{file} (the data file) and \code{con} (the metadata file)
+if \code{gz} is FALSE. If \code{gz} is NULL, it will be 
+guessed from file (TRUE for character ending with '.gz' or '.GZ').
+If TRUE, character \code{file} will have '.gz' extension enforced,
+but any '.gz' ('.GZ') will be stripped when calculating \code{con}.
+}
 \examples{
-example(io_table)
+example(io_csv)
 }
 \seealso{
 Other io: 
 \code{\link{io_csv.character}()},
 \code{\link{io_csv}()},
 \code{\link{io_res.character}()},
+\code{\link{io_res.decorated}()},
 \code{\link{io_res}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
@@ -64,6 +76,7 @@ Other interface:
 \code{\link{ggplot.decorated}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_res.character}()},
+\code{\link{io_res.decorated}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
 \code{\link{io_yamlet.character}()},

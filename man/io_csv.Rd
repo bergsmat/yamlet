@@ -34,6 +34,7 @@ Other io:
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_res.character}()},
+\code{\link{io_res.decorated}()},
 \code{\link{io_res}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
