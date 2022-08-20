@@ -815,6 +815,14 @@ x %>% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
 
 # ggready handles the units and plotmath implicitly for a 'standard' display:
 x %>% ggready %>% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
+})
+
+test_that('ggplot.resolved is stable',{
+skip_if_not( l10n_info()$`UTF-8` )
+skip_if(
+  .Platform$OS.type == "unix" && Encoding(enc2native("\U00B5")) != "UTF-8",
+  "Skipping non-ASCII tests on UTF-8 Unix system"
+)
 
 # Here we try a dataset with conditional labels and units.
 file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
