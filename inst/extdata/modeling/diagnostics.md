@@ -1,7 +1,7 @@
 ---
 title:  Xanomeline Model Diagnostic Plots
 author: Tim Bergsma
-date: "22 August, 2022"
+date: "23 August, 2022"
 output:
   powerpoint_presentation:
     toc: FALSE
@@ -12,6 +12,10 @@ output:
 editor_options: 
   chunk_output_type: console
 ---
+
+
+
+
 
 
 
@@ -47,11 +51,11 @@ editor_options:
 
 ## Individual Weighted Residuals vs Time
 
-![x %>% trendplot(IWRES, TIME)](diagnostics_files/figure-pptx/IWRES-TIME-1.png)
+![x %>% trendplot(IWRES, TIME) + symmetric()](diagnostics_files/figure-pptx/IWRES-TIME-1.png)
 
 ## Individual Weighted Residuals vs Time, Untransformed and Log-log
 
-![x %>% trendpair(IWRES, TIME, IWRES, TIME, trans2 = c('identity', 'log10'))](diagnostics_files/figure-pptx/IWRES-TIME-IWRES-TIME-untrans-log-1.png)
+![x %>% trendpair(IWRES, TIME, IWRES, TIME, trans2 = c('identity', 'log10'), symmetric = TRUE)](diagnostics_files/figure-pptx/IWRES-TIME-IWRES-TIME-untrans-log-1.png)
 
 ## Individual Weighted Residuals vs Time, Full Grid vs Horizontal Grid
 
@@ -68,3 +72,8 @@ editor_options:
 ## Individual Plots -- Detailed Panel Strip
 
 ![](diagnostics_files/figure-pptx/individuals-detail-1.png)<!-- -->
+
+
+
+
+
