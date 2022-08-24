@@ -24,7 +24,7 @@ is invoked; see \code{\link{print.decorated_ggplot}}.
 \details{
 This approach is similar to but more flexible than
 the method for \code{\link{ggready}}.
-For finer control, you can switch between 'data.frame'
+For fine control, you can switch between 'data.frame'
 and 'decorated' using \code{\link{as_decorated}}
 (supplies null decorations) and \code{\link{as.data.frame}}
 (preserves decorations).
@@ -44,15 +44,26 @@ class(x)
 class(data.frame(x))
 class(as_decorated(data.frame(x)))
 
-# The bare data.frame gives boring labels and unordered groups.
+# The bare data.frame gives boring labels and un-ordered groups.
 map <- aes(x = time, y = conc, color = Heart)
 data.frame(x) \%>\% ggplot(map) + geom_point()
 
 # Decorated data.frame uses supplied labels.
-# Notice CHF levels are still not ordered.
+# Notice CHF levels are still not ordered. (Moderate first.)
 x \%>\% ggplot(map) + geom_point()
 
-# We can resolve guide for a chance to enrich the output with units.
+# If we resolve Heart, CHF levels are ordered.
+x \%<>\% resolve(Heart)
+x \%>\% ggplot(map) + geom_point()
+
+# We can map aesthetics as decorations.
+x \%<>\% decorate('Heart: [ color: [gold, purple, green]]')
+x \%>\% ggplot(map) + geom_point()
+
+# Colors are matched to particular levels. Purple drops out here:
+x \%>\% filter(Heart != 'Moderate') \%>\% ggplot(map) + geom_point()
+
+# We can resolve other columns for a chance to enrich the output with units.
 # Notice CHF levels are now ordered.
 x \%<>\% resolve
 suppressWarnings( # because this complains for columns with no units

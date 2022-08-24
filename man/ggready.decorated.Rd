@@ -16,7 +16,7 @@
 \item{resolve}{whether to resolve guide attributes}
 }
 \value{
-ggready
+ggready decorated
 }
 \description{
 Prepares decorated data.frame for ggplot. Calls
@@ -31,11 +31,8 @@ example(ggready)
 }
 \seealso{
 Other ggready: 
-\code{\link{ggplot.ggready}()},
-\code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.data.frame}()},
-\code{\link{ggready}()},
-\code{\link{print.ggready_ggplot}()}
+\code{\link{ggready}()}
 }
 \concept{ggready}
 \keyword{internal}

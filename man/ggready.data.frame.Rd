@@ -14,25 +14,22 @@
 \item{parse}{passed to \code{\link{append_units}}}
 }
 \value{
-ggready
+ggready decorated
 }
 \description{
 Prepares data.frame for ggplot. Appends
 units to label using \code{\link{append_units}}
 (passing \code{style = 'plotmath'} if \code{parse}
 is true, else \code{style = 'plain'}).
-Enforces class 'ggready'.
+Enforces classes 'decorated' and 'ggready'.
 }
 \examples{
 example(ggready)
 }
 \seealso{
 Other ggready: 
-\code{\link{ggplot.ggready}()},
-\code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.decorated}()},
-\code{\link{ggready}()},
-\code{\link{print.ggready_ggplot}()}
+\code{\link{ggready}()}
 }
 \concept{ggready}
 \keyword{internal}

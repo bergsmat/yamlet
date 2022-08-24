@@ -41,29 +41,26 @@ file \%>\%
  ggplot(aes(x = time, y = conc, color = Heart)) +
  geom_point()
 
-# By default ggready resolves everything decorated.
+# By default ggready resolves everything that is decorated.
 # But we can intervene to resolve selectively,
 # And further intervene to 'ggready' selectively.
 #
 x <- file \%>\% decorate \%>\% filter(!is.na(conc))
 x \%>\%
 resolve(conc, time) \%>\%   # Heart left unresolved!
-ggready(conc, Heart) \%>\%  # time left unreadied!
+ggready(conc, Heart, resolve = FALSE) \%>\%  # time left unreadied!
 ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 
 # Still, all the labels were actually expressions:
 x \%>\%
 resolve(conc, time) \%>\%
-ggready(conc, Heart) \%>\%
+ggready(conc, Heart, resolve = FALSE) \%>\%
 decorations(conc, time, Heart)
 }
 \seealso{
 Other ggready: 
-\code{\link{ggplot.ggready}()},
-\code{\link{ggplot_build.ggready_ggplot}()},
 \code{\link{ggready.data.frame}()},
-\code{\link{ggready.decorated}()},
-\code{\link{print.ggready_ggplot}()}
+\code{\link{ggready.decorated}()}
 }
 \concept{ggready}
 \keyword{internal}

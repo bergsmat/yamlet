@@ -31,20 +31,20 @@
 #'  ggplot(aes(x = time, y = conc, color = Heart)) +
 #'  geom_point()
 #'
-#' # By default ggready resolves everything decorated.
+#' # By default ggready resolves everything that is decorated.
 #' # But we can intervene to resolve selectively,
 #' # And further intervene to 'ggready' selectively.
 #' #
 #' x <- file %>% decorate %>% filter(!is.na(conc))
 #' x %>%
 #' resolve(conc, time) %>%   # Heart left unresolved!
-#' ggready(conc, Heart) %>%  # time left unreadied!
+#' ggready(conc, Heart, resolve = FALSE) %>%  # time left unreadied!
 #' ggplot(aes(x = time, y = conc, color = Heart)) + geom_point()
 #'
 #' # Still, all the labels were actually expressions:
 #' x %>%
 #' resolve(conc, time) %>%
-#' ggready(conc, Heart) %>%
+#' ggready(conc, Heart, resolve = FALSE) %>%
 #' decorations(conc, time, Heart)
 
 ggready <- function(x, ...)UseMethod('ggready')
@@ -55,7 +55,7 @@ ggready <- function(x, ...)UseMethod('ggready')
 #' units to label using \code{\link{append_units}}
 #' (passing \code{style = 'plotmath'} if \code{parse}
 #' is true, else \code{style = 'plain'}).
-#' Enforces class 'ggready'.
+#' Enforces classes 'decorated' and 'ggready'.
 #'
 #' @param x object
 #' @param ... passed to \code{\link{append_units}}; may include unquoted column names
@@ -63,7 +63,7 @@ ggready <- function(x, ...)UseMethod('ggready')
 #' @export
 #' @importFrom spork as_spork
 #' @importFrom spork plotmathToken
-#' @return ggready
+#' @return ggready decorated
 #' @keywords internal
 #' @family ggready
 #' @examples
@@ -75,7 +75,7 @@ ggready.data.frame <- function(
 ){
   stopifnot(is.logical(parse), length(parse) == 1)
   x <- append_units(x, ..., style = if(parse) 'plotmath' else 'plain')
-  class(x) <- union('ggready', class(x))
+  class(x) <- union(c('ggready', 'decorated'), class(x))
   x
 }
 #' Prepare Decorated Data Frame for GGplot
@@ -94,7 +94,7 @@ ggready.data.frame <- function(
 #' @export
 #' @importFrom spork as_spork
 #' @importFrom spork plotmathToken
-#' @return ggready
+#' @return ggready decorated
 #' @keywords internal
 #' @family ggready
 #' @examples

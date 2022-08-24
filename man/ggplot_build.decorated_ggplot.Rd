@@ -7,11 +7,14 @@
 \method{ggplot_build}{decorated_ggplot}(
   x,
   ...,
-  search = getOption("decorated_ggplot_search", c("expression", "title", "label"))
+  search = getOption("decorated_ggplot_search", c("expression", "title", "label")),
+  discrete = getOption("decorated_ggplot_discrete", c("colour", "fill", "size",
+    "shape", "linetype", "alpha")),
+  drop = getOption("decorated_ggplot_drop", TRUE)
 )
 }
 \arguments{
-\item{x}{class 'decorated_ggplot' from \code{\link{ggplot.ggready}}}
+\item{x}{class 'decorated_ggplot' from \code{\link{ggplot.decorated}}}
 
 \item{...}{passed arguments}
 }

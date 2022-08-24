@@ -2,12 +2,15 @@
 % Please edit documentation in R/ggplot.R
 \name{print.decorated_ggplot}
 \alias{print.decorated_ggplot}
-\title{Substitute Expressions, Titles and Labels in ggplots}
+\title{Substitute Expressions, Titles, Labels and Aesthetics in ggplots}
 \usage{
 \method{print}{decorated_ggplot}(
   x,
   ...,
-  search = getOption("decorated_ggplot_search", c("expression", "title", "label"))
+  search = getOption("decorated_ggplot_search", c("expression", "title", "label")),
+  discrete = getOption("decorated_ggplot_discrete", c("colour", "fill", "size",
+    "shape", "linetype", "alpha")),
+  drop = getOption("decorated_ggplot_drop", TRUE)
 )
 }
 \arguments{
@@ -16,15 +19,30 @@
 \item{...}{passed arguments}
 
 \item{search}{attribute names from which to seek label substitutes}
+
+\item{discrete}{discrete aesthetics to map from data decorations where available}
+
+\item{drop}{should unused factor levels be omitted from data-driven discrete scales?}
 }
 \value{
 see \code{\link[ggplot2]{print.ggplot}}
 }
 \description{
-At time of printing, default labels will be used as
-column names to search \code{data} for more meaningful
+Default labels (e.g. mappings for \code{x}, \code{y}, etc.)
+will be used to search \code{data} for more meaningful
 labels, taking first available from attributes
-with names in \code{search}.
+with names in \code{search}.  Likewise, if mappings for 
+colour (color), fill, size, etc. (see defaults for \code{discrete})
+indicate columns that have these defined as attributes, 
+an attempt is made to add a corresponding discrete scale if
+one does not exist already. Values are recycled if necessary
+and are specific by ordinal position to the corresponding
+level of the corresponding variable.  Levels are defined
+in increasing priority by
+\code{sort(unique(x))},
+any guide attribute,
+any factor levels, or
+any codelist attribute.
 }
 \examples{
 example(ggplot.decorated)

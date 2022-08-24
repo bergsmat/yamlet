@@ -37,44 +37,16 @@ x <- io_csv('xanomeline-mod.csv', gz = TRUE)
 x %<>% filter(cp > 1)
 x %<>% ggready(parse = F)
 
-```
 
-```{r iso }
-# iso() intends to enforce isometric aesthetics on a ggplot object.
+x %<>% decorate('
+#                   black      violet   blue       green
+ACTARM: [color: ["#000000", "#AA00FF", "#144A90", "#4CB54F"]]
+') 
 
-isometric <- function()structure(list(), class = 'ggplot_isometric')
-
-ggplot_add.ggplot_isometric <- function(object, plot, object_name){
-  stopifnot('x' %in% names(plot$labels))
-  stopifnot('y' %in% names(plot$labels))
-  xrange <- range(na.rm = TRUE, plot$data[,plot$labels$x])
-  yrange <- range(na.rm = TRUE, plot$data[,plot$labels$y])
-  plot <- plot + expand_limits(x = yrange)
-  plot <- plot + expand_limits(y = xrange)
-  plot <- plot + theme(aspect.ratio = 1)
-  plot
-}
-# p <- x %>% ggplot(aes(IPRED, DV)) + geom_point()
-# p + isometric()
+x %>% decorations(ACTARM)
 
 ```
 
-```{r symmetric }
-# iso() intends to enforce isometric aesthetics on a ggplot object.
-
-symmetric <- function()structure(list(), class = 'ggplot_symmetric')
-
-ggplot_add.ggplot_symmetric <- function(object, plot, object_name){
-  nms <- names(plot$labels)
-  stopifnot('y' %in% nms)
-  yrange <- range(na.rm = TRUE, plot$data[,plot$labels$y])
-  plot <- plot + expand_limits(y = -yrange)
-  plot
-}
-# p <- x %>% ggplot(aes(IWRES, TIME)) + geom_point()
-# p + symmetric()
-
-```
 
 ```{r functions}
 isoplot <- function(
@@ -173,13 +145,14 @@ trendpair <- function(
 
 ```{r  DV-IPRED-ACTARM-VISIT, fig.width = 9.69, fig.height = 4.3, fig.cap = 'DV-IPRED-ACTARM-VISIT.png'}
 #(
-  x %>%
+# https://stackoverflow.com/questions/59213301/change-colours-of-a-ggplot-object-created-by-a-function
+  p <- x %>%
   ggplot(
-    aes(IPRED, DV, color = ACTARM, pch = ACTARM)
+    aes(IPRED, DV, color = ACTARM, shape = ACTARM)
   ) + 
     geom_point(alpha = .5, size = 1.5) +
    # geom_point(alpha = .2, size = 2) +
-    scale_shape_manual(values = c(1,3))+
+   # scale_shape_manual(values = c(1,3))+
    # scale_shape_manual(values = c(0,4))+
     facet_wrap(~VISIT, ncol = 3) +
   theme_bw() +
@@ -189,8 +162,12 @@ trendpair <- function(
     legend.title = element_blank()
   ) +
   geom_abline(aes(slope = 1, intercept = 0)) +
-  isometric()
+  isometric() + 
+  scale_color_manual(values = c('red','blue')) +
+  scale_shape_manual(values = c(1,3))
+
   #) %>% devsize(3,3,verbose = T)
+p
 ```
 
 ## Observations vs Individual Predictions
@@ -366,8 +343,3 @@ x %>% trendplot(IWRES, TIME) +
 ) # %>% devsize(1,1, verbose = T)
 
 ```
-
-
-
-
-

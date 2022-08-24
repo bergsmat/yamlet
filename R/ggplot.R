@@ -12,8 +12,7 @@
 # there is only one method for resolve() (\code{\link{resolve.decorated}})
 # with the result that all 'resolved' objects inherit 'decorated'
 # and thus can use \code{\link{ggplot.decorated}}.
-#
-#' For finer control, you can switch between 'data.frame'
+#' For fine control, you can switch between 'data.frame'
 #' and 'decorated' using \code{\link{as_decorated}}
 #' (supplies null decorations) and \code{\link{as.data.frame}}
 #' (preserves decorations).
@@ -41,15 +40,26 @@
 #' class(data.frame(x))
 #' class(as_decorated(data.frame(x)))
 #'
-#' # The bare data.frame gives boring labels and unordered groups.
+#' # The bare data.frame gives boring labels and un-ordered groups.
 #' map <- aes(x = time, y = conc, color = Heart)
 #' data.frame(x) %>% ggplot(map) + geom_point()
 #'
 #' # Decorated data.frame uses supplied labels.
-#' # Notice CHF levels are still not ordered.
+#' # Notice CHF levels are still not ordered. (Moderate first.)
 #' x %>% ggplot(map) + geom_point()
+#' 
+#' # If we resolve Heart, CHF levels are ordered.
+#' x %<>% resolve(Heart)
+#' x %>% ggplot(map) + geom_point()
+#' 
+#' # We can map aesthetics as decorations.
+#' x %<>% decorate('Heart: [ color: [gold, purple, green]]')
+#' x %>% ggplot(map) + geom_point()
+#' 
+#' # Colors are matched to particular levels. Purple drops out here:
+#' x %>% filter(Heart != 'Moderate') %>% ggplot(map) + geom_point()
 #'
-#' # We can resolve guide for a chance to enrich the output with units.
+#' # We can resolve other columns for a chance to enrich the output with units.
 #' # Notice CHF levels are now ordered.
 #' x %<>% resolve
 #' suppressWarnings( # because this complains for columns with no units
@@ -114,30 +124,90 @@ ggplot.decorated <- function(data, ...){
   class(p) <- c('decorated_ggplot',class(p))
   p
 }
-#' Substitute Expressions, Titles and Labels in ggplots
+
+#' Substitute Expressions, Titles, Labels and Aesthetics in ggplots
 #'
-#' At time of printing, default labels will be used as
-#' column names to search \code{data} for more meaningful
+#' Default labels (e.g. mappings for \code{x}, \code{y}, etc.)
+#' will be used to search \code{data} for more meaningful
 #' labels, taking first available from attributes
-#' with names in \code{search}.
+#' with names in \code{search}.  Likewise, if mappings for 
+#' colour (color), fill, size, etc. (see defaults for \code{discrete})
+#' indicate columns that have these defined as attributes, 
+#' an attempt is made to add a corresponding discrete scale if
+#' one does not exist already. Values are recycled if necessary
+#' and are specific by ordinal position to the corresponding
+#' level of the corresponding variable.  Levels are defined
+#' in increasing priority by
+#' \code{sort(unique(x))},
+#' any guide attribute,
+#' any factor levels, or
+#' any codelist attribute.
+#' 
 #'
 #' @param x class 'decorated_ggplot' from \code{\link{ggplot.decorated}}
 #' @param ... passed arguments
 #' @param search attribute names from which to seek label substitutes
+#' @param discrete discrete aesthetics to map from data decorations where available
+#' @param drop should unused factor levels be omitted from data-driven discrete scales?
 #' @return see \code{\link[ggplot2]{print.ggplot}}
+#' @importFrom ggplot2 scale_discrete_manual waiver
 #' @export
 #' @family decorated_ggplot
 #' @examples
 #' example(ggplot.decorated)
 
 print.decorated_ggplot <- function(
-  x,
-  ...,
-  search = getOption(
-    'decorated_ggplot_search',
-    c('expression','title','label')
-  )
+    x,
+    ...,
+    search = getOption(
+      'decorated_ggplot_search',
+      c('expression', 'title', 'label')
+    ),
+    discrete = getOption(
+      'decorated_ggplot_discrete',
+      c('colour', 'fill', 'size', 'shape', 'linetype', 'alpha')
+    ),
+    drop = getOption('decorated_ggplot_drop', TRUE)
 ){
+  # support for discrete manual scales
+  labelnames <- names(x$labels)
+  aesthetics <- intersect(discrete, labelnames)
+  scaletypes <- sapply(x$scales$scales, `[[`, 'aesthetics')
+  # don't redefine existing scales:
+  aesthetics <- setdiff(aesthetics, scaletypes)
+  for(a in aesthetics){
+    src <- x$labels[[a]]
+    if(length(src) == 1){
+      if(src %in% names(x$data)){
+        col <- x$data[[src]]
+        atr <- attributes(col)
+        nms <- names(atr)
+        if('color' %in% nms & !'colour' %in% nms){
+          atr$colour <- atr$color
+        }
+        if(a %in% names(atr)){
+          this <- atr[[a]]
+          # preserve correspondence with guides
+          # increasing precedence:
+          breaks <- waiver()
+          if(drop) breaks <- sort(unique(col))
+          levels <- sort(unique(col))
+          if('guide' %in% names(atr)) levels <- atr$guide
+          if(is.factor(col)) levels <- levels(col)
+          if('codelist' %in% names(atr)) levels <- atr$codelist # ignore names
+          this <- rep(this, length.out = length(levels))
+          names(this) <- levels
+          # create a new scale using the stored values
+          x <- x + scale_discrete_manual(
+            aesthetics = a,
+            values = this,
+            breaks = breaks
+          )
+        }
+      }
+    }
+  }
+  
   for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
     lab <- x$labels[[i]]                   # handle one label
     if(length(lab)){                       # i.e. not null or empty expression
@@ -167,8 +237,7 @@ print.decorated_ggplot <- function(
           x$labels[[i]] <- x$labels[[i]][[1]]
         }
       }
-   }
-    
+    }
   }
   NextMethod()
 }
@@ -179,7 +248,7 @@ print.decorated_ggplot <- function(
 #' Substitutes column label, if present, for default.
 #' Supports arrangements of ggplot objects.
 #'
-#' @param x class 'decorated_ggplot' from \code{\link{ggplot.ggready}}
+#' @param x class 'decorated_ggplot' from \code{\link{ggplot.decorated}}
 #' @param ... passed arguments
 #' @return see \code{\link[ggplot2]{ggplot_build}}
 #' @export
