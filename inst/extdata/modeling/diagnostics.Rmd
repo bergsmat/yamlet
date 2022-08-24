@@ -43,7 +43,7 @@ x %<>% decorate('
 ACTARM: [color: ["#000000", "#AA00FF", "#144A90", "#4CB54F"]]
 ') 
 
-x %>% decorations(ACTARM)
+# x %>% decorations(ACTARM)
 
 ```
 
