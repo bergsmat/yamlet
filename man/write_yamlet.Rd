@@ -49,13 +49,12 @@ x <- decorate(x, meta = y)
 identical(x, decorate(file))
 tmp <- tempfile()
 write_yamlet(x, tmp)
-identical(read_yamlet(meta), read_yamlet(tmp))
+stopifnot(identical(read_yamlet(meta), read_yamlet(tmp)))
 }
 \seealso{
 \code{\link{decorate.list}}
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},

@@ -32,13 +32,12 @@ meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
 x <- as.csv(file)
 y <- read_yamlet(meta)
 x <- decorate(x, meta = y)
-identical(x, decorate(file))
+stopifnot(identical(x, decorate(file)))
 }
 \seealso{
 \code{\link{decorate.data.frame}}
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},

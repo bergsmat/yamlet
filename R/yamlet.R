@@ -871,7 +871,7 @@ print.yamlet <- function(x, ...){
 #' x <- as.csv(file)
 #' y <- read_yamlet(meta)
 #' x <- decorate(x, meta = y)
-#' identical(x, decorate(file))
+#' stopifnot(identical(x, decorate(file)))
 read_yamlet <- function(
   x,
   ...,
@@ -910,7 +910,7 @@ read_yamlet <- function(
 #' identical(x, decorate(file))
 #' tmp <- tempfile()
 #' write_yamlet(x, tmp)
-#' identical(read_yamlet(meta), read_yamlet(tmp))
+#' stopifnot(identical(read_yamlet(meta), read_yamlet(tmp)))
 
 write_yamlet <- function(
   x,

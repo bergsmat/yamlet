@@ -13,7 +13,7 @@
 #' @param def definition string: separator between items and their (preceding) names, if any
 #' @param ... ignored
 #' @export
-#' @family interface
+#' @keywords internal
 #' @return data.frame
 #' @examples
 #'

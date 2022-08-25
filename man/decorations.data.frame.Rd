@@ -27,15 +27,12 @@ By default, 'class' and 'level' attributes are excluded from the result,
 as you likely don't want to manipulate these independently.
 }
 \examples{
-library(csv)
-library(magrittr)
+# prepare a decorated data.frame
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-x <- decorate(as.csv(file))[,c('conc','Race')]
-y <- decorate(as.csv(file))[,c('conc','Race')] \%>\% resolve
-decorations(x)
-decorations(y)
-decorations(y, conc)
-decorations(y, exclude_attr = NULL)
+x <- decorate(file)
+
+# retrieve the decorations
+decorations(x, Subject, time, conc)
 }
 \seealso{
 Other decorate: 

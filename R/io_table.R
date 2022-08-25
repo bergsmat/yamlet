@@ -9,16 +9,25 @@
 #'@return See methods.
 #'@family io
 #'@examples
+#' # generate some decorated data
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)
+#' 
+#' # get a temporary filepath
 #' out <- file.path(tempdir(), 'out.tab')
+#' 
+#' # save file using io_table (returns filepath)
 #' foo <- io_table(x, out)
-#' identical(out, foo)
+#' stopifnot(identical(out, foo))
+#' 
+#' # read using this filepath
 #' y <- io_table(foo, as.is = TRUE)
+#' 
+#' # lossless round-trip
 #' attr(x, 'source') <- NULL
 #' rownames(x) <- NULL
 #' rownames(y) <- NULL
-#' identical(x, y) # lossless 'round-trip'
+#' stopifnot(identical(x, y))
 io_table <- function(x, ...)UseMethod('io_table')
 
 #' Import Documented Table

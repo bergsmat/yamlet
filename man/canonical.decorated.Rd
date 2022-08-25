@@ -27,6 +27,7 @@ and will be expanded or reduced as necessary for each
 data item.
 }
 \examples{
+# make some decorated data
 library(magrittr)
 x <- data.frame(x = 1, y = 1, z = factor('a'))
 x \%<>\% decorate('
@@ -34,8 +35,13 @@ x: [ guide: mm, desc: this, label: foo ]
 "y": [ guide: bar, desc: other ]
 ')
 
+# retrieve decorations: label not first!
 decorations(x)
+
+# sort label first by default
 decorations(canonical(x))
+
+# equivalent invocation
 canonical(decorations(x))
 
 }
@@ -45,7 +51,6 @@ Other canonical:
 \code{\link{canonical}()}
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},

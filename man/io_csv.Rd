@@ -19,15 +19,24 @@ Imports or exports documented tables as comma-separated variable.
 Generic, with methods that extend \code{\link[csv]{as.csv}}.
 }
 \examples{
+# generate some decorated data
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
+
+# get a temporary filepath
 out <- file.path(tempdir(), 'out.csv')
+
+# save file using io_csv (returns filepath)
 foo <- io_csv(x, out)
-identical(out, foo)
+stopifnot(identical(out, foo))
+
+# read using this filepath
 y <- io_csv(foo)
+
+# lossless round-trip (ignoring source attribute)
 attr(x, 'source') <- NULL
 attr(y, 'source') <- NULL
-identical(x, y) # lossless 'round-trip'
+stopifnot(identical(x, y))
 }
 \seealso{
 Other io: 

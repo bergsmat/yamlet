@@ -22,8 +22,7 @@ followed by \code{\link{classified}} if x has a codelist attribute.
 }
 \examples{
 library(magrittr)
-x <- as_dvec(1:3)
-attr(x, 'guide') <- list(a = 1, b = 2, c = 3)
+x <- as_dvec(1:3, guide = list(a = 1, b = 2, c = 3))
 x \%>\% str
 x \%>\% classified \%>\% str
 x \%>\% explicit_guide \%>\% classified \%>\% str

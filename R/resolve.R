@@ -25,10 +25,16 @@ resolve <- function(x, ...)UseMethod('resolve')
 #' @family resolve
 #' @family interface
 #' @examples
+#' # generate some decorated data
 #' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)
+#' x %>% decorations(Age, glyco)
+#' 
+#' # resolve everything, and show selected decorations
 #' x %>% resolve %>% decorations(Age, glyco)
+#' 
+#' # resolve selectively, and show selected decorations
 #' x %>% resolve(glyco) %>% decorations(Age, glyco)
 
 resolve.decorated <- function(x, ...){
@@ -52,8 +58,7 @@ resolve.decorated <- function(x, ...){
 #' @family dvec
 #' @examples
 #' library(magrittr)
-#' x <- as_dvec(1:3)
-#' attr(x, 'guide') <- list(a = 1, b = 2, c = 3)
+#' x <- as_dvec(1:3, guide = list(a = 1, b = 2, c = 3))
 #' x %>% str
 #' x %>% classified %>% str
 #' x %>% explicit_guide %>% classified %>% str

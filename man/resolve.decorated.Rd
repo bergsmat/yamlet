@@ -21,10 +21,16 @@ Simply calls \code{\link{explicit_guide}}
 followed by \code{\link{classified}}.
 }
 \examples{
+# generate some decorated data
 library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
+x \%>\% decorations(Age, glyco)
+
+# resolve everything, and show selected decorations
 x \%>\% resolve \%>\% decorations(Age, glyco)
+
+# resolve selectively, and show selected decorations
 x \%>\% resolve(glyco) \%>\% decorations(Age, glyco)
 }
 \seealso{
@@ -37,7 +43,6 @@ Other resolve:
 \code{\link{resolve}()}
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},

@@ -67,6 +67,7 @@ names(x)
 \donttest{
 x \%<>\% modify(title = foo, time)
 }}
+
 # support lists
 list(a = 1, b = 1:10, c = letters) \%>\%
 modify(length = length(.), b:c)
@@ -93,7 +94,6 @@ Other modify:
 \code{\link{selected}()}
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},

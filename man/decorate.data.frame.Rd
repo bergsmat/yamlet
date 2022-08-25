@@ -38,26 +38,26 @@ tidyverse operations. Details are described in
 with \code{options(yamlet_persistence = FALSE)}.
 }
 \examples{
+
+# find data path
 library(csv)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
-a <- decorate(as.csv(file))
-b <- decorate(as.csv(file), meta = as_yamlet(meta))
-c <- decorate(as.csv(file), meta = meta)
-d <- decorate(as.csv(file), meta = file)
-e <- resolve(decorate(as.csv(file)))
+file
+dat <- as.csv(file) # dat now has 'source' attribute
 
-# Most import methods are equivalent.
-identical(a, b)
-identical(a, c)
-identical(a, d)
-identical(a, e)
+# use source attribute to find metadata 
+a <- decorate(as.csv(file))
+
+# supply metadata path (or something close) explicitly
+b <- decorate(dat, meta = file)
+
+# these are equivalent
+stopifnot(identical(a, b))
 }
 \seealso{
 decorate.list
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},

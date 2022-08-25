@@ -16,7 +16,7 @@ decorated
 }
 \description{
 Un-resolves explicit usage of default key 'guide' to
-implicit usage for decorated class.
+implicit usage for 'decorated' class.
 Simply calls \code{\link{unclassified}}
 followed by \code{\link{implicit_guide}}.
 }
@@ -24,7 +24,11 @@ followed by \code{\link{implicit_guide}}.
 library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
+
+# this is how Age, glyco, Race look when resolved
 x \%>\% resolve \%>\% decorations(Age, glyco, Race)
+
+# we can resolve two of them and then 'unresolve' all of them
 x \%>\% resolve(glyco, Race) \%>\% desolve \%>\% decorations(Age, glyco, Race)
 }
 \seealso{
@@ -37,7 +41,6 @@ Other resolve:
 \code{\link{resolve}()}
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},

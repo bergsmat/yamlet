@@ -31,23 +31,34 @@ a simple integer, consider coercing first to numeric.
 }
 \examples{
 library(magrittr)
+
+# create factor with codelist attribute
 classified(c('knife','fork','spoon'))
+
+# give back a simple numeric
 classified(c('knife','fork','spoon')) \%>\% as.numeric
+
+# intentionally preserve levels as 'guide' attribute
 classified(c('knife','fork','spoon')) \%>\% as.integer
+
+# implement offset
 classified(c('knife','fork','spoon')) \%>\% as.integer(-1)
 
+# globally defeat the 'persistence' paradigm
 options(yamlet_persistence = FALSE)
 c('knife','fork','spoon') \%>\% 
   classified \%>\%
   as.integer \%>\% 
   class
   
+# remove option to restore default persistence paradigm
 options(yamlet_persistence = NULL)
 c('knife','fork','spoon') \%>\% 
   classified \%>\%
   as.integer \%>\% 
   class
   
+# locally defeat persistence paradigm
 c('knife','fork','spoon') \%>\% 
   classified \%>\%
   as.integer(persistence = FALSE) \%>\% 

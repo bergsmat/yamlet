@@ -17,7 +17,7 @@
 
 \item{meta}{file path for corresponding yamlet metadata, or a yamlet object}
 
-\item{...}{passed to read (if accepted) and to \code{\link{as_yamlet.character}}}
+\item{...}{passed to \code{read} (if accepted) and to \code{\link{as_yamlet.character}}}
 
 \item{read}{function or function name for reading x}
 
@@ -32,54 +32,23 @@ metadata is sought from a file with the same
 base but the 'yaml' extension.
 }
 \examples{
-file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
-identical(
-  decorate(file),
-  decorate(file, meta)
-)
-identical(
-  decorate(file, meta = as_yamlet(meta)),
-  decorate(file, meta = meta)
-)
-a <- decorate(file)
-b <- resolve(decorate(file))
-c <- resolve(decorate(
-  file,
-  read = read.table,
-  quote = "",
-  as.is = FALSE,
-  sep = ',',
-  header = TRUE,
-  na.strings = c('', '\\\\s', '.','NA'),
-  strip.white = TRUE,
-  check.names = FALSE
-))
-d <- decorate(
-  file,
-  read = read.table,
-  quote = "",
-  as.is = FALSE,
-  sep = ',',
-  header = TRUE,
-  na.strings = c('', '\\\\s', '.','NA'),
-  strip.white = TRUE,
-  check.names = FALSE
-)
 
-# Importantly, b and c are identical with respect to factors
-cbind(
-  `as.is/!resolve`   = sapply(a, class), # no factors
-  `as.is/resolve`    = sapply(b, class), # factors made during decoration
-  `!as.is/resolve`   = sapply(c, class), # factors made twice!
-  `!as.is/!resolve`  = sapply(d, class)  # factors made during read
-)
-str(a$Smoke)
-str(b$Smoke)
-str(c$Smoke)
-str(d$Smoke)
-levels(c$Creatinine)
-levels(d$Creatinine) # level detail retained as 'guide'
+# find data file
+file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+file
+
+# find metadata file
+meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+meta
+
+# decorate with explicit metadata reference
+a <- decorate(file, meta)
+
+# rely on default metadata path
+b <- decorate(file)
+
+# in this case: same
+stopifnot(identical(a, b))
 }
 \seealso{
 Other decorate: 
@@ -93,7 +62,6 @@ Other decorate:
 \code{\link{redecorate}()}
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.data.frame}()},

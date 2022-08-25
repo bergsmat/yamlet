@@ -23,11 +23,38 @@ a guide attribute with labels from
 corresponding values in y. Any codelist
 attribute is removed. No guide is created
 for zero-length x. If x is a factor,
-unused codes are removed from codelist.
+unused levels are removed.
 }
 \examples{
-example(mimic.classified)
+library(magrittr)
+library(dplyr)
+let <- letters[1:5]
+LET <- LETTERS[1:5]
+int <- 0L:4L
+num <- as.numeric(int)
+fac <- factor(let)
+css <- classified(let)
 
+# any of these can mimic any other
+str(mimic(LET, let))
+str(mimic(num, let))
+str(mimic(let, num))
+
+# factors get a guide and classifieds get a named codelist
+str(mimic(fac, int))
+str(mimic(css, int))
+
+# int can 'pick up' the factor levels as guide names
+str(mimic(int, css))
+
+# if two variables mean essentially the same thing,
+# mimic lets you save space
+x <- data.frame(id = 1:2, ID = c('A','B'))
+x
+x \%<>\% mutate(id = mimic(id, ID)) \%>\% select(-ID)
+x
+# ID still available, in principle:
+x \%>\% as_decorated \%>\% resolve
 }
 \seealso{
 Other mimic: 
@@ -35,7 +62,6 @@ Other mimic:
 \code{\link{mimic}()}
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},

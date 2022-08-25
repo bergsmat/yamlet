@@ -55,29 +55,4 @@ file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
 file \%>\% io_csv \%>\% resolve \%>\% decorations \%>\% as.data.frame
 
 }
-\seealso{
-Other interface: 
-\code{\link{canonical.decorated}()},
-\code{\link{classified.data.frame}()},
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
-\code{\link{desolve.decorated}()},
-\code{\link{ggplot.decorated}()},
-\code{\link{io_csv.character}()},
-\code{\link{io_csv.data.frame}()},
-\code{\link{io_res.character}()},
-\code{\link{io_res.decorated}()},
-\code{\link{io_table.character}()},
-\code{\link{io_table.data.frame}()},
-\code{\link{io_yamlet.character}()},
-\code{\link{io_yamlet.data.frame}()},
-\code{\link{is_parseable.default}()},
-\code{\link{mimic.default}()},
-\code{\link{modify.default}()},
-\code{\link{promote.list}()},
-\code{\link{read_yamlet}()},
-\code{\link{resolve.decorated}()},
-\code{\link{selected.default}()},
-\code{\link{write_yamlet}()}
-}
-\concept{interface}
+\keyword{internal}

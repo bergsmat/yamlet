@@ -66,6 +66,7 @@ modify <- function(x, ...)UseMethod('modify')
 #' \donttest{
 #' x %<>% modify(title = foo, time)
 #' }}
+#' 
 #' # support lists
 #' list(a = 1, b = 1:10, c = letters) %>%
 #' modify(length = length(.), b:c)

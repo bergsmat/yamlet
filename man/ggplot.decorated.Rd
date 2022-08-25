@@ -64,7 +64,6 @@ x \%>\% ggplot(map) + geom_point()
 x \%>\% filter(Heart != 'Moderate') \%>\% ggplot(map) + geom_point()
 
 # We can resolve other columns for a chance to enrich the output with units.
-# Notice CHF levels are now ordered.
 x \%<>\% resolve
 suppressWarnings( # because this complains for columns with no units
   x <- modify(x, title = paste0(label, '\n(', units, ')'))
@@ -129,7 +128,6 @@ Other decorated_ggplot:
 \code{\link{print.decorated_ggplot}()}
 
 Other interface: 
-\code{\link{as.data.frame.yamlet}()},
 \code{\link{canonical.decorated}()},
 \code{\link{classified.data.frame}()},
 \code{\link{decorate.character}()},

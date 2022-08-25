@@ -16,19 +16,24 @@ dvec
 }
 \description{
 Un-resolves explicit usage of default key 'guide' to
-implicit usage for class classified
+implicit usage for class 'classified'.
 Simply calls \code{\link{unclassified}}
 followed by \code{\link{implicit_guide}}.
 }
 \examples{
 library(magrittr)
-x <- as_dvec(4:6)
-attr(x, 'guide') <- list(a = 4L, b = 5L, c = 6L)
+x <- as_dvec(
+  4:6, 
+  guide = list(a = 4L, b = 5L, c = 6L)
+)
+
+# untouched
 x \%>\% str
-x \%>\% classified \%>\% str
-x \%>\% explicit_guide \%>\% classified \%>\% str
+
+# resolved
 x \%>\% resolve \%>\% str
-x \%>\% str
+
+# resolved and desolved
 x \%>\% resolve \%>\% desolve \%>\% str
 }
 \seealso{

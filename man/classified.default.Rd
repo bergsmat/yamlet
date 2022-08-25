@@ -44,10 +44,18 @@ length of labels cannot be one (i.e., different from
 length of levels).
 }
 \examples{
-classified(1:3)
-classified(1:3, levels = 4:6)
-classified(1:3, levels = 1:3)
-classified(1:3, labels = letters[1:3])
+
+# classified creates a factor with a corresponding codelist attribute
+classified(c('a','b','c'))
+
+# codelist 'remembers' the origins of levels
+classified(c('a','b','c'), labels = c('A','B','C'))
+
+# classified is 'reversible'
+library(magrittr)
+c('a','b','c') \%>\%
+  classified(labels = c('A','B','C')) \%>\%
+  unclassified
 }
 \seealso{
 Other classified: 

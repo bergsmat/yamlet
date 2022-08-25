@@ -15,7 +15,7 @@ desolve <- function(x, ...)UseMethod('desolve')
 #' Desolve Guide for Decorated
 #'
 #' Un-resolves explicit usage of default key 'guide' to
-#' implicit usage for decorated class.
+#' implicit usage for 'decorated' class.
 #' Simply calls \code{\link{unclassified}}
 #' followed by \code{\link{implicit_guide}}.
 #' @param x decorated
@@ -28,7 +28,11 @@ desolve <- function(x, ...)UseMethod('desolve')
 #' library(magrittr)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)
+#' 
+#' # this is how Age, glyco, Race look when resolved
 #' x %>% resolve %>% decorations(Age, glyco, Race)
+#' 
+#' # we can resolve two of them and then 'unresolve' all of them
 #' x %>% resolve(glyco, Race) %>% desolve %>% decorations(Age, glyco, Race)
 
 desolve.decorated <- function(x, ...){
@@ -40,7 +44,7 @@ desolve.decorated <- function(x, ...){
 #' Desolve Guide for Classified
 #'
 #' Un-resolves explicit usage of default key 'guide' to
-#' implicit usage for class classified
+#' implicit usage for class 'classified'.
 #' Simply calls \code{\link{unclassified}}
 #' followed by \code{\link{implicit_guide}}.
 #' @param x classified
@@ -51,13 +55,18 @@ desolve.decorated <- function(x, ...){
 #' @family classified
 #' @examples
 #' library(magrittr)
-#' x <- as_dvec(4:6)
-#' attr(x, 'guide') <- list(a = 4L, b = 5L, c = 6L)
+#' x <- as_dvec(
+#'   4:6, 
+#'   guide = list(a = 4L, b = 5L, c = 6L)
+#' )
+#' 
+#' # untouched
 #' x %>% str
-#' x %>% classified %>% str
-#' x %>% explicit_guide %>% classified %>% str
+#' 
+#' # resolved
 #' x %>% resolve %>% str
-#' x %>% str
+#' 
+#' # resolved and desolved
 #' x %>% resolve %>% desolve %>% str
 
 desolve.classified <- function(x, ...){

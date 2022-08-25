@@ -56,61 +56,31 @@ decorate <- function(x,...)UseMethod('decorate')
 #' @param meta file path for corresponding yamlet metadata, or a yamlet object
 #' @param read function or function name for reading x
 #' @param ext file extension for metadata file, if relevant
-#' @param ... passed to read (if accepted) and to \code{\link{as_yamlet.character}}
+#' @param ... passed to \code{read} (if accepted) and to \code{\link{as_yamlet.character}}
 #' @return class 'decorated' 'data.frame'
 #' @importFrom csv as.csv
 #' @export
 #' @family decorate
 #' @family interface
 #' @examples
+#' 
+#' # find data file
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+#' file
+#' 
+#' # find metadata file
 #' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
-#' identical(
-#'   decorate(file),
-#'   decorate(file, meta)
-#' )
-#' identical(
-#'   decorate(file, meta = as_yamlet(meta)),
-#'   decorate(file, meta = meta)
-#' )
-#' a <- decorate(file)
-#' b <- resolve(decorate(file))
-#' c <- resolve(decorate(
-#'   file,
-#'   read = read.table,
-#'   quote = "",
-#'   as.is = FALSE,
-#'   sep = ',',
-#'   header = TRUE,
-#'   na.strings = c('', '\\s', '.','NA'),
-#'   strip.white = TRUE,
-#'   check.names = FALSE
-#' ))
-#' d <- decorate(
-#'   file,
-#'   read = read.table,
-#'   quote = "",
-#'   as.is = FALSE,
-#'   sep = ',',
-#'   header = TRUE,
-#'   na.strings = c('', '\\s', '.','NA'),
-#'   strip.white = TRUE,
-#'   check.names = FALSE
-#' )
-#'
-#' # Importantly, b and c are identical with respect to factors
-#' cbind(
-#'   `as.is/!resolve`   = sapply(a, class), # no factors
-#'   `as.is/resolve`    = sapply(b, class), # factors made during decoration
-#'   `!as.is/resolve`   = sapply(c, class), # factors made twice!
-#'   `!as.is/!resolve`  = sapply(d, class)  # factors made during read
-#' )
-#' str(a$Smoke)
-#' str(b$Smoke)
-#' str(c$Smoke)
-#' str(d$Smoke)
-#' levels(c$Creatinine)
-#' levels(d$Creatinine) # level detail retained as 'guide'
+#' meta
+#' 
+#' # decorate with explicit metadata reference
+#' a <- decorate(file, meta)
+#' 
+#' # rely on default metadata path
+#' b <- decorate(file)
+#' 
+#' # in this case: same
+#' stopifnot(identical(a, b))
+
 
 decorate.character <- function(
   x,
@@ -252,20 +222,22 @@ decorate.list <- function(
 #' @family decorate
 #' @seealso decorate.list
 #' @examples
+#' 
+#' # find data path
 #' library(csv)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-#' meta <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')
+#' file
+#' dat <- as.csv(file) # dat now has 'source' attribute
+#' 
+#' # use source attribute to find metadata 
 #' a <- decorate(as.csv(file))
-#' b <- decorate(as.csv(file), meta = as_yamlet(meta))
-#' c <- decorate(as.csv(file), meta = meta)
-#' d <- decorate(as.csv(file), meta = file)
-#' e <- resolve(decorate(as.csv(file)))
-#'
-#' # Most import methods are equivalent.
-#' identical(a, b)
-#' identical(a, c)
-#' identical(a, d)
-#' identical(a, e)
+#' 
+#' # supply metadata path (or something close) explicitly
+#' b <- decorate(dat, meta = file)
+#' 
+#' # these are equivalent
+#' stopifnot(identical(a, b))
+
 decorate.data.frame <- function(
   x,
   meta = NULL,
@@ -318,15 +290,12 @@ decorations <- function(x,...)UseMethod('decorations')
 #' @family decorate
 #' @return named list of class 'yamlet'
 #' @examples
-#' library(csv)
-#' library(magrittr)
+#' # prepare a decorated data.frame
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-#' x <- decorate(as.csv(file))[,c('conc','Race')]
-#' y <- decorate(as.csv(file))[,c('conc','Race')] %>% resolve
-#' decorations(x)
-#' decorations(y)
-#' decorations(y, conc)
-#' decorations(y, exclude_attr = NULL)
+#' x <- decorate(file)
+#' 
+#' # retrieve the decorations
+#' decorations(x, Subject, time, conc)
 
 decorations.data.frame <- function(
   x,

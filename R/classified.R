@@ -37,10 +37,19 @@ classified <- function(x, ...)UseMethod('classified')
 #' @importFrom dplyr distinct
 #' @family classified
 #' @examples
-#' classified(1:3)
-#' classified(1:3, levels = 4:6)
-#' classified(1:3, levels = 1:3)
-#' classified(1:3, labels = letters[1:3])
+#' 
+#' # classified creates a factor with a corresponding codelist attribute
+#' classified(c('a','b','c'))
+#' 
+#' # codelist 'remembers' the origins of levels
+#' classified(c('a','b','c'), labels = c('A','B','C'))
+#' 
+#' # classified is 'reversible'
+#' library(magrittr)
+#' c('a','b','c') %>%
+#'   classified(labels = c('A','B','C')) %>%
+#'   unclassified
+
 
 classified.default <- function(
   x = character(),
@@ -440,23 +449,34 @@ classified.dvec <- function(
 #' @return integer (possibly of class dvec)
 #' @examples
 #' library(magrittr)
+#' 
+#' # create factor with codelist attribute
 #' classified(c('knife','fork','spoon'))
+#' 
+#' # give back a simple numeric
 #' classified(c('knife','fork','spoon')) %>% as.numeric
+#' 
+#' # intentionally preserve levels as 'guide' attribute
 #' classified(c('knife','fork','spoon')) %>% as.integer
+#' 
+#' # implement offset
 #' classified(c('knife','fork','spoon')) %>% as.integer(-1)
 #' 
+#' # globally defeat the 'persistence' paradigm
 #' options(yamlet_persistence = FALSE)
 #' c('knife','fork','spoon') %>% 
 #'   classified %>%
 #'   as.integer %>% 
 #'   class
 #'   
+#' # remove option to restore default persistence paradigm
 #' options(yamlet_persistence = NULL)
 #' c('knife','fork','spoon') %>% 
 #'   classified %>%
 #'   as.integer %>% 
 #'   class
 #'   
+#' # locally defeat persistence paradigm
 #' c('knife','fork','spoon') %>% 
 #'   classified %>%
 #'   as.integer(persistence = FALSE) %>% 
