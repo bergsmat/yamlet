@@ -1,3 +1,8 @@
+library(testthat)
+library(yamlet)
+library(dplyr)
+library(magrittr)
+library(ggplot2)
 test_that('print.dg treats variable as categorical if guide has length > 1',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   library(ggplot2)
@@ -98,4 +103,34 @@ test_that('subplots respect metadata assignments',{
   plot(q)
   expect_equal_to_reference(file = '098.rds', p)
 
+})
+
+test_that('print method for decorated_ggplot supports colour, fill, size, shape, linetype, alpha',{
+  x <- data.frame(x = c(1:6, 3:8), y = c(1:6,1:6), z = letters[c(1:6,1:6)])
+  x %<>% decorate('z: [color: ["red", "blue", "green", "gold", "black", "magenta"]]')
+  x %<>% decorate('z: [fill: ["red", "blue", "green", "gold", "black", "magenta"]]')
+  x %<>% decorate('z: [shape: [20, 21, 22, 23, 24, 25]]')
+  x %<>% decorate('z: [linetype: [6, 5, 4, 3, 2, 1]]')
+  x %<>% decorate('z: [alpha: [ .9, .8, .7, .6, .5, .4]]')
+  x %<>% decorate('z: [size: [1, 1.5, 2, 2.5, 3, 3.5]]')
+
+  # undebug(yamlet:::print.decorated_ggplot)
+  
+  x %>% ggplot(aes(
+    x, y,
+    color = z,
+    fill = z,
+    shape = z,
+    linetype = z, 
+    alpha = z,
+    size = z,
+  )) + 
+    geom_point() +
+    geom_line(size = 1)
+  })
+# notice that all aesthetics are supported.  Seems like under certain circumstances,
+# there is a warning not to use discrete scale for continuous vars.
+
+test_that('print method for decorate_ggplot respects aesthetics with assignment priority of sort-unique, guide, factor levels, codelist'{
+  
 })

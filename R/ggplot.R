@@ -116,6 +116,27 @@
 #' geom_point() +
 #' scale_y_log10() +
 #' scale_color_gradientn(colours = rainbow(4))
+#' 
+#' # print.decorated_ggplot will attempt to honor coordinated aesthetics.
+#' x <- data.frame(x = c(1:6, 3:8), y = c(1:6,1:6), z = letters[c(1:6,1:6)])
+#' x %<>% decorate('z: [color: ["red", "blue", "green", "gold", "black", "magenta"]]')
+#' x %<>% decorate('z: [fill: ["red", "blue", "green", "gold", "black", "magenta"]]')
+#' x %<>% decorate('z: [shape: [20, 21, 22, 23, 24, 25]]')
+#' x %<>% decorate('z: [linetype: [6, 5, 4, 3, 2, 1]]')
+#' x %<>% decorate('z: [alpha: [ .9, .8, .7, .6, .5, .4]]')
+#' x %<>% decorate('z: [size: [1, 1.5, 2, 2.5, 3, 3.5]]')
+#' x %>% ggplot(aes(
+#'  x, y,
+#'   color = z,
+#'   fill = z,
+#'   shape = z,
+#'   linetype = z, 
+#'   alpha = z,
+#'   size = z,
+#' )) + 
+#'   geom_point() +
+#'   geom_line(size = 1)
+
 
 
 ggplot.decorated <- function(data, ...){
@@ -196,6 +217,7 @@ print.decorated_ggplot <- function(
           if('codelist' %in% names(atr)) levels <- atr$codelist # ignore names
           this <- rep(this, length.out = length(levels))
           names(this) <- levels
+          this <- unlist(this)
           # create a new scale using the stored values
           x <- x + scale_discrete_manual(
             aesthetics = a,
