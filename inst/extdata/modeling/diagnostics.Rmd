@@ -145,10 +145,11 @@ trendpair <- function(
 
 ## Observations vs Individual Predictions by Arm, per Visit
 
-```{r  DV-IPRED-ACTARM-VISIT, fig.width = 9.69, fig.height = 4.3, fig.cap = 'DV-IPRED-ACTARM-VISIT.png'}
-#(
-# https://stackoverflow.com/questions/59213301/change-colours-of-a-ggplot-object-created-by-a-function
+```{r  DV-IPRED-ACTARM-VISIT, fig.width = 5.37, fig.height = 2.8, fig.cap = 'DV-IPRED-ACTARM-VISIT.png'}
+(
+
   x %>%
+  modify(DV, title = sub('Plasma','Plasma\n',label)) %>%
   ggplot(
     aes(IPRED, DV, color = ACTARM, shape = ACTARM)
   ) + 
@@ -162,7 +163,7 @@ trendpair <- function(
   geom_abline(aes(slope = 1, intercept = 0)) +
   isometric()
 
-  #) %>% devsize(3,3,verbose = T)
+  ) # %>% devsize(1.5, 1.5,verbose = T)
 
 ```
 
