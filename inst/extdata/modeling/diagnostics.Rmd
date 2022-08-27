@@ -230,23 +230,23 @@ x %>% isopair(DV, PRED, DV, IPRED)
 x %>% isopair(DV, IPRED, DV, IPRED, trans = c('identity','log10'))
 ```
 
-## Individual Weighted Residuals vs Time
+## Conditional Weighted Residuals vs Time
 
-```{r  IWRES-TIME, fig.width = 3.65, fig.height = 3.52, fig.cap = "x %>% trendplot(IWRES, TIME) + symmetric()"}
-x %>% trendplot(IWRES, TIME) + symmetric() #%>% devsize(3,3,verbose = T)
+```{r  CWRES-TIME, fig.width = 3.65, fig.height = 3.52, fig.cap = "x %>% trendplot(CWRES, TIME) + symmetric()"}
+x %>% trendplot(CWRES, TIME) + symmetric() #%>% devsize(3,3,verbose = T)
 ```
 
-## Individual Weighted Residuals vs Time, Untransformed and Log-log
+## Conditional Weighted Residuals vs Time, Untransformed and Log-log
 
-```{r  IWRES-TIME-IWRES-TIME-untrans-log, fig.width = 7.3, fig.height = 3.52, fig.cap = "x %>% trendpair(IWRES, TIME, IWRES, TIME, trans2 = c('identity', 'log10'), symmetric = TRUE)"}
-x %>% trendpair(IWRES, TIME, IWRES, TIME, trans2 = c('identity', 'log10'), symmetric = TRUE)
+```{r  CWRES-TIME-CWRES-TIME-untrans-log, fig.width = 7.3, fig.height = 3.52, fig.cap = "x %>% trendpair(CWRES, TIME, CWRES, TIME, trans2 = c('identity', 'log10'), symmetric = TRUE)"}
+x %>% trendpair(CWRES, TIME, CWRES, TIME, trans2 = c('identity', 'log10'), symmetric = TRUE)
 ```
 
-## Individual Weighted Residuals vs Time, Full Grid vs Horizontal Grid
+## Conditional Weighted Residuals vs Time, Full Grid vs Horizontal Grid
 
-```{r  IWRES-TIME-IWRES-TIME-horizonal-grid, fig.width = 7.3, fig.height = 3.52 }
+```{r  CWRES-TIME-CWRES-TIME-horizonal-grid, fig.width = 7.3, fig.height = 3.52 }
 multiplot(
-x %>% trendplot(IWRES, TIME)+ 
+x %>% trendplot(CWRES, TIME)+ 
   scale_y_continuous(
     breaks = function(x)seq(
       from = round(x[[1]]), 
@@ -254,7 +254,7 @@ x %>% trendplot(IWRES, TIME)+
     )
   ) + 
   symmetric(),
-x %>% trendplot(IWRES, TIME) + 
+x %>% trendplot(CWRES, TIME) + 
   theme(
     panel.grid.major.x = element_blank(), 
     panel.grid.minor.x = element_blank()
@@ -268,12 +268,12 @@ x %>% trendplot(IWRES, TIME) +
 )
 ```
 
-## Individual Weighted Residuals vs Time, Various Horizontal Reference Lines
+## Conditional Weighted Residuals vs Time, Various Horizontal Reference Lines
 
-```{r  IWRES-TIME-IWRES-TIME-reference-lines, fig.width = 7.3, fig.height = 3.52}
+```{r  CWRES-TIME-CWRES-TIME-reference-lines, fig.width = 7.3, fig.height = 3.52}
 multiplot(
 x %>% 
-  trendplot(IWRES, TIME) + 
+  trendplot(CWRES, TIME) + 
   geom_hline(yintercept = c(2,4,-2,-4), linetype = 'dashed') + 
   scale_y_continuous(
     breaks = function(x)seq(
@@ -282,7 +282,7 @@ x %>%
     )
   ) + symmetric()
 ,
-x %>% trendplot(IWRES, TIME) + 
+x %>% trendplot(CWRES, TIME) + 
   geom_hline(yintercept = c(2,5,-2,-5), linetype = 'dashed') + 
     scale_y_continuous(
     # breaks = function(x)seq(
@@ -324,6 +324,7 @@ x %>% trendplot(IWRES, TIME) +
 )  #%>% devsize(1,1, verbose = T)
 
 ```
+
 
 ## Individual Plots -- Detailed Panel Strip
 
@@ -370,3 +371,52 @@ x %>% trendplot(IWRES, TIME) +
 ) # %>% devsize(1,1, verbose = T)
 
 ```
+
+
+## Individual Plots -- Single Panel Strip
+
+```{r  individuals-detail-single, fig.width = 8.02, fig.height = 5.05}
+(
+  x %>% 
+  filter(desolve(ID) <= 1029) %>%
+  mutate(Profile = as.factor(dosenum)) %>%
+  ggplot(aes(x = TAD, group = dosenum)) +
+  geom_point(
+    aes(
+      y = DV, 
+      shape = Profile
+    ),    
+    alpha = 1, 
+    color = "#144A90") + # blue
+  geom_line(
+    aes(y = PRED),  
+    alpha = 1, 
+    color = "#AA00FF" # violet
+  ) + 
+  geom_line(
+    aes(y = IPRED), 
+    alpha = 1, 
+    color = "#4CB54F" # green
+  ) + 
+  theme_bw() +
+  facet_wrap(
+    . ~ paste(
+      'Study 01',
+      ID,
+      gsub(
+        'Xanomeline','',
+        as.character(ACTARM)
+      ), 
+      'Transdermal'
+    ), 
+    .cols = label_wrap_gen, 
+    ncol = 7
+  ) +
+  theme(
+    legend.position  = 'top'#, 
+    #strip.background = element_rect(linetype = 'blank')
+  )
+) # %>% devsize(1,1, verbose = T)
+
+```
+

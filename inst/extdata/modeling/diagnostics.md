@@ -1,7 +1,7 @@
 ---
 title:  Xanomeline Model Diagnostic Plots
 author: Tim Bergsma
-date: "26 August, 2022"
+date: "27 August, 2022"
 output:
   powerpoint_presentation:
     toc: FALSE
@@ -50,21 +50,21 @@ editor_options:
 
 ![x %>% isopair(DV, IPRED, DV, IPRED, trans = c('identity','log10'))](diagnostics_files/figure-pptx/DV-IPRED-DV-IPRED-notrans-log-1.png)
 
-## Individual Weighted Residuals vs Time
+## Conditional Weighted Residuals vs Time
 
-![x %>% trendplot(IWRES, TIME) + symmetric()](diagnostics_files/figure-pptx/IWRES-TIME-1.png)
+![x %>% trendplot(CWRES, TIME) + symmetric()](diagnostics_files/figure-pptx/CWRES-TIME-1.png)
 
-## Individual Weighted Residuals vs Time, Untransformed and Log-log
+## Conditional Weighted Residuals vs Time, Untransformed and Log-log
 
-![x %>% trendpair(IWRES, TIME, IWRES, TIME, trans2 = c('identity', 'log10'), symmetric = TRUE)](diagnostics_files/figure-pptx/IWRES-TIME-IWRES-TIME-untrans-log-1.png)
+![x %>% trendpair(CWRES, TIME, CWRES, TIME, trans2 = c('identity', 'log10'), symmetric = TRUE)](diagnostics_files/figure-pptx/CWRES-TIME-CWRES-TIME-untrans-log-1.png)
 
-## Individual Weighted Residuals vs Time, Full Grid vs Horizontal Grid
+## Conditional Weighted Residuals vs Time, Full Grid vs Horizontal Grid
 
-![](diagnostics_files/figure-pptx/IWRES-TIME-IWRES-TIME-horizonal-grid-1.png)<!-- -->
+![](diagnostics_files/figure-pptx/CWRES-TIME-CWRES-TIME-horizonal-grid-1.png)<!-- -->
 
-## Individual Weighted Residuals vs Time, Various Horizontal Reference Lines
+## Conditional Weighted Residuals vs Time, Various Horizontal Reference Lines
 
-![](diagnostics_files/figure-pptx/IWRES-TIME-IWRES-TIME-reference-lines-1.png)<!-- -->
+![](diagnostics_files/figure-pptx/CWRES-TIME-CWRES-TIME-reference-lines-1.png)<!-- -->
 
 ## Individual Plots
 
