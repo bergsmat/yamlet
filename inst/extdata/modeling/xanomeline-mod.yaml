@@ -28,3 +28,7 @@ KA: [ Absorption Rate Constant, 1/h ]
 kel: [ Elimination Rate Constant, 1/h ]
 tad: [ Time Since Most Recent Dose, h ]
 dosenum: Dose Number
+WRES: [ Weighted Residual, ng/mL ]
+CRES: [ Conditional Residual, ng/mL ]
+CWRES: [ Conditional Weighted Residual, ng/mL ]
+CPRED: [ Conditional Prediction, ng/mL ]
