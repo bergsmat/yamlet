@@ -11,7 +11,8 @@ ggplot_isometric
 }
 \description{
 Enforces isometric plot design:  aspect ratio of 1, identical 
-ranges for x and y axes.
+ranges for x and y axes. Can be used meaningfully with
+\code{+ facet_wrap(scales = 'free' ...)}.
 }
 \examples{
 library(magrittr)

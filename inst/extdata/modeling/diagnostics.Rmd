@@ -153,14 +153,44 @@ trendpair <- function(
   ggplot(
     aes(IPRED, DV, color = ACTARM, shape = ACTARM)
   ) + 
-    geom_point(alpha = .5, size = 1.5) +
-    facet_wrap(~VISIT, ncol = 3) +
+  geom_point(alpha = .5, size = 1.5) +
+  facet_wrap(
+    ~VISIT, 
+    ncol = 3, 
+    scales = 'free'
+  ) +
   theme_bw() +
   theme(
     legend.position = 'top', 
     legend.title = element_blank()
   ) +
   geom_abline(aes(slope = 1, intercept = 0)) +
+  isometric()
+
+  ) # %>% devsize(1.5, 1.5,verbose = T)
+
+```
+
+## Observations vs Individual Predictions by Arm and Visit, and for scales = 'free'
+
+```{r  DV-IPRED-ACTARM-VISIT-GRID, fig.width = 10.84, fig.height = 3.83, fig.cap = 'DV-IPRED-ACTARM-VISIT-GRID.png'}
+
+multiplot(
+  x %>%
+  ggplot(aes(IPRED, DV, color = ACTARM, shape = ACTARM)) + 
+  geom_point(alpha = 0.3) +
+  geom_abline(aes(slope = 1, intercept = 0)) +
+  facet_grid(ACTARM ~ VISIT) +
+  theme_bw() +
+  theme(legend.position = 'none') +
+  isometric(),
+  x %>%
+  ggplot(aes(IPRED, DV, color = ACTARM, shape = ACTARM)) + 
+  geom_point(alpha = 0.3) +
+  geom_abline(aes(slope = 1, intercept = 0)) +
+  facet_grid(ACTARM ~ VISIT, scale = 'free') +
+  theme_bw() +
+  theme(legend.position = 'none') +
   isometric()
 
   ) # %>% devsize(1.5, 1.5,verbose = T)
@@ -255,10 +285,10 @@ x %>%
 x %>% trendplot(IWRES, TIME) + 
   geom_hline(yintercept = c(2,5,-2,-5), linetype = 'dashed') + 
     scale_y_continuous(
-    breaks = function(x)seq(
-      from = round(x[[1]]), 
-      to = round(x[[2]])
-    )
+    # breaks = function(x)seq(
+    #   from = round(x[[1]]), 
+    #   to = round(x[[2]])
+    # )
   ) + symmetric()
 )
 ```
@@ -334,8 +364,8 @@ x %>% trendplot(IWRES, TIME) +
     ncol = 7
   ) +
   theme(
-    legend.position  = 'top', 
-    strip.background = element_rect(linetype = 'blank')
+    legend.position  = 'top'#, 
+    #strip.background = element_rect(linetype = 'blank')
   )
 ) # %>% devsize(1,1, verbose = T)
 

@@ -26,6 +26,10 @@ editor_options:
 
 ![DV-IPRED-ACTARM-VISIT.png](diagnostics_files/figure-pptx/DV-IPRED-ACTARM-VISIT-1.png)
 
+## Observations vs Individual Predictions by Arm and Visit, and for scales = 'free'
+
+![DV-IPRED-ACTARM-VISIT-GRID.png](diagnostics_files/figure-pptx/DV-IPRED-ACTARM-VISIT-GRID-1.png)
+
 ## Observations vs Individual Predictions
 
 ![x %>% isoplot(DV, PRED)](diagnostics_files/figure-pptx/DV-PRED-1.png)
