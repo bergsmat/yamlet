@@ -25,7 +25,7 @@ x %<>% filter(ACTARM > 0)
 x %<>% filter(EVID == 1 | MDV == 0)
 x %>% group_by(ID, TIME, EVID) %>% status
 x %>% head
-set.seed(0)
+# set.seed(0)
 # mod <- nlmixr(
 #   data = x,
 #   est = 'saem',
@@ -49,6 +49,7 @@ set.seed(0)
 #     })
 #   }
 # )
+# mod %<>% addCwres
 # mod
 # ── nlmixr SAEM(ODE); OBJF not calculated fit ──────────────────────────────────────────────────────────────────────────────────
 # 
@@ -89,21 +90,25 @@ set.seed(0)
 # mod %<>% decorate(x)
 # mod %>% decorations(-ID)
 # mod %<>% decorate('
-# PRED: [Population Prediction, ng/mL]
-# RES: [ Residual, ng/mL]
-# IPRED: [Individual Prediction, ng/mL]
-# IRES: [ Individual Residual, ng/mL]
-# IWRES: [ Individual Weighted Residual, ng/mL]
-# eta.Vc: [ Individual Random Effect on Vc ]
-# cp: [ Plasma Concentration, ng/mL]
-# depot: [Drug Amount in Depot, µg]
-# centr: [Drug Amount in Central, µg]
-# Cl: [ Apparent Clearance, L/h]
-# Vc: [ Apparent Volume, L]
-# KA: [ Absorption Rate Constant, 1/h]
-# kel: [ Elimination Rate Constant, 1/h]
-# tad: [Time Since Most Recent Dose, h]
-# dosenum: Dose Number
+#   eta.Vc: [ Individual Random Effect on Vc ]
+#   PRED:   [Population Prediction, ng/mL ]
+#   RES:    [ Residual, ng/mL ]
+#   IPRED:  [ Individual Prediction, ng/mL ]
+#   IRES:   [ Individual Residual, ng/mL ]
+#   IWRES:  [ Individual Weighted Residual, ng/mL ]
+#   cp:     [ Plasma Concentration, ng/mL ]
+#   depot:  [ Drug Amount in Depot, µg ]
+#   centr:  [ Drug Amount in Central, µg ]
+#   Cl:     [ Apparent Clearance, L/h ]
+#   Vc:     [ Apparent Volume, L ]
+#   KA:     [ Absorption Rate Constant, 1/h ]
+#   kel:    [ Elimination Rate Constant, 1/h ]
+#   tad:    [ Time Since Most Recent Dose, h ]
+#   dosenum:  Dose Number
+#   WRES:   [ Weighted Residual, ng/mL ]
+#   CRES:   [ Conditional Residual, ng/mL ]
+#   CWRES:  [ Conditional Weighted Residual, ng/mL ]
+#   CPRED:  [ Conditional Prediction, ng/mL ]
 # ')
 # mod %>% io_csv('mod.csv', gz = TRUE)
 mod <- io_csv('mod.csv', gz = TRUE)
