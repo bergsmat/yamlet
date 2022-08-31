@@ -24,6 +24,8 @@ ggplot(aes(x, y)) + geom_point() + isometric()
 ggplot_add.ggplot_isometric
 
 Other isometric: 
+\code{\link{autostrip}()},
+\code{\link{ggplot_add.ggplot_autostrip}()},
 \code{\link{ggplot_add.ggplot_isometric}()},
 \code{\link{ggplot_add.ggplot_symmetric}()},
 \code{\link{symmetric}()}

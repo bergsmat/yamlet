@@ -19,6 +19,8 @@ example(symmetric)
 symmetric
 
 Other isometric: 
+\code{\link{autostrip}()},
+\code{\link{ggplot_add.ggplot_autostrip}()},
 \code{\link{ggplot_add.ggplot_isometric}()},
 \code{\link{isometric}()},
 \code{\link{symmetric}()}

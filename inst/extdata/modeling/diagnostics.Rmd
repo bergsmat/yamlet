@@ -376,47 +376,25 @@ x %>% trendplot(CWRES, TIME) +
 ## Individual Plots -- Single Panel Strip
 
 ```{r  individuals-detail-single, fig.width = 8.02, fig.height = 5.05}
-(
-  x %>% 
+
+x %>% 
   filter(desolve(ID) <= 1029) %>%
   mutate(Profile = as.factor(dosenum)) %>%
+  # mutate(STUDY = 'Study 01') %>%
+  # mutate(ROUTE = 'Transdermal') %>%
+  mutate(ACTARM = sub('Xanomeline','', ACTARM)) %>%
   ggplot(aes(x = TAD, group = dosenum)) +
-  geom_point(
-    aes(
-      y = DV, 
-      shape = Profile
-    ),    
-    alpha = 1, 
-    color = "#144A90") + # blue
-  geom_line(
-    aes(y = PRED),  
-    alpha = 1, 
-    color = "#AA00FF" # violet
-  ) + 
-  geom_line(
-    aes(y = IPRED), 
-    alpha = 1, 
-    color = "#4CB54F" # green
-  ) + 
-  theme_bw() +
+  geom_point(aes(y = DV, shape = Profile),alpha = 1, color = "#144A90") +
+  geom_line(aes(y = PRED), alpha = 1, color = "#AA00FF") + 
+  geom_line(aes(y = IPRED), alpha = 1, color = "#4CB54F") + 
+  theme_bw() + theme(legend.position  = 'top') +
   facet_wrap(
-    . ~ paste(
-      'Study 01',
-      ID,
-      gsub(
-        'Xanomeline','',
-        as.character(ACTARM)
-      ), 
-      'Transdermal'
-    ), 
-    .cols = label_wrap_gen, 
+    . ~ paste('Study 01',ID,ACTARM,'Transdermal'),
+    labeller = label_wrap_gen(10),
     ncol = 7
-  ) +
-  theme(
-    legend.position  = 'top'#, 
-    #strip.background = element_rect(linetype = 'blank')
   )
-) # %>% devsize(1,1, verbose = T)
+
+
 
 ```
 

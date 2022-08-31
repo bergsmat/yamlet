@@ -1,3 +1,4 @@
+globalVariables(c('_yamlet_ymin','_yamlet_ymax','_yamlet_xmin','_yamlet_xmax'))
 #' Enforce Isometry
 #' 
 #' Enforces isometric plot design:  aspect ratio of 1, identical 
@@ -39,17 +40,17 @@ ggplot_add.ggplot_isometric <- function(object, plot, object_name){
   grid_facets <- c(grid_facet_col, grid_facet_row)
   facets <- character(0)
   if(!is.null(wrap_facet)){
-    plot$data %<>% group_by(!!!wrap_facet)
+    plot$data <-  group_by(plot$data, !!!wrap_facet)
   }
   if(!is.null(grid_facets)){
-    plot$data %<>% group_by(!!!sapply(facets, sym))
+    plot$data <- group_by(plot$data, !!!sapply(facets, sym))
   }
   # calculate x,y min,max by group if any
   # https://stackoverflow.com/questions/46131829/unquote-the-variable-name-on-the-right-side-of-mutate-function-in-dplyr
-  plot$data %<>% mutate( `_yamlet_ymin` = min(na.rm = TRUE, !!rlang::sym(plot$labels$y)))
-  plot$data %<>% mutate( `_yamlet_ymax` = max(na.rm = TRUE, !!rlang::sym(plot$labels$y)))
-  plot$data %<>% mutate( `_yamlet_xmin` = min(na.rm = TRUE, !!rlang::sym(plot$labels$x)))
-  plot$data %<>% mutate( `_yamlet_xmax` = max(na.rm = TRUE, !!rlang::sym(plot$labels$x)))
+  plot$data <- mutate(plot$data, `_yamlet_ymin` = min(na.rm = TRUE, !!rlang::sym(plot$labels$y)))
+  plot$data <- mutate(plot$data, `_yamlet_ymax` = max(na.rm = TRUE, !!rlang::sym(plot$labels$y)))
+  plot$data <- mutate(plot$data, `_yamlet_xmin` = min(na.rm = TRUE, !!rlang::sym(plot$labels$x)))
+  plot$data <- mutate(plot$data, `_yamlet_xmax` = max(na.rm = TRUE, !!rlang::sym(plot$labels$x)))
  
   plot <- plot + geom_blank(aes(y = `_yamlet_xmin`))
   plot <- plot + geom_blank(aes(y = `_yamlet_xmax`))
