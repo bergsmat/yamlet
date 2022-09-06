@@ -1,7 +1,7 @@
 #' Scale Striptext
 #' 
 #' Scales striptext font size by number of striptext lines.
-#' Relative font size is adjusted on a per-axis
+#' Relative font size is adjusted on a per-label
 #' basis using \code{(1/x)^n}, where 
 #' \code{x} is the number of striptext lines and
 #' \code{n} is in the interval [0, 1]. 
@@ -87,7 +87,7 @@
 #'       .default = label_wrap_gen(10)
 #'     )
 #'   ) 
-#'   
+#'   p
 #'   p + scale_striptext(0)
 #'   p + scale_striptext(0.5)
 #'   p + scale_striptext(1)
@@ -150,13 +150,63 @@ ggplot_add.ggplot_scale_striptext <- function(
     plot, 
     object_name
   ){
-  lines <- lines(striptext(plot))
-  lines[lines == 0] <- 1
-  scale = (1/lines)^object
+  # lines <- lines(striptext(plot))
+  # lines[lines == 0] <- 1
+  # scale = (1/lines)^object
   plot = plot + theme(
-    strip.text.x = element_text(size = rel(scale[[1]])),
-    strip.text.y = element_text(size = rel(scale[[2]]))
+    strip.text = element_text_refit(scale = object)
   )
   return(plot)
+}
+
+#' Create Grob for Refit Text
+#' 
+#' Creates a grob for refit text. Divides \code{size} by number 
+#' of lines, and raises the result to the power of \code{scale}.
+#' @importFrom stringr str_count
+#' @importFrom ggplot2 element_grob
+#' @importFrom rlang %||%
+#' @export
+#' @return grob
+#' @family isometric
+#' @keywords internal
+#' @param element passed to \code{\link{ggplot2::element_grob}}
+#' @param label passed to \code{\link{ggplot2::element_grob}}
+#' @param size passed to \code{\link{ggplot2::element_grob}}
+#' @param scale a numeric between 0 and 1, inclusive
+element_grob.element_text_refit <- function(
+    element,
+    label = '',
+    size = NULL,
+    scale = getOption('element_text_refit_scale', 0.5),
+    ...
+){
+  # following Teun van den Brand, see:
+  # https://github.com/tidyverse/ggplot2/issues/4979
+  n_lines <- stringr::str_count(label, pattern = '\n') + 1
+  size <- rep_len(size %||% element$size, length(n_lines)) / n_lines
+  stopifnot(
+    length(scale) == 1,
+    is.finite(scale),
+    scale >= 0,
+    scale <= 1
+  )
+  size <- size^scale # added by TTB
+  class(element) <- setdiff(class(element), 'element_text_refit')
+  element_grob(element, label = label, size = size, ...)
+}
+
+#' Create element_text_refit
+#' 
+#' Creates instance of class 'element_text_refit'.
+#' See also \code{\link{element_grob.element_text_refit}}.
+#' @export
+#' @return element_text_refit
+#' @param ... passed to \code{\link{ggplot2::element_text}}
+#' @importFrom ggplot2 element_text
+element_text_refit <- function(...,  scale){
+  elem <- element_text(...)
+  class(elem) <- c('element_text_refit', class(elem))
+  elem
 }
 
