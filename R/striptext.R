@@ -129,6 +129,7 @@ striptext <- function(x, ...)UseMethod('striptext')
 #' @examples
 #' example(striptext)
 striptext.ggplot <- function(x, ...) {
+  # https://github.com/tidyverse/ggplot2/issues/4979
   suppressMessages(
     trace(
       what = ggplot2:::build_strip,
