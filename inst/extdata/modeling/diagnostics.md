@@ -1,7 +1,7 @@
 ---
 title:  Xanomeline Model Diagnostic Plots
 author: Tim Bergsma
-date: "31 August, 2022"
+date: "06 September, 2022"
 output:
   powerpoint_presentation:
     toc: FALSE
@@ -76,7 +76,11 @@ editor_options:
 ![](diagnostics_files/figure-pptx/individuals-detail-1.png)<!-- -->
 
 
-## Individual Plots -- Single Panel Strip
+## Individual Plots -- Unscaled Panel Strip
 
-![](diagnostics_files/figure-pptx/individuals-detail-single-1.png)<!-- -->
+![](diagnostics_files/figure-pptx/individuals-detail-unscaled-1.png)<!-- -->
+
+## Individual Plots -- Scaled Panel Strip
+
+![p + scale_striptext()](diagnostics_files/figure-pptx/individuals-detail-scaled-1.png)
 

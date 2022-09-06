@@ -373,11 +373,11 @@ x %>% trendplot(CWRES, TIME) +
 ```
 
 
-## Individual Plots -- Single Panel Strip
+## Individual Plots -- Unscaled Panel Strip
 
-```{r  individuals-detail-single, fig.width = 8.02, fig.height = 5.05}
+```{r  individuals-detail-unscaled, fig.width = 7.99, fig.height = 4.41, }
 
-x %>% 
+p <- x %>% 
   filter(desolve(ID) <= 1029) %>%
   mutate(Profile = as.factor(dosenum)) %>%
   # mutate(STUDY = 'Study 01') %>%
@@ -393,7 +393,17 @@ x %>%
     labeller = label_wrap_gen(10),
     ncol = 7
   )
+p
 
+
+```
+
+## Individual Plots -- Scaled Panel Strip
+
+```{r  individuals-detail-scaled, fig.width = 8.01, fig.height = 3.88, fig.cap = 'p + scale_striptext()'}
+
+
+p + scale_striptext()
 
 
 ```

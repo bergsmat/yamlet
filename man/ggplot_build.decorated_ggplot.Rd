@@ -8,8 +8,8 @@
   x,
   ...,
   search = getOption("decorated_ggplot_search", c("expression", "title", "label")),
-  discrete = getOption("decorated_ggplot_discrete", c("colour", "fill", "size",
-    "shape", "linetype", "alpha")),
+  discrete = getOption("decorated_ggplot_discrete", c("colour", "fill", "size", "shape",
+    "linetype", "alpha")),
   drop = getOption("decorated_ggplot_drop", TRUE)
 )
 }

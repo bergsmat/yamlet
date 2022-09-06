@@ -23,11 +23,11 @@ ggplot(aes(x, y)) + geom_point() + symmetric()
 ggplot_add.ggplot_symmetric
 
 Other isometric: 
-\code{\link{autostrip}()},
-\code{\link{ggplot_add.ggplot_autostrip}()},
 \code{\link{ggplot_add.ggplot_isometric}()},
+\code{\link{ggplot_add.ggplot_scale_striptext}()},
 \code{\link{ggplot_add.ggplot_symmetric}()},
-\code{\link{isometric}()}
+\code{\link{isometric}()},
+\code{\link{scale_striptext}()}
 }
 \concept{isometric}
 \keyword{internal}

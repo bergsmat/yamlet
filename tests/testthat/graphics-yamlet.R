@@ -131,6 +131,6 @@ test_that('print method for decorated_ggplot supports colour, fill, size, shape,
 # notice that all aesthetics are supported.  Seems like under certain circumstances,
 # there is a warning not to use discrete scale for continuous vars.
 
-test_that('print method for decorate_ggplot respects aesthetics with assignment priority of sort-unique, guide, factor levels, codelist'{
+test_that('print method for decorate_ggplot respects aesthetics with assignment priority of sort-unique, guide, factor levels, codelist',{
   
 })
