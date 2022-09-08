@@ -25,9 +25,7 @@ ggplot_add.ggplot_isometric
 
 Other isometric: 
 \code{\link{ggplot_add.ggplot_isometric}()},
-\code{\link{ggplot_add.ggplot_scale_striptext}()},
 \code{\link{ggplot_add.ggplot_symmetric}()},
-\code{\link{scale_striptext}()},
 \code{\link{symmetric}()}
 }
 \concept{isometric}

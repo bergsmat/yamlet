@@ -24,10 +24,8 @@ ggplot_add.ggplot_symmetric
 
 Other isometric: 
 \code{\link{ggplot_add.ggplot_isometric}()},
-\code{\link{ggplot_add.ggplot_scale_striptext}()},
 \code{\link{ggplot_add.ggplot_symmetric}()},
-\code{\link{isometric}()},
-\code{\link{scale_striptext}()}
+\code{\link{isometric}()}
 }
 \concept{isometric}
 \keyword{internal}

@@ -19,10 +19,8 @@ example(isometric)
 isometric
 
 Other isometric: 
-\code{\link{ggplot_add.ggplot_scale_striptext}()},
 \code{\link{ggplot_add.ggplot_symmetric}()},
 \code{\link{isometric}()},
-\code{\link{scale_striptext}()},
 \code{\link{symmetric}()}
 }
 \concept{isometric}
