@@ -17,8 +17,12 @@
 Find common type for dvec, dvec.
 }
 \examples{
-vctrs::vec_ptype2(as_dvec('bar'), as_dvec(1))
-vctrs::vec_ptype2(as_dvec(1), as_dvec('foo'))
+str(vctrs::vec_ptype2(as_dvec(1L), as_dvec(1)))
+str(vctrs::vec_ptype2(as_dvec(1), as_dvec(1L)))
+str(vctrs::vec_ptype2(as_dvec(TRUE), as_dvec(1L)))
+str(vctrs::vec_ptype2(as_dvec(TRUE), as_dvec(1)))
+str(vctrs::vec_ptype2(as_dvec(1), as_dvec(1+0i)))
+
 vctrs::vec_ptype2(
   structure(as_dvec(1), guide = 'mg'),
   structure(as_dvec(1), guide = 'kg')

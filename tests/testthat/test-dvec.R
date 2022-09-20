@@ -299,6 +299,184 @@ test_that('left_join.decorated works for y; tibble, and data.frame, and decorate
   expect_identical(3, x %>% left_join(y) %$% sex %>% sum)
 })
 
+test_that('casting to dvec always gives dvec',{
+  
+  expect_true(inherits(vec_cast(TRUE, as_dvec(TRUE)), 'dvec'))
+  expect_true(inherits(vec_cast(TRUE, as_dvec(1L)), 'dvec'))
+  expect_true(inherits(vec_cast(TRUE, as_dvec(1)), 'dvec'))
+  expect_true(inherits(vec_cast(TRUE, as_dvec(1+0i)), 'dvec'))
+  expect_error(inherits(vec_cast(TRUE, as_dvec('1')), 'dvec'))
+  
+  expect_true(inherits(vec_cast(1L, as_dvec(TRUE)), 'dvec'))
+  expect_true(inherits(vec_cast(1L, as_dvec(1L)), 'dvec'))
+  expect_true(inherits(vec_cast(1L, as_dvec(1)), 'dvec'))
+  expect_true(inherits(vec_cast(1L, as_dvec(1+0i)), 'dvec'))
+  expect_error(inherits(vec_cast(1L, as_dvec('1')), 'dvec'))
+  
+  expect_true(inherits(vec_cast(1, as_dvec(TRUE)), 'dvec'))
+  expect_true(inherits(vec_cast(1, as_dvec(1L)), 'dvec'))
+  expect_true(inherits(vec_cast(1, as_dvec(1)), 'dvec'))
+  expect_true(inherits(vec_cast(1, as_dvec(1+0i)), 'dvec'))
+  expect_error(inherits(vec_cast(1, as_dvec('1')), 'dvec'))
+  
+  expect_error(inherits(vec_cast(1+0i, as_dvec(TRUE)), 'dvec'))
+  expect_error(inherits(vec_cast(1+0i, as_dvec(1L)), 'dvec'))
+  expect_error(inherits(vec_cast(1+0i, as_dvec(1)), 'dvec'))
+  expect_true(inherits(vec_cast(1+0i, as_dvec(1+0i)), 'dvec'))
+  expect_error(inherits(vec_cast(1+0i, as_dvec('1')), 'dvec'))
+  
+  expect_error(inherits(vec_cast('1', as_dvec(TRUE)), 'dvec'))
+  expect_error(inherits(vec_cast('1', as_dvec(1L)), 'dvec'))
+  expect_error(inherits(vec_cast('1', as_dvec(1)), 'dvec'))
+  expect_error(inherits(vec_cast('1', as_dvec(1+0i)), 'dvec'))
+  expect_true(inherits(vec_cast('1', as_dvec('1')), 'dvec'))
+  
+})
+test_that('casting from dvec never gives dvec',{
+  
+  expect_false(inherits(vec_cast(as_dvec(TRUE), TRUE), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1L), TRUE), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1), TRUE), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1+0i), TRUE), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec('1'), TRUE), 'dvec'))
+  
+  expect_false(inherits(vec_cast(as_dvec(TRUE), 1L), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1L), 1L), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1), 1L), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1+0i), 1L), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec('1'), 1L), 'dvec'))
+  
+  expect_false(inherits(vec_cast(as_dvec(TRUE), 1), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1L), 1), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1), 1), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1+0i), 1), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec('1'), 1), 'dvec'))
+  
+  expect_false(inherits(vec_cast(as_dvec(TRUE), 1+0i), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1L), 1+0i), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1), 1+0i), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1+0i), 1+0i), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec('1'), 1+0i), 'dvec'))
+  
+  expect_false(inherits(vec_cast(as_dvec(TRUE), '1'), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1L), '1'), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1), '1'), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec(1+0i), '1'), 'dvec'))
+  expect_false(inherits(vec_cast(as_dvec('1'), '1'), 'dvec'))
+  
+})
+test_that('casting from dvec gives expected class',{
+  
+  expect_true(inherits(vec_cast(as_dvec(TRUE), TRUE), 'logical'))
+  expect_true(inherits(vec_cast(as_dvec(1L), TRUE), 'logical'))
+  expect_true(inherits(vec_cast(as_dvec(1), TRUE), 'logical'))
+  expect_true(inherits(vec_cast(as_dvec(1+0i), TRUE), 'logical'))
+  expect_true(inherits(vec_cast(as_dvec('1'), TRUE), 'logical'))
+  
+  expect_true(inherits(vec_cast(as_dvec(TRUE), 1L), 'integer'))
+  expect_true(inherits(vec_cast(as_dvec(1L), 1L), 'integer'))
+  expect_true(inherits(vec_cast(as_dvec(1), 1L), 'integer'))
+  expect_true(inherits(vec_cast(as_dvec(1+0i), 1L), 'integer'))
+  expect_true(inherits(vec_cast(as_dvec('1'), 1L), 'integer'))
+  
+  expect_true(inherits(vec_cast(as_dvec(TRUE), 1), 'numeric'))
+  expect_true(inherits(vec_cast(as_dvec(1L), 1), 'numeric'))
+  expect_true(inherits(vec_cast(as_dvec(1), 1), 'numeric'))
+  expect_true(inherits(vec_cast(as_dvec(1+0i), 1), 'numeric'))
+  expect_true(inherits(vec_cast(as_dvec('1'), 1), 'numeric'))
+  
+  expect_true(inherits(vec_cast(as_dvec(TRUE), 1+0i), 'complex'))
+  expect_true(inherits(vec_cast(as_dvec(1L), 1+0i), 'complex'))
+  expect_true(inherits(vec_cast(as_dvec(1), 1+0i), 'complex'))
+  expect_true(inherits(vec_cast(as_dvec(1+0i), 1+0i), 'complex'))
+  expect_true(inherits(vec_cast(as_dvec('1'), 1+0i), 'complex'))
+  
+  expect_true(inherits(vec_cast(as_dvec(TRUE), '1'), 'character'))
+  expect_true(inherits(vec_cast(as_dvec(1L), '1'), 'character'))
+  expect_true(inherits(vec_cast(as_dvec(1), '1'), 'character'))
+  expect_true(inherits(vec_cast(as_dvec(1+0i), '1'), 'character'))
+  expect_true(inherits(vec_cast(as_dvec('1'), '1'), 'character'))
+  
+})
 
+test_that('dvec int and double are coerced compatibly during merge',{
+  library(vctrs)
+  library(yamlet)
+  library(dplyr)
+  # https://github.com/r-lib/vctrs/issues/1669
+  # <dvec<int>> + <dbl> = <dvec<dbl>>
+  ptype <- vec_ptype2(as_dvec(1L), 1)
+  str(ptype)
+  #>  'dvec' num(0)
+  expect_true(is.double(ptype))
+  
+  # try casting both inputs to the <dvec<int>> common type:
+  # - <dvec<int>> -> <dvec<dbl>>
+  # - <dbl> -> <dvec<dbl>> 
+  str(vec_cast_common(as_dvec(1L), 1, .to = ptype))
+  #> List of 2
+  #>  $ : 'dvec' num 1
+  #>  $ : 'dvec' num 1
+  
 
-
+  a <- left_join( # ok
+    data.frame(ID = as_dvec(1)),
+    data.frame(ID = 1, TIME = 0)
+  )
+  
+  b <- left_join( # ok
+    data.frame(ID = as_dvec(1L)),
+    data.frame(ID = 1L, TIME = 0)
+  )
+  
+  c <- left_join( # ok!  calls vec_ptype2.dvec.double()
+    data.frame(ID = as_dvec(1L)),
+    data.frame(ID = 1, TIME = 0)
+  )
+  
+  d <- left_join( # no match, calls vec_ptype2.dvec.integer()
+    data.frame(ID = as_dvec(1)),
+    data.frame(ID = 1L, TIME = 0)
+  )
+  
+  expect_false(any(is.na(a$TIME)))
+  expect_false(any(is.na(b$TIME)))
+  expect_false(any(is.na(c$TIME)))
+  expect_false(any(is.na(d$TIME)))
+  
+  a <- left_join( # ok
+    data.frame(ID = 1),
+    data.frame(ID = as_dvec(1), TIME = 0)
+  )
+  
+  b <- left_join( # ok
+    data.frame(ID = 1L),
+    data.frame(ID = as_dvec(1L), TIME = 0)
+  )
+  
+  c <- left_join( # ok!  calls vec_ptype2.dvec.double()
+    data.frame(ID = 1),
+    data.frame(ID = as_dvec(1L), TIME = 0)
+  )
+  
+  d <- left_join( # no match, calls vec_ptype2.dvec.integer()
+    data.frame(ID = 1L),
+    data.frame(ID = as_dvec(1), TIME = 0)
+  )
+  
+  expect_false(any(is.na(a$TIME)))
+  expect_false(any(is.na(b$TIME)))
+  expect_false(any(is.na(c$TIME)))
+  expect_false(any(is.na(d$TIME)))
+  
+  # character not automatically coerced to numeric or vice versa
+  expect_error(
+    left_join(
+      data.frame(ID = 1),
+      data.frame(ID = '1', TIME = 0)
+    )
+  )
+  
+  
+  
+})

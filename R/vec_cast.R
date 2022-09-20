@@ -41,9 +41,9 @@ vec_cast.dvec.dvec <- function(x, to, ...) {
 #' @keywords internal
 #' @export
 vec_cast.dvec.logical <- function(x, to, ...){
-  # to dvec from logical
-  # validate input?
-  as_dvec(x)
+  y <- vec_cast(x, unclass(to))
+  y <- as_dvec(y)
+  y
 }
 
 #' Cast to logical from dvec
@@ -67,7 +67,9 @@ vec_cast.logical.dvec <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.dvec.integer <- function(x, to, ...){
-  as_dvec(x)
+  y <- vec_cast(x, unclass(to))
+  y <- as_dvec(y)
+  y
 }
 
 #' Cast to integer from dvec
@@ -91,7 +93,9 @@ vec_cast.integer.dvec <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.dvec.double <- function(x, to, ...){
-  as_dvec(x)
+  y <- vec_cast(x, unclass(to))
+  y <- as_dvec(y)
+  y
 }
 
 #' Cast to double from dvec
@@ -115,7 +119,9 @@ vec_cast.double.dvec <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.dvec.character <- function(x, to, ...){
-  as_dvec(x)
+  y <- vec_cast(x, unclass(to))
+  y <- as_dvec(y)
+  y
 }
 
 #' Cast to character from dvec
@@ -139,7 +145,9 @@ vec_cast.character.dvec <- function(x, to, ...){
 #' @keywords internal
 #' @export
 vec_cast.dvec.complex <- function(x, to, ...){
-  as_dvec(x)
+  y <- vec_cast(x, unclass(to))
+  y <- as_dvec(y)
+  y
 }
 
 #' Cast to complex from dvec

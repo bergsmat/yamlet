@@ -11,29 +11,23 @@ NULL
 #' @keywords internal
 #' @export
 #' @examples
-#' vctrs::vec_ptype2(as_dvec('bar'), as_dvec(1))
-#' vctrs::vec_ptype2(as_dvec(1), as_dvec('foo'))
+#' str(vctrs::vec_ptype2(as_dvec(1L), as_dvec(1)))
+#' str(vctrs::vec_ptype2(as_dvec(1), as_dvec(1L)))
+#' str(vctrs::vec_ptype2(as_dvec(TRUE), as_dvec(1L)))
+#' str(vctrs::vec_ptype2(as_dvec(TRUE), as_dvec(1)))
+#' str(vctrs::vec_ptype2(as_dvec(1), as_dvec(1+0i)))
+#' 
 #' vctrs::vec_ptype2(
 #'   structure(as_dvec(1), guide = 'mg'),
 #'   structure(as_dvec(1), guide = 'kg')
 #' )
 vec_ptype2.dvec.dvec <- function(x, y, ...) {
-  # following type.convert():
-  # logical > integer > numeric > (complex) > character
   z <- c(x, y)
-  attributes(x) <- attributes(z)
-  attributes(y) <- attributes(z)
-  if(is.character(x)) return(x)
-  if(is.character(y)) return(y)
-  if(is.complex(x))   return(x)
-  if(is.complex(y))   return(y)
-  if(is.double(x))    return(x)
-  if(is.double(y))    return(y)
-  if(is.integer(x))   return(x)
-  if(is.integer(y))   return(y)
-  if(is.logical(x))   return(x)
-  if(is.logical(y))   return(y)
-  stop('unrecognized base type for dvec')
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(unclass(x), unclass(y))
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for dvec, logical
@@ -45,7 +39,12 @@ vec_ptype2.dvec.dvec <- function(x, y, ...) {
 #' @keywords internal
 #' @export
 vec_ptype2.dvec.logical <- function(x, y, ...){
-  x
+  z <- c(x, y)
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(unclass(x), y)
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for logical, dvec
@@ -57,7 +56,12 @@ vec_ptype2.dvec.logical <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.logical.dvec <- function(x, y, ...){
-  y
+  z <- c(x, y)
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(x, unclass(y))
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for dvec, integer
@@ -69,7 +73,12 @@ vec_ptype2.logical.dvec <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.dvec.integer <- function(x, y, ...){
-  x
+  z <- c(x, y)
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(unclass(x), y)
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for integer, dvec
@@ -81,7 +90,12 @@ vec_ptype2.dvec.integer <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.integer.dvec <- function(x, y, ...){
-  y
+  z <- c(x, y)
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(x, unclass(y))
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for dvec, double
@@ -93,7 +107,12 @@ vec_ptype2.integer.dvec <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.dvec.double <- function(x, y, ...){
-  x
+  z <- c(x, y)
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(unclass(x), y)
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for double, dvec
@@ -105,7 +124,12 @@ vec_ptype2.dvec.double <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.double.dvec <- function(x, y, ...){
-  y
+  z <- c(x, y)
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(x, unclass(y))
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for dvec, dvec
@@ -117,7 +141,12 @@ vec_ptype2.double.dvec <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.dvec.character <- function(x, y, ...){
-  x
+  z <- c(x, y)
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(unclass(x), y)
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for character, dvec
@@ -129,7 +158,12 @@ vec_ptype2.dvec.character <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.character.dvec <- function(x, y, ...){
-  y
+  z <- c(x, y)
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(x, unclass(y))
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for dvec, complex
@@ -141,7 +175,12 @@ vec_ptype2.character.dvec <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.dvec.complex <- function(x, y, ...){
-  x
+  z <- c(x, y)
+  z <- unclass(z) # restored below
+  p <- vec_ptype2(unclass(x), y)
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
 
 #' Find Common Type for complex, dvec
@@ -153,5 +192,9 @@ vec_ptype2.dvec.complex <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.complex.dvec <- function(x, y, ...){
-  y
+  z <- c(x, y)
+  p <- vec_ptype2(x, unclass(y))
+  attributes(p) <- attributes(z)
+  p <- as_dvec(p)
+  p
 }
