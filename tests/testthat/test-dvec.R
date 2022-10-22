@@ -146,13 +146,16 @@ test_that('bind_rows respects column type of first argument', {
   # finds a method for character, 
   # and no attributes are preserved.
  
-  bind_rows(as_decorated(dm, persistence = T), dm2) %>% decorations
-  bind_rows(dm %>% redecorate(dm, persistence = F), dm2) %>% decorations
-  bind_rows(dm %>% redecorate(dm, persistence = T), dm2) %>% decorations
-  bind_rows(dm %>% redecorate(dm), dm2) %>% decorations
+  bind_rows(dm %>% redecorate(persistence = F), dm2) %>% decorations
+  bind_rows(dm %>% redecorate(persistence = T), dm2) %>% decorations
+  bind_rows(dm %>% redecorate, dm2) %>% decorations
   
   # Columns of an xpt, bearing labels, can be coerced to dvec by
   # self-redecorating with persistence turned on (default).
+  
+  dm %<>% redecorate
+  dm %<>% bind_rows(dm2)
+  expect_identical(attr(dm$RACE, 'label'), 'Race')
   
 })
 

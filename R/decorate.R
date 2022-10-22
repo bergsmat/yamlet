@@ -2,9 +2,11 @@
 #'
 #' Redecorates a list-like object.
 #' Equivalent to \code{decorate( ..., overwrite = TRUE)}.
-
+#' If \code{meta} is not supplied, an attempt will be made
+#' to redecorate with existing decorations, if any.
 #'
 #' @param x object
+#' @param meta file path for corresponding yamlet metadata, or a yamlet object
 #' @param ... passed arguments
 #' @param overwrite passed to \code{\link{decorate}}
 #' @export
@@ -15,13 +17,38 @@
 #' library(dplyr)
 #' library(magrittr)
 #' library(csv)
+#' library(haven)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(as.csv(file))
 #' x %>% select(Subject) %>% decorations
 #' x %<>% redecorate('Subject: Patient Identifier')
 #' x %>% select(Subject) %>% decorations
-#'
-redecorate <- function(x, ..., overwrite = TRUE)decorate(x, ..., overwrite = overwrite)
+#' 
+#' # xpt may already have labels:
+#' 
+#' dm <- 'extdata/dm.xpt.gz' %>% 
+#'   system.file(package = 'yamlet') %>% 
+#'   gzfile %>% 
+#'   read_xpt
+#' 
+#' dm %>% class  
+#' dm %>% decorations(AGE, SEX, RACE)
+#' 
+#' # but technically not decorated, and poor persistence:
+#' bind_rows(dm, dm) %>% decorations(AGE, SEX, RACE)
+#' 
+#' # self-redecorating helps:
+#' dm %<>% redecorate
+#' bind_rows(dm, dm) %>% decorations(AGE, SEX, RACE)
+
+
+redecorate <- function(x, meta = NULL, ..., overwrite = TRUE){
+  if(is.null(meta)){
+    alt <- try(decorations(x))
+    if(inherits(alt,'yamlet')) meta <- alt
+  }
+  decorate(x, meta = meta, ..., overwrite = overwrite)
+}
 
 #' Decorate a List-like Object
 #'
