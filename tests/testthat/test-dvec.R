@@ -58,7 +58,7 @@ test_that('c.dvec fails informatively for factor input',{
 })
 
 test_that('bind_rows() reconciles attributes',{
-  a <- data.frame(head(Theoph))
+  a <- data.frame(head(Theoph, 2))
   a$Subject %<>% classified
   a %<>% decorate('
     Subject: subject
@@ -73,6 +73,87 @@ test_that('bind_rows() reconciles attributes',{
   expect_identical(attr(b$Subject, 'label'), 'subject')
   expect_identical(attr(b$Dose, 'label'), 'Dose')
   expect_identical(attr(b$conc, 'guide'), 'ng/mL')
+  b <- a %>% redecorate('
+    Subject: SUBJECT
+    Wt: WEIGHT
+  ')
+  # undebug(bind_rows)
+  # undebug(yamlet:::reconcile.list)
+  # undebug(yamlet:::arbitrate.default)
+  a %<>% select(Wt)
+  b %<>% select(Wt)
+  c <- data.frame(Wt = as_dvec(c(79.6, 79.6), label = 'Weight'))
+  d <- data.frame(Wt = as_dvec(c(79.6, 79.6), label = 'WEIGHT'))
+  bind_rows(a, b) %>% decorations # one warning
+  bind_rows(c, d) %>% decorations # one warning
+  bind_rows(c, b) %>% decorations # one warning
+  bind_rows(a, d) %>% decorations # one warning
+
+  bind_rows(as.data.frame(a), as.data.frame(b)) # one warning
+  bind_rows(as_decorated(c), as_decorated(d)) # one warning
+
+
+  c <- bind_rows(a, b)
+  d <- bind_rows(b ,a)
+  decorations(c)
+  decorations(d)
+  # expect_identical(attr(c$Subject, 'label'), 'subject')
+  expect_identical(attr(c$Wt, 'label'), 'Weight')
+  expect_identical(attr(d$Wt, 'label'), 'WEIGHT')
+  expect_identical(attr(c$Wt, 'guide'), 'kg')
+
+  # vec_rbind(
+  #   as_dvec(numeric(1), label = 'foo'),
+  #   as_dvec(numeric(1), label = 'FOO')
+  # )
+  
+  bind_rows(
+    data.frame(a = as_dvec(numeric(1), label = 'foo')),
+    data.frame(a = as_dvec(numeric(1), label = 'FOO'))
+  ) %>% decorations
+  bind_rows(
+    data.frame(a = as_dvec(numeric(0), label = 'foo')),
+    data.frame(a = as_dvec(numeric(0), label = 'FOO'))
+  ) %>% decorations
+})
+
+test_that('bind_rows respects column type of first argument', {
+  library(haven)
+  library(dplyr)
+  library(magrittr)
+  dm <- 'extdata/dm.xpt.gz' %>% 
+    system.file(package = 'yamlet') %>% 
+    gzfile %>% 
+    read_xpt
+  dm %<>% select(RACE) %>% slice(1:2)
+  dm2 <- redecorate(dm, 'RACE: foo')
+  dm %>% decorations
+  dm2 %>% decorations
+  bind_rows(dm, dm2) %>% decorations
+  bind_rows(dm2, dm) %>% decorations
+  bind_rows(as_decorated(dm), dm2) %>% decorations
+  dm3 <- bind_rows(dm, dm2)
+  
+  expect_identical(attr(dm3$RACE, 'label'), NULL)
+  
+  # In this very interesting example,
+  # EVEN THOUGH dm has decorations,
+  # EVEN IF dm is coerced to decorated,
+  # EVEN THOUGH dm$RACE has a label,
+  # EVEN THOUGH dm2$RACE is dvec,
+  # dm$RACE is still character.
+  # Therefore, c(dm$RACE, dm2$RACE)
+  # finds a method for character, 
+  # and no attributes are preserved.
+ 
+  bind_rows(as_decorated(dm, persistence = T), dm2) %>% decorations
+  bind_rows(dm %>% redecorate(dm, persistence = F), dm2) %>% decorations
+  bind_rows(dm %>% redecorate(dm, persistence = T), dm2) %>% decorations
+  bind_rows(dm %>% redecorate(dm), dm2) %>% decorations
+  
+  # Columns of an xpt, bearing labels, can be coerced to dvec by
+  # self-redecorating with persistence turned on (default).
+  
 })
 
 test_that('pivot_longer() reconciles attributes',{

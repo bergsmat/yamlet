@@ -144,7 +144,7 @@ decorate.list <- function(
   meta = NULL,
   ...,
   ext = getOption('yamlet_extension', '.yaml'),
-  persistence = FALSE,
+  persistence = getOption('yamlet_persistence', FALSE),
   overwrite = getOption('yamlet_overwrite', FALSE)
 ){
   if(is.null(meta)) meta <- attr(x, 'source')
@@ -379,6 +379,7 @@ as_decorated <- function(x, ...)UseMethod('as_decorated')
 #' Coerce to Decorated by Default
 #'
 #' Coerces to class 'decorated' by decorating (by default) with an empty list.
+
 #'
 #' @param x object
 #' @param meta see \code{\link{decorate.list}}

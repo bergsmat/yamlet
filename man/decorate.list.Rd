@@ -9,7 +9,7 @@
   meta = NULL,
   ...,
   ext = getOption("yamlet_extension", ".yaml"),
-  persistence = FALSE,
+  persistence = getOption("yamlet_persistence", FALSE),
   overwrite = getOption("yamlet_overwrite", FALSE)
 )
 }

@@ -438,6 +438,8 @@ arbitrate.default <- function(x, y, tag = '', ...){
   # so y is not null and not list.  Presumably vector. Hopefully scalar.
   if(identical(x, y)) return(x)
   warning(
+    call. = FALSE,
+    immediate. = TRUE,
     'mismatched ', tag, ' attributes: ignoring \'',
     paste(y, collapse = ', '),
     '\' in favor of \'',
