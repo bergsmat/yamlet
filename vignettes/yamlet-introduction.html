@@ -12,12 +12,118 @@
 
 <meta name="author" content="Tim Bergsma" />
 
-<meta name="date" content="2022-01-22" />
+<meta name="date" content="2022-10-26" />
 
 <title>An Introduction to Yamlet</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
-<link href="data:text/css,%0A%2ERtable1%20table%2C%20table%2ERtable1%20%7B%0Afont%2Dfamily%3A%20%22Arial%22%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2010pt%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0Apadding%3A%200px%3B%0Amargin%3A%200px%3B%0A%0A%7D%0A%2ERtable1%20td%20%7B%0Awhite%2Dspace%3Anowrap%3B%0A%7D%0A%2ERtable1%20th%2C%20%2ERtable1%20td%20%7B%0Aborder%3A%200%3B%0Atext%2Dalign%3A%20center%3B%0Apadding%3A%200%2E5ex%201%2E5ex%3B%0Amargin%3A%200px%3B%0A%7D%0A%2ERtable1%20thead%3Etr%3Afirst%2Dchild%3Eth%20%7B%0Aborder%2Dtop%3A%202pt%20solid%20black%3B%0A%7D%0A%2ERtable1%20thead%3Etr%3Alast%2Dchild%3Eth%20%7B%0Aborder%2Dbottom%3A%201pt%20solid%20black%3B%0A%7D%0A%2ERtable1%20tbody%3Etr%3Alast%2Dchild%3Etd%20%7B%0Aborder%2Dbottom%3A%202pt%20solid%20black%3B%0A%7D%0A%2ERtable1%20th%2Egrouplabel%20%7B%0Apadding%2Dleft%3A%200%3B%0Apadding%2Dright%3A%200%3B%0A%7D%0A%2ERtable1%20th%2Egrouplabel%3Ediv%20%7B%0Amargin%2Dleft%3A%201%2E5ex%3B%0Amargin%2Dright%3A%201%2E5ex%3B%0Aborder%2Dbottom%3A%201pt%20solid%20black%3B%0A%7D%0A%2ERtable1%20th%2Egrouplabel%3Alast%2Dchild%3Ediv%20%7B%0Amargin%2Dright%3A%200%3B%0A%7D%0A%2ERtable1%20%2Erowlabel%20%7B%0Atext%2Dalign%3A%20left%3B%0Apadding%2Dleft%3A%202%2E5ex%3B%0A%7D%0A%2ERtable1%20%2Efirstrow%2Erowlabel%20%7B%0Apadding%2Dleft%3A%200%2E5ex%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0A%0A%2ERtable1%2Dzebra%20tbody%20tr%3Anth%2Dchild%28odd%29%20%7B%0Abackground%2Dcolor%3A%20%23eee%3B%0A%7D%0A%0Atable%2ERtable1%2Dtimes%20%7B%0Afont%2Dfamily%3A%20%22Times%20New%20Roman%22%2C%20Times%2C%20serif%3B%0A%7D%0A%0A%2ERtable1%2Dshade%20th%20%7B%0Abackground%2Dcolor%3A%20%23ccc%3B%0A%7D%0A%0A%2ERtable1%2Dgrid%20th%2C%20%2ERtable1%2Dgrid%20td%20%7B%0Aborder%2Dleft%3A%201pt%20solid%20black%3B%0Aborder%2Dright%3A%201pt%20solid%20black%3B%0A%7D%0A%2ERtable1%2Dgrid%20thead%3Etr%3Afirst%2Dchild%3Eth%20%7B%0Aborder%2Dtop%3A%201pt%20solid%20black%3B%0A%7D%0A%2ERtable1%2Dgrid%20thead%3Etr%3Alast%2Dchild%3Eth%20%7B%0Aborder%2Dbottom%3A%201pt%20solid%20black%3B%0A%7D%0A%2ERtable1%2Dgrid%20tbody%3Etr%3Alast%2Dchild%3Etd%20%7B%0Aborder%2Dbottom%3A%201pt%20solid%20black%3B%0A%7D%0A%2ERtable1%2Dgrid%20%2Efirstrow%2C%20%2ERtable1%2Dgrid%20%2Efirstrow%20%7E%20td%20%7B%0Aborder%2Dtop%3A%201pt%20solid%20black%3B%0A%7D%0A%2ERtable1%2Dgrid%20th%2Egrouplabel%3Ediv%20%7B%0Amargin%2Dleft%3A%200%3B%0Amargin%2Dright%3A%200%3B%0Aborder%2Dbottom%3A%200%3B%0A%7D%0A%0A%2ERtable1%2Dcenter%20td%2Erowlabel%2C%20%2ERtable1%2Dcenter%20td%2Efirstrow%2Erowlabel%20%7B%0Afont%2Dweight%3A%20bold%3B%0Atext%2Dalign%3A%20center%3B%0Apadding%3A%200%2E5ex%201%2E5ex%3B%0A%7D%0A%0A%2ERtable1%20%2ERtable1%2Dfootnote%20%7B%0Afont%2Dsize%3A%20smaller%3B%0Apadding%3A%200px%3B%0Amargin%3A%200px%3B%0Atext%2Dalign%3A%20left%3B%0A%7D%0A" rel="stylesheet" />
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<style type="text/css">
+.Rtable1 table, table.Rtable1 {
+font-family: "Arial", Arial, sans-serif;
+font-size: 10pt;
+border-collapse: collapse;
+padding: 0px;
+margin: 0px;
+
+}
+.Rtable1 td {
+white-space:nowrap;
+}
+.Rtable1 th, .Rtable1 td {
+border: 0;
+text-align: center;
+padding: 0.5ex 1.5ex;
+margin: 0px;
+}
+.Rtable1 thead>tr:first-child>th {
+border-top: 2pt solid black;
+}
+.Rtable1 thead>tr:last-child>th {
+border-bottom: 1pt solid black;
+}
+.Rtable1 tbody>tr:last-child>td {
+border-bottom: 2pt solid black;
+}
+.Rtable1 th.grouplabel {
+padding-left: 0;
+padding-right: 0;
+}
+.Rtable1 th.grouplabel>div {
+margin-left: 1.5ex;
+margin-right: 1.5ex;
+border-bottom: 1pt solid black;
+}
+.Rtable1 th.grouplabel:last-child>div {
+margin-right: 0;
+}
+.Rtable1 .rowlabel {
+text-align: left;
+padding-left: 2.5ex;
+}
+.Rtable1 .firstrow.rowlabel {
+padding-left: 0.5ex;
+font-weight: bold;
+}
+
+.Rtable1-zebra tbody tr:nth-child(odd) {
+background-color: #eee;
+}
+
+table.Rtable1-times {
+font-family: "Times New Roman", Times, serif;
+}
+
+.Rtable1-shade th {
+background-color: #ccc;
+}
+
+.Rtable1-grid th, .Rtable1-grid td {
+border-left: 1pt solid black;
+border-right: 1pt solid black;
+}
+.Rtable1-grid thead>tr:first-child>th {
+border-top: 1pt solid black;
+}
+.Rtable1-grid thead>tr:last-child>th {
+border-bottom: 1pt solid black;
+}
+.Rtable1-grid tbody>tr:last-child>td {
+border-bottom: 1pt solid black;
+}
+.Rtable1-grid .firstrow, .Rtable1-grid .firstrow ~ td {
+border-top: 1pt solid black;
+}
+.Rtable1-grid th.grouplabel>div {
+margin-left: 0;
+margin-right: 0;
+border-bottom: 0;
+}
+
+.Rtable1-center td.rowlabel, .Rtable1-center td.firstrow.rowlabel {
+font-weight: bold;
+text-align: center;
+padding: 0.5ex 1.5ex;
+}
+
+.Rtable1 .Rtable1-footnote {
+font-size: smaller;
+padding: 0px;
+margin: 0px;
+text-align: left;
+}
+</style>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -27,6 +133,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -128,7 +235,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -142,51 +429,80 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">An Introduction to Yamlet</h1>
 <h4 class="author">Tim Bergsma</h4>
-<h4 class="date">2022-01-22</h4>
+<h4 class="date">2022-10-26</h4>
 
 
 <div id="TOC">
 <ul>
-<li><a href="#motivation">Motivation</a></li>
-<li><a href="#writing-yamlet">Writing Yamlet</a>
+<li><a href="#motivation" id="toc-motivation">Motivation</a></li>
+<li><a href="#writing-yamlet" id="toc-writing-yamlet">Writing Yamlet</a>
 <ul>
-<li><a href="#manual-method">Manual Method</a></li>
-<li><a href="#automatic-method">Automatic Method</a></li>
+<li><a href="#manual-method" id="toc-manual-method">Manual
+Method</a></li>
+<li><a href="#automatic-method" id="toc-automatic-method">Automatic
+Method</a></li>
 </ul></li>
-<li><a href="#reading-and-binding-yamlet-in-r">Reading and Binding Yamlet in R</a></li>
-<li><a href="#extracting-and-writing-yamlet-to-storage">Extracting and Writing Yamlet to Storage</a></li>
-<li><a href="#coordinated-input-and-output">Coordinated Input and Output</a></li>
-<li><a href="#using-yamlet-metadata">Using Yamlet Metadata</a>
+<li><a href="#reading-and-binding-yamlet-in-r" id="toc-reading-and-binding-yamlet-in-r">Reading and Binding Yamlet in
+R</a></li>
+<li><a href="#extracting-and-writing-yamlet-to-storage" id="toc-extracting-and-writing-yamlet-to-storage">Extracting and Writing
+Yamlet to Storage</a></li>
+<li><a href="#coordinated-input-and-output" id="toc-coordinated-input-and-output">Coordinated Input and
+Output</a></li>
+<li><a href="#using-yamlet-metadata" id="toc-using-yamlet-metadata">Using Yamlet Metadata</a>
 <ul>
-<li><a href="#example-figure">Example Figure</a></li>
-<li><a href="#example-table">Example Table</a></li>
+<li><a href="#example-figure" id="toc-example-figure">Example
+Figure</a></li>
+<li><a href="#example-table" id="toc-example-table">Example
+Table</a></li>
 </ul></li>
-<li><a href="#caveat">Caveat</a></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#caveat" id="toc-caveat">Caveat</a></li>
+<li><a href="#reminder" id="toc-reminder">Reminder</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
 </div>
 
 <div id="motivation" class="section level2">
 <h2>Motivation</h2>
-<p>R datasets of modest size are routinely stored as flat files and retrieved as data frames. Unfortunately, the classic storage formats (comma delimited, tab delimited) do not have obvious mechanisms for storing data <em>about</em> the data: i.e., metadata such as column labels, units, and meanings of categorical codes. In many cases we hold such information in our heads and hard-code it in our scripts as axis labels, figure legends, or table enhancements. That’s probably fine for simple cases but does not scale well in production settings where the same metadata is re-used extensively. Is there a better way to store, retrieve, and bind table metadata for consistent reuse?</p>
+<p>R datasets of modest size are routinely stored as flat files and
+retrieved as data frames. Unfortunately, the classic storage formats
+(comma delimited, tab delimited) do not have obvious mechanisms for
+storing data <em>about</em> the data: i.e., metadata such as column
+labels, units, and meanings of categorical codes. In many cases we hold
+such information in our heads and hard-code it in our scripts as axis
+labels, figure legends, or table enhancements. That’s probably fine for
+simple cases but does not scale well in production settings where the
+same metadata is re-used extensively. Is there a better way to store,
+retrieve, and bind table metadata for consistent reuse?</p>
 </div>
 <div id="writing-yamlet" class="section level2">
 <h2>Writing Yamlet</h2>
-<p><strong>yamlet</strong> is a storage format for table metadata, implemented as an R package.<br />
+<p><strong>yamlet</strong> is a storage format for table metadata,
+implemented as an R package.<br />
 It was designed to be:</p>
 <ul>
 <li>easy to edit</li>
 <li>easy to import</li>
 <li>open-ended</li>
 </ul>
-<p>Although intended mainly to document (or pre-specify!) data column labels and units, there are few restrictions on the types of metadata that can be stored. In fact, the only real restriction is that the stored form must be valid <a href="https://yaml.org/spec/1.2/spec.html">yaml</a>. Below, we use <strong>yamlet</strong> to indicate the paradigm or package, and <code>yamlet</code> to indicate stored instances.</p>
+<p>Although intended mainly to document (or pre-specify!) data column
+labels and units, there are few restrictions on the types of metadata
+that can be stored. In fact, the only real restriction is that the
+stored form must be valid <a href="https://yaml.org/spec/1.2/spec.html">yaml</a>. Below, we use
+<strong>yamlet</strong> to indicate the paradigm or package, and
+<code>yamlet</code> to indicate stored instances.</p>
 <div id="manual-method" class="section level3">
 <h3>Manual Method</h3>
-<p>Actually, <code>yamlet</code> (think: “just a little yaml”) is a special case of <code>yaml</code> that stores column attributes in one record per column. For instance, to store the fact that data for an imaginary drug trial has a column called ‘ID’, pop open a text file and write</p>
+<p>Actually, <code>yamlet</code> (think: “just a little yaml”) is a
+special case of <code>yaml</code> that stores column attributes in one
+record per column. For instance, to store the fact that data for an
+imaginary drug trial has a column called ‘ID’, pop open a text file and
+write</p>
 <pre><code>ID:</code></pre>
-<p>This in itself is valid <code>yaml</code>! But if you know a label to go with ID, you can add it:</p>
+<p>This in itself is valid <code>yaml</code>! But if you know a label to
+go with ID, you can add it:</p>
 <pre><code>ID: subject identifier</code></pre>
-<p>If you have (or expect) a second column with units, you can add it below.</p>
+<p>If you have (or expect) a second column with units, you can add it
+below.</p>
 <pre><code>ID: subject identifier
 CONC: concentration, ng/mL</code></pre>
 <p>A couple of notes here.</p>
@@ -195,15 +511,34 @@ CONC: concentration, ng/mL</code></pre>
 <li>Whatever follows the colon-space is only One Thing.</li>
 <li>That One Thing could be a <em>sequence</em> of Many Things.</li>
 </ul>
-<p>To get a sequence, just add square brackets. For instance, above we have said that ‘CONC’ has the label ‘concentration, ng/mL’ but what we really intend is that it has label ‘concentration’ and unit ‘ng/mL’ so we rewrite it as</p>
+<p>To get a sequence, just add square brackets. For instance, above we
+have said that ‘CONC’ has the label ‘concentration, ng/mL’ but what we
+really intend is that it has label ‘concentration’ and unit ‘ng/mL’ so
+we rewrite it as</p>
 <pre><code>ID: subject identifier
 CONC: [ concentration, ng/mL ]</code></pre>
-<p>Now label and units are two different things. Notice we have not explicitly named them. Unless we say otherwise, the <strong>yamlet</strong> package will treat the first two un-named items as ‘label’ (a short description) and ‘guide’ (a hint about how to interpret the values). ‘guide’ might be units for continuous variables, levels (and possibly labels) for categorical values, format strings for dates and times, or perhaps something else.</p>
-<p>The <strong>yamlet</strong> package gives you five ways of controlling how data items are identified (see details for <code>?as_yamlet.character</code>). The most direct way is to supply explicit <code>yaml</code> keys:</p>
+<p>Now label and units are two different things. Notice we have not
+explicitly named them. Unless we say otherwise, the
+<strong>yamlet</strong> package will treat the first two un-named items
+as ‘label’ (a short description) and ‘guide’ (a hint about how to
+interpret the values). ‘guide’ might be units for continuous variables,
+levels (and possibly labels) for categorical values, format strings for
+dates and times, or perhaps something else.</p>
+<p>The <strong>yamlet</strong> package gives you five ways of
+controlling how data items are identified (see details for
+<code>?as_yamlet.character</code>). The most direct way is to supply
+explicit <code>yaml</code> keys:</p>
 <pre><code>ID: [ label: subject identifier ]
 CONC: [ label: concentration, guide: ng/mL ]</code></pre>
-<p>We see that rather complex data can be expressed using only colons, commas, and square brackets. <code>yaml</code> itself also uses curly braces to express “maps”, but for purposes here they are unnecessary.</p>
-<p>Note above that we had to add square brackets for ‘ID’ when introducing the second colon (can’t really have two colons at the same level, so to speak). Note also that sequences can be nested arbitrarily deep. We take advantage of this principle to transform ‘guide’ into a set of categorical levels.</p>
+<p>We see that rather complex data can be expressed using only colons,
+commas, and square brackets. <code>yaml</code> itself also uses curly
+braces to express “maps”, but for purposes here they are
+unnecessary.</p>
+<p>Note above that we had to add square brackets for ‘ID’ when
+introducing the second colon (can’t really have two colons at the same
+level, so to speak). Note also that sequences can be nested arbitrarily
+deep. We take advantage of this principle to transform ‘guide’ into a
+set of categorical levels.</p>
 <pre><code>ID: [ label: subject identifier ]
 CONC: [ label: concentration, guide: ng/mL ]
 RACE: [ label: race, guide: [ 0, 1, 2 ]]</code></pre>
@@ -211,18 +546,29 @@ RACE: [ label: race, guide: [ 0, 1, 2 ]]</code></pre>
 <pre><code>ID: subject identifier
 CONC: [ concentration, ng/mL ]
 RACE: [ race, [ 0, 1, 2 ]]</code></pre>
-<p>So now we have ‘codes’ (levels) for our dataset that represent races. What do these codes mean? We supply ‘decodes’ (labels) as keys.</p>
+<p>So now we have ‘codes’ (levels) for our dataset that represent races.
+What do these codes mean? We supply ‘decodes’ (labels) as keys.</p>
 <pre><code>ID: subject identifier
 CONC: [ concentration, ng/mL ]
 RACE: [ race, [ white: 0, black: 1, asian: 2 ]]</code></pre>
-<p>Elegantly, <code>yaml</code> (and therefore <strong>yamlet</strong>) gives us a way to represent a code even if we don’t know the decode, <em>and</em> a way to represent a decode even though we don’t know the code. Imagine a dataset is under collaborative development, and we already know that there are some ‘RACE’ values of 0 but we’re not sure what they mean. We also know that there will be some ‘asian’ race values, but we haven’t assigned a code yet. We can write:</p>
+<p>Elegantly, <code>yaml</code> (and therefore <strong>yamlet</strong>)
+gives us a way to represent a code even if we don’t know the decode,
+<em>and</em> a way to represent a decode even though we don’t know the
+code. Imagine a dataset is under collaborative development, and we
+already know that there are some ‘RACE’ values of 0 but we’re not sure
+what they mean. We also know that there will be some ‘asian’ race
+values, but we haven’t assigned a code yet. We can write:</p>
 <pre><code>ID: subject identifier
 CONC: [ concentration, ng/mL ]
 RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 </div>
 <div id="automatic-method" class="section level3">
 <h3>Automatic Method</h3>
-<p>The whole point of this exercise (and I’m getting a little ahead of myself) is to have some stored metadata that we can read into R and apply to a data frame as column attributes. If typing square brackets isn’t your thing, you can actually do this backwards by supplying column attributes to a data frame and writing them out!</p>
+<p>The whole point of this exercise (and I’m getting a little ahead of
+myself) is to have some stored metadata that we can read into R and
+apply to a data frame as column attributes. If typing square brackets
+isn’t your thing, you can actually do this backwards by supplying column
+attributes to a data frame and writing them out!</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(dplyr))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(yamlet)</span>
@@ -248,7 +594,8 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 </div>
 <div id="reading-and-binding-yamlet-in-r" class="section level2">
 <h2>Reading and Binding Yamlet in R</h2>
-<p>Let’s take advantage of that last example to show how we can read <strong>yamlet</strong> into R.</p>
+<p>Let’s take advantage of that last example to show how we can read
+<strong>yamlet</strong> into R.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read_yamlet</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;drug.yaml&#39;</span>))</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>meta</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
@@ -262,7 +609,8 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
-<p><code>meta</code> is just a named list of column attributes. <code>decorate()</code> loads them onto columns of a data frame.</p>
+<p><code>meta</code> is just a named list of column attributes.
+<code>decorate()</code> loads them onto columns of a data frame.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ID =</span> <span class="dv">1</span>, <span class="at">CONC =</span> <span class="dv">1</span>, <span class="at">RACE =</span> <span class="dv">1</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">decorate</span>(x, <span class="at">meta =</span> meta)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decorations</span>(x)</span>
@@ -277,7 +625,9 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
-<p>If you like, you can skip the external file and decorate directly with <code>yamlet</code> (instead of, say, structure() like we did above).</p>
+<p>If you like, you can skip the external file and decorate directly
+with <code>yamlet</code> (instead of, say, structure() like we did
+above).</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ID =</span> <span class="dv">1</span>, <span class="at">CONC =</span> <span class="dv">1</span>, <span class="at">RACE =</span> <span class="dv">1</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">decorate</span>(x,<span class="st">&#39;</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">ID: subject identifier</span></span>
@@ -299,7 +649,9 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 </div>
 <div id="extracting-and-writing-yamlet-to-storage" class="section level2">
 <h2>Extracting and Writing Yamlet to Storage</h2>
-<p>We saw earlier that <code>as_yamlet()</code> can pull “decorations” off a data frame and present them as <strong>yamlet</strong>. this is the default behavior of <code>decorations()</code>.</p>
+<p>We saw earlier that <code>as_yamlet()</code> can pull “decorations”
+off a data frame and present them as <strong>yamlet</strong>. this is
+the default behavior of <code>decorations()</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decorations</span>(x)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: subject identifier</span></span>
@@ -312,7 +664,9 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
-<p><code>write_yamlet()</code> calls <code>as_yamlet()</code> on its primary argument, and sends the result to a connection of our choice.</p>
+<p><code>write_yamlet()</code> calls <code>as_yamlet()</code> on its
+primary argument, and sends the result to a connection of our
+choice.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;out.yaml&#39;</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_yamlet</span>(x, <span class="at">con =</span> file )</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>file <span class="sc">%&gt;%</span> readLines <span class="sc">%&gt;%</span> writeLines</span>
@@ -322,7 +676,12 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 </div>
 <div id="coordinated-input-and-output" class="section level2">
 <h2>Coordinated Input and Output</h2>
-<p>A useful convention is to store metadata in a file next to the file it describes, with the same name but the ‘yaml’ extension. <code>decorate()</code> expects this, and if given a file path to a CSV file, it will look for a ’*.yaml’ file nearby. To “decorate” a CSV path means to read it, read its <code>yamlet</code> (if any) and apply the <code>yamlet</code> as attributes on the resulting data frame.</p>
+<p>A useful convention is to store metadata in a file next to the file
+it describes, with the same name but the ‘yaml’ extension.
+<code>decorate()</code> expects this, and if given a file path to a CSV
+file, it will look for a ’*.yaml’ file nearby. To “decorate” a CSV path
+means to read it, read its <code>yamlet</code> (if any) and apply the
+<code>yamlet</code> as attributes on the resulting data frame.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(csv)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># see ?Quinidine in package nlme</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</span>
@@ -336,7 +695,13 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - conc</span></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: quinidine serum concentration</span></span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide: mg/L</span></span></code></pre></div>
-<p>Another way to achieve the same thing is with <code>io_csv()</code>. It is a toggle function that returns a path if given a file to store, and returns a decorated data frame if given a path to read (same for <code>io_table()</code>, which has all the formatting options of <code>read.table()</code> and <code>write.table()</code>). The path is just the path to the primary data, but the path to the metadata is implied as well.</p>
+<p>Another way to achieve the same thing is with <code>io_csv()</code>.
+It is a toggle function that returns a path if given a file to store,
+and returns a decorated data frame if given a path to read (same for
+<code>io_table()</code>, which has all the formatting options of
+<code>read.table()</code> and <code>write.table()</code>). The path is
+just the path to the primary data, but the path to the metadata is
+implied as well.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">csv_source =</span> <span class="cn">FALSE</span>) <span class="co"># see ?as.csv</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">decorate</span>(file)</span>
@@ -361,10 +726,16 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 </div>
 <div id="using-yamlet-metadata" class="section level2">
 <h2>Using Yamlet Metadata</h2>
-<p>Metadata can be used prospectively or retrospectively. Early in the data life cycle, it can be used prospectively to guide table development in a collaborative setting (i.e. as a data specification). Later in the life cycle, metadata can be used retrospectively to consistently inform report elements such as figures and tables.</p>
+<p>Metadata can be used prospectively or retrospectively. Early in the
+data life cycle, it can be used prospectively to guide table development
+in a collaborative setting (i.e. as a data specification). Later in the
+life cycle, metadata can be used retrospectively to consistently inform
+report elements such as figures and tables.</p>
 <div id="example-figure" class="section level3">
 <h3>Example Figure</h3>
-<p>For example, The <strong>yamlet</strong> package provides an experimental wrapper for ggplot that uses column attributes to automatically generate informative axis labels and legends.</p>
+<p>For example, The <strong>yamlet</strong> package provides an
+experimental wrapper for ggplot that uses column attributes to
+automatically generate informative axis labels and legends.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">library</span>(ggplot2))</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
@@ -378,12 +749,16 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
 <div class="figure">
 <img src="data:image/png;base64,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" alt />
-<p class="caption">Automatic axis labels and legends using curated metadata as column attributes.</p>
+<p class="caption">Automatic axis labels and legends using curated
+metadata as column attributes.</p>
 </div>
 </div>
 <div id="example-table" class="section level3">
 <h3>Example Table</h3>
-<p>The <strong>table1</strong> package uses labels and units stored as attributes to enrich table output. In the example below, we use <code>resolve()</code> to re-implement guides as units and factor levels, which is what <code>table1()</code> needs.</p>
+<p>The <strong>table1</strong> package uses labels and units stored as
+attributes to enrich table output. In the example below, we use
+<code>resolve()</code> to re-implement guides as units and factor
+levels, which is what <code>table1()</code> needs.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(table1))</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>file <span class="sc">%&gt;%</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  decorate <span class="sc">%&gt;%</span> </span>
@@ -479,11 +854,27 @@ RACE: [ race, [ 0, black: 1, ? asian ]]</code></pre>
 </div>
 <div id="caveat" class="section level2">
 <h2>Caveat</h2>
-<p>It is a well-known problem that many table manipulations in R cause column attributes to be dropped. Binding of metadata is best done at a point in a workflow where few or no such manipulations remain. Else, precautions should be taken to preserve or restore attributes as necessary.</p>
+<p>It is a well-known problem that many table manipulations in R cause
+column attributes to be dropped. Binding of metadata is best done at a
+point in a workflow where few or no such manipulations remain. Else,
+precautions should be taken to preserve or restore attributes as
+necessary.</p>
+</div>
+<div id="reminder" class="section level2">
+<h2>Reminder</h2>
+<p>Remember to quote a literal value of yes, no, y, n, true false, on,
+off, or any of these capitalized, or any of these as all-caps. Otherwise
+they will be converted to TRUE or FALSE per the usual rules for
+yaml.</p>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
-<p>The <strong>yamlet</strong> package implements a metadata storage syntax that is easy to write, read, and bind to data frame columns. Systematic curation of metadata enriches and simplifies efforts to create and describe tables stored in flat files. Conforming tools can take advantage of internal and external <strong>yamlet</strong> representations to enhance data development and reporting.</p>
+<p>The <strong>yamlet</strong> package implements a metadata storage
+syntax that is easy to write, read, and bind to data frame columns.
+Systematic curation of metadata enriches and simplifies efforts to
+create and describe tables stored in flat files. Conforming tools can
+take advantage of internal and external <strong>yamlet</strong>
+representations to enhance data development and reporting.</p>
 </div>
 
 

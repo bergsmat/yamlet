@@ -535,7 +535,14 @@ to_yamlet.character <- function(x, block = FALSE, ...){
   quotable[index] <- TRUE  # paste0("'",x[index],"'")
 
   # quote yes, no, y, n
-  index <- x %in% c('yes','no','y','n')
+  # index <- x %in% c('yes','no','y','n')
+  # https://yaml.org/type/bool.html
+  # TTB 2022-10-26 @ 0.9.8 extended set
+  index <- x %in% c(
+    'y', 'Y', 'yes', 'Yes', 'YES', 'n', 'N', 'no', 'No', 'NO', 
+    'true', 'True', 'TRUE', 'false', 'False', 'FALSE', 
+    'on', 'On', 'ON', 'off', 'Off', 'OFF'
+  )
   quotable[index] <- TRUE 
 
   # must quote existing ][, to disambiguate

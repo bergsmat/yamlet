@@ -146,7 +146,9 @@ test_that('coersion to storage format is stable',{
   expect_equal_to_reference(file = '058.rds', to_yamlet(c('a','b')))
   expect_equal_to_reference(file = '059.rds', to_yamlet(c(a = 'a',b = 'b')))
   expect_identical(to_yamlet(c(no = 'n', yes = 'y')),"[ 'no': 'n', 'yes': 'y' ]")
-
+  expect_identical(to_yamlet(c('no' = 'n', 'yes' = 'y')),"[ 'no': 'n', 'yes': 'y' ]")
+  expect_identical(to_yamlet(c('No' = 'n', 'Yes' = 'y')),"[ 'No': 'n', 'Yes': 'y' ]")
+  
 })
 
 test_that('as.character.yamlet and as_yamlet.character are reciprocal',{
@@ -1450,4 +1452,11 @@ test_that('[ can be the first character of a code or decode',{
   x %>% io_csv(file.path(where, 'bracket.csv'))
   y <- io_csv(file.path(where, 'bracket.csv'), source = FALSE)
   expect_identical(x,y)
+})
+
+test_that('Quoted Yes and No survive parsing verbatim',{
+
+  x <- '[blq    : [LOQ Y/N, ["No": 0, "Yes": 1 ]]]'
+  identical(x, to_yamlet(as_yamlet(x)))
+
 })

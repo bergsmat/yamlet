@@ -359,6 +359,14 @@ no such manipulations remain. Else, precautions
 should be taken to preserve or restore
 attributes as necessary.
 
+## Reminder
+
+Remember to quote a literal 
+value of yes, no, y, n, true false, on, off,
+or any of these capitalized, or any of these
+as all-caps. Otherwise they will be converted
+to TRUE or FALSE per the usual rules for yaml.
+
 ## Conclusion
 
 The **yamlet** package implements a metadata 
