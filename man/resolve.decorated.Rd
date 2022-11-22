@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{decorated}
 
-\item{...}{passed to \code{\link{explicit_guide}} and \code{\link{classified}}}
+\item{...}{passed to \code{\link{explicit_guide}}, \code{\link{classified}}, and \code{\link{make_title}}}
 }
 \value{
 decorated
@@ -17,8 +17,10 @@ decorated
 \description{
 Resolves implicit usage of default key 'guide' to
 explicit usage for decorated class.
-Simply calls \code{\link{explicit_guide}}
-followed by \code{\link{classified}}.
+Calls 
+\code{\link{explicit_guide}},
+\code{\link{classified}}, and
+\code{\link{make_title}}.
 }
 \examples{
 # generate some decorated data

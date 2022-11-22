@@ -7,9 +7,10 @@
 \method{append_units}{default}(
   x,
   ...,
-  open = getOption("append_units_open", " ("),
-  close = getOption("append_units_close", ")"),
-  style = getOption("append_units_style", "plain")
+  open = getOption("yamlet_append_units_open", " ("),
+  close = getOption("yamlet_append_units_close", ")"),
+  style = getOption("yamlet_append_units_style", "plain"),
+  target = getOption("yamlet_append_units_target", "label")
 )
 }
 \arguments{
@@ -22,6 +23,8 @@
 \item{close}{character to follow units}
 
 \item{style}{one of 'plain', 'latex', or 'plotmath'}
+
+\item{target}{attribute name for appended result}
 }
 \value{
 same class as x, with sub-class 'latex' or 'plotmath' depending on \code{style}
@@ -29,6 +32,8 @@ same class as x, with sub-class 'latex' or 'plotmath' depending on \code{style}
 \description{
 Units attribute is wrapped in \code{open} and
 \code{close}, and appended to label.
+Result is assigned to \code{target} attribute
+(default: 'label').
 If style is 'latex' or 'plotmath',
 all elements are treated as spork
 (\code{\link{as_spork}}) and coerced
@@ -56,6 +61,14 @@ Other labels:
 \code{\link{alias.data.frame}()},
 \code{\link{append_units.data.frame}()},
 \code{\link{append_units}()},
+\code{\link{drop_title.decorated}()},
+\code{\link{drop_title.default}()},
+\code{\link{drop_title.dvec}()},
+\code{\link{drop_title}()},
+\code{\link{make_title.decorated}()},
+\code{\link{make_title.default}()},
+\code{\link{make_title.dvec}()},
+\code{\link{make_title}()},
 \code{\link{sub_units}()}
 }
 \concept{labels}

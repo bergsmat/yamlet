@@ -16,7 +16,9 @@ see methods
 }
 \description{
 Resolves implicit usage of default key 'guide' to explicit usage.
-Generic, with method \code{\link{resolve.decorated}}.
+Generic, with methods 
+\code{\link{resolve.decorated}} and 
+\code{\link{resolve.dvec}}.
 }
 \examples{
 example(resolve.decorated)

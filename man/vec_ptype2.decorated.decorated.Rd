@@ -19,3 +19,4 @@ decorated
 \description{
 Determines common type for decorated
 }
+\keyword{internal}

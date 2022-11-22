@@ -19,3 +19,4 @@ decorated
 \description{
 Determines common type for data.frame and decorated
 }
+\keyword{internal}

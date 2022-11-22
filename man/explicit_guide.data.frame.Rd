@@ -7,8 +7,8 @@
 \method{explicit_guide}{data.frame}(
   x,
   ...,
-  overwrite = getOption("explicit_guide_overwrite", TRUE),
-  simplify = getOption("explicit_guide_simplify", TRUE)
+  overwrite = getOption("yamlet_explicit_guide_overwrite", TRUE),
+  simplify = getOption("yamlet_explicit_guide_simplify", TRUE)
 )
 }
 \arguments{

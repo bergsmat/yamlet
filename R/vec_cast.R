@@ -10,6 +10,7 @@ NULL
 #' @param ... passed arguments
 #' @keywords internal
 #' @export
+#' @keywords internal
 #' @importFrom vctrs vec_data
 vec_cast.dvec.dvec <- function(x, to, ...) {
   # https://github.com/r-lib/rlang/issues/1432

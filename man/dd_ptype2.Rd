@@ -19,3 +19,4 @@ decorated
 \description{
 Coerces common type to decorated.  Wrapper for \code{\link[vctrs]{df_ptype2}}.
 }
+\keyword{internal}

@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{dvec}
 
-\item{...}{passed to \code{\link{explicit_guide}} and \code{\link{classified}}}
+\item{...}{passed to \code{\link{explicit_guide}}, \code{\link{classified}}, and \code{\link{make_title}}}
 }
 \value{
 dvec or classified
@@ -19,6 +19,9 @@ Resolves implicit usage of default key 'guide' to
 explicit usage for class dvec.
 Simply calls \code{\link{explicit_guide}}
 followed by \code{\link{classified}} if x has a codelist attribute.
+If option \code{yamlet_with_title} is not NULL, and if 'units'
+present, label and units will be concatenated by default to create
+a title attribute.
 }
 \examples{
 library(magrittr)

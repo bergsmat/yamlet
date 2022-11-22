@@ -19,3 +19,4 @@ decorated
 \description{
 Casts to decorated from data.frame.
 }
+\keyword{internal}

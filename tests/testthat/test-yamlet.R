@@ -357,7 +357,7 @@ test_that('resolve correctly classifies conditional elements',{
   expect_warning( x %>% select(value) %>% explicit_guide %>% as_yamlet) # value looks like codelist because event not available to signal conditional
   x %>% explicit_guide %>% classified %>% as_yamlet
   a <- x %>% resolve %>% as_yamlet
-  expect_true(setequal(names(a$value), c('label','units')))
+  expect_true(setequal(names(a$value), c('label','units', 'title')))
 })
 
 test_that('resolve correctly classifies factors',{
@@ -1460,3 +1460,39 @@ test_that('Quoted Yes and No survive parsing verbatim',{
   identical(x, to_yamlet(as_yamlet(x)))
 
 })
+
+test_that('append_units() supports specific target',{
+  
+})
+
+test_that('with_titles() honors pass-through arguments for append_units()',{
+  
+})
+
+test_that('with_titles() is active on resolve() and desolve()',{
+  
+})
+
+test_that('with_titles() can be globally defeated',{
+  
+})
+
+test_that('yamlet_options() displays globally-configurable options',{
+  
+})
+
+test_that('with_titles() behaves as expected for class dvec',{
+  
+})
+
+
+
+
+
+
+
+
+
+
+
+

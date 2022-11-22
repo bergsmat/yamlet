@@ -19,3 +19,4 @@ decorated
 \description{
 Coerces data.frame to decorated.  Wrapper for \code{\link[vctrs]{df_cast}}.
 }
+\keyword{internal}

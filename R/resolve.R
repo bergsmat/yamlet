@@ -1,7 +1,9 @@
 #' Resolve Guide
 #'
 #' Resolves implicit usage of default key 'guide' to explicit usage.
-#' Generic, with method \code{\link{resolve.decorated}}.
+#' Generic, with methods 
+#' \code{\link{resolve.decorated}} and 
+#' \code{\link{resolve.dvec}}.
 #' @param x object
 #' @param ... passed arguments
 #' @export
@@ -16,10 +18,13 @@ resolve <- function(x, ...)UseMethod('resolve')
 #'
 #' Resolves implicit usage of default key 'guide' to
 #' explicit usage for decorated class.
-#' Simply calls \code{\link{explicit_guide}}
-#' followed by \code{\link{classified}}.
+#' Calls 
+#' \code{\link{explicit_guide}},
+#' \code{\link{classified}}, and
+#' \code{\link{make_title}}.
+#' 
 #' @param x decorated
-#' @param ... passed to \code{\link{explicit_guide}} and \code{\link{classified}}
+#' @param ... passed to \code{\link{explicit_guide}}, \code{\link{classified}}, and \code{\link{make_title}}
 #' @export
 #' @return decorated
 #' @family resolve
@@ -40,7 +45,7 @@ resolve <- function(x, ...)UseMethod('resolve')
 resolve.decorated <- function(x, ...){
   x <- explicit_guide(x, ...)
   x <- classified(x, ...)
-  # class(x) <- union('resolved', class(x))
+  x <- make_title(x, ...)
   x
 }
 #' Resolve Guide for Decorated Vector
@@ -49,8 +54,11 @@ resolve.decorated <- function(x, ...){
 #' explicit usage for class dvec.
 #' Simply calls \code{\link{explicit_guide}}
 #' followed by \code{\link{classified}} if x has a codelist attribute.
+#' If option \code{yamlet_with_title} is not NULL, and if 'units'
+#' present, label and units will be concatenated by default to create
+#' a title attribute.
 #' @param x dvec
-#' @param ... passed to \code{\link{explicit_guide}} and \code{\link{classified}}
+#' @param ... passed to \code{\link{explicit_guide}}, \code{\link{classified}}, and \code{\link{make_title}}
 #' @export
 #' @keywords internal
 #' @return dvec or classified
@@ -68,6 +76,9 @@ resolve.dvec <- function(x, ...){
   x <- explicit_guide(x, ...)
   if('codelist' %in% names(attributes(x))){
     x <- classified(x, ...)
+  }
+  if('units' %in% names(attributes(x))){
+    x <- make_title(x, ...)
   }
   x
 }

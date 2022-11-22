@@ -16,7 +16,10 @@ see methods
 }
 \description{
 Un-resolves explicit versions of 'guide' to implicit usage.
-Generic, with method \code{\link{desolve.decorated}}.
+Generic, with methods 
+\code{\link{desolve.decorated}},
+\code{\link{desolve.classified}}, and 
+\code{\link{desolve.dvec}}.
 }
 \examples{
 example(resolve.decorated)

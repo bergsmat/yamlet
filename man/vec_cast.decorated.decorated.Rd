@@ -19,3 +19,4 @@ decorated
 \description{
 Casts to decorated from decorated
 }
+\keyword{internal}

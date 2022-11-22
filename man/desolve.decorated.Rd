@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{decorated}
 
-\item{...}{passed to \code{\link{implicit_guide}} and \code{\link{unclassified}}}
+\item{...}{passed to \code{\link{drop_title}}, \code{\link{unclassified}}, and \code{\link{implicit_guide}}}
 }
 \value{
 decorated
@@ -17,8 +17,10 @@ decorated
 \description{
 Un-resolves explicit usage of default key 'guide' to
 implicit usage for 'decorated' class.
-Simply calls \code{\link{unclassified}}
-followed by \code{\link{implicit_guide}}.
+Simply calls 
+\code{\link{drop_title}}, 
+\code{\link{unclassified}},
+and \code{\link{implicit_guide}}.
 }
 \examples{
 library(magrittr)

@@ -180,14 +180,14 @@ print.decorated_ggplot <- function(
     x,
     ...,
     search = getOption(
-      'decorated_ggplot_search',
+      'yamlet_decorated_ggplot_search',
       c('expression', 'title', 'label')
     ),
     discrete = getOption(
-      'decorated_ggplot_discrete',
+      'yamlet_decorated_ggplot_discrete',
       c('colour', 'fill', 'size', 'shape', 'linetype', 'alpha')
     ),
-    drop = getOption('decorated_ggplot_drop', TRUE)
+    drop = getOption('yamlet_decorated_ggplot_drop', TRUE)
 ){
   # support for discrete manual scales
   labelnames <- names(x$labels)

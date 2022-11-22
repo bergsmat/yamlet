@@ -16,7 +16,7 @@
 
 \item{...}{named arguments passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}; un-named arguments ignored}
 
-\item{overwrite}{passed as TRUE}
+\item{overwrite}{whether to overwrite attributes}
 
 \item{simplify}{whether to remove guide attribute}
 }

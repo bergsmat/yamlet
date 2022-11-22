@@ -7,10 +7,10 @@
 \method{ggplot_build}{decorated_ggplot}(
   x,
   ...,
-  search = getOption("decorated_ggplot_search", c("expression", "title", "label")),
-  discrete = getOption("decorated_ggplot_discrete", c("colour", "fill", "size", "shape",
-    "linetype", "alpha")),
-  drop = getOption("decorated_ggplot_drop", TRUE)
+  search = getOption("yamlet_decorated_ggplot_search", c("expression", "title", "label")),
+  discrete = getOption("yamlet_decorated_ggplot_discrete", c("colour", "fill", "size",
+    "shape", "linetype", "alpha")),
+  drop = getOption("yamlet_decorated_ggplot_drop", TRUE)
 )
 }
 \arguments{

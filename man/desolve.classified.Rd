@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{classified}
 
-\item{...}{passed to \code{\link{implicit_guide}} and \code{\link{unclassified}}}
+\item{...}{passed to \code{\link{drop_title}}, \code{\link{unclassified}}, and \code{\link{unclassified}}}
 }
 \value{
 dvec
@@ -17,7 +17,9 @@ dvec
 \description{
 Un-resolves explicit usage of default key 'guide' to
 implicit usage for class 'classified'.
-Simply calls \code{\link{unclassified}}
+Calls 
+\code{\link{drop_title}} (a non-action by default),
+\code{\link{unclassified}},
 followed by \code{\link{implicit_guide}}.
 }
 \examples{

@@ -1,7 +1,10 @@
 #' Desolve Guide
 #'
 #' Un-resolves explicit versions of 'guide' to implicit usage.
-#' Generic, with method \code{\link{desolve.decorated}}.
+#' Generic, with methods 
+#' \code{\link{desolve.decorated}},
+#' \code{\link{desolve.classified}}, and 
+#' \code{\link{desolve.dvec}}.
 #' @param x object
 #' @param ... passed arguments
 #' @export
@@ -16,10 +19,13 @@ desolve <- function(x, ...)UseMethod('desolve')
 #'
 #' Un-resolves explicit usage of default key 'guide' to
 #' implicit usage for 'decorated' class.
-#' Simply calls \code{\link{unclassified}}
-#' followed by \code{\link{implicit_guide}}.
+#' Simply calls 
+#' \code{\link{drop_title}}, 
+#' \code{\link{unclassified}},
+#' and \code{\link{implicit_guide}}. 
+#' 
 #' @param x decorated
-#' @param ... passed to \code{\link{implicit_guide}} and \code{\link{unclassified}}
+#' @param ... passed to \code{\link{drop_title}}, \code{\link{unclassified}}, and \code{\link{implicit_guide}}
 #' @export
 #' @return decorated
 #' @family resolve
@@ -36,19 +42,21 @@ desolve <- function(x, ...)UseMethod('desolve')
 #' x %>% resolve(glyco, Race) %>% desolve %>% decorations(Age, glyco, Race)
 
 desolve.decorated <- function(x, ...){
+  x <- drop_title(x, ...)
   x <- unclassified(x, ...)
   x <- implicit_guide(x, ...)
-  #class(x) <- setdiff(class(x),'resolved')
   x
 }
 #' Desolve Guide for Classified
 #'
 #' Un-resolves explicit usage of default key 'guide' to
 #' implicit usage for class 'classified'.
-#' Simply calls \code{\link{unclassified}}
+#' Calls 
+#' \code{\link{drop_title}} (a non-action by default),
+#' \code{\link{unclassified}},
 #' followed by \code{\link{implicit_guide}}.
 #' @param x classified
-#' @param ... passed to \code{\link{implicit_guide}} and \code{\link{unclassified}}
+#' @param ... passed to \code{\link{drop_title}}, \code{\link{unclassified}}, and \code{\link{unclassified}}
 #' @export
 #' @return dvec
 #' @family resolve
@@ -70,6 +78,7 @@ desolve.decorated <- function(x, ...){
 #' x %>% resolve %>% desolve %>% str
 
 desolve.classified <- function(x, ...){
+  x <- drop_title(x, ...)
   x <- unclassified(x, ...)
   x <- implicit_guide(x, ...)
   x
@@ -77,11 +86,13 @@ desolve.classified <- function(x, ...){
 #' Desolve Guide for Decorated Vector
 #'
 #' Un-resolves explicit usage of default key 'guide' to
-#' implicit usage for class dvec
-#' Simply calls \code{\link{unclassified}}
-#' followed by \code{\link{implicit_guide}}.
+#' implicit usage for class dvec.
+#' Calls 
+#' \code{\link{drop_title}},
+#' \code{\link{unclassified}},
+#' and \code{\link{implicit_guide}}.
 #' @param x 
-#' @param ... passed to \code{\link{implicit_guide}} and \code{\link{unclassified}}
+#' @param ... passed to \code{\link{drop_title}}, \code{\link{unclassified}}, and \code{\link{implicit_guide}}
 #' @export
 #' @return dvec
 #' @family resolve
@@ -96,6 +107,7 @@ desolve.classified <- function(x, ...){
 #' x %>% resolve %>% desolve %>% str
 
 desolve.dvec <- function(x, ...){
+  x <- drop_title(x, ...)
   x <- unclassified(x, ...)
   x <- implicit_guide(x, ...)
   x

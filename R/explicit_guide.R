@@ -220,8 +220,8 @@ infer_guide <- function(
 explicit_guide.data.frame <- function(
     x,
     ...,
-    overwrite = getOption('explicit_guide_overwrite',TRUE),
-    simplify = getOption('explicit_guide_simplify', TRUE)
+    overwrite = getOption('yamlet_explicit_guide_overwrite',TRUE),
+    simplify = getOption('yamlet_explicit_guide_simplify', TRUE)
 ){
   y <- do.call(as_yamlet, c(list(x), named(...)))
   nms <- selected(x, ...)
@@ -246,7 +246,7 @@ explicit_guide.data.frame <- function(
 #'
 #' @param x dvec
 #' @param ... named arguments passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}; un-named arguments ignored
-#' @param overwrite passed as TRUE
+#' @param overwrite whether to overwrite attributes
 #' @param simplify whether to remove guide attribute
 #' @export
 #' @keywords internal
