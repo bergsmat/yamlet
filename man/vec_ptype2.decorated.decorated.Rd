@@ -17,6 +17,6 @@
 decorated
 }
 \description{
-Determines common type for decorated
+Determines common type for decorated.
 }
 \keyword{internal}

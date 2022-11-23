@@ -34,7 +34,7 @@
 #'   Controls whether existing decorations are overwritten.
 #' * **yamlet_exclude_attr**: see \code{\link{decorations.data.frame}}
 #'   Controls what attributes are excluded from display.
-#' * **yamlet_with_title**: see \code{\link{make_title}} and \code{\link{drop_title}}.
+#' * **yamlet_with_title**: see \code{\link{make_title.dvec}} and \code{\link{drop_title.dvec}}.
 #'   For objects with (implied) units attributes, titles are by default
 #'   automatically created on resolve() and destroyed on desolve().
 #'   Interacts with yamlet_append_units_*.

@@ -25,4 +25,3 @@ a \%<>\% decorate('id: identifier')
 a \%<>\% resolve
 a$wt \%>\% as_units
 }
-\keyword{internal}

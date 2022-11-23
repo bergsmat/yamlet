@@ -60,7 +60,7 @@ classified.default <- function(
   nmax = NA,
   ...
 ){
-  cl <- attr(x,'codelist')
+  cl <- attr(x,'codelist') # could be NULL
   # if we have a codelist, use it
   if(!is.null(cl)){
     attr(x,'codelist') <- NULL
@@ -97,6 +97,45 @@ classified.default <- function(
   # should be true using defaults
   if(length(levels) != length(labels))stop('classified requires labels and levels of the same length')
 
+  codes <- data.frame(levels = levels, labels = labels)
+  if(any(duplicated(codes))){
+    duplicated <- anyDuplicated(codes)
+    warning(
+      'dropping duplicated levels, e.g.: ', 
+      codes$levels[[duplicated]], 
+      ' (', 
+      codes$labels[[duplicated]],
+      ')'
+    )
+    codes <- unique(codes)
+  }
+  
+  if(any(duplicated(codes$levels))){
+    duplicated <- anyDuplicated(codes$levels)
+    warning(
+      'level(s) cross-labelled, e.g.: ', 
+      codes$levels[[duplicated]], 
+      ': ', 
+      paste(
+        collapse = ', ', 
+        codes$labels[codes$levels == codes$levels[[duplicated]]]
+      )
+    )
+  }
+  if(any(duplicated(codes$labels))){
+    duplicated <- anyDuplicated(codes$labels)
+    warning(
+      'levels like-labelled, e.g.: ', 
+      paste(collapse = ', ', codes$levels[codes$labels == codes$labels[[duplicated]]]), 
+      ': ', 
+      codes$labels[[duplicated]]
+    )
+  }
+  
+  # having dropped any duplicates, we unpack codes
+  labels <- codes$labels
+  levels <- codes$levels
+  
   # in every case, make a good codelist
   codelist <- as.list(labels)
   names(codelist) <- levels

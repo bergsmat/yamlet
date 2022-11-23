@@ -2,7 +2,7 @@
 % Please edit documentation in R/vec_decorated.R
 \name{vec_ptype2.data.frame.decorated}
 \alias{vec_ptype2.data.frame.decorated}
-\title{Determine Common Type for  Data.frame and decorated}
+\title{Determine Common Type for Data.frame and Decorated}
 \usage{
 \method{vec_ptype2}{data.frame.decorated}(x, y, ...)
 }
@@ -17,6 +17,6 @@
 decorated
 }
 \description{
-Determines common type for data.frame and decorated
+Determines common type for data.frame and decorated.
 }
 \keyword{internal}

@@ -4,7 +4,7 @@
 #' Generic, with methods
 #' \code{\link{append_units.default}} and
 #' \code{\link{append_units.data.frame}}.
-#' DFor a more general strategy see \code{\link{modify}}.
+#' For a more general strategy see \code{\link{modify}}.
 #'
 #' @param x object
 #' @param ... passed arguments

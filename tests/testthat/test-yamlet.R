@@ -1456,43 +1456,175 @@ test_that('[ can be the first character of a code or decode',{
 
 test_that('Quoted Yes and No survive parsing verbatim',{
 
-  x <- '[blq    : [LOQ Y/N, ["No": 0, "Yes": 1 ]]]'
-  identical(x, to_yamlet(as_yamlet(x)))
-
+  x <- "blq: [ LOQ Y/N, [ 'No': 0, 'Yes': 1 ]]"
+  y <- x %>% write_yamlet %>% as.character
+  x
+  y
+  expect_identical(x, y)
 })
 
 test_that('append_units() supports specific target',{
+  x <- as_dvec(1:10, label = 'acceleration', units = 'm/s^2')
+  x %<>% append_units(target = 'title')
+  expect_true('title' %in% names(attributes(x)))
+})
+
+test_that('make_title() honors pass-through arguments for append_units()',{
+  x <- as_dvec(1:10, label = 'acceleration', units = 'm/s^2')
+  x %<>% make_title(open = '[', close = ']')
+  attr(x, 'title')
+  expect_identical(attr(x, 'title'), "acceleration[m/s^2]")
+})
+
+test_that('make_title() / drop_title() active on resolve() and desolve()',{
+  x <- data.frame(
+    age = c(53, 58, 60),
+    sex = c(0, 1, 1),
+    race = c(1, 1, 2)
+  )
+  x %<>% decorate('
+  age: [ Age, year ]
+  sex: [ Sex, [ Female: 0, Male: 1 ]]
+  race: [ Race, [White: 1, Asian: 2 ]]
+  ')
+  x
+  x %<>% resolve
+  expect_true('title' %in% names(attributes(x$age)))
+  x %<>% desolve
+  expect_false('title' %in% names(attributes(x$age)))
   
 })
 
-test_that('with_titles() honors pass-through arguments for append_units()',{
-  
-})
-
-test_that('with_titles() is active on resolve() and desolve()',{
-  
-})
-
-test_that('with_titles() can be globally defeated',{
+test_that('make_title() can be globally defeated',{
+  options(yamlet_with_title = FALSE)
+  x <- data.frame(
+    age = c(53, 58, 60),
+    sex = c(0, 1, 1),
+    race = c(1, 1, 2)
+  )
+  x %<>% decorate('
+  age: [ Age, year ]
+  sex: [ Sex, [ Female: 0, Male: 1 ]]
+  race: [ Race, [White: 1, Asian: 2 ]]
+  ')
+  x
+  x %<>% resolve
+  expect_false('title' %in% names(attributes(x$age)))
+  options(yamlet_with_title = NULL)
   
 })
 
 test_that('yamlet_options() displays globally-configurable options',{
+  options(yamlet_with_title = FALSE)
+  expect_true('yamlet_with_title' %in% names(yamlet_options()))
+  options(yamlet_with_title = NULL)
+  expect_false('yamlet_with_title' %in% names(yamlet_options()))
+})
+
+test_that('make_title() behaves as expected for class dvec',{
+  x <- as_dvec(1:10, label = 'length', guide = 'mm')
+  expect_false('title' %in% (x %>% make_title %>% attributes %>% names))
+  expect_true('title' %in% (x %>% resolve %>% make_title %>% attributes %>% names))
+})
+
+test_that('add_title() and drop_title() have no effect on (undecorated) data.frame',{
+  x <- data.frame(
+    age = c(53, 58, 60),
+    height = c(155, 130, 145),
+    race = c(1, 2, 2)
+  )
+  x %<>% decorate('
+  age: [ Age, year ]
+  height: [ Height, cm, title: "Subject Height [cm]" ]
+  race: [ Race, [White: 1, Asian: 2 ]]
+  ')
+  x %>% decorations
+  x %<>% as.data.frame
+  x %>% decorations # still has decorations, but is just a data.frame
+  x %<>% make_title
+  x %>% decorations
+  expect_false('title' %in% names(attributes(x$age)))
+  x %<>% drop_title
+  x %>% decorations
+  expect_true('title' %in% names(attributes(x$height)))
+})
+
+test_that('row_bind of supported table types returns consistent class and functional metadata',{
+  library(dplyr)
+  
+  a <- data.frame(study = 1) %>% decorate('study: [Study, [A: 1]]', persistence = FALSE)
+  class(a) <- 'data.frame'
+  b <- data.frame(study = 2) %>% decorate('study: [Study, [B: 2]]') # decorated data.frame
+  c <-     tibble(study = 3) %>% decorate('study: [Study, [C: 3]]') # decorated tbl_df
+  c %<>% group_by(study) # decorated grouped_df
+  
+  # per ?bind_rows: bind_rows() returns the same type as the first input,
+  # either a data.frame, tbl_df, or grouped_df
+  # or by extension, decorated data.frame, decorated tbl_df, decorated grouped_df
+  
+  bind_rows(a, a) %>% str # no magic, attributes dropped, not surprising
+  bind_rows(b, b) %>% str # magic
+  bind_rows(c, c) %>% str # magic
+  bind_rows(a, b) %>% str # no magic, attributes dropped, not surprising
+  bind_rows(b, a) %>% str # magic
+  bind_rows(a, c) %>% str # no magic, attributes dropped, not surprising
+  bind_rows(c, a) %>% str # magic
+  bind_rows(b, c) %>% str # returns decorated data.frame, not surprising
+  bind_rows(c, b) %>% str # magic
+  
+  expect_equal_to_reference(file = '108.rds', decorations(bind_rows(a, a)))
+  expect_equal_to_reference(file = '109.rds', decorations(bind_rows(b, b)))
+  expect_equal_to_reference(file = '110.rds', decorations(bind_rows(c, c)))
+  expect_equal_to_reference(file = '111.rds', decorations(bind_rows(a, b)))
+  expect_equal_to_reference(file = '112.rds', decorations(bind_rows(b, a)))
+  expect_equal_to_reference(file = '113.rds', decorations(bind_rows(a, c)))
+  expect_equal_to_reference(file = '114.rds', decorations(bind_rows(c, a)))
+  expect_equal_to_reference(file = '115.rds', decorations(bind_rows(b, c)))
+  expect_equal_to_reference(file = '116.rds', decorations(bind_rows(c, b)))
+  
+  # Conclusions:
+  # * Without any additional intervention, 'decorated'
+  #   always appears first before 'tbl_df' or 'grouped_df'
+  # * Without additional intervention, bind_rows() always
+  #   returns the data type of first argument.
+  # * bind_rows() drops meta if returning data.frame.
+  # * bind_rows() respects 'vestigal' meta on data.frames otherwise.
   
 })
 
-test_that('with_titles() behaves as expected for class dvec',{
-  
+test_that('yamlet warns if codelist not one-to-one',{
+  x <- data.frame(
+    age = c(53, 58, 60),
+    height = c(155, 130, 145),
+    race = c(1, 1, 1),
+    ethnicity = c(0, 0, 1)
+  )
+  x %<>% decorate('
+    age: [ Age, year ]
+    height: [ Height, cm, title: "Subject Height [cm]" ]
+    race: [ Race, [White: 1, White: 1, Asian: 1 ]]
+    ethnicity: [ Ethnicity, [ Hispanic: 0, Hispanic: 1]]
+  ')
+  x %>% resolve %>% decorations
+  expect_warning(x %>% resolve)
+
 })
 
-
-
-
-
-
-
-
-
-
-
+test_that('yamlet warns if row_bind gives overlapping codelist',{
+  library(dplyr)
+  x <- data.frame(
+    race = c(1, 2, 2)
+  )
+  x %<>% decorate('
+    race: [ Race, [White: 1, Asian: 2 ]]
+  ')
+  y <- data.frame(
+    race = c(1, 2, 2)
+  )
+  y %<>% decorate('
+    race: [ Race, [Asian: 1, White: 2, Black: 3]]
+  ')
+  bind_rows(x, y) %>% resolve
+  expect_warning(bind_rows(x, y))
+})
 

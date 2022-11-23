@@ -414,8 +414,65 @@ arbitrate.namedList <- function(x, y, ...){
   z <- c(x, y)
   # since x did have names, now z does also.
   # if ever both name and content are duplicated, we'll drop those.
-  bad <- duplicated(names(z)) & duplicated(z)
-  z <- z[!bad]
+  # bad <- duplicated(names(z)) & duplicated(z) # error for White: 1, Asian: 2, White: 2, Asian: 1.
+  # z <- list(White = 1, Asian = 2, White = 2, Asian = 1)
+  # z <- z[!bad]
+  
+  # https://www.r-bloggers.com/2016/07/populating-data-frame-cells-with-more-than-one-value/
+  codes <- data.frame(levels = I(structure(z, names = NULL)), labels = names(z))
+  if(any(duplicated(codes))){
+    duplicated <- anyDuplicated(codes)
+    # in this context, unlike classified.default, some duplication is normal
+    # warning(
+    #   'dropping duplicated levels, e.g.: ', 
+    #   codes$levels[[duplicated]], 
+    #   ' (', 
+    #   codes$labels[[duplicated]],
+    #   ')'
+    # )
+    codes <- unique(codes)
+  }
+  
+  if(any(duplicated(codes$levels))){
+    duplicated <- anyDuplicated(codes$levels)
+    warning(
+      'level(s) cross-labelled, e.g.: ', 
+      paste( 
+        collapse = ', ',
+        unlist(# in case level is itself a list
+          codes$levels[[duplicated]]
+        )
+      ), 
+      ': ', 
+      paste(
+        collapse = ', ', 
+        codes$labels[codes$levels == codes$levels[[duplicated]]]
+      )
+    )
+  }
+  if(any(duplicated(codes$labels))){
+    duplicated <- anyDuplicated(codes$labels)
+    warning(
+      'levels like-labelled, e.g.: ', 
+      paste(
+        collapse = ', ', 
+        codes$levels[codes$labels == codes$labels[[duplicated]]][[1]]
+      ), 
+      ', ',
+      paste(
+        collapse = ', ', 
+        codes$levels[codes$labels == codes$labels[[duplicated]]][[2]]
+      ), 
+      ': ', 
+      codes$labels[[duplicated]]
+    )
+  }
+  
+  # having dropped any duplicates, we unpack codes
+  z <- as.list(codes$levels)
+  names(z) <- codes$labels
+
+  # now elements are unique, but could be like-labelled or cross-labelled.
   class(z) <- 'list'
   z
 }
@@ -532,7 +589,6 @@ as.data.frame.dvec <- function (x, row.names = NULL, optional = FALSE, ..., nm =
 #' @param x dvec
 #' @param ... ignored
 #' @export
-#' @keywords internal
 #' @examples 
 #' library(magrittr)
 #' a <- data.frame(id = 1:4, wt = c(70, 80, 70, 80), sex = c(0,1,0,1))
@@ -559,7 +615,6 @@ units::as_units
 #' @param x units
 #' @param ... passed arguments
 #' @export
-#' @keywords internal
 #' @importFrom units drop_units
 #' @examples 
 #' library(magrittr)

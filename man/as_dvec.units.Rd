@@ -26,4 +26,3 @@ a \%<>\% mutate(wt = as_units(wt))
 a \%<>\% mutate(wt = as_dvec(wt))
 str(a$wt)
 }
-\keyword{internal}
