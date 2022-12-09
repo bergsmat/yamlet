@@ -588,6 +588,7 @@ as.data.frame.dvec <- function (x, row.names = NULL, optional = FALSE, ..., nm =
 #' @method as_units dvec
 #' @param x dvec
 #' @param ... ignored
+#' @param preserve attributes to preserve; just label by default (class and units are handled implicitly)
 #' @export
 #' @examples 
 #' library(magrittr)
@@ -597,10 +598,15 @@ as.data.frame.dvec <- function (x, row.names = NULL, optional = FALSE, ..., nm =
 #' a %<>% decorate('id: identifier')
 #' a %<>% resolve
 #' a$wt %>% as_units
-as_units.dvec <- function(x, ...){
+as_units.dvec <- function(x, ..., preserve = getOption('yamlet_as_units_preserve', 'label')){
   value <- attr(x, 'units')
   if(is.null(value))stop('x must have non-null value of attribute: units')
-  attr(x, 'units') <- NULL
+  # attr(x, 'units') <- NULL
+  drop <- names(attributes(x))
+  drop <- setdiff(drop, preserve)
+  for(nm in drop){
+    attr(x, nm) <- NULL
+  }
   x <- unclass(x)
   units(x) <- value
   x
@@ -631,7 +637,7 @@ as_dvec.units <- function(x, ...){
   units <- deparse_unit(x)
   x <- drop_units(x)
   attr(x, 'units') <- units
-  x <- as_dvec(x)
+  x <- as_dvec(x, ...)
   x
 }
 

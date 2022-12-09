@@ -34,6 +34,8 @@
 #'   Controls whether existing decorations are overwritten.
 #' * **yamlet_exclude_attr**: see \code{\link{decorations.data.frame}}
 #'   Controls what attributes are excluded from display.
+# * **yamlet_as.integer_exclude_attr**: see \code{\link{as.integer.classified}}
+#   Controls what attributes are excluded when preserving attributes.
 #' * **yamlet_with_title**: see \code{\link{make_title.dvec}} and \code{\link{drop_title.dvec}}.
 #'   For objects with (implied) units attributes, titles are by default
 #'   automatically created on resolve() and destroyed on desolve().
@@ -63,6 +65,11 @@
 #'   Attributes to leave untouched when promoting singularities.
 #' * **yamlet_promote**: see \code{\link{filter.decorated}}.
 #'   Whether to promote when filtering 'decorated'.
+#' * **yamlet_as_units_preserve**: \code{\link{as_units.dvec}}.
+#'   What attributes to preserve when converting dvec to units.  
+#'   Just 'label' by default.
+#'   Assign \code{options(yamlet_as_units_preserve = character(0))}
+#'   to remove all.
 #' 
 #' @export
 #' @md

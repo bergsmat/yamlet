@@ -560,7 +560,42 @@ test_that('dvec int and double are coerced compatibly during merge',{
       data.frame(ID = '1', TIME = 0)
     )
   )
-  
-  
+})
+
+test_that('as.integer.classified preserves tangential attributes',{
+  library(magrittr)
+  a <- as_dvec(c('a','b','c'), label = 'Letters', title = 'Sample Letters')
+  a %<>% classified
+  expect_true(all(c('label','title') %in% names(attributes(a))))
+})
+test_that('yamlet_as_units_preserve functions as expected',{
+  library(magrittr)
+  a <- as_dvec(1, label = 'height', units = 'cm', title = 'Height (cm)')
+  expect_true(
+    setequal(
+      a %>% as_units %>% attributes %>% names, 
+      c('label','units','class')
+    )
+  )
+  expect_true(
+    setequal(
+      a %>% as_units(preserve = character(0)) %>% attributes %>% names, 
+      c('units','class')
+    )
+  )
+  options(yamlet_as_units_preserve = character(0))
+  expect_true(
+    setequal(
+      a %>% as_units(preserve = character(0)) %>% attributes %>% names, 
+      c('units','class')
+    )
+  )
+  options(yamlet_as_units_preserve = NULL)
+  expect_true(
+    setequal(
+      a %>% as_units %>% attributes %>% names, 
+      c('label','units','class')
+    )
+  )
   
 })

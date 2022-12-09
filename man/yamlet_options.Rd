@@ -74,6 +74,11 @@ reserved labels that warn on reassignment.
 Attributes to leave untouched when promoting singularities.
 \item \strong{yamlet_promote}: see \code{\link{filter.decorated}}.
 Whether to promote when filtering 'decorated'.
+\item \strong{yamlet_as_units_preserve}: \code{\link{as_units.dvec}}.
+What attributes to preserve when converting dvec to units.
+Just 'label' by default.
+Assign \code{options(yamlet_as_units_preserve = character(0))}
+to remove all.
 }
 }
 \examples{

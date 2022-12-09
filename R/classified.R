@@ -483,6 +483,7 @@ classified.dvec <- function(
 #' @param offset an integer value to add to intermediate result
 #' @param ... passed to \code{\link{as.numeric}}, code{\link{as.integer}}, and code{\link{desolve}}
 #' @param persistence whether to return 'dvec' (is.integer(): TRUE) or just integer.
+# @param exclude_attr discard these when preserving attributes of x in result
 #' @export
 #' @family classified
 #' @return integer (possibly of class dvec)
@@ -522,7 +523,13 @@ classified.dvec <- function(
 #'   class
 #'   
 #'
-as.integer.classified <- function(x, offset = 0L, ..., persistence = getOption('yamlet_persistence', TRUE)){
+as.integer.classified <- function(
+    x, 
+    offset = 0L, 
+    ..., 
+    persistence = getOption('yamlet_persistence', TRUE) #,
+    #exclude_attr = getOption("yamlet_as.integer_exclude_attr", c("class", "levels", "codelist"))
+  ){
   stopifnot(
     length(offset) == 1,
     !is.na(offset),
@@ -541,6 +548,11 @@ as.integer.classified <- function(x, offset = 0L, ..., persistence = getOption('
   if(!persistence) {
     r <- unclass(r)
   }
+  # for(at in names(attributes(x))){
+  #   if(!at %in% exclude_attr){
+  #     attr(r, at) <- attr(x, at)
+  #   }
+  # }
   r
 }
 

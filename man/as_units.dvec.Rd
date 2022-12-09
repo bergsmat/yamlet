@@ -4,12 +4,14 @@
 \alias{as_units.dvec}
 \title{Coerce Decorated Vector to Units}
 \usage{
-\method{as_units}{dvec}(x, ...)
+\method{as_units}{dvec}(x, ..., preserve = getOption("yamlet_as_units_preserve", "label"))
 }
 \arguments{
 \item{x}{dvec}
 
 \item{...}{ignored}
+
+\item{preserve}{attributes to preserve; just label by default (class and units are handled implicitly)}
 }
 \description{
 Coerces dvec to units. If x has a units attribute,
