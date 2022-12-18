@@ -11,7 +11,7 @@
 
 \item{to}{logical}
 
-\item{...}{passed arguments}
+\item{...}{ignored}
 }
 \description{
 Cast to logical from dvec.

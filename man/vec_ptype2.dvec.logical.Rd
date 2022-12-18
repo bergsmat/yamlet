@@ -11,7 +11,7 @@
 
 \item{y}{logical}
 
-\item{...}{passed arguments}
+\item{...}{ignored}
 }
 \description{
 Find common type for dvec, logical.

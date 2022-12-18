@@ -303,15 +303,23 @@ length.dvec <- function(x)NextMethod()
 #' @return list (of attributes)
 reconcile <- function(x, ...)UseMethod('reconcile')
 
-#' Reconcile List Atttributes
+#' Reconcile Atttributes of List Members
 #'
-#' Reconciles list attributes. Recursively arbitrates
-#' list members pairwise, returning the accumulated result.
+#' Reconciles attributes of list members. Recursively arbitrates
+#' list members pairwise, returning the accumulated attributes.
 #' @param x list
 #' @param ... passed arguments
 #' @export
 #' @keywords internal
 #' @return list (of attributes)
+#' library(magrittr)
+#' library(dplyr)
+#' a <- data.frame(study = 1) %>% decorate('study: [Study, [A: 1]]')
+#' b <- data.frame(study = 2) %>% decorate('study: [Study, [B: 2]]')
+#' bind_rows(a, b) %>% decorations
+#' c(a$study, b$study)
+#' reconcile(list(a$study, b$study))
+
 reconcile.list <- function(x, ...){
   if(length(x) == 1) return(attributes(x[[1]]))
   # If we got this far, the list has length two or more.
@@ -662,3 +670,16 @@ vec_ptype_abbr.dvec <- function(x, ...) {
 #' @importFrom vctrs vec_ptype_abbr
 #' @export
 vctrs::vec_ptype_abbr
+
+#' Test if Class is dvec
+#' 
+#' Tests whether x inherits 'dvec'.
+#' @param x object
+#' @export
+#' @return logical
+#' @examples 
+#' is_dvec(1L)
+#' is_dvec(as_dvec(1L))
+is_dvec <- function(x){
+  inherits(x, 'dvec')
+}

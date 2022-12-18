@@ -9,7 +9,7 @@
 \arguments{
 \item{to}{dvec}
 
-\item{...}{passed arguments}
+\item{...}{passed to \code{\link{as_dvec}}}
 
 \item{from}{integer}
 }

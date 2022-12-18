@@ -1565,9 +1565,9 @@ test_that('row_bind of supported table types returns consistent class and functi
   bind_rows(a, a) %>% str # no magic, attributes dropped, not surprising
   bind_rows(b, b) %>% str # magic
   bind_rows(c, c) %>% str # magic
-  bind_rows(a, b) %>% str # no magic, attributes dropped, not surprising
+  bind_rows(a, b) %>% str # no magic, not surprising
   bind_rows(b, a) %>% str # magic
-  bind_rows(a, c) %>% str # no magic, attributes dropped, not surprising
+  bind_rows(a, c) %>% str # no magic, not surprising
   bind_rows(c, a) %>% str # magic
   bind_rows(b, c) %>% str # returns decorated data.frame, not surprising
   bind_rows(c, b) %>% str # magic

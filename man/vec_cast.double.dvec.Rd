@@ -9,7 +9,7 @@
 \arguments{
 \item{to}{double}
 
-\item{...}{passed arguments}
+\item{...}{ignored}
 
 \item{from}{dvec}
 }

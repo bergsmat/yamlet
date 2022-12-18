@@ -129,10 +129,16 @@ test_that('bind_rows respects column type of first argument', {
   dm2 <- redecorate(dm, 'RACE: foo')
   dm %>% decorations
   dm2 %>% decorations
-  bind_rows(dm, dm2) %>% decorations
-  bind_rows(dm2, dm) %>% decorations
+  
+  bind_rows(dm, dm2) %>% str
+  c(dm2$RACE, dm$RACE)
+  vctrs::vec_c(dm2$RACE, dm$RACE)
+  vctrs::vec_rbind(dm, dm2)
+  vctrs::vec_rbind(dm2, dm)
+  bind_rows(dm2, dm) %>% decorations # two warnings
+  bind_rows(dm2, as_decorated(dm)) %>% decorations # one warning
   bind_rows(as_decorated(dm), dm2) %>% decorations
-  dm3 <- bind_rows(dm, dm2)
+  dm3 <- bind_rows(as_decorated(dm), dm2)
   
   expect_identical(attr(dm3$RACE, 'label'), NULL)
   
@@ -597,5 +603,51 @@ test_that('yamlet_as_units_preserve functions as expected',{
       c('label','units','class')
     )
   )
+  
+})
+
+test_that('ifelse() returns dvec if true or false is dvec',{
+  # https://vctrs.r-lib.org/articles/s3-vector.html :
+  # Unfortunately there’s no way to fix this problem with the current design of c().
+  x <- data.frame(EVID = c(1,0,1,0), MDV = c(0,0,0,0))
+  x %<>% decorate('
+  EVID: [ Event Identifier, [ Dose: 1, Observation: 0]]
+  MDV: [ Missing Dependent Value, [ DV Not Missing: 0, DV Missing: 1]]
+  ')
+  x %>% decorations
+  class(x$MDV)
+  c(x$MDV, 1)
+  c(1, x$MDV)
+  c(as_dvec(1), x$MDV)
+  # can't rescue ifelse() by coercing to dvec
+  y <- x %>% mutate(MDV =  ifelse(EVID == 1, as_dvec(1, label = 'foo'), MDV))
+  expect_false(inherits(y$MDV, 'dvec'))
+  # CAN rescue if_else() by coercing to dvec
+  z <- x %>% mutate(MDV = if_else(EVID == 1, as_dvec(1, label = 'foo'), MDV))
+  expect_true(inherits(z$MDV, 'dvec'))
+  
+  # case_when requires dvec in both positions:
+  x %>% mutate(
+    MDV = case_when(
+      EVID == 1 ~ as_dvec(1),
+      TRUE ~ MDV
+    )
+  ) %$% MDV %>% str
+
+  # case_when preserves first attributes
+  x %>% mutate(
+    MDV = case_when(
+      EVID == 1 ~ as_dvec(1, label = 'foo'),
+      TRUE ~ MDV
+    )
+  ) %$% MDV %>% str
+  
+  # case_when preserves first attributes
+  x %>% mutate(
+    MDV = case_when(
+      EVID != 1 ~ MDV,
+      TRUE ~ 1
+    )
+  ) %$% MDV %>% str # dvec with attributes
   
 })

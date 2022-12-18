@@ -2,7 +2,7 @@
 % Please edit documentation in R/dvec.R
 \name{reconcile.list}
 \alias{reconcile.list}
-\title{Reconcile List Atttributes}
+\title{Reconcile Atttributes of List Members}
 \usage{
 \method{reconcile}{list}(x, ...)
 }
@@ -13,9 +13,16 @@
 }
 \value{
 list (of attributes)
+library(magrittr)
+library(dplyr)
+a <- data.frame(study = 1) %>% decorate('study: [Study, [A: 1]]')
+b <- data.frame(study = 2) %>% decorate('study: [Study, [B: 2]]')
+bind_rows(a, b) %>% decorations
+c(a$study, b$study)
+reconcile(list(a$study, b$study))
 }
 \description{
-Reconciles list attributes. Recursively arbitrates
-list members pairwise, returning the accumulated result.
+Reconciles attributes of list members. Recursively arbitrates
+list members pairwise, returning the accumulated attributes.
 }
 \keyword{internal}
