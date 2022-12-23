@@ -29,7 +29,7 @@ vec_cast.dvec.dvec <- function(x, to, ...) {
 
   out <- vec_cast(vec_data(x), vec_data(to), ...)
   attributes(out) <- attributes(x)
-  as_dvec(out, ...)
+  as_dvec(out)
 
 }
 
