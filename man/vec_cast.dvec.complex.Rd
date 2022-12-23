@@ -9,7 +9,7 @@
 \arguments{
 \item{to}{dvec}
 
-\item{...}{passed to \code{\link{as_dvec}}}
+\item{...}{ignored}
 
 \item{from}{complex}
 }

@@ -7,7 +7,7 @@ NULL
 #' Cast to dvec from dvec.
 #' @param to dvec
 #' @param x dvec
-#' @param ... passed to \code{\link{as_dvec}}
+#' @param ... ignored
 #' @keywords internal
 #' @export
 #' @keywords internal
@@ -38,12 +38,12 @@ vec_cast.dvec.dvec <- function(x, to, ...) {
 #' Cast to dvec from logical
 #' @param to dvec
 #' @param x logical
-#' @param ... passed to \code{\link{as_dvec}}
+#' @param ... ignored
 #' @keywords internal
 #' @export
 vec_cast.dvec.logical <- function(x, to, ...){
   y <- vec_cast(x, unclass(to))
-  y <- as_dvec(y, ...)
+  y <- as_dvec(y)
   y
 }
 
@@ -64,12 +64,12 @@ vec_cast.logical.dvec <- function(x, to, ...){
 #' Cast to dvec from integer.
 #' @param to dvec
 #' @param from integer
-#' @param ... passed to \code{\link{as_dvec}}
+#' @param ... ignored
 #' @keywords internal
 #' @export
 vec_cast.dvec.integer <- function(x, to, ...){
   y <- vec_cast(x, unclass(to))
-  y <- as_dvec(y, ...)
+  y <- as_dvec(y)
   y
 }
 
@@ -90,12 +90,12 @@ vec_cast.integer.dvec <- function(x, to, ...){
 #' Cast to dvec from double.
 #' @param to dvec
 #' @param from double
-#' @param ... passed to \code{\link{as_dvec}}
+#' @param ... ignored
 #' @keywords internal
 #' @export
 vec_cast.dvec.double <- function(x, to, ...){
   y <- vec_cast(x, unclass(to))
-  y <- as_dvec(y, ...)
+  y <- as_dvec(y)
   y
 }
 
@@ -116,12 +116,12 @@ vec_cast.double.dvec <- function(x, to, ...){
 #' Cast to dvec from character.
 #' @param to dvec
 #' @param from character
-#' @param ... passed to \code{\link{as_dvec}}
+#' @param ... ignored
 #' @keywords internal
 #' @export
 vec_cast.dvec.character <- function(x, to, ...){
   y <- vec_cast(x, unclass(to))
-  y <- as_dvec(y, ...)
+  y <- as_dvec(y)
   y
 }
 
@@ -142,12 +142,12 @@ vec_cast.character.dvec <- function(x, to, ...){
 #' Cast to dvec from complex.
 #' @param to dvec
 #' @param from complex
-#' @param ... passed to \code{\link{as_dvec}}
+#' @param ... ignored
 #' @keywords internal
 #' @export
 vec_cast.dvec.complex <- function(x, to, ...){
   y <- vec_cast(x, unclass(to))
-  y <- as_dvec(y, ...)
+  y <- as_dvec(y)
   y
 }
 

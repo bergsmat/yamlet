@@ -11,7 +11,7 @@
 
 \item{to}{dvec}
 
-\item{...}{passed to \code{\link{as_dvec}}}
+\item{...}{ignored}
 }
 \description{
 Cast to dvec from dvec.
