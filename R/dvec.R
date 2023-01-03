@@ -387,7 +387,11 @@ arbitrate.NULL <- function(x, y, ...){
 arbitrate.list <- function(x, y, ...){
   if(!is.null(names(x))){
     class(x) <- 'namedList'
-    return(arbitrate(x, y, ...))
+    res <- arbitrate(x, y, ...)
+    if(inherits(res, 'namedList')){
+      res <- unclass(res)
+    }
+    return(res)
   }
   # if we got here, x is an un-named list
   if(is.null(y)) return(x)

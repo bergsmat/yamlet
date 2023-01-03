@@ -651,3 +651,12 @@ test_that('ifelse() returns dvec if true or false is dvec',{
   ) %$% MDV %>% str # dvec with attributes
   
 })
+
+test_that('arbitrated namedList prints correctly',{
+  pc <- data.frame(MDV = 0)
+  ex <- data.frame(MDV = 1)
+  pc %<>% decorate('MDV: [mdv, [Missing: 1, Not Missing: 0 ]]')
+  ex %<>% decorate('MDV: mdv')
+  out <- capture.output(pc %>% bind_rows(ex) %>% decorations(MDV))
+  expect_equal_to_reference(out, '108.rds')
+})
