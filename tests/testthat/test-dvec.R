@@ -188,6 +188,7 @@ test_that('pivot_longer() reconciles attributes',{
   expect_identical(attr(out$value, 'label'), 'letters')
 
 })
+
 test_that('dplyr verbs preserve attributes',{
   a <- data.frame(head(Theoph))
   a$Subject %<>% classified
@@ -220,6 +221,7 @@ test_that('dplyr verbs preserve attributes',{
       mutate(Wt = Wt * 2) %$% Wt %>% attr('guide'))
 
 })
+
 test_that('mutate preserves attributes on direct assigment',{
   a <- data.frame(wt = 70)
   a %<>% decorate('wt: [ body weight, kg ]')
@@ -228,6 +230,7 @@ test_that('mutate preserves attributes on direct assigment',{
   a %>% decorations
   expect_identical('kg', attr(a$WT, 'guide'))
 })
+
 test_that('mutate forwards attributes of RHS',{
   a <- data.frame(wt = 70)
   a %<>% decorate('wt: [ body weight, kg ]')
@@ -236,6 +239,7 @@ test_that('mutate forwards attributes of RHS',{
   a %>% decorations
   expect_identical(NULL, attr(a$WT, 'guide'))
 })
+
 test_that('mutate preserves attributes for ifelse()',{
   a <- data.frame(wt = c(70, 80), sex = c(0,1))
   a %<>% decorate('wt: [ body weight, kg ]')
@@ -246,11 +250,13 @@ test_that('mutate preserves attributes for ifelse()',{
   a %>% decorations
   expect_identical('sex', attr(a$WT, 'label'))
 })
+
 test_that('subsetting dvec returns dvec',{
   a <- as_dvec(1:10)
   expect_true(inherits(a[1], 'dvec'))
   expect_true(inherits(a[1:3], 'dvec'))
 })
+
 test_that('pivot_wider preserves attributes and class',{
   a <- data.frame(id = 1:4, wt = c(70, 80, 70, 80), sex = c(0,1,0,1))
   a %<>% decorate('wt: [ body weight, kg ]')
@@ -267,6 +273,7 @@ test_that('pivot_wider preserves attributes and class',{
   a %>% decorations
   expect_true(inherits(a$value, 'dvec'))
 })
+
 test_that('decorate() can class its targets as dvec',{
   a <- data.frame(a = 1:2, b = 3:4)
   b <- data.frame(a = 5:6, b = 7:8)
@@ -281,6 +288,7 @@ test_that('decorate() can class its targets as dvec',{
   decorations(bind_rows(a,b))
   expect_equal_to_reference(file = '107.rds', decorations(bind_rows(a,b)))
 })
+
 test_that('bind_rows combines guides and codelists',{
   a <- data.frame(a = 1:2, b = 3:4)
   b <- data.frame(a = 5:6, b = 7:8)
@@ -295,6 +303,7 @@ test_that('bind_rows combines guides and codelists',{
   decorations(bind_rows(a,b))
   expect_equal_to_reference(file = '107.rds', decorations(bind_rows(a,b)))
 })
+
 test_that('yamlet persistence can be disabled',{
   a <- data.frame(a = 1:2, b = 3:4)
   options(yamlet_persistence = FALSE)
@@ -422,6 +431,7 @@ test_that('casting to dvec always gives dvec',{
   expect_true(inherits(vec_cast('1', as_dvec('1')), 'dvec'))
   
 })
+
 test_that('casting from dvec never gives dvec',{
   
   expect_false(inherits(vec_cast(as_dvec(TRUE), TRUE), 'dvec'))
@@ -455,6 +465,7 @@ test_that('casting from dvec never gives dvec',{
   expect_false(inherits(vec_cast(as_dvec('1'), '1'), 'dvec'))
   
 })
+
 test_that('casting from dvec gives expected class',{
   
   expect_true(inherits(vec_cast(as_dvec(TRUE), TRUE), 'logical'))
@@ -574,6 +585,7 @@ test_that('as.integer.classified preserves tangential attributes',{
   a %<>% classified
   expect_true(all(c('label','title') %in% names(attributes(a))))
 })
+
 test_that('yamlet_as_units_preserve functions as expected',{
   library(magrittr)
   a <- as_dvec(1, label = 'height', units = 'cm', title = 'Height (cm)')
@@ -658,5 +670,5 @@ test_that('arbitrated namedList prints correctly',{
   pc %<>% decorate('MDV: [mdv, [Missing: 1, Not Missing: 0 ]]')
   ex %<>% decorate('MDV: mdv')
   out <- capture.output(pc %>% bind_rows(ex) %>% decorations(MDV))
-  expect_equal_to_reference(out, '108.rds')
+  expect_equal_to_reference(out, '117.rds')
 })

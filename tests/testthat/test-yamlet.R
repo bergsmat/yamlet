@@ -1390,7 +1390,6 @@ test_that('when two different codes have the same decode, classified levels matc
   )
 })
 
-
 test_that('ggplot succeeds for class decorated that has no labels',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
   library(ggplot2)
