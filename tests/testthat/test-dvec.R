@@ -94,7 +94,7 @@ test_that('bind_rows() reconciles attributes',{
 
 
   c <- bind_rows(a, b)
-  d <- bind_rows(b ,a)
+  d <- bind_rows(b, a)
   decorations(c)
   decorations(d)
   # expect_identical(attr(c$Subject, 'label'), 'subject')
@@ -133,16 +133,17 @@ test_that('bind_rows respects column type of first argument', {
   bind_rows(dm, dm2) %>% str
   c(dm2$RACE, dm$RACE)
   vctrs::vec_c(dm2$RACE, dm$RACE)
+  vctrs::vec_c(dm$RACE, dm2$RACE)
   vctrs::vec_rbind(dm, dm2)
   vctrs::vec_rbind(dm2, dm)
-  bind_rows(dm2, dm) %>% decorations # two warnings
+  bind_rows(dm2, dm) %>% decorations # one warnings
   bind_rows(dm2, as_decorated(dm)) %>% decorations # one warning
   bind_rows(as_decorated(dm), dm2) %>% decorations
   dm3 <- bind_rows(as_decorated(dm), dm2)
   
   expect_identical(attr(dm3$RACE, 'label'), NULL)
   
-  # In this very interesting example,
+  # In this (next) very interesting example,
   # EVEN THOUGH dm has decorations,
   # EVEN IF dm is coerced to decorated,
   # EVEN THOUGH dm$RACE has a label,
@@ -153,6 +154,8 @@ test_that('bind_rows respects column type of first argument', {
   # and no attributes are preserved.
  
   bind_rows(dm %>% redecorate(persistence = F), dm2) %>% decorations
+  
+  $# but here attributes are preserved!
   bind_rows(dm %>% redecorate(persistence = T), dm2) %>% decorations
   bind_rows(dm %>% redecorate, dm2) %>% decorations
   
@@ -672,3 +675,119 @@ test_that('arbitrated namedList prints correctly',{
   out <- capture.output(pc %>% bind_rows(ex) %>% decorations(MDV))
   expect_equal_to_reference(out, '117.rds')
 })
+
+test_that('case_when type mismatch gives meaningful error',{
+  library(yamlet)
+  library(magrittr)
+  library(dplyr)
+  a <- data.frame(
+    EVID = c(1, 0, 0),
+    MDV = c(0, 0, 0)
+  )
+  a %<>% decorate('
+    EVID: [ Event ID, [ Observation: 0, Dose: 1]]
+    MDV: [ Missing DV, [ Not Missing: 0, Missing: 1]]
+  ')
+  
+  
+  a %>% mutate(MDV = case_when(EVID == 0 ~        MDV, TRUE ~ 1   )) %>% str # magic
+  a %>% mutate(MDV = case_when(EVID == 1 ~          1, TRUE ~ MDV )) %>% str # no magic
+  a %>% mutate(MDV = case_when(EVID == 1 ~ as_dvec(1), TRUE ~ MDV )) %>% str # magic
+  a %>% mutate(MDV =    ifelse(EVID == 1,           1, MDV        )) %>% str # no magic
+  a %>% mutate(MDV =    ifelse(EVID == 0,         MDV, 1          )) %>% str # no magic
+  a %>% mutate(MDV =   if_else(EVID == 0,         MDV, 1          )) %>% str # magic
+  a %>% mutate(MDV =   if_else(EVID == 1,           1, MDV        )) %>% str # no magic
+  a %>% mutate(MDV =   if_else(EVID == 1,  as_dvec(1), MDV        )) %>% str # magic
+
+  c(1, a$MDV) %>% str # no magic
+  c(a$MDV, 1) %>% str # magic
+  vctrs:::vec_c(1, a$MDV) %>% str # no magic
+  vctrs:::vec_c(a$MDV, 1) %>% str # magic
+  
+  b <- case_when(c(TRUE, FALSE) == TRUE ~ 1, TRUE  ~ as_dvec(1, label = 'foo'))
+  c <- case_when(c(TRUE, FALSE) == TRUE ~ as_dvec(1, label = 'foo'), TRUE  ~ 1)
+  d <- case_when(c(TRUE, FALSE) == TRUE ~ as_dvec(1), TRUE  ~ as_dvec(1, label = 'foo'))
+  
+  # With dplyr_1.0.99.9000, 
+  # case_when(num, dvec) returns undecorated dvec
+  # case_when(dvec, num) returns decorated dvec
+  # case_when(dvec, decorated dvec) returns decorated dvec
+  # not perfect, but great improvement!
+  
+  case_when(c(TRUE, FALSE) == TRUE ~ 1L, TRUE  ~ as_dvec(1, label = 'foo')) %>% str
+  case_when(c(TRUE, FALSE) == TRUE ~ 1, TRUE  ~ as_dvec(1L, label = 'foo')) %>% str
+  
+  # case_when does automatic type coercion
+  
+  c(2L, as_dvec(1L)) %>% str # no magic
+  c(as_dvec(1L, label = 'foo'), 2L) %>% str # magic
+  ifelse(FALSE, as_dvec(1L, label = 'foo'),2L) %>% str # no magic
+  if_else(FALSE, as_dvec(1L, label = 'foo'),2L) %>% str # magic
+  
+  # with dev version of dplyr, no longer seeing "dvec must have class dvec" error
+  
+})
+
+test_that('if_else and case_when conserve decorations',{
+  library(yamlet)
+  library(magrittr)
+  library(dplyr)
+  a <- data.frame(
+    EVID = c(0L, 1L, 0L),
+    MDV = c(0L, 0L, 0L)
+  )
+  a %<>% decorate('
+    EVID: [ Event ID, [ Observation: 0, Dose: 1]]
+    MDV: [ Missing DV, [ Not Missing: 0, Missing: 1]]
+  ')
+
+ a %>% decorations
+ a 
+ # The programmatic goal is to set MDV to 1 where EVID is 1.
+ # One problem is that the user is likely to assign 'double' to this integer.
+ # Another problem is that decorations historically have been destroyed here.
+ 
+ # Most intuitive code is this. Note MDV becomes num and decorations are lost.
+ a %>% mutate(MDV = if_else(EVID == 1, 1, MDV)) %>% str
+
+ # This version is less intuitive.  MDV becomes num and decorations are preserved.
+ a %>% mutate(MDV = if_else(EVID != 1, MDV, 1)) %>% str
+ 
+ # This version is easy to understand, MDV stays int, decorations are preserved.
+ a %>% mutate(MDV = MDV %>% replace(EVID == 1, 1)) %>% str
+
+ # This version is intuitive, but like if_else coerces to dvec num and drops decorations.
+ a %>% mutate(MDV = case_when(EVID == 1 ~ 1, TRUE ~ MDV)) %>% str
+
+ # This version less intuitive, but like if_else coerces to dvec num and preserves decor.
+ a %>% mutate(
+   MDV = case_when(
+     EVID != 1 ~ MDV, 
+     EVID == 1 ~ 1
+   )
+ ) %>% str
+ 
+ # something similar going on with vec_c, i.e. order dependence
+ vctrs::vec_c(1, as_dvec(1L, label = 'foo')) %>% str
+ vctrs::vec_c(as_dvec(1L, label = 'foo'), 1) %>% str
+ 
+ # but coercing to dvec gets it mostly right
+ vctrs::vec_c(as_dvec(1), as_dvec(1L, label = 'foo')) %>% str
+ # identical result:
+ vctrs::vec_c(as_dvec(1L, label = 'foo'), as_dvec(1)) %>% str
+ 
+ # is replace() na-safe?  Does an NA in the condition destroy good data?
+ b <- data.frame(
+   EVID = c(0L, 1L, NA),
+   MDV = c(0L, 0L, 0L)
+ )
+ 
+ b %>% mutate(MDV = MDV %>% replace(EVID == 1, 1))
+ # yes!  MDV not disturbed where EVID == 1 returns NA.
+ 
+})
+
+
+
+
+

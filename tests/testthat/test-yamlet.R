@@ -1627,3 +1627,44 @@ test_that('yamlet warns if row_bind gives overlapping codelist',{
   expect_warning(bind_rows(x, y))
 })
 
+test_that('print.decorated_ggplot() warns if label has length > 1',{
+  library(magrittr)
+  library(ggplot2)
+  library(yamlet)
+  library(palmerpenguins)
+  
+  any(is.na(penguins$bill_depth_mm))
+  any(is.na(penguins$bill_length_mm))
+  
+  penguins %<>% filter(!is.na(bill_depth_mm), !is.na(bill_length_mm))
+  penguins %<>% mutate(source = 'Penguins')
+
+  a <- penguins %>%
+    decorate('bill_length_mm: [ Bill Length, mm ]') %>%
+    ggplot(
+      aes(
+        x = bill_depth_mm, 
+        y = bill_length_mm, 
+        color = species
+      )
+    ) + 
+    geom_point() +
+    ggtitle(penguins$source)
+  a$labels
+  expect_warning(print(a))
+
+  b <- penguins %>%
+    ggplot(
+      aes(
+        x = bill_depth_mm, 
+        y = bill_length_mm, 
+        color = species
+      )
+    ) + 
+    geom_point() +
+    ggtitle(penguins$source)
+  b$labels
+  expect_silent(print(b))
+
+  
+})
