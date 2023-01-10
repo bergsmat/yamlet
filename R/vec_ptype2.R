@@ -56,7 +56,7 @@ vec_ptype2.dvec.logical <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.logical.dvec <- function(x, y, ...){
-  z <- c(x, y)
+  z <- c(as_dvec(x), y)
   z <- unclass(z) # restored below
   p <- vec_ptype2(x, unclass(y))
   attributes(p) <- attributes(z)
@@ -90,7 +90,7 @@ vec_ptype2.dvec.integer <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.integer.dvec <- function(x, y, ...){
-  z <- c(x, y)
+  z <- c(as_dvec(x), y)
   z <- unclass(z) # restored below
   p <- vec_ptype2(x, unclass(y))
   attributes(p) <- attributes(z)
@@ -106,6 +106,15 @@ vec_ptype2.integer.dvec <- function(x, y, ...){
 #' @param ... ignored
 #' @keywords internal
 #' @export
+#' @examples
+#' str(vctrs::vec_ptype2(as_dvec(1), 1))
+#' str(vctrs::vec_ptype2(1, as_dvec(1)))
+#' 
+#' str(vctrs::vec_ptype2(as_dvec(1, label = 'x'), 1))
+#' str(vctrs::vec_ptype2(1, as_dvec(1, label= 'x')))
+#' str(vctrs::vec_ptype2(as_dvec(1), structure(1, label = 'x')))
+#' 
+
 vec_ptype2.dvec.double <- function(x, y, ...){
   z <- c(x, y)
   z <- unclass(z) # restored below
@@ -124,7 +133,7 @@ vec_ptype2.dvec.double <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.double.dvec <- function(x, y, ...){
-  z <- c(x, y)
+  z <- c(as_dvec(x), y)
   z <- unclass(z) # restored below
   p <- vec_ptype2(x, unclass(y))
   attributes(p) <- attributes(z)
@@ -158,7 +167,7 @@ vec_ptype2.dvec.character <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.character.dvec <- function(x, y, ...){
-  z <- c(x, y)
+  z <- c(as_dvec(x), y)
   z <- unclass(z) # restored below
   p <- vec_ptype2(x, unclass(y))
   attributes(p) <- attributes(z)
@@ -192,7 +201,7 @@ vec_ptype2.dvec.complex <- function(x, y, ...){
 #' @keywords internal
 #' @export
 vec_ptype2.complex.dvec <- function(x, y, ...){
-  z <- c(x, y)
+  z <- c(as_dvec(x), y)
   p <- vec_ptype2(x, unclass(y))
   attributes(p) <- attributes(z)
   p <- as_dvec(p)

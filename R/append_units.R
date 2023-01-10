@@ -72,7 +72,12 @@ append_units.default <- function(
   stopifnot(style %in% c('plain', 'latex','plotmath'))
   lab <- attr(x, 'label')
   unit <- attr(x, 'units')
-  unit <- as.character(unit) # coerces symbolic_units nicely, without damaging count of non-singular units
+  unit <- as.character(unit) 
+  # coerces symbolic_units nicely, without damaging count of non-singular units
+  # but drops names
+  if(!inherits(attr(x, 'units'),'symbolic_units')){
+    names(unit) <- names(attr(x, 'units'))
+  }
   if(is.null(lab)) lab <- ''
   nms <- names(lab)
   lab <- as.list(lab)

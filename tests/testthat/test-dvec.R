@@ -84,6 +84,7 @@ test_that('bind_rows() reconciles attributes',{
   b %<>% select(Wt)
   c <- data.frame(Wt = as_dvec(c(79.6, 79.6), label = 'Weight'))
   d <- data.frame(Wt = as_dvec(c(79.6, 79.6), label = 'WEIGHT'))
+  expect_warning({
   bind_rows(a, b) %>% decorations # one warning
   bind_rows(c, d) %>% decorations # one warning
   bind_rows(c, b) %>% decorations # one warning
@@ -92,9 +93,10 @@ test_that('bind_rows() reconciles attributes',{
   bind_rows(as.data.frame(a), as.data.frame(b)) # one warning
   bind_rows(as_decorated(c), as_decorated(d)) # one warning
 
-
   c <- bind_rows(a, b)
   d <- bind_rows(b, a)
+})  
+  
   decorations(c)
   decorations(d)
   # expect_identical(attr(c$Subject, 'label'), 'subject')
@@ -106,7 +108,7 @@ test_that('bind_rows() reconciles attributes',{
   #   as_dvec(numeric(1), label = 'foo'),
   #   as_dvec(numeric(1), label = 'FOO')
   # )
-  
+expect_warning({ 
   bind_rows(
     data.frame(a = as_dvec(numeric(1), label = 'foo')),
     data.frame(a = as_dvec(numeric(1), label = 'FOO'))
@@ -115,6 +117,7 @@ test_that('bind_rows() reconciles attributes',{
     data.frame(a = as_dvec(numeric(0), label = 'foo')),
     data.frame(a = as_dvec(numeric(0), label = 'FOO'))
   ) %>% decorations
+})
 })
 
 test_that('bind_rows respects column type of first argument', {
@@ -129,19 +132,20 @@ test_that('bind_rows respects column type of first argument', {
   dm2 <- redecorate(dm, 'RACE: foo')
   dm %>% decorations
   dm2 %>% decorations
-  
-  bind_rows(dm, dm2) %>% str
-  c(dm2$RACE, dm$RACE)
-  vctrs::vec_c(dm2$RACE, dm$RACE)
+  expect_warning({
+    bind_rows(dm, dm2) %>% str
+    c(dm2$RACE, dm$RACE)
+   vctrs::vec_c(dm2$RACE, dm$RACE)
   vctrs::vec_c(dm$RACE, dm2$RACE)
   vctrs::vec_rbind(dm, dm2)
   vctrs::vec_rbind(dm2, dm)
-  bind_rows(dm2, dm) %>% decorations # one warnings
+  bind_rows(dm2, dm) %>% decorations # one warning
   bind_rows(dm2, as_decorated(dm)) %>% decorations # one warning
   bind_rows(as_decorated(dm), dm2) %>% decorations
   dm3 <- bind_rows(as_decorated(dm), dm2)
-  
-  expect_identical(attr(dm3$RACE, 'label'), NULL)
+   
+  })
+  expect_identical(attr(dm3$RACE, 'label'), 'Race')
   
   # In this (next) very interesting example,
   # EVEN THOUGH dm has decorations,
@@ -149,16 +153,22 @@ test_that('bind_rows respects column type of first argument', {
   # EVEN THOUGH dm$RACE has a label,
   # EVEN THOUGH dm2$RACE is dvec,
   # dm$RACE is still character.
-  # Therefore, c(dm$RACE, dm2$RACE)
-  # finds a method for character, 
-  # and no attributes are preserved.
+  # But as of 0.10.7, c(dm$RACE, dm2$RACE)
+  # promotes dm$RACE to dvec (see vec_ptype2.character.dvec )
+  # so attributes are preserved.
  
+  expect_warning(
   bind_rows(dm %>% redecorate(persistence = F), dm2) %>% decorations
+    
+  )
   
-  $# but here attributes are preserved!
+  # here also attributes are preserved
+  expect_warning({
   bind_rows(dm %>% redecorate(persistence = T), dm2) %>% decorations
   bind_rows(dm %>% redecorate, dm2) %>% decorations
-  
+    
+  })
+
   # Columns of an xpt, bearing labels, can be coerced to dvec by
   # self-redecorating with persistence turned on (default).
   
@@ -631,40 +641,54 @@ test_that('ifelse() returns dvec if true or false is dvec',{
   ')
   x %>% decorations
   class(x$MDV)
-  c(x$MDV, 1)
-  c(1, x$MDV)
-  c(as_dvec(1), x$MDV)
+  c(x$MDV, 1) # magic
+  c(1, x$MDV) # no magic
+  c(as_dvec(1), x$MDV) # magic
   # can't rescue ifelse() by coercing to dvec
   y <- x %>% mutate(MDV =  ifelse(EVID == 1, as_dvec(1, label = 'foo'), MDV))
   expect_false(inherits(y$MDV, 'dvec'))
   # CAN rescue if_else() by coercing to dvec
-  z <- x %>% mutate(MDV = if_else(EVID == 1, as_dvec(1, label = 'foo'), MDV))
+  expect_warning(
+   z <- x %>% mutate(MDV = if_else(EVID == 1, as_dvec(1, label = 'foo'), MDV))
+  )
   expect_true(inherits(z$MDV, 'dvec'))
   
-  # case_when requires dvec in both positions:
+  # as of 0.10.7, coercion is implicit:
+  expect_warning(
+    z <- x %>% mutate(MDV = if_else(EVID == 1, structure(1, label = 'foo'), MDV))
+  )
+  expect_true(inherits(z$MDV, 'dvec'))
+  
+  # as of 0.10.7, case_when no longer requires dvec in both positions:
+  expect_identical(
   x %>% mutate(
     MDV = case_when(
-      EVID == 1 ~ as_dvec(1),
+      EVID == 1 ~ 1,
       TRUE ~ MDV
     )
-  ) %$% MDV %>% str
+  ) %$% MDV %>% attr('label'), 'Missing Dependent Value'
+  )
 
   # case_when preserves first attributes
+  expect_warning(
+  expect_identical(
   x %>% mutate(
     MDV = case_when(
-      EVID == 1 ~ as_dvec(1, label = 'foo'),
+      EVID == 1 ~ structure(1, label = 'foo'),
       TRUE ~ MDV
     )
-  ) %$% MDV %>% str
+  ) %$% MDV %>% attr('label'), 'foo'
+  ))
   
   # case_when preserves first attributes
+  expect_identical(
   x %>% mutate(
     MDV = case_when(
       EVID != 1 ~ MDV,
       TRUE ~ 1
     )
-  ) %$% MDV %>% str # dvec with attributes
-  
+  ) %$% MDV %>% attr('label'), 'Missing Dependent Value')
+
 })
 
 test_that('arbitrated namedList prints correctly',{
@@ -691,33 +715,38 @@ test_that('case_when type mismatch gives meaningful error',{
   
   
   a %>% mutate(MDV = case_when(EVID == 0 ~        MDV, TRUE ~ 1   )) %>% str # magic
-  a %>% mutate(MDV = case_when(EVID == 1 ~          1, TRUE ~ MDV )) %>% str # no magic
+  a %>% mutate(MDV = case_when(EVID == 1 ~          1, TRUE ~ MDV )) %>% str # magic as of 0.10.7
   a %>% mutate(MDV = case_when(EVID == 1 ~ as_dvec(1), TRUE ~ MDV )) %>% str # magic
   a %>% mutate(MDV =    ifelse(EVID == 1,           1, MDV        )) %>% str # no magic
   a %>% mutate(MDV =    ifelse(EVID == 0,         MDV, 1          )) %>% str # no magic
   a %>% mutate(MDV =   if_else(EVID == 0,         MDV, 1          )) %>% str # magic
-  a %>% mutate(MDV =   if_else(EVID == 1,           1, MDV        )) %>% str # no magic
+  a %>% mutate(MDV =   if_else(EVID == 1,           1, MDV        )) %>% str # magic as of 0.10.7
   a %>% mutate(MDV =   if_else(EVID == 1,  as_dvec(1), MDV        )) %>% str # magic
 
   c(1, a$MDV) %>% str # no magic
   c(a$MDV, 1) %>% str # magic
-  vctrs:::vec_c(1, a$MDV) %>% str # no magic
+  vctrs:::vec_c(1, a$MDV) %>% str # magic as of 0.10.7
   vctrs:::vec_c(a$MDV, 1) %>% str # magic
   
   b <- case_when(c(TRUE, FALSE) == TRUE ~ 1, TRUE  ~ as_dvec(1, label = 'foo'))
   c <- case_when(c(TRUE, FALSE) == TRUE ~ as_dvec(1, label = 'foo'), TRUE  ~ 1)
   d <- case_when(c(TRUE, FALSE) == TRUE ~ as_dvec(1), TRUE  ~ as_dvec(1, label = 'foo'))
   
-  # With dplyr_1.0.99.9000, 
-  # case_when(num, dvec) returns undecorated dvec
+  # With dplyr_1.0.99.9000, at 0.10.7
+  # case_when(num, dvec) returns decorated dvec
   # case_when(dvec, num) returns decorated dvec
   # case_when(dvec, decorated dvec) returns decorated dvec
-  # not perfect, but great improvement!
+  # perfect!
   
-  case_when(c(TRUE, FALSE) == TRUE ~ 1L, TRUE  ~ as_dvec(1, label = 'foo')) %>% str
-  case_when(c(TRUE, FALSE) == TRUE ~ 1, TRUE  ~ as_dvec(1L, label = 'foo')) %>% str
+  expect_identical(b,c)
+  expect_identical(b,d)
   
   # case_when does automatic type coercion
+  expect_identical(
+  case_when(c(TRUE, FALSE) == TRUE ~ 1L, TRUE  ~ as_dvec(1, label = 'foo')),
+  case_when(c(TRUE, FALSE) == TRUE ~ 1, TRUE  ~ as_dvec(1L, label = 'foo'))
+  )
+  
   
   c(2L, as_dvec(1L)) %>% str # no magic
   c(as_dvec(1L, label = 'foo'), 2L) %>% str # magic
@@ -725,7 +754,7 @@ test_that('case_when type mismatch gives meaningful error',{
   if_else(FALSE, as_dvec(1L, label = 'foo'),2L) %>% str # magic
   
   # with dev version of dplyr, no longer seeing "dvec must have class dvec" error
-  
+
 })
 
 test_that('if_else and case_when conserve decorations',{
@@ -747,34 +776,47 @@ test_that('if_else and case_when conserve decorations',{
  # One problem is that the user is likely to assign 'double' to this integer.
  # Another problem is that decorations historically have been destroyed here.
  
- # Most intuitive code is this. Note MDV becomes num and decorations are lost.
- a %>% mutate(MDV = if_else(EVID == 1, 1, MDV)) %>% str
+ # Most intuitive code is this. Note MDV becomes num and decorations are preserved as of 0.10.7.
+ expect_identical(
+  a %>% mutate(MDV = if_else(EVID == 1, 1, MDV))  %$% MDV %>% attr('label'), 'Missing DV'
+ )
+ 
 
  # This version is less intuitive.  MDV becomes num and decorations are preserved.
- a %>% mutate(MDV = if_else(EVID != 1, MDV, 1)) %>% str
+ expect_identical(
+   a %>% mutate(MDV = if_else(EVID != 1, MDV, 1))  %$% MDV %>% attr('label'), 'Missing DV'
+ )
  
  # This version is easy to understand, MDV stays int, decorations are preserved.
- a %>% mutate(MDV = MDV %>% replace(EVID == 1, 1)) %>% str
-
+ expect_identical(
+ a %>% mutate(MDV = MDV %>% replace(EVID == 1, 1)) %$% MDV %>% attr('label'), 'Missing DV'
+)
  # This version is intuitive, but like if_else coerces to dvec num and drops decorations.
- a %>% mutate(MDV = case_when(EVID == 1 ~ 1, TRUE ~ MDV)) %>% str
-
+ expect_identical(
+ a %>% mutate(MDV = case_when(EVID == 1 ~ 1, TRUE ~ MDV)) %$% MDV %>% attr('label'), 'Missing DV'
+)
  # This version less intuitive, but like if_else coerces to dvec num and preserves decor.
+ expect_identical(
  a %>% mutate(
    MDV = case_when(
      EVID != 1 ~ MDV, 
      EVID == 1 ~ 1
    )
- ) %>% str
+ )  %$% MDV %>% attr('label'), 'Missing DV'
+ )
  
- # something similar going on with vec_c, i.e. order dependence
- vctrs::vec_c(1, as_dvec(1L, label = 'foo')) %>% str
- vctrs::vec_c(as_dvec(1L, label = 'foo'), 1) %>% str
+ # something similar going on with vec_c, i.e. order independence at 0.10.7
+ expect_identical(
+ vctrs::vec_c(1, as_dvec(1L, label = 'foo')),
+ vctrs::vec_c(as_dvec(1L, label = 'foo'), 1)
+ )
  
- # but coercing to dvec gets it mostly right
- vctrs::vec_c(as_dvec(1), as_dvec(1L, label = 'foo')) %>% str
- # identical result:
- vctrs::vec_c(as_dvec(1L, label = 'foo'), as_dvec(1)) %>% str
+ # of course, coercing to dvec gets it right
+ expect_identical(
+ vctrs::vec_c(as_dvec(1), as_dvec(1L, label = 'foo')),
+ vctrs::vec_c(as_dvec(1L, label = 'foo'), as_dvec(1))
+   
+ )
  
  # is replace() na-safe?  Does an NA in the condition destroy good data?
  b <- data.frame(
@@ -782,12 +824,34 @@ test_that('if_else and case_when conserve decorations',{
    MDV = c(0L, 0L, 0L)
  )
  
- b %>% mutate(MDV = MDV %>% replace(EVID == 1, 1))
+ expect_false(
+ b %>% mutate(MDV = MDV %>% replace(EVID == 1, 1)) %$% MDV %>% is.na %>% any
+   
+ )
  # yes!  MDV not disturbed where EVID == 1 returns NA.
  
 })
 
+test_that('vec_ptype2() conserves attributes if possible',{
+  library(vctrs)
+  dvc <- as_dvec(1, label = 'yin')
+  num <- structure(2, label = 'yang')
+  expect_warning({
+  a <- c(dvc, num)
+  b <- c(num, dvc)
+  
+  c <- vec_c(dvc, num)
+  d <- vec_c(num, dvc)
+    
+  })
+  
+  expect_identical(attr(a, 'label'), 'yin')
+  expect_identical(attr(b, 'label'), NULL )
+  expect_identical(attr(c, 'label'), 'yin')
+  expect_identical(attr(d, 'label'), 'yang')
+  
 
+})
 
 
 

@@ -19,6 +19,9 @@ Coerces numeric to decorated vector.  Assigns class 'dvec' and any named attribu
 }
 \examples{
 as_dvec(c(10.3, 1.2))
+as_dvec(1, label = 'yin')
+as_dvec(structure(1, label = 'yin'))
+as_dvec(structure(1, label = 'yin'), label = 'yang')
 
 }
 \seealso{

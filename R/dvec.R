@@ -72,6 +72,9 @@ as_dvec.integer <- function(x, ...){
 #' @return dvec
 #' @examples
 #' as_dvec(c(10.3, 1.2))
+#' as_dvec(1, label = 'yin')
+#' as_dvec(structure(1, label = 'yin'))
+#' as_dvec(structure(1, label = 'yin'), label = 'yang')
 #'
 as_dvec.numeric <- function(x, ...){
   at <- list(...)

@@ -16,4 +16,13 @@
 \description{
 Find common type for dvec, double.
 }
+\examples{
+str(vctrs::vec_ptype2(as_dvec(1), 1))
+str(vctrs::vec_ptype2(1, as_dvec(1)))
+
+str(vctrs::vec_ptype2(as_dvec(1, label = 'x'), 1))
+str(vctrs::vec_ptype2(1, as_dvec(1, label= 'x')))
+str(vctrs::vec_ptype2(as_dvec(1), structure(1, label = 'x')))
+
+}
 \keyword{internal}
