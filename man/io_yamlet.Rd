@@ -16,9 +16,9 @@ see methods
 }
 \description{
 Imports and exports yamlet.
-Generic, with a read method \code{\link{read_yaml}}
-for character and a write method \code{\link{write_yaml}}
-for data.frame.
+Generic, with a read method \code{\link{io_yamlet.character}}
+for character and a write method \code{\link{io_yamlet.data.frame}}
+for data.frame. See also \code{\link{io_yamlet.yamlet}}.
 }
 \examples{
 file <- system.file(package = 'yamlet', 'extdata','quinidine.yaml')

@@ -19,7 +19,7 @@ Coerces yamlet to yamlet storage format by unclassing to list.
 }
 \examples{
 library(magrittr)
- 'a: [[d: [0, 1, 2]]]' \%>\% as_yamlet \%>\% to_yamlet
+ 'a: [[d: [-1, 0, 1, 2]]]' \%>\% as_yamlet \%>\% to_yamlet
 }
 \seealso{
 Other to_yamlet: 
@@ -27,6 +27,7 @@ Other to_yamlet:
 \code{\link{to_yamlet.character}()},
 \code{\link{to_yamlet.default}()},
 \code{\link{to_yamlet.list}()},
+\code{\link{to_yamlet.numeric}()},
 \code{\link{to_yamlet}()}
 }
 \concept{to_yamlet}

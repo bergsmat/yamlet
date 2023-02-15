@@ -471,6 +471,41 @@ to_yamlet <- function(x, ...)UseMethod('to_yamlet')
 
 to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character, ...))
 
+#' Coerce Numeric to Yamlet Storage Format
+#'
+#' Coerces numeric to yamlet storage format.
+#' By default, numeric values would be processed as character.
+#' But character values with a leading dash are ordinarily 
+#' quoted, since in character context a leading dash could
+#' be mistaken for a yaml metacharacter.
+#' In the case of a numeric value, however, we can be
+#' fairly certain that, despite appearances, the dash
+#' if any is actually a negative sign. This method
+#' intends to leave negative numerics unquoted, like their
+#' positive counterparts.
+#' 
+#' @param x object
+#' @param ... ignored
+#' @export
+#' @keywords internal
+#' @return length-one character
+#' @family to_yamlet
+#' @examples
+#' library(magrittr)
+#'  'a: [[d: [-1, 0, 1, 2]]]' %>% as_yamlet %>% to_yamlet
+#'  to_yamlet(c(a = 4, b = 5.8))
+#'  to_yamlet(list(a = 4, b = 5.8))
+#'  to_yamlet(numeric(0))
+
+to_yamlet.numeric <- function(x,...){
+  if(length(x) > 1) return(to_yamlet(as.list(x), ...))
+  sign <- sign(x)
+  x <- abs(x)
+  x <- to_yamlet(as.character(x), ...)
+  x[sign == -1] <- paste0('-', x[sign == -1])
+  x
+}
+
 #' Coerce Yamlet to Yamlet Storage Format
 #'
 #' Coerces yamlet to yamlet storage format by unclassing to list.
@@ -482,7 +517,7 @@ to_yamlet.default <- function(x,...)to_yamlet(sapply(x, as.character, ...))
 #' @family to_yamlet
 #' @examples
 #' library(magrittr)
-#'  'a: [[d: [0, 1, 2]]]' %>% as_yamlet %>% to_yamlet
+#'  'a: [[d: [-1, 0, 1, 2]]]' %>% as_yamlet %>% to_yamlet
 
 to_yamlet.yamlet <- function(x,...)to_yamlet(unclass(x), ...)
 

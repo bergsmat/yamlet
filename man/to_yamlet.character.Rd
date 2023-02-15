@@ -39,6 +39,7 @@ Other to_yamlet:
 \code{\link{to_yamlet.NULL}()},
 \code{\link{to_yamlet.default}()},
 \code{\link{to_yamlet.list}()},
+\code{\link{to_yamlet.numeric}()},
 \code{\link{to_yamlet.yamlet}()},
 \code{\link{to_yamlet}()}
 }

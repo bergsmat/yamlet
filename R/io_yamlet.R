@@ -1,9 +1,9 @@
 #' Import and Export Yamlet
 #'
 #' Imports and exports yamlet.
-#' Generic, with a read method \code{\link{read_yaml}}
-#' for character and a write method \code{\link{write_yaml}}
-#' for data.frame.
+#' Generic, with a read method \code{\link{io_yamlet.character}}
+#' for character and a write method \code{\link{io_yamlet.data.frame}}
+#' for data.frame. See also \code{\link{io_yamlet.yamlet}}.
 #'
 #' @param x object
 #' @param ... passed arguments

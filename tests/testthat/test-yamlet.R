@@ -139,8 +139,8 @@ test_that('interconversion to and from storage is conservative',{
 
 test_that('coersion to storage format is stable',{
   expect_equal_to_reference(file = '053.rds', to_yamlet(3))
-  expect_equal_to_reference(file = '054.rds', to_yamlet(c(a = '4',b = '5.8')))
-  expect_equal_to_reference(file = '055.rds', to_yamlet(c(a = 4,b = 5.8)))
+  expect_equal_to_reference(file = '054.rds', to_yamlet(c(a = '4', b = '5.8')))
+  expect_equal_to_reference(file = '055.rds', to_yamlet(c(a = 4, b = 5.8)))
   expect_equal_to_reference(file = '056.rds', to_yamlet(TRUE))
   expect_equal_to_reference(file = '057.rds', to_yamlet('foo'))
   expect_equal_to_reference(file = '058.rds', to_yamlet(c('a','b')))
@@ -1658,4 +1658,16 @@ test_that('print.decorated_ggplot() warns if label has length > 1',{
   b$labels
   expect_warning(print(b))
 
+})
+
+test_that('yamlet can decorate n and N', {
+  x <- data.frame(a = 0, n = 0, N = 0)
+  x %<>% decorate('a: test')
+  x %<>% decorate('"n": number')
+  x %<>% decorate('"N": [ newtons, kg*m*s-2 ]')
+  expect_identical(attr(x$N, 'label'), 'newtons')
+})
+
+test_that('decorating with guide element -1 survives trip to storage as integer',{
+  expect_identical(to_yamlet(-1L), "-1")
 })
