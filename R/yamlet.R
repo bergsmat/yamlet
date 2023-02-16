@@ -436,7 +436,12 @@ as.character.yam <- function(x, ...){
   if(!identical(k, list('label','guide'))){
     x <- c(x, list(`_keys` = k))
   }
-  out <- paste0(names(x), ': ', sapply(x, to_yamlet, ...))
+# out <- paste0(names(x), ': ', sapply(x, to_yamlet, ...))
+  out <- paste0(
+    sapply(names(x), to_yamlet, ...), 
+    ': ',
+    sapply(x, to_yamlet, ...)
+  )
 }
 
 #' Coerce to Yamlet Storage Format

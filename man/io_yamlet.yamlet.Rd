@@ -34,7 +34,7 @@ invisible description of con: i.e., a file path
 }
 \description{
 Exports yamlet.
-The archtype method for \code{\link{io_yamlet}}.
+The archetype method for \code{\link{io_yamlet}}.
 Similar to \code{\link{write_yamlet}} but returns (description of) \code{con}.
 }
 \examples{

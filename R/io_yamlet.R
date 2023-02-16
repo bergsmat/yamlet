@@ -54,7 +54,7 @@ io_yamlet.character <- function(
 #' Export Yamlet
 #'
 #' Exports yamlet.
-#' The archtype method for \code{\link{io_yamlet}}.
+#' The archetype method for \code{\link{io_yamlet}}.
 #' Similar to \code{\link{write_yamlet}} but returns (description of) \code{con}.
 #'
 #' @param x yamlet
@@ -115,7 +115,7 @@ io_yamlet.yamlet <- function(
 #' @keywords internal
 #' @family interface
 #' @family io
-#' @return invisible character representation of yamlet (storage syntax)
+#' @return invisible description of con: i.e., a file path
 #' @examples
 #' library(csv)
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')

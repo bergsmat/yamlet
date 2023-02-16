@@ -30,7 +30,7 @@
 \item{...}{passed to \code{\link{as_yamlet}}}
 }
 \value{
-invisible character representation of yamlet (storage syntax)
+invisible description of con: i.e., a file path
 }
 \description{
 Writes data.frame attributes as yamlet.

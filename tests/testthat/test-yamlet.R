@@ -1668,6 +1668,18 @@ test_that('yamlet can decorate n and N', {
   expect_identical(attr(x$N, 'label'), 'newtons')
 })
 
+test_that('decorations for "n" etc. survive trip to storage', {
+  x <- data.frame(n = 0, sam = 0, wt = 0)
+  x %<>% decorate('
+  "n": [ Number, [a: 0, b: 1, c: -1], sort: 1]
+  sam: Number of Samples
+  wt: [ Body Weight, kg ]
+  ')
+  y <- x %>% io_yamlet(tempfile()) %>% io_yamlet
+  expect_identical(decorations(x), y)
+  
+})
+
 test_that('decorating with guide element -1 survives trip to storage as integer',{
   expect_identical(to_yamlet(-1L), "-1")
 })
