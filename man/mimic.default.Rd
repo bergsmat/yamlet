@@ -11,7 +11,7 @@
 
 \item{y}{vector-like, same length as x}
 
-\item{...}{ignored arguments}
+\item{...}{passed to \code{link{factor}}}
 }
 \value{
 same class as x

@@ -4,10 +4,31 @@
 \alias{classified.classified}
 \title{Create Classified from Classified}
 \usage{
-\method{classified}{classified}(x, ...)
+\method{classified}{classified}(
+  x,
+  levels,
+  labels,
+  exclude = NA,
+  ordered = is.ordered(x),
+  nmax = NA,
+  drop = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{classified}
+
+\item{levels}{passed to \code{\link{factor}}; defaults to \code{levels(x)}}
+
+\item{labels}{passed to \code{\link{factor}}; must be same length as levels(after removing values in \code{exclude} and unused levels if \code{drop} is TRUE) and must not contain duplicates}
+
+\item{exclude}{passed to \code{\link{factor}}}
+
+\item{ordered}{passed to \code{\link{factor}}}
+
+\item{nmax}{passed to \code{\link{factor}}}
+
+\item{drop}{whether to drop unused levels}
 
 \item{...}{ignored}
 }
@@ -16,8 +37,16 @@
 }
 \description{
 See \code{\link{classified.default}}.
-Currently, calling classified on a
-classified object is a non-operation.
+Formerly (version 0.10.10), calling classified() on a
+classified object was a non-operation.
+Currently we call factor(x, ...) and then 
+try to reconcile the codelist attribute with resulting 
+levels.
+}
+\details{
+By default classified is idempotent, such that classified(classified(x)) is
+the same as classified(x).  In contrast, factor(factor(x)) will drop unused
+levels (not shown). To drop unused levels, use classified(classified(x), drop = TRUE).
 }
 \examples{
 
@@ -41,6 +70,7 @@ Other classified:
 \code{\link{classified.data.frame}()},
 \code{\link{classified.default}()},
 \code{\link{classified.dvec}()},
+\code{\link{classified.factor}()},
 \code{\link{classified}()},
 \code{\link{desolve.classified}()},
 \code{\link{unclassified.classified}()},

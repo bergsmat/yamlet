@@ -16,7 +16,11 @@
 
 \item{offset}{an integer value to add to intermediate result}
 
-\item{...}{passed to \code{\link{as.numeric}}, code{\link{as.integer}}, and code{\link{desolve}}}
+\item{...}{passed to 
+\code{\link{as.numeric}}, 
+\code{\link{as.integer}}, 
+\code{\link{desolve}}, and
+\code{\link{mimic}}}
 
 \item{persistence}{whether to return 'dvec' (is.integer(): TRUE) or just integer.}
 }
@@ -77,6 +81,7 @@ Other classified:
 \code{\link{classified.data.frame}()},
 \code{\link{classified.default}()},
 \code{\link{classified.dvec}()},
+\code{\link{classified.factor}()},
 \code{\link{classified}()},
 \code{\link{desolve.classified}()},
 \code{\link{unclassified.classified}()},

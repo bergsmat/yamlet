@@ -12,6 +12,51 @@
 #' example(classified.default)
 classified <- function(x, ...)UseMethod('classified')
 
+#' Create Classified from Factor
+#' 
+#' Creates classified from factor. Uses \code{\link{classified.default}},
+#' but supplies existing levels by default.
+#' 
+#' @export
+#' @return 'classified' 'factor'
+#' @param x see \code{\link{factor}}
+#' @param levels passed to \code{\link{classified.default}}; defaults to \code{levels(x)}
+#' @param labels passed to \code{\link{classified.default}}; must be same length as levels(after removing values in \code{exclude}) and must not contain duplicates
+#' @param exclude see \code{\link{factor}}
+#' @param ordered see \code{\link{factor}}
+#' @param nmax see \code{\link{factor}}
+#' @param ... ignored
+#' @importFrom dplyr distinct
+#' @family classified
+#' @examples
+#' a <- factor(c('c','b','a'))
+#' levels(classified(a))
+#' attr(classified(a), 'codelist')
+classified.factor <- function(
+    x = character(),
+    levels,
+    labels,
+    exclude = NA,
+    ordered = is.ordered(x),
+    nmax = NA,
+    ...
+){
+  if(missing(levels)) levels <- match.fun('levels')(x)
+  levels <- setdiff(levels, exclude)
+  if(missing(labels)) labels <- levels
+  stopifnot(identical(length(levels), length(labels)))
+  if(any(duplicated(labels)))(stop('duplicated labels not supported in this context'))
+  y <- classified.default(
+    x,
+    levels = levels,
+    labels = labels,
+    exclude = exclude,
+    ordered = ordered,
+    nmax = NA,
+    ...
+  )
+  y
+}
 
 #' Create Classified by Default
 #'
@@ -481,7 +526,11 @@ classified.dvec <- function(
 #'
 #' @param x classified, see \code{\link{classified}}
 #' @param offset an integer value to add to intermediate result
-#' @param ... passed to \code{\link{as.numeric}}, code{\link{as.integer}}, and code{\link{desolve}}
+#' @param ... passed to 
+#' \code{\link{as.numeric}}, 
+#' \code{\link{as.integer}}, 
+#' \code{\link{desolve}}, and
+#' \code{\link{mimic}}
 #' @param persistence whether to return 'dvec' (is.integer(): TRUE) or just integer.
 # @param exclude_attr discard these when preserving attributes of x in result
 #' @export
@@ -539,7 +588,7 @@ as.integer.classified <- function(
   y <- as.numeric(x, ...)
   y <- as.integer(y, ...) # explicitly casting to int as of 0.9.0
   y <- y + offset
-  z <- mimic(x, y)
+  z <- mimic(x, y, ...)
 # r <- unclassified(z)
   r <- desolve(z, persistence = TRUE, ...) # gives guide instead of codelist at 0.9.0
   # at this point, r should be dvec
@@ -559,12 +608,25 @@ as.integer.classified <- function(
 #' Create Classified from Classified
 #'
 #' See \code{\link{classified.default}}.
-#' Currently, calling classified on a
-#' classified object is a non-operation.
+#' Formerly (version 0.10.10), calling classified() on a
+#' classified object was a non-operation.
+#' Currently we call factor(x, ...) and then 
+#' try to reconcile the codelist attribute with resulting 
+#' levels.
+#' 
+#' By default classified is idempotent, such that classified(classified(x)) is
+#' the same as classified(x).  In contrast, factor(factor(x)) will drop unused
+#' levels (not shown). To drop unused levels, use classified(classified(x), drop = TRUE).
 #'
 #' @export
 #' @return 'classified' 'factor'
 #' @param x classified
+#' @param levels passed to \code{\link{factor}}; defaults to \code{levels(x)}
+#' @param labels passed to \code{\link{factor}}; must be same length as levels(after removing values in \code{exclude} and unused levels if \code{drop} is TRUE) and must not contain duplicates
+#' @param exclude passed to \code{\link{factor}}
+#' @param ordered passed to \code{\link{factor}}
+#' @param nmax passed to \code{\link{factor}}
+#' @param drop whether to drop unused levels
 #' @param ... ignored
 #' @keywords internal
 #' @family classified
@@ -579,7 +641,76 @@ as.integer.classified <- function(
 #' classified(b)
 #' identical(b, classified(b))
 
-classified.classified <- function(x, ...)x
+classified.classified <- function(
+    x, 
+    levels,
+    labels,
+    exclude = NA,
+    ordered = is.ordered(x),
+    nmax = NA,
+    drop = FALSE,
+    ...
+){
+  if(missing(levels)) levels <- match.fun('levels')(x)
+  levels <- setdiff(levels, exclude)
+  if(drop) levels <- levels[levels %in% x]
+  if(missing(labels)) labels <- levels
+  stopifnot(identical(length(levels), length(labels)))
+  if(any(duplicated(labels)))(stop('duplicated labels not supported in this context'))
+  codelist <- attr(x, 'codelist')
+  nms <- names(codelist) # from (character)
+  vals <- as.character(unlist(codelist)) # to (coerced to character)
+  stopifnot(identical(levels(x), vals)) # continuity check: should always be true
+  
+  y <- factor(
+    x, 
+    levels = levels,
+    labels = labels,
+    exclude = exclude,
+    ordered = ordered,
+    nmax = nmax
+  )
+  
+  # now we rebuild the codelist
+  # nms is the original form and order
+  # levels(y) is the current from and order
+  # we need a codelist with levels(y) but names from nms
+  # i.e., we need to (re) map names to the current levels
+  # the current levels though derive from the provided labels
+  # current level order should prevail,
+  # labels should be traced to provided levels,
+  # and thence to provided (codelist) vals,
+  # and thence to provided (codelist) nms
+  
+  codelist <- as.list(type.convert(levels(y), as.is = TRUE))
+  # what provided values of 'levels' match existing values of 'levels', 
+  # which are taken from provided 'labels'?
+  was <- levels[match(levels(y), labels)]
+  # now we have each former level for existing levels(y)
+  # in an order corresponding to levels(y)
+  # Those former levels were necessarily among the vals of former codelist.
+  # we recover the meanings from nms
+  meant <- nms[match(was, vals)]
+  # now we know what these levels meant originally.  Possibly nothing.  Possibly NA.
+  names(codelist) <- meant
+  
+  # all this manipulation could introduce multiple NA as codelist names.
+  # in fact, codelist names should never be duplicated.
+  if(any(duplicated(meant))){
+    example <- meant[duplicated(meant)][[1]]
+    warning('codelist names should not contain duplicates, e.g. ', example)
+  }
+  # enforce attributes
+  nms <- names(attributes(x))
+  nms <- setdiff(nms, c('class','levels','codelist','guide'))
+  for(nm in nms){
+    attr(y, nm) <- attr(x, nm)
+  }
+  
+  attr(y, 'codelist') <- codelist
+  class(y) <- union('classified', class(y))
+  y
+}
 
 # Abbreviate Classified
 # 

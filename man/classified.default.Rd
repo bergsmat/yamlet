@@ -68,6 +68,7 @@ Other classified:
 \code{\link{classified.classified}()},
 \code{\link{classified.data.frame}()},
 \code{\link{classified.dvec}()},
+\code{\link{classified.factor}()},
 \code{\link{classified}()},
 \code{\link{desolve.classified}()},
 \code{\link{unclassified.classified}()},
