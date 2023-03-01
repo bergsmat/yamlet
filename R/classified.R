@@ -143,6 +143,10 @@ classified.default <- function(
   # should be true using defaults
   if(length(levels) != length(labels))stop('classified requires labels and levels of the same length')
 
+  # under some circumstances, levels has names, which may be NA
+  # then data.frame inherits NA rownames which is an error.
+  names(levels) <- NULL
+  names(labels) <- NULL
   codes <- data.frame(levels = levels, labels = labels)
   if(any(duplicated(codes))){
     duplicated <- anyDuplicated(codes)

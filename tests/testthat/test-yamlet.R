@@ -1806,3 +1806,14 @@ test_that('yamlet names can be true NA or NA string',{
   expect_equal_to_reference(capture.output(decorations(x)), file = '119.rds')
 })
 
+test_that('as.integer.classified gives fully-recoverable result when NA is a level'{
+  library(dplyr)
+  x <- data.frame(letters = c('a','b','c',NA))
+  x %<>% decorate('letters: [ Letters, [NA, a, b, c ]]')
+  x %<>% resolve(exclude = NULL)
+  x %<>% mutate(letters = classified(letters, exclude = NULL))
+  x %<>% mutate(letters = as.integer(letters, -1, exclude = NULL))
+  expect_silent(x %>% resolve(letters))
+  x %<>% resolve
+  expect_equal_to_reference(x, file = '120.rds')
+})
