@@ -79,6 +79,12 @@ What attributes to preserve when converting dvec to units.
 Just 'label' by default.
 Assign \code{options(yamlet_as_units_preserve = character(0))}
 to remove all.
+\item \strong{yamlet_print_simplify}: \code{\link{print.yamlet}}.
+Whether to collapse interactively-displayed decorations
+into a single line for lists that have no (nested) names
+and have the same length when unlisted. True by default.
+Can be misleading for lists with fine detail, but in
+most cases fine detail will likely have names.
 }
 }
 \examples{

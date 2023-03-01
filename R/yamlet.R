@@ -41,37 +41,56 @@ as_yam <- function(x, ...)UseMethod('as_yam')
 as_yam.character <- function(
   x,
   as.named.list,
-  handlers = list(seq = parsimonious, map = function(x)lapply(x, unclass)),
+  handlers = list(
+    seq = parsimonious, 
+    map = function(x)lapply(x, unclass),
+    str = function(x){
+      if(identical(x, 'yamlet_NA_literal_')){
+        return('NA')
+      }
+      if(identical(x, 'NA')){
+        return(NA_character_)
+      }
+      return(x)
+    }
+  ),
   ...
 ){
   if(length(x) == 1 & file.exists(x[[1]])){
-    allowed <- c(names(formals(read_yaml)), names(formals(yaml.load)))
+    x <- readLines(x)
+  }
+  #   allowed <- c(names(formals(read_yaml)), names(formals(yaml.load)))
+  #   args <- list(...)
+  #   args <- args[names(args) %in% allowed ]
+  #   args <- c(
+  #     list(
+  #       file = con,
+  #       as.named.list = TRUE,
+  #       handlers = handlers
+  #     ),
+  #     args
+  #   )
+  #   y <- do.call(read_yaml, args)
+  # }else{
+     allowed <- c(names(formals(yaml.load)))
     args <- list(...)
     args <- args[names(args) %in% allowed ]
+    x <- paste(x, collapse = '\n')
+    if(any(grepl('yamlet_NA_literal_', x))){
+      stop('yamlet_NA_literal_ is reserved')
+    }
+    x <- gsub('"NA"','yamlet_NA_literal_', x)
+    x <- gsub("'NA'",'yamlet_NA_literal_', x)
     args <- c(
       list(
-        file = x,
-        as.named.list = TRUE,
-        handlers = handlers
-      ),
-      args
-    )
-    y <- do.call(read_yaml, args)
-  }else{
-    allowed <- c(names(formals(yaml.load)))
-    args <- list(...)
-    args <- args[names(args) %in% allowed ]
-    dat <- paste(x, collapse = '\n')
-    args <- c(
-      list(
-        string = dat,
+        string = x,
         handlers = handlers,
         as.named.list = TRUE
       ),
       args
     )
-    y <- do.call(yaml.load, args)
-  }
+    y <- do.call(yaml.load, args) ### sole parsing!
+  #}
   # should just be a bare list
   y <- unclass(y)
 
@@ -531,7 +550,10 @@ to_yamlet.yamlet <- function(x,...)to_yamlet(unclass(x), ...)
 #'
 #' Coerces character to yamlet storage format.
 #' Named character is processed as a named list.
-#' NA_character_ is treated as the string 'NA'.
+#' NA_character_ is is stored as unquoted NA
+#' and read back as NA by \code{\link{as_yam.character}}.
+#' Use quoted "NA" or 'NA' to store the literal string,
+#' which will be read back as a string by \code{\link{as_yam.character}}.
 #'
 #' If block is TRUE, an attempt will be made
 #' to represent character strings as literal
@@ -543,7 +565,7 @@ to_yamlet.yamlet <- function(x,...)to_yamlet(unclass(x), ...)
 #' @param ... ignored
 #' @export
 #' @keywords internal
-#' @return length-one character
+#' @return length-one character, never NA, no names
 #' @family to_yamlet
 #' @examples
 #' to_yamlet('foo')
@@ -551,6 +573,7 @@ to_yamlet.yamlet <- function(x,...)to_yamlet(unclass(x), ...)
 #' to_yamlet(c(a = 'a',b = 'b'))
 #' to_yamlet(c(no = 'n', yes = 'y'))
 #' to_yamlet(NA)
+#' to_yamlet("NA")
 
 to_yamlet.character <- function(x, block = FALSE, ...){
 
@@ -559,15 +582,15 @@ to_yamlet.character <- function(x, block = FALSE, ...){
     return(to_yamlet(x))
   }
 
-  # treat NA_character as 'NA'.
-  x <- paste(x)
+  # treat NA_character_ as 'NA'.
+  # x <- paste(x) # dropping this behavior @ 0.10.12
 
   # quote strings beginning with ' " [] {} > | * & ! % # ` @ ,. ? : -
   index <- grepl("^'", x)                       # starts with '
   x[index] <- paste0('"',x[index], '"')         # wrapped in "
   
   # leading single quote has been double-quoted
-  # test conditions for silngle quoting.
+  # test conditions for single quoting.
   
   quotable <- rep(FALSE, length(x))
   
@@ -581,7 +604,8 @@ to_yamlet.character <- function(x, block = FALSE, ...){
   index <- x %in% c(
     'y', 'Y', 'yes', 'Yes', 'YES', 'n', 'N', 'no', 'No', 'NO', 
     'true', 'True', 'TRUE', 'false', 'False', 'FALSE', 
-    'on', 'On', 'ON', 'off', 'Off', 'OFF'
+    'on', 'On', 'ON', 'off', 'Off', 'OFF',
+    'NA' # @ 0.10.12
   )
   quotable[index] <- TRUE 
 
@@ -602,12 +626,25 @@ to_yamlet.character <- function(x, block = FALSE, ...){
      x[has_newline] <- gsub('\n','\n  ', x[has_newline])
      x[has_newline] <- paste0('|\n  ', x[has_newline])
   }
-  if(length(x) == 1) return(x)
+  
+  # @0.10.12, true NA has now survived the 
+  # quoting process, but must be emitted as
+  # character. Formerly, we used 'paste' to 
+  # convert NA to 'NA'. 
+  # Here, we conserve code by striking 
+  # the early return of length one result.
+  # That allows the ensuing paste to have
+  # effect.  We do however conditionalize
+  # the imposition of brackets.
+  
+  #if(length(x) == 1) return(x)
 
   # multiples get [,,]
   # collapse multiple
-  x <- paste(x, collapse = ', ')
-  x <- paste('[', x, ']')
+  multiples <- length(x) > 1
+  # converts NA to character, no effect on other singlets:
+  x <- paste(x, collapse = ', ') 
+  if(multiples) x <- paste('[', x, ']')
   names(x) <- NULL # should not have names
   x
 }
@@ -846,9 +883,14 @@ encode::encode
 #' Print a Yamlet
 #'
 #' Prints a yamlet object for interactive inspection.
+#' By default, lists with no names (recursively) that
+#' unlist to identical length are displayed in one 
+#' line for compactness.  If this seems misleading,
+#' you can turn it of with \code{options(yamlet_print_simplify = FALSE)}.
 #'
 #' @param x yamlet
 #' @param ... ignored
+#' @param simplify whether to collapse the display of very simple lists into one line of output
 #' @export
 #' @keywords internal
 #' @method print yamlet
@@ -857,9 +899,17 @@ encode::encode
 #' @examples
 #' as_yamlet('mpg: [efficiency, mi/gallon]\nvs: [Engine, [V-shaped: 0, straight: 1]]')
 
-print.yamlet <- function(x, ...){
+print.yamlet <- function(x, ..., simplify = getOption('yamlet_print_simplify', TRUE)){
+  stopifnot(length(simplify) == 1, is.logical(simplify), !is.na(simplify))
   render <- function(x, ...)UseMethod('render')
   render.list <- function(x, indent = 0, name = NULL, ...){
+    stopifnot(length(name) <= 1)
+    simplified <- unlist(x)
+    if(
+      simplify &&
+      length(x) == length(simplified) && 
+      is.null(names(simplified)) 
+    )return(render(simplified, indent = indent, name = name))
     margin <-  paste(rep(' ',indent), collapse = '')
     leader <- paste0(margin, '- ',name)
     writeLines(leader)
@@ -868,13 +918,21 @@ print.yamlet <- function(x, ...){
     }
   }
   render.default <- function(x, indent = 0, name = NULL, ...){
+    
+    # @0.10.12, adding to_yamlet() calls to distinguish variants of NA
+    stopifnot(length(name) <= 1)
+    x <- sapply(x, to_yamlet) # avoids the brackets of a global to_yamlet()
+    name <- to_yamlet(name)
+    
     margin <-  paste(rep(' ',indent), collapse = '')
     leader <- paste0(margin, '- ',name)
    #data <- paste(format(x), collapse = ', ')
-    data <- paste(x, collapse = ', ')
-    # don't print colon if name is null
-    msg <- paste0(leader,': ', data)
-    if(is.null(name)) msg <- paste0(leader, data)
+    data <- paste(x, collapse = ', ') # no brackets
+    # don't print colon if name was null (now '')
+    if(name != '') leader = paste0(leader, ': ')
+    #msg <- paste0(leader,': ', data)
+    # if(is.null(name)) ...
+    msg <- paste0(leader, data)
     writeLines(msg)
   }
   # render.function <- function(x, indent = 0, name = NULL, ...){

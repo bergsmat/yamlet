@@ -14,12 +14,15 @@
 \item{...}{ignored}
 }
 \value{
-length-one character
+length-one character, never NA, no names
 }
 \description{
 Coerces character to yamlet storage format.
 Named character is processed as a named list.
-NA_character_ is treated as the string 'NA'.
+NA_character_ is is stored as unquoted NA
+and read back as NA by \code{\link{as_yam.character}}.
+Use quoted "NA" or 'NA' to store the literal string,
+which will be read back as a string by \code{\link{as_yam.character}}.
 }
 \details{
 If block is TRUE, an attempt will be made
@@ -33,6 +36,7 @@ to_yamlet(c('a','b'))
 to_yamlet(c(a = 'a',b = 'b'))
 to_yamlet(c(no = 'n', yes = 'y'))
 to_yamlet(NA)
+to_yamlet("NA")
 }
 \seealso{
 Other to_yamlet: 

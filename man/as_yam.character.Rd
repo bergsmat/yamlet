@@ -7,7 +7,18 @@
 \method{as_yam}{character}(
   x,
   as.named.list,
-  handlers = list(seq = parsimonious, map = function(x) lapply(x, unclass)),
+  handlers = list(seq = parsimonious, map = function(x) lapply(x, unclass), str =
+    function(x) {
+     if (identical(x, "yamlet_NA_literal_")) {
+         return("NA")
+  
+      }
+     if (identical(x, "NA")) {
+         return(NA_character_)
+     }
+    
+    return(x)
+ }),
   ...
 )
 }

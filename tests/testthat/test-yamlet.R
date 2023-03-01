@@ -1349,13 +1349,24 @@ test_that('variables with units support unit math',{
 
 test_that('classified.data.frame passes exclude = NULL to member factors',{
   x <- data.frame(letters = c('a','b','c','d', NA))
-  x %<>% decorate('letters: [Letters, [ a, b, c ]]')
+  x %<>% decorate('letters: [Letters, [ a, b, c, d, NA ]]')
   x %>% decorations
-  suppressWarnings(x %<>% explicit_guide)
+  x %<>% explicit_guide
   x %>% decorations
   x %<>% classified(exclude = NULL)
   expect_true(NA %in% attr(x$letters, 'codelist'))
   expect_true(NA %in% levels(x$letters))
+})
+
+test_that('codelist can contain literal NA if quoted',{
+  x <- data.frame(letters = c('a','b','c','d', 'NA'))
+  x %<>% decorate('letters: [Letters, [ a, b, c, d, "NA" ]]')
+  x %>% decorations
+  x %<>% explicit_guide
+  x %>% decorations
+  x %<>% classified
+  expect_true('NA' %in% attr(x$letters, 'codelist'))
+  expect_true('NA' %in% levels(x$letters))
 })
 
 test_that('when two different decodes have the same code, classified levels match classified codelist values',{
@@ -1430,16 +1441,6 @@ test_that('classified does not re-classify',{
   foo <- x %>% resolve(sex)
   # this drops sex label:
   foo %>% resolve %>% decorations
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   expect_identical(
     x %>% resolve,
@@ -1585,15 +1586,15 @@ test_that('row_bind of supported table types returns consistent class and functi
   # either a data.frame, tbl_df, or grouped_df
   # or by extension, decorated data.frame, decorated tbl_df, decorated grouped_df
   
-  bind_rows(a, a) %>% str # no magic, attributes dropped, not surprising
-  bind_rows(b, b) %>% str # magic
-  bind_rows(c, c) %>% str # magic
-  bind_rows(a, b) %>% str # magic @ 0.10.7
-  bind_rows(b, a) %>% str # magic
-  bind_rows(a, c) %>% str # magic @ 0.10.7
-  bind_rows(c, a) %>% str # magic
-  bind_rows(b, c) %>% str # returns decorated data.frame, not surprising
-  bind_rows(c, b) %>% str # magic
+  # bind_rows(a, a) %>% str # no magic, attributes dropped, not surprising
+  # bind_rows(b, b) %>% str # magic
+  # bind_rows(c, c) %>% str # magic
+  # bind_rows(a, b) %>% str # magic @ 0.10.7
+  # bind_rows(b, a) %>% str # magic
+  # bind_rows(a, c) %>% str # magic @ 0.10.7
+  # bind_rows(c, a) %>% str # magic
+  # bind_rows(b, c) %>% str # returns decorated data.frame, not surprising
+  # bind_rows(c, b) %>% str # magic
   
   expect_equal_to_reference(file = '108.rds', decorations(bind_rows(a, a)))
   expect_equal_to_reference(file = '109.rds', decorations(bind_rows(b, b)))
@@ -1628,7 +1629,7 @@ test_that('yamlet warns if codelist not one-to-one',{
     race: [ Race, [White: 1, White: 1, Asian: 1 ]]
     ethnicity: [ Ethnicity, [ Hispanic: 0, Hispanic: 1]]
   ')
-  x %>% resolve %>% decorations
+  expect_warning(x %>% resolve %>% decorations)
   expect_warning(x %>% resolve)
 
 })
@@ -1647,7 +1648,7 @@ test_that('yamlet warns if row_bind gives overlapping codelist',{
   y %<>% decorate('
     race: [ Race, [Asian: 1, White: 2, Black: 3]]
   ')
-  bind_rows(x, y) %>% resolve
+  expect_warning(bind_rows(x, y) %>% resolve)
   expect_warning(bind_rows(x, y))
 })
 
@@ -1776,3 +1777,32 @@ test_that('classified() handles multiple new levels appropriately',{
     )
   )
 })
+
+test_that('literal NA and NA_character_ survive round-trip',{
+  a <- 'letters: [ Letters, [ a, b, c, NA ]]'
+  x <- data.frame(letters = c('a','b','c', NA))
+  x %<>% decorate(a)
+  b <- write_yamlet(x)
+  expect_identical(a, b)
+  
+  a <- "letters: [ Letters, [ a, b, c, 'NA' ]]"
+  x <- data.frame(letters = c('a','b','c', 'NA'))
+  x %<>% decorate(a)
+  b <- write_yamlet(x)
+  expect_identical(a, b)
+})
+
+test_that('yamlet names can be true NA or NA string',{
+  a <- "letters: [ Letters, [ A: a, B: b, C: c, 'NA': 'NA', NA: NA ]]"
+  x <- data.frame(letters = c('a','b','c', 'NA', NA ))
+  x %<>% decorate(a)
+  foo <- capture.output(b <- write_yamlet(x))
+  expect_identical(a, b)
+  c <- attr(x$letters, 'guide')
+  expect_true(any(is.na(names(c))))
+  expect_true(any(is.na(c)))
+  expect_equal_to_reference(capture.output(decorations(x)), file = '118.rds')
+  x %<>% redecorate("letters: [ Letters, [ a, b, c, 'NA', NA ]]")
+  expect_equal_to_reference(capture.output(decorations(x)), file = '119.rds')
+})
+

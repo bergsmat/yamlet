@@ -4,7 +4,12 @@
 \alias{ggready.decorated}
 \title{Prepare Decorated Data Frame for GGplot}
 \usage{
-\method{ggready}{decorated}(x, ..., parse = getOption("ggready_parse", TRUE), resolve = TRUE)
+\method{ggready}{decorated}(
+  x,
+  ...,
+  parse = getOption("yamlet_ggready_parse", TRUE),
+  resolve = TRUE
+)
 }
 \arguments{
 \item{x}{object}

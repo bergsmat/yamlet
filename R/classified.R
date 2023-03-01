@@ -99,7 +99,7 @@ classified.factor <- function(
 classified.default <- function(
   x = character(),
   levels,
-  labels = levels,
+  labels,
   exclude = NA,
   ordered = is.ordered(x),
   nmax = NA,
@@ -114,7 +114,8 @@ classified.default <- function(
     bad <- sapply(cl, function(val)val %in% exclude)
     cl <- cl[!bad]
     # mimic non-NA exclude behavior:
-    if(length(exclude) == 0) cl <- c(cl, NA)
+    # @ 0.10.12, commenting next (nonsensical?)
+    # if(length(exclude) == 0) cl <- c(cl, NA)
 
     # default levels and labels
     if(missing(levels)){
@@ -197,7 +198,7 @@ classified.default <- function(
     x = x,
     levels = levels,
     labels = labels,
-    exclude = exclude,
+    exclude = exclude, # but exclusions will have already occurred
     ordered = ordered,
     nmax = nmax
   )

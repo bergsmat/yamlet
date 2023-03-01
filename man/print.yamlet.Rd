@@ -4,18 +4,24 @@
 \alias{print.yamlet}
 \title{Print a Yamlet}
 \usage{
-\method{print}{yamlet}(x, ...)
+\method{print}{yamlet}(x, ..., simplify = getOption("yamlet_print_simplify", TRUE))
 }
 \arguments{
 \item{x}{yamlet}
 
 \item{...}{ignored}
+
+\item{simplify}{whether to collapse the display of very simple lists into one line of output}
 }
 \value{
 invisible(x)
 }
 \description{
 Prints a yamlet object for interactive inspection.
+By default, lists with no names (recursively) that
+unlist to identical length are displayed in one 
+line for compactness.  If this seems misleading,
+you can turn it of with \code{options(yamlet_print_simplify = FALSE)}.
 }
 \examples{
 as_yamlet('mpg: [efficiency, mi/gallon]\nvs: [Engine, [V-shaped: 0, straight: 1]]')

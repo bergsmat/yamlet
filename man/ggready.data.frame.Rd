@@ -4,7 +4,7 @@
 \alias{ggready.data.frame}
 \title{Prepare Data Frame for GGplot}
 \usage{
-\method{ggready}{data.frame}(x, ..., parse = getOption("ggready_parse", TRUE))
+\method{ggready}{data.frame}(x, ..., parse = getOption("yamlet_ggready_parse", TRUE))
 }
 \arguments{
 \item{x}{object}

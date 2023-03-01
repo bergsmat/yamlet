@@ -71,7 +71,7 @@ ggready <- function(x, ...)UseMethod('ggready')
 
 ggready.data.frame <- function(
   x, ... ,
-  parse = getOption('ggready_parse',TRUE)
+  parse = getOption('yamlet_ggready_parse',TRUE)
 ){
   stopifnot(is.logical(parse), length(parse) == 1)
   x <- append_units(x, ..., style = if(parse) 'plotmath' else 'plain')
@@ -101,7 +101,7 @@ ggready.data.frame <- function(
 #' example(ggready)
 ggready.decorated <- function(
   x, ... ,
-  parse = getOption('ggready_parse',TRUE),
+  parse = getOption('yamlet_ggready_parse',TRUE),
   resolve = TRUE
 ){
   if(resolve) x <- resolve(x, ...)

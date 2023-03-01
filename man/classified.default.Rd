@@ -7,7 +7,7 @@
 \method{classified}{default}(
   x = character(),
   levels,
-  labels = levels,
+  labels,
   exclude = NA,
   ordered = is.ordered(x),
   nmax = NA,
