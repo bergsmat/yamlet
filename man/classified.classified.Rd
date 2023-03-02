@@ -8,7 +8,7 @@
   x,
   levels,
   labels,
-  exclude = NA,
+  exclude = NULL,
   ordered = is.ordered(x),
   nmax = NA,
   drop = FALSE,
