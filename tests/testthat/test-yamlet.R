@@ -1817,3 +1817,34 @@ test_that('as.integer.classified gives fully-recoverable result when NA is a lev
   x %<>% resolve
   expect_equal_to_reference(x, file = '120.rds')
 })
+
+test_that('mimic supports solitary NA',{
+  expect_silent(
+    {
+      mimic(NA, NA)
+      mimic(factor(NA), NA)
+      mimic(factor(NA, exclude = NULL), NA)
+      mimic(NA, 1)
+      mimic(factor(NA), 1)
+      mimic(factor(NA, exclude = NULL), 1)
+      mimic(factor(NA, levels = c(NA, 'foo')), 1)
+      mimic(factor(NA, levels = NA, exclude = NULL), 1)
+    }
+  )
+  
+  expect_silent(
+    {
+      mimic(
+        factor(
+          NA, 
+          levels = NA, 
+          exclude = NULL
+        ), 
+        1, 
+        exclude = NULL
+      )
+    }
+  )
+  
+ 
+})

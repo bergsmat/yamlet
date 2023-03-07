@@ -80,7 +80,17 @@ mimic.default <- function(x, y = x, ...){
   nms <- proxy(z, y)
 
   # reduce
-  if(all(nms == unlist(lev))){
+  # i.e. if nms effectively the same as lev,
+  # don't use the names
+  # since comparison may contain NA, 
+  # check NA match and character equality separately
+  # example: mimic(factor(NA, levels = NA, exclude = NULL), 1, exclude = NULL)
+  if(
+    all(
+      is.na(nms) == is.na(unlist(lev)) &
+      paste(nms) == paste(unlist(lev))
+    )
+  ){
     lev <- unlist(lev)
   } else {
     lev <- setNames(lev, nms)
