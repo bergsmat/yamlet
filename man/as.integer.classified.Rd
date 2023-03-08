@@ -16,11 +16,7 @@
 
 \item{offset}{an integer value to add to intermediate result}
 
-\item{...}{passed to 
-\code{\link{as.numeric}}, 
-\code{\link{as.integer}}, 
-\code{\link{desolve}}, and
-\code{\link{mimic}}}
+\item{...}{passed to \code{\link{desolve}}}
 
 \item{persistence}{whether to return 'dvec' (is.integer(): TRUE) or just integer.}
 }
