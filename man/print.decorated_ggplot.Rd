@@ -16,7 +16,7 @@
 \arguments{
 \item{x}{class 'decorated_ggplot' from \code{\link{ggplot.decorated}}}
 
-\item{...}{passed arguments}
+\item{...}{ignored}
 
 \item{search}{attribute names from which to seek label substitutes}
 

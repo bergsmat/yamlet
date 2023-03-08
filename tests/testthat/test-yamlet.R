@@ -1848,3 +1848,32 @@ test_that('mimic supports solitary NA',{
   
  
 })
+
+test_that('as.integer.classified preserves all levels',{
+  
+  a <- classified(
+    c('knife','fork'), 
+    levels = c(NA, 'knife','fork','spoon'), 
+    exclude = NULL
+  )
+  attr(a, 'label') <- 'my label'
+  b <- as.integer(a)
+  guide <- unlist(attr(b, 'guide'))
+  nms <- names(guide)
+  names(guide) <- NULL
+  expect_identical(nms, levels(a))
+  expect_identical(guide, 1:4)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+

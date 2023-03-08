@@ -4,19 +4,10 @@
 \alias{ggplot_build.decorated_ggplot}
 \title{Enable Automatic Labels and Units for ggplot}
 \usage{
-\method{ggplot_build}{decorated_ggplot}(
-  x,
-  ...,
-  search = getOption("yamlet_decorated_ggplot_search", c("expression", "title", "label")),
-  discrete = getOption("yamlet_decorated_ggplot_discrete", c("colour", "fill", "size",
-    "shape", "linetype", "alpha")),
-  drop = getOption("yamlet_decorated_ggplot_drop", TRUE)
-)
+\method{ggplot_build}{decorated_ggplot}(plot)
 }
 \arguments{
-\item{x}{class 'decorated_ggplot' from \code{\link{ggplot.decorated}}}
-
-\item{...}{passed arguments}
+\item{plot}{class 'decorated_ggplot' from \code{\link{ggplot.decorated}}}
 }
 \value{
 see \code{\link[ggplot2]{ggplot_build}}
@@ -25,6 +16,11 @@ see \code{\link[ggplot2]{ggplot_build}}
 Enable automatic labels and units for ggplot.
 Substitutes column label, if present, for default.
 Supports arrangements of ggplot objects.
+Defined similarly to \code{\link{print.decorated_ggplot}}
+and respects global options 
+yamlet_decorated_ggplot_search,
+yamlet_decorated_ggplot_discrete, and
+yamlet_decorated_ggplot_drop.
 }
 \seealso{
 Other decorated_ggplot: 

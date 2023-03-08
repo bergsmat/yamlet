@@ -46,7 +46,13 @@ unclassified.classified <- function(x, ..., persistence = getOption('yamlet_pers
   names(labels) <- NULL # clean
   names(levels) <- NULL # clean
   codelist <- structure(as.list(labels), names = levels)
-  if(all(names(codelist) == unlist(codelist))){
+  # names codelist or unlist codelist may contain NA
+  if(
+    all(
+      is.na(names(codelist)) == is.na(unlist(codelist)) &
+      paste(names(codelist)) == paste(unlist(codelist))
+    )
+  ){
     names(codelist) <- NULL
     # codelist <- unlist(codelist) # @ 0.8.2 codelist remains list
   }

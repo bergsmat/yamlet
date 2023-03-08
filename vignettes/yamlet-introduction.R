@@ -80,9 +80,9 @@ library(magrittr)
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 
 file %>% 
-  decorate %>%
-  filter(!is.na(conc)) %>%
-  ggready(parse = FALSE) %>%
+  decorate %>% 
+  filter(!is.na(conc)) %>% 
+  resolve %>%
   ggplot(aes(x = time, y = conc, color = Heart)) + 
   geom_point()
 

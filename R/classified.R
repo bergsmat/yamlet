@@ -526,8 +526,9 @@ classified.dvec <- function(
 #'
 #' Coerces classified to integer.
 #' Result is like \code{as.integer(as.numeric(x)) + offset}
-#' but has a guide giving original values. If you need
-#' a simple integer, consider coercing first to numeric.
+#' but has a guide attribute: a list of integers 
+#' whose names are the original levels of x.
+#' If you need a simple integer, consider coercing first to numeric.
 #'
 #' @param x classified, see \code{\link{classified}}
 #' @param offset an integer value to add to intermediate result
@@ -561,20 +562,20 @@ classified.dvec <- function(
 #' c('knife','fork','spoon') %>% 
 #'   classified %>%
 #'   as.integer %>% 
-#'   class
+#'   class # integer
 #'   
 #' # remove option to restore default persistence paradigm
 #' options(yamlet_persistence = NULL)
 #' c('knife','fork','spoon') %>% 
 #'   classified %>%
 #'   as.integer %>% 
-#'   class
+#'   class # dvec
 #'   
 #' # locally defeat persistence paradigm
 #' c('knife','fork','spoon') %>% 
 #'   classified %>%
 #'   as.integer(persistence = FALSE) %>% 
-#'   class
+#'   class # integer
 #'   
 #'
 as.integer.classified <- function(
@@ -590,23 +591,27 @@ as.integer.classified <- function(
     as.integer(offset) == offset
   )
   offset <- as.integer(offset)
-  y <- as.numeric(x, ...)
-  y <- as.integer(y, ...) # explicitly casting to int as of 0.9.0
-  y <- y + offset
-  z <- mimic(x, y, ...)
-# r <- unclassified(z)
-  r <- desolve(z, persistence = TRUE, ...) # gives guide instead of codelist at 0.9.0
+  
+  # note: levels(x) should be same as unlist(attr(x, 'codelist'))
+  
+  # y <- as.numeric(x, ...)
+  # y <- as.integer(y, ...) # explicitly casting to int as of 0.9.0
+  # y <- y + offset
+  # z <- mimic(x, y, ...) # drops levels!
+  
+  # x has a codelist and seq gives integer
+  vals <- seq_along(attr(x, 'codelist')) 
+  vals <- vals + offset
+  names(attr(x, 'codelist')) <- vals
+
+  r <- desolve(x, persistence = TRUE, ...) # gives guide instead of codelist at 0.9.0
+  
   # at this point, r should be dvec
   # passing persistence to desolve fails because there is no 
   # vector method for implicit_guide (only a data.frame method)
   if(!persistence) {
     r <- unclass(r)
   }
-  # for(at in names(attributes(x))){
-  #   if(!at %in% exclude_attr){
-  #     attr(r, at) <- attr(x, at)
-  #   }
-  # }
   r
 }
 
