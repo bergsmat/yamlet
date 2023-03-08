@@ -532,11 +532,7 @@ classified.dvec <- function(
 #'
 #' @param x classified, see \code{\link{classified}}
 #' @param offset an integer value to add to intermediate result
-#' @param ... passed to 
-#' \code{\link{as.numeric}}, 
-#' \code{\link{as.integer}}, 
-#' \code{\link{desolve}}, and
-#' \code{\link{mimic}}
+#' @param ... passed to \code{\link{desolve}}
 #' @param persistence whether to return 'dvec' (is.integer(): TRUE) or just integer.
 # @param exclude_attr discard these when preserving attributes of x in result
 #' @export
