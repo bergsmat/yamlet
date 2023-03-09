@@ -284,27 +284,26 @@ print.decorated_ggplot <- function(
 #' @family decorated_ggplot
 
 ggplot_build.decorated_ggplot <- function(plot){
-  x <- plot # see print.decorated_ggplot
-  search <- getOption(
+  search = getOption(
     'yamlet_decorated_ggplot_search',
     c('expression', 'title', 'label')
   )
-  discrete <- getOption(
+  discrete = getOption(
     'yamlet_decorated_ggplot_discrete',
     c('colour', 'fill', 'size', 'shape', 'linetype', 'alpha')
   )
-  drop  <- getOption('yamlet_decorated_ggplot_drop', TRUE)
+  drop = getOption('yamlet_decorated_ggplot_drop', TRUE)
   # support for discrete manual scales
-  labelnames <- names(x$labels)
+  labelnames <- names(plot$labels)
   aesthetics <- intersect(discrete, labelnames)
-  scaletypes <- sapply(x$scales$scales, `[[`, 'aesthetics')
+  scaletypes <- sapply(plot$scales$scales, `[[`, 'aesthetics')
   # don't redefine existing scales:
   aesthetics <- setdiff(aesthetics, scaletypes)
   for(a in aesthetics){
-    src <- x$labels[[a]]
+    src <- plot$labels[[a]]
     if(length(src) == 1){
-      if(src %in% names(x$data)){
-        col <- x$data[[src]]
+      if(src %in% names(plot$data)){
+        col <- plot$data[[src]]
         atr <- attributes(col)
         nms <- names(atr)
         if('color' %in% nms & !'colour' %in% nms){
@@ -324,7 +323,7 @@ ggplot_build.decorated_ggplot <- function(plot){
           names(this) <- levels
           this <- unlist(this)
           # create a new scale using the stored values
-          x <- x + scale_discrete_manual(
+          plot <- plot + scale_discrete_manual(
             aesthetics = a,
             values = this,
             breaks = breaks
@@ -334,22 +333,22 @@ ggplot_build.decorated_ggplot <- function(plot){
     }
   }
   
-  for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
-    lab <- x$labels[[i]]                   # handle one label
+  for(i in seq_along(plot$labels)){           # plot (gg object) stores names of used columns as $labels
+    lab <- plot$labels[[i]]                   # handle one label
     if(length(lab)){                       # i.e. not null or empty expression
       if(length(lab) == 1){
-        if(lab %in% names(x$data)){            # if this is just a bare column name
-          col <- x$data[[lab]]
+        if(lab %in% names(plot$data)){            # if this is just a bare column name
+          col <- plot$data[[lab]]
           atr <- attributes(col)
           for( s in rev(search)){              # end with first
             label <- atr[[s]]                  # retrieve label
             if(!is.null(label)){
-              x$labels[[i]] <- label           # overwrite default label with one from data attributes
+              plot$labels[[i]] <- label           # overwrite default label with one from data attributes
             }
           }
         } 
       }
-      # done with search.  Plural labels? Note x$labels unchanged, lab unchanged
+      # done with search.  Plural labels? Note plot$labels unchanged, lab unchanged
       if(length(lab) > 1){
         if(length(names(lab)))lab = paste(
           paste0(
@@ -362,13 +361,13 @@ ggplot_build.decorated_ggplot <- function(plot){
         lab <- paste(lab, collapse = '\n')
         msg <- paste('using first of', lab, sep = '\n')
         warning(msg)
-        x$labels[[i]] <- x$labels[[i]][[1]]
+        plot$labels[[i]] <- plot$labels[[i]][[1]]
       }
     }
   }
   NextMethod()
 }
-  
+
 
 #' Determine Scale Type for dvec
 #' 

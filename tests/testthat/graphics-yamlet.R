@@ -79,6 +79,7 @@ test_that('subplots respect metadata assignments',{
   library(magrittr)
   library(dplyr)
   library(gridExtra)
+  library(csv)
   a <- io_csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
   b <- io_csv(system.file(package = 'yamlet', 'extdata','quinidine.csv'))
   c <- as.csv(system.file(package = 'yamlet', 'extdata','phenobarb.csv'))
@@ -98,10 +99,14 @@ test_that('subplots respect metadata assignments',{
 
   grid.arrange(x, y)
   # note informative axis labels in first panel
+  
   p <- x %>% ggplot_build
   q <- p %>% ggplot_gtable
   plot(q)
   expect_equal_to_reference(file = '098.rds', p)
+  
+  foo <- ggplot_build(x)
+  bar <- print(x)
 
 })
 
