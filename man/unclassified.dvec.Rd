@@ -45,6 +45,7 @@ Other dvec:
 \code{\link{implicit_guide.dvec}()},
 \code{\link{length.dvec}()},
 \code{\link{print.dvec}()},
+\code{\link{resolve.classified}()},
 \code{\link{resolve.dvec}()}
 }
 \concept{dvec}

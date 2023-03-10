@@ -661,6 +661,12 @@ test_that('casting from dvec gives expected class',{
   
 })
 
+test_that('resolve is idempotent on classifiable dvec',{
+  a <- as_dvec(c('a','b','c'), guide = as.list(c('a','b','c')))
+  a <- resolve(a)
+  expect_silent(a <- resolve(a))
+})
+
 ### errors at dplyr 1.0.10, but not for dev version
 
 # test_that('ifelse() returns dvec if true or false is dvec',{

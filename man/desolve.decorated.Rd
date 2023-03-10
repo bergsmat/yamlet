@@ -38,6 +38,7 @@ Other resolve:
 \code{\link{desolve.classified}()},
 \code{\link{desolve.dvec}()},
 \code{\link{desolve}()},
+\code{\link{resolve.classified}()},
 \code{\link{resolve.decorated}()},
 \code{\link{resolve.dvec}()},
 \code{\link{resolve}()}

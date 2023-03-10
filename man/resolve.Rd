@@ -29,6 +29,7 @@ Other resolve:
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.dvec}()},
 \code{\link{desolve}()},
+\code{\link{resolve.classified}()},
 \code{\link{resolve.decorated}()},
 \code{\link{resolve.dvec}()}
 }

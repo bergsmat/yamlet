@@ -37,6 +37,7 @@ Other resolve:
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.dvec}()},
 \code{\link{desolve}()},
+\code{\link{resolve.classified}()},
 \code{\link{resolve.decorated}()},
 \code{\link{resolve}()}
 
@@ -61,6 +62,7 @@ Other dvec:
 \code{\link{implicit_guide.dvec}()},
 \code{\link{length.dvec}()},
 \code{\link{print.dvec}()},
+\code{\link{resolve.classified}()},
 \code{\link{unclassified.dvec}()}
 }
 \concept{dvec}

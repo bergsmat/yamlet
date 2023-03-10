@@ -82,3 +82,30 @@ resolve.dvec <- function(x, ...){
   }
   x
 }
+
+#' Resolve Classified
+#'
+#' Resolves classified.
+#' A non-operation since classified already has an explicit guide.
+#' Useful to make resolve() idempotent for 'dvec'.
+#' @param x classified
+#' @param ... ignored
+#' @export
+#' @keywords internal
+#' @return classified
+#' @family resolve
+#' @family dvec
+#' @examples
+#' library(magrittr)
+#' x <- as_dvec(1:3, guide = list(a = 1, b = 2, c = 3))
+#' x %>% str
+#' x %>% classified %>% str
+#' x %>% explicit_guide %>% classified %>% str
+#' x %>% resolve %>% str
+#' # idempotent:
+#' x %>% resolve %>% resolve %>% str
+
+resolve.classified <- function(x, ...){
+  return(x)
+}
+

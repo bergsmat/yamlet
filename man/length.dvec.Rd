@@ -39,6 +39,7 @@ Other dvec:
 \code{\link{format.dvec}()},
 \code{\link{implicit_guide.dvec}()},
 \code{\link{print.dvec}()},
+\code{\link{resolve.classified}()},
 \code{\link{resolve.dvec}()},
 \code{\link{unclassified.dvec}()}
 }
