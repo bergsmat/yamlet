@@ -1865,7 +1865,10 @@ test_that('as.integer.classified preserves all levels',{
   expect_identical(guide, 1:4)
 })
 
-
+test_that('modify supports nonstandard column names',{
+  a <- data.frame(`has space` = 0, check.names = FALSE)
+  expect_silent(modify(a, 'has space', name = name))
+})
 
 
 

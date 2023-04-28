@@ -43,7 +43,11 @@ selected.default <- function(
   y <- y[y != ''] # ignore empty names
   d <- lapply(y, function(i)character())
   names(d) <- y # reuse names
-  d <- data.frame(d)# dummy data.frame for dplyr
+  d <- data.frame(
+    d, 
+    check.names = FALSE, 
+    fix.empty.names = FALSE
+  )# dummy data.frame for dplyr
   vars <- names(select(d,!!!vars))
   if(length(vars) == 0) vars <- y
   # vars <- intersect(vars, names(x))
