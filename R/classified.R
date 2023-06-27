@@ -25,6 +25,7 @@ classified <- function(x, ...)UseMethod('classified')
 #' @param exclude see \code{\link{factor}}
 #' @param ordered see \code{\link{factor}}
 #' @param nmax see \code{\link{factor}}
+#' @param token informative label for messages
 #' @param ... ignored
 #' @importFrom dplyr distinct
 #' @family classified
@@ -39,13 +40,15 @@ classified.factor <- function(
     exclude = NA,
     ordered = is.ordered(x),
     nmax = NA,
+    token = character(0),
     ...
 ){
+  stopifnot(is.character(token), length(token) <= 1)
   if(missing(levels)) levels <- match.fun('levels')(x)
   levels <- setdiff(levels, exclude)
   if(missing(labels)) labels <- levels
   stopifnot(identical(length(levels), length(labels)))
-  if(any(duplicated(labels)))(stop('duplicated labels not supported in this context'))
+  if(any(duplicated(labels)))(stop(paste( collapse = ': ', c(token, 'duplicated labels not supported in this context'))))
   y <- classified.default(
     x,
     levels = levels,
@@ -78,6 +81,7 @@ classified.factor <- function(
 #' @param exclude see \code{\link{factor}}
 #' @param ordered see \code{\link{factor}}
 #' @param nmax see \code{\link{factor}}
+#' @param token informative label for messages
 #' @param ... ignored
 #' @importFrom dplyr distinct
 #' @family classified
@@ -103,6 +107,7 @@ classified.default <- function(
   exclude = NA,
   ordered = is.ordered(x),
   nmax = NA,
+  token = character(0),
   ...
 ){
   cl <- attr(x,'codelist') # could be NULL
@@ -141,7 +146,15 @@ classified.default <- function(
 
   # at this point, levels and labels should have matching length
   # should be true using defaults
-  if(length(levels) != length(labels))stop('classified requires labels and levels of the same length')
+  if(length(levels) != length(labels))stop(
+    paste(
+      collapse = ': ',
+      c(
+        token,
+        'classified requires labels and levels of the same length'
+      )
+    )
+  )
 
   # under some circumstances, levels has names, which may be NA
   # then data.frame inherits NA rownames which is an error.
@@ -150,19 +163,21 @@ classified.default <- function(
   codes <- data.frame(levels = levels, labels = labels)
   if(any(duplicated(codes))){
     duplicated <- anyDuplicated(codes)
-    warning(
+    msg <- paste0(
       'dropping duplicated levels, e.g.: ', 
       codes$levels[[duplicated]], 
       ' (', 
       codes$labels[[duplicated]],
-      ')'
+       ')'      
     )
+    msg <- paste(collapse = ': ', c(token, msg))
+    warning(msg)
     codes <- unique(codes)
   }
   
   if(any(duplicated(codes$levels))){
     duplicated <- anyDuplicated(codes$levels)
-    warning(
+    msg <- paste0(
       'level(s) cross-labelled, e.g.: ', 
       codes$levels[[duplicated]], 
       ': ', 
@@ -171,15 +186,19 @@ classified.default <- function(
         codes$labels[codes$levels == codes$levels[[duplicated]]]
       )
     )
+    msg <- paste(collapse = ': ', token, msg)
+    warning(msg)
   }
   if(any(duplicated(codes$labels))){
     duplicated <- anyDuplicated(codes$labels)
-    warning(
+    msg <- paste0(
       'levels like-labelled, e.g.: ', 
       paste(collapse = ', ', codes$levels[codes$labels == codes$labels[[duplicated]]]), 
       ': ', 
       codes$labels[[duplicated]]
     )
+    msg <- paste(collapse = ': ', token, msg)
+    warning(msg)
   }
   
   # having dropped any duplicates, we unpack codes
@@ -472,7 +491,8 @@ classified.data.frame <- function(
         x[[nm]],
         exclude = exclude,
         ordered = ordered,
-        nmax = nmax
+        nmax = nmax,
+        token = nm
       )
     }
   }
@@ -491,6 +511,7 @@ classified.data.frame <- function(
 #' @param exclude see \code{\link{factor}}
 #' @param ordered see \code{\link{factor}}
 #' @param nmax see \code{\link{factor}}
+#' @param token informative label for messages
 #' @export
 #' @keywords internal
 #' @return classified
@@ -509,7 +530,8 @@ classified.dvec <- function(
     ...,
     exclude = NA,
     ordered = is.ordered(x),
-    nmax = NA
+    nmax = NA,
+    token = character(0)
 ){
   y <- unclass(x)
   y <- classified(
@@ -517,6 +539,7 @@ classified.dvec <- function(
     exclude = exclude,
     ordered = ordered,
     nmax = nmax,
+    token = token,
     ...
   )
   y

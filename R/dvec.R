@@ -433,8 +433,18 @@ arbitrate.namedList <- function(x, y, ...){
   # z <- list(White = 1, Asian = 2, White = 2, Asian = 1)
   # z <- z[!bad]
   
+  classes <- unique(sapply(z, function(i)class(i)[[1]]))
+  if(length(classes) > 1)warning('mixed classes, e.g.', paste(collapse = ', ', classes[1:2]))
+  
   # https://www.r-bloggers.com/2016/07/populating-data-frame-cells-with-more-than-one-value/
   codes <- data.frame(levels = I(structure(z, names = NULL)), labels = names(z))
+  # TTB 0.10.22 the line above must be useful in some situations.
+  # but in the simple case that each element of z is length one, 
+  # unlist coerces type for better duplicate detection.
+  # e.g. a mix of matching int and num in two lists won't flag as duplicates.
+  # consider also: 
+  # codes <- data.frame(levels = unlist(z), labels = names(z))
+  
   if(any(duplicated(codes))){
     duplicated <- anyDuplicated(codes)
     # in this context, unlike classified.default, some duplication is normal

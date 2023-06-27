@@ -4,7 +4,7 @@
 \alias{infer_guide}
 \title{Infer Type of Guide}
 \usage{
-infer_guide(x, data = NULL, default = "guide", ...)
+infer_guide(x, data = NULL, default = "guide", token = "data", ...)
 }
 \arguments{
 \item{x}{character or list}
@@ -12,6 +12,8 @@ infer_guide(x, data = NULL, default = "guide", ...)
 \item{data}{atomic}
 
 \item{default}{value for unrecognized guides}
+
+\item{token}{character: discriptive term for 'data' used in warning}
 
 \item{...}{ignored}
 }

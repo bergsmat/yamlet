@@ -4,7 +4,14 @@
 \alias{classified.dvec}
 \title{Classify Decorated Vector}
 \usage{
-\method{classified}{dvec}(x, ..., exclude = NA, ordered = is.ordered(x), nmax = NA)
+\method{classified}{dvec}(
+  x,
+  ...,
+  exclude = NA,
+  ordered = is.ordered(x),
+  nmax = NA,
+  token = character(0)
+)
 }
 \arguments{
 \item{x}{dvec}
@@ -16,6 +23,8 @@
 \item{ordered}{see \code{\link{factor}}}
 
 \item{nmax}{see \code{\link{factor}}}
+
+\item{token}{informative label for messages}
 }
 \value{
 classified

@@ -11,6 +11,7 @@
   exclude = NA,
   ordered = is.ordered(x),
   nmax = NA,
+  token = character(0),
   ...
 )
 }
@@ -26,6 +27,8 @@
 \item{ordered}{see \code{\link{factor}}}
 
 \item{nmax}{see \code{\link{factor}}}
+
+\item{token}{informative label for messages}
 
 \item{...}{ignored}
 }

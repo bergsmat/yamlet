@@ -77,7 +77,7 @@ explicit_guide.yamlet <- function(
               }
             }
           }
-          explicit <- match.fun(test)(val, data = data[[i]], ...)
+          explicit <- match.fun(test)(val, data = data[[i]], token = i, ...)
           stopifnot(is.character(explicit), length(explicit) == 1)
           # explicit <- unique(explicit)
           names(x[[i]])[[j]] <- explicit
@@ -113,6 +113,7 @@ explicit_guide.yamlet <- function(
 #' @param x character or list
 #' @param data atomic
 #' @param default value for unrecognized guides
+#' @param token character: discriptive term for 'data' used in warning
 #' @param ... ignored
 #' @return length-one character
 #' @export
@@ -138,9 +139,12 @@ infer_guide <- function(
   x,
   data = NULL,
   default = 'guide',
+  token = 'data',
   ...
 ){
   stopifnot(is.atomic(data))
+  stopifnot(length(token) == 1)
+  token <- as.character(token)
   res <- case_when(
 
     # a list is clearly an attempt to supply a codelist
@@ -171,7 +175,7 @@ infer_guide <- function(
   }
   msg <- paste(collapse = ', ', unlist(x))
   if(identical(res, 'codelist') & length(undescribed))warning(
-    'data has values not in ', msg, ': e.g. ', undescribed[[1]]
+    token, ' has values not in ', msg, ': e.g. ', undescribed[[1]]
   )
   res
 }
