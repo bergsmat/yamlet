@@ -21,6 +21,7 @@ selected <- function(x, ...)UseMethod('selected')
 #'
 #' @param x object
 #' @param ... to \code{\link[dplyr]{select}}
+#' @param expand if true, selecting nothing expands to selecting everything
 #' @export
 #' @keywords internal
 #' @importFrom rlang f_rhs eval_tidy quo_set_env quos
@@ -35,8 +36,10 @@ selected <- function(x, ...)UseMethod('selected')
 #'
 selected.default <- function(
   x,
-  ...
+  ...,
+  expand = TRUE
 ){
+  stopifnot(length(expand) == 1, is.logical(expand))
   args <- quos(...)
   vars <- args[names(args) == ""]
   y <- names(x) # should work if x has names
@@ -49,7 +52,7 @@ selected.default <- function(
     fix.empty.names = FALSE
   )# dummy data.frame for dplyr
   vars <- names(select(d,!!!vars))
-  if(length(vars) == 0) vars <- y
+  if(length(vars) == 0 && expand) vars <- y
   # vars <- intersect(vars, names(x))
   class(vars) <- union('selected', class(vars))
   return(vars)

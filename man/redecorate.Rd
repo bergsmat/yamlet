@@ -61,7 +61,11 @@ Other decorate:
 \code{\link{decorate.list}()},
 \code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
-\code{\link{decorations}()}
+\code{\link{decorations}()},
+\code{\link{groups_decorate.data.frame}()},
+\code{\link{groups_decorate_generic}},
+\code{\link{groups_decorations.data.frame}()},
+\code{\link{groups_decorations_generic}}
 }
 \concept{decorate}
 \keyword{internal}

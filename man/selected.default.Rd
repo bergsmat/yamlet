@@ -4,12 +4,14 @@
 \alias{selected.default}
 \title{Identify Selected Names by Default}
 \usage{
-\method{selected}{default}(x, ...)
+\method{selected}{default}(x, ..., expand = TRUE)
 }
 \arguments{
 \item{x}{object}
 
 \item{...}{to \code{\link[dplyr]{select}}}
+
+\item{expand}{if true, selecting nothing expands to selecting everything}
 }
 \value{
 character: names in x
