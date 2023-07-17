@@ -2,6 +2,7 @@
 #'
 #' Enforce canonical order.  Generic, with
 #' method: \code{\link{canonical.decorated}}.
+#' @aliases NULL canonical_generic
 #' @param x object
 #' @param ... passed arguments
 #' @return list
@@ -17,6 +18,7 @@ canonical <- function(x, ...)UseMethod('canonical')
 #' and will be expanded or reduced as necessary for each
 #' data item.
 #'
+#' @aliases canonical
 #' @param x decorated
 #' @param default_keys attribute names in preferred order
 #' @param ... ignored

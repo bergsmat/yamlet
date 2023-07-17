@@ -5,6 +5,7 @@
 #' \code{\link{desolve.decorated}},
 #' \code{\link{desolve.classified}}, and 
 #' \code{\link{desolve.dvec}}.
+#' @aliases NULL desolve_generic
 #' @param x object
 #' @param ... passed arguments
 #' @export
@@ -23,7 +24,7 @@ desolve <- function(x, ...)UseMethod('desolve')
 #' \code{\link{drop_title}}, 
 #' \code{\link{unclassified}},
 #' and \code{\link{implicit_guide}}. 
-#' 
+#' @aliases desolve
 #' @param x decorated
 #' @param ... passed to \code{\link{drop_title}}, \code{\link{unclassified}}, and \code{\link{implicit_guide}}
 #' @export

@@ -64,7 +64,7 @@ str(x)
 \seealso{
 Other mimic: 
 \code{\link{mimic.default}()},
-\code{\link{mimic}()}
+\code{\link{mimic_generic}}
 }
 \concept{mimic}
 \keyword{internal}

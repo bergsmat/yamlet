@@ -2,6 +2,7 @@
 % Please edit documentation in R/canonical.R
 \name{canonical.decorated}
 \alias{canonical.decorated}
+\alias{canonical}
 \title{Sort Decorations}
 \usage{
 \method{canonical}{decorated}(
@@ -48,7 +49,7 @@ canonical(decorations(x))
 \seealso{
 Other canonical: 
 \code{\link{canonical.yamlet}()},
-\code{\link{canonical}()}
+\code{\link{canonical_generic}}
 
 Other interface: 
 \code{\link{classified.data.frame}()},

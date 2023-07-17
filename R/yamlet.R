@@ -327,7 +327,7 @@ as_yamlet.character <- function(x, default_keys = getOption('yamlet_default_keys
 
 #' Coerce Data Frame to Yamlet
 #'
-#' Coerces data.frame to yamlet by calling {\code{\link{decorations.data.frame}}}.
+#' Coerces data.frame to yamlet by calling {\code{\link{decorations}}}.
 #'
 #' @param x data.frame
 #' @param ... passed to \code{\link{decorations}}

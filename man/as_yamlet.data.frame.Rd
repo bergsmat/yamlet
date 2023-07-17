@@ -15,7 +15,7 @@
 yamlet
 }
 \description{
-Coerces data.frame to yamlet by calling {\code{\link{decorations.data.frame}}}.
+Coerces data.frame to yamlet by calling {\code{\link{decorations}}}.
 }
 \examples{
 library(csv)

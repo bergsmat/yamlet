@@ -3,12 +3,12 @@
 #' Imports or exports documented tables as comma-separated variable.
 #' Generic, with methods that extend \code{\link[csv]{as.csv}}.
 
-#'@param x object
-#'@param ... passed arguments
-#'@export
-#'@return See methods.
-#'@family io
-#'@examples
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @return See methods.
+#' @family io
+#' @examples
 #' # generate some decorated data
 #' file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 #' x <- decorate(file)

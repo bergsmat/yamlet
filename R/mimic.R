@@ -2,7 +2,7 @@
 #'
 #' Tries to make an object look like something else.
 #' Generic, with method \code{\link{mimic.default}}
-#'
+#' @aliases NULL mimic_generic
 #' @param x object
 #' @param ... passed arguments
 #' @export
@@ -22,7 +22,7 @@ mimic <- function(x, ...)UseMethod('mimic')
 #' attribute is removed. No guide is created
 #' for zero-length x. If x is a factor,
 #' unused levels are removed.
-#'
+#' @aliases  mimic
 #' @param x vector-like
 #' @param y vector-like, same length as x
 #' @param ... passed to \code{link{factor}}

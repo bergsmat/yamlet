@@ -2,6 +2,7 @@
 % Please edit documentation in R/mimic.R
 \name{mimic.default}
 \alias{mimic.default}
+\alias{mimic}
 \title{Try To Look Like Another Equal-length Variable}
 \usage{
 \method{mimic}{default}(x, y = x, ...)
@@ -59,7 +60,7 @@ x \%>\% as_decorated \%>\% resolve
 \seealso{
 Other mimic: 
 \code{\link{mimic.classified}()},
-\code{\link{mimic}()}
+\code{\link{mimic_generic}}
 
 Other interface: 
 \code{\link{canonical.decorated}()},

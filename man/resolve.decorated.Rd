@@ -2,6 +2,7 @@
 % Please edit documentation in R/resolve.R
 \name{resolve.decorated}
 \alias{resolve.decorated}
+\alias{resolve}
 \title{Resolve Guide for Decorated}
 \usage{
 \method{resolve}{decorated}(x, ...)
@@ -40,10 +41,10 @@ Other resolve:
 \code{\link{desolve.classified}()},
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.dvec}()},
-\code{\link{desolve}()},
+\code{\link{desolve_generic}},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.dvec}()},
-\code{\link{resolve}()}
+\code{\link{resolve_generic}}
 
 Other interface: 
 \code{\link{canonical.decorated}()},

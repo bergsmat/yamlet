@@ -2,6 +2,7 @@
 #'
 #' Classifies something.
 #' Generic, with method \code{\link{classified.default}}
+#' @aliases NULL classified_generic
 #' @param x object of dispatch
 #' @param ... passed arguments
 #' @export
@@ -73,6 +74,7 @@ classified.factor <- function(
 #' length of labels cannot be one (i.e., different from
 #' length of levels).
 #'
+#' @aliases classified
 #' @export
 #' @return 'classified' 'factor'
 #' @param x see \code{\link{factor}}

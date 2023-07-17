@@ -2,6 +2,7 @@
 #'
 #' Modifies the attributes of indicated components.
 #' Generic, with method \code{\link{modify.default}}.
+#' @aliases NULL modify_generic
 #' @param x object
 #' @param ... passed arguments
 #' @export
@@ -30,7 +31,7 @@ modify <- function(x, ...)UseMethod('modify')
 #' \code{\link[rlang]{eval_tidy}}, with attributes supplied as
 #' the \code{data} argument.  Thus, names in the expression
 #' may be disambiguated, e.g. with \code{.data}.  See examples.
-#'
+#' @aliases modify
 #' @param x object
 #' @param ... indicated columns, or name-value pairs
 #' @param .reserved reserved labels that warn on assignment
