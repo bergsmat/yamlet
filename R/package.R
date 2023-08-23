@@ -93,4 +93,4 @@
 #'
 #' @docType package
 #' @name yamlet
-NULL
+"_PACKAGE"
