@@ -10,8 +10,6 @@
 \item{to}{dvec}
 
 \item{...}{ignored}
-
-\item{from}{character}
 }
 \description{
 Cast to dvec from character.

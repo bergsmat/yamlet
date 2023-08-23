@@ -10,8 +10,6 @@
 \item{to}{integer}
 
 \item{...}{ignored}
-
-\item{from}{dvec}
 }
 \description{
 Cast to integer from dvec.

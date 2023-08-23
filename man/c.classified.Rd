@@ -9,7 +9,7 @@
 \arguments{
 \item{...}{passed to next method}
 
-\item{x}{classified factor}
+\item{recursive}{passed to unlist() internally}
 }
 \value{
 class 'classified' 'factor'

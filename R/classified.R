@@ -397,8 +397,8 @@ classified.default <- function(
 #' exact duplicates, and then removing
 #' duplicated names with warning.
 #'
-#' @param x classified factor
 #' @param ... passed to next method
+#' @param recursive passed to unlist() internally
 #' @export
 #' @keywords internal
 #' @family classified

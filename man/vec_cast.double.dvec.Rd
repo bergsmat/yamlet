@@ -10,8 +10,6 @@
 \item{to}{double}
 
 \item{...}{ignored}
-
-\item{from}{dvec}
 }
 \description{
 Cast to double from dvec.

@@ -10,8 +10,6 @@
 \item{to}{complex}
 
 \item{...}{ignored}
-
-\item{from}{dvec}
 }
 \description{
 Cast to complex from dvec.
