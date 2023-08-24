@@ -31,7 +31,7 @@ selected(b:c)
 \seealso{
 Other modify: 
 \code{\link{modify.default}()},
-\code{\link{modify_generic}},
+\code{\link{modify}()},
 \code{\link{named}()},
 \code{\link{selected}()}
 

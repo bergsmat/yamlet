@@ -37,7 +37,7 @@ Other classified:
 \code{\link{classified.default}()},
 \code{\link{classified.dvec}()},
 \code{\link{classified.factor}()},
-\code{\link{classified_generic}},
+\code{\link{classified}()},
 \code{\link{desolve.classified}()},
 \code{\link{unclassified.data.frame}()},
 \code{\link{unclassified}()}

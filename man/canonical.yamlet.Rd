@@ -43,7 +43,7 @@ write_yamlet(x)
 \seealso{
 Other canonical: 
 \code{\link{canonical.decorated}()},
-\code{\link{canonical_generic}}
+\code{\link{canonical}()}
 }
 \concept{canonical}
 \keyword{internal}

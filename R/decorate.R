@@ -55,7 +55,6 @@ redecorate <- function(x, meta = NULL, ..., overwrite = TRUE){
 #' Decorates a list-like object. Generic.
 #' See \code{\link{decorate.character}}.
 
-#' @aliases NULL decorate_generic
 #' @param x object
 #' @param ... passed arguments
 #' @export
@@ -238,7 +237,6 @@ decorate.list <- function(
 #' \code{\link{c.dvec}}. Disable this functionality
 #' with \code{options(yamlet_persistence = FALSE)}.
 
-#' @aliases decorate
 #' @param x data.frame
 #' @param meta file path for corresponding yaml metadata, or a yamlet; an attempt will be made to guess the file path if x has a 'source' attribute
 #' @param ... passed to \code{\link{decorate.list}}
@@ -282,7 +280,6 @@ decorate.data.frame <- function(
 #' Retrieve the decorations of something.
 #' Generic, with method \code{\link{decorations.data.frame}}.
 #'
-#' @aliases NULL decorations_generic
 #' @param x object
 #' @param ... passed arguments
 #' @export
@@ -310,7 +307,6 @@ decorations <- function(x,...)UseMethod('decorations')
 # (see \code{coerce} argument) is appropriate for your application.
 
 #'
-#' @aliases decorations
 #' @param x data.frame
 #' @param ... optional unquoted column names to limit output (passed to \code{\link[dplyr]{select}})
 # @param coerce logical: whether to coerce factor levels to guide; alternatively, a key for the levels
@@ -424,6 +420,6 @@ as_decorated.default <- function(x, meta = '-', ...){
   decorate(x, meta = meta, ...)
 }
 
-#' @aliases decorations.data.frame
-#' @keywords internal
-decorations.data.frame
+# @aliases decorations.data.frame
+# @keywords internal
+#decorations.data.frame

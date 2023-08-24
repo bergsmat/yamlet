@@ -2,7 +2,6 @@
 % Please edit documentation in R/desolve.R
 \name{desolve.decorated}
 \alias{desolve.decorated}
-\alias{desolve}
 \title{Desolve Guide for Decorated}
 \usage{
 \method{desolve}{decorated}(x, ...)
@@ -38,11 +37,11 @@ x \%>\% resolve(glyco, Race) \%>\% desolve \%>\% decorations(Age, glyco, Race)
 Other resolve: 
 \code{\link{desolve.classified}()},
 \code{\link{desolve.dvec}()},
-\code{\link{desolve_generic}},
+\code{\link{desolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.decorated}()},
 \code{\link{resolve.dvec}()},
-\code{\link{resolve_generic}}
+\code{\link{resolve}()}
 
 Other interface: 
 \code{\link{canonical.decorated}()},

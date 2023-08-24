@@ -5,7 +5,6 @@
 #' 
 #' @export
 #' @keywords internal
-#' @aliases NULL decorate_groups_generic
 #' @family decorate
 #' @param x object of dispatch
 #' @param ... passed
@@ -24,7 +23,6 @@ decorate_groups <- function(x, ...)UseMethod('decorate_groups')
 #' removed.
 #' 
 #' @export
-#' @aliases  decorate_groups
 #' @family decorate
 #' @importFrom dplyr group_vars groups
 #' @param x data.frame
@@ -57,7 +55,6 @@ decorate_groups.data.frame <- function(x, ...){
 #' 
 #' @export
 #' @keywords internal
-#' @aliases NULL decorations_groups_generic
 #' @family decorate
 #' @param x object of dispatch
 #' @param ... passed
@@ -71,7 +68,6 @@ decorations_groups <- function(x, ...)UseMethod('decorations_groups')
 #' and returns a character vector like \code{group_vars(x)}.
 #' 
 #' @export
-#' @aliases  decorations_groups
 #' @family decorate
 #' @importFrom dplyr group_vars groups
 #' @param x data.frame
@@ -136,7 +132,6 @@ decorations_groups.data.frame <- function(x, ...){
 #' 
 #' @export
 #' @keywords internal
-#' @aliases NULL group_by_decorations_generic
 #' @family decorate
 #' @param x object of dispatch
 #' @param ... passed
@@ -149,7 +144,6 @@ group_by_decorations <- function(x, ...)UseMethod('group_by_decorations')
 #' \code{\link{decorations_groups}}.
 #' 
 #' @export
-#' @aliases  group_by_decorations
 #' @family decorate
 #' @importFrom dplyr group_by across all_of
 #' @importFrom rlang sym

@@ -34,11 +34,11 @@ x \%>\% resolve \%>\% desolve \%>\% str
 Other resolve: 
 \code{\link{desolve.classified}()},
 \code{\link{desolve.decorated}()},
-\code{\link{desolve_generic}},
+\code{\link{desolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.decorated}()},
 \code{\link{resolve.dvec}()},
-\code{\link{resolve_generic}}
+\code{\link{resolve}()}
 
 Other dvec: 
 \code{\link{[.dvec}()},

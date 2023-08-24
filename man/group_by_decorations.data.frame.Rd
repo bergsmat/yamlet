@@ -2,7 +2,6 @@
 % Please edit documentation in R/groups.R
 \name{group_by_decorations.data.frame}
 \alias{group_by_decorations.data.frame}
-\alias{group_by_decorations}
 \title{Groups by Decorations for Data Frame}
 \usage{
 \method{group_by_decorations}{data.frame}(x, ...)
@@ -37,14 +36,14 @@ Other decorate:
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{decorate.list}()},
-\code{\link{decorate_generic}},
 \code{\link{decorate_groups.data.frame}()},
-\code{\link{decorate_groups_generic}},
+\code{\link{decorate_groups}()},
+\code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
-\code{\link{decorations_generic}},
 \code{\link{decorations_groups.data.frame}()},
-\code{\link{decorations_groups_generic}},
-\code{\link{group_by_decorations_generic}},
+\code{\link{decorations_groups}()},
+\code{\link{decorations}()},
+\code{\link{group_by_decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

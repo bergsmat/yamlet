@@ -42,11 +42,11 @@ x \%>\% resolve \%>\% desolve \%>\% str
 Other resolve: 
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.dvec}()},
-\code{\link{desolve_generic}},
+\code{\link{desolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.decorated}()},
 \code{\link{resolve.dvec}()},
-\code{\link{resolve_generic}}
+\code{\link{resolve}()}
 
 Other classified: 
 \code{\link{[.classified}()},
@@ -60,7 +60,7 @@ Other classified:
 \code{\link{classified.default}()},
 \code{\link{classified.dvec}()},
 \code{\link{classified.factor}()},
-\code{\link{classified_generic}},
+\code{\link{classified}()},
 \code{\link{unclassified.classified}()},
 \code{\link{unclassified.data.frame}()},
 \code{\link{unclassified}()}

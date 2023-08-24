@@ -2,7 +2,6 @@
 % Please edit documentation in R/decorate.R
 \name{decorate.data.frame}
 \alias{decorate.data.frame}
-\alias{decorate}
 \title{Decorate Data Frame}
 \usage{
 \method{decorate}{data.frame}(
@@ -86,15 +85,15 @@ Other decorate:
 \code{\link{as_decorated}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.list}()},
-\code{\link{decorate_generic}},
 \code{\link{decorate_groups.data.frame}()},
-\code{\link{decorate_groups_generic}},
+\code{\link{decorate_groups}()},
+\code{\link{decorate}()},
 \code{\link{decorations.data.frame}()},
-\code{\link{decorations_generic}},
 \code{\link{decorations_groups.data.frame}()},
-\code{\link{decorations_groups_generic}},
+\code{\link{decorations_groups}()},
+\code{\link{decorations}()},
 \code{\link{group_by_decorations.data.frame}()},
-\code{\link{group_by_decorations_generic}},
+\code{\link{group_by_decorations}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

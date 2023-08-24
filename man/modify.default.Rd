@@ -2,7 +2,6 @@
 % Please edit documentation in R/modify.R
 \name{modify.default}
 \alias{modify.default}
-\alias{modify}
 \title{Modify Attributes of Indicated Components by Default}
 \usage{
 \method{modify}{default}(
@@ -89,7 +88,7 @@ x \%>\% modify(location = 'attributes', where = .data$location) \%>\% decoration
 }
 \seealso{
 Other modify: 
-\code{\link{modify_generic}},
+\code{\link{modify}()},
 \code{\link{named}()},
 \code{\link{selected.default}()},
 \code{\link{selected}()}

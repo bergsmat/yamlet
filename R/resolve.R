@@ -4,7 +4,6 @@
 #' Generic, with methods 
 #' \code{\link{resolve.decorated}} and 
 #' \code{\link{resolve.dvec}}.
-#' @aliases NULL resolve_generic
 #' @param x object
 #' @param ... passed arguments
 #' @export
@@ -23,7 +22,6 @@ resolve <- function(x, ...)UseMethod('resolve')
 #' \code{\link{explicit_guide}},
 #' \code{\link{classified}}, and
 #' \code{\link{make_title}}.
-#' @aliases resolve
 #' @param x decorated
 #' @param ... passed to \code{\link{explicit_guide}}, \code{\link{classified}}, and \code{\link{make_title}}
 #' @export
