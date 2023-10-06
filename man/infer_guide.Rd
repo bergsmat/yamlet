@@ -26,7 +26,9 @@ Default mapping function for \code{\link{explicit_guide.yamlet}}
 where it replaces the key 'guide' with the return value.
 }
 \details{
-* If x is a list or has length greater than 1, result is 'codelist'.
+* If x is a list, the result is 'codelist'.
+
+* If x otherwise has length greater than 1, result is the default value.
 
 * If x \code{\link{is_parseable}}, result is 'units'.
   Use \code{\link[units]{install_unit}} to register a non-default unit.
@@ -47,7 +49,7 @@ infer_guide('a') # recognized unit
 infer_guide('z') # unrecognized as unit, evaluates to guide
 \dontrun{
 # evaluates to codelist but data suggests otherwise (warning)
-infer_guide(letters, data = LETTERS)
+infer_guide(as.list(letters), data = LETTERS)
 }
 infer_guide(c(1,2,3))                   # guide
 infer_guide(list('a','b','c'))          # codelist

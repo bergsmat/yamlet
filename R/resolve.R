@@ -108,3 +108,17 @@ resolve.classified <- function(x, ...){
   return(x)
 }
 
+#' Resolve Data Frame
+#' 
+#' Resolves data.frame.
+#' Coerces first using as_decorated().
+#' 
+#' @param x data.frame
+#' @param ... ignored
+#' @export
+#' @keywords internal
+#' @return decorated
+#' @family resolve
+#' @examples
+#' head(resolve(Theoph))
+resolve.data.frame <- function(x, ...)resolve(as_decorated(x, ...), ...)

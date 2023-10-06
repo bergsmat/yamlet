@@ -34,10 +34,12 @@ x \%>\% resolve \%>\% str
 \seealso{
 Other resolve: 
 \code{\link{desolve.classified}()},
+\code{\link{desolve.data.frame}()},
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.dvec}()},
 \code{\link{desolve}()},
 \code{\link{resolve.classified}()},
+\code{\link{resolve.data.frame}()},
 \code{\link{resolve.decorated}()},
 \code{\link{resolve}()}
 

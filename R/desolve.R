@@ -111,3 +111,18 @@ desolve.dvec <- function(x, ...){
   x <- implicit_guide(x, ...)
   x
 }
+
+#' Desolve Data Frame
+#' 
+#' Desolves data.frame.
+#' Coerces first using as_decorated().
+#' 
+#' @param x data.frame
+#' @param ... ignored
+#' @export
+#' @keywords internal
+#' @return decorated
+#' @family resolve
+#' @examples
+#' head(desolve(Theoph))
+desolve.data.frame <- function(x, ...)desolve(as_decorated(x, ...), ...)
