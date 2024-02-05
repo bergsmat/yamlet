@@ -1,0 +1,97 @@
+---
+title: "Scripted PDF"
+author: "Tim Bergsma"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document:
+    toc: true
+    extra_dependencies:
+      booktabs,
+      longtable,
+      array,
+      multirow,
+      wrapfig,
+      float,
+      colortbl,
+      pdflscape,
+      tabu,
+      threeparttable,
+      threeparttablex,
+      makecell,
+      xcolor
+vignette: >
+  %\VignetteIndexEntry{Scripted PDF}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+The point of this exercise is to demonstrate flexible rendering of 
+subscripts and superscripts.  We want to write expressions for 
+column labels an units that are fairly readable as they are, and
+yet can be easily rendered with equivalent results in 
+plotmath, html, or pdf.
+
+First we load some packages.
+
+```{r}
+library(magrittr)
+library(ggplot2)
+library(tablet)
+library(yamlet)
+```
+
+We create some toy data.
+
+```{r}
+x <- data.frame(time = 1:10, work = (1:10)^1.5)
+x %<>% decorate('
+ time: [ Time_cum.^alpha, h ]
+ work: [ Work_total_obs, kg*m^2/s^2 ]
+')
+x %>% decorations
+```
+
+Notice that the label for "work" has nested subscripts:  "obs" is
+subordinate to "total", and the result is subordinate to "Work".
+
+For "time", the word "Time" is followed by a subscript "cum".
+Then, "cum" is followed by the superscript "alpha".
+In this case "alpha" to be the superscript of "Time_cum" not just "cum".
+We include the dot to explicitly terminate the "cum"
+subscript, which causes "alpha" to be the superscript of
+the combined result.
+
+How does this look when we plot it?
+```{r}
+x %>% resolve %>% ggplot(aes(time, work)) + geom_point()
+```
+
+We get verbatim labels and units as substitutes for column names.
+
+Next, we use scripted() instead of resolve() to indicate 
+that the labels should be understood as
+potentially having subscripts and superscripts.
+For this to work well, units should be constructed
+using *, /, and ^ (even though the "units"
+package supports other encodings).
+
+```{r}
+x %>% scripted %>% ggplot(aes(time, work)) + geom_point()
+```
+
+In the background, scripted() is writing "expression" attributes
+(consumed by ggplot() ) and "title" attributes (consumed by tablet() ).
+We illustrate the latter.
+
+```{r}
+x %>% scripted %>% tablet %>% as_kable
+```
+
+In summary, we have decorated our data with labels and 
+units containing markup for subscripts and superscripts.
+If everything goes well, these render similarly 
+in figures and tables.  They also render similarly in
+html and pdf.  Please see the html version of this document.
+

@@ -67,6 +67,7 @@ Other interface:
 \code{\link{modify.default}()},
 \code{\link{promote.list}()},
 \code{\link{read_yamlet}()},
+\code{\link{scripted.default}()},
 \code{\link{selected.default}()},
 \code{\link{write_yamlet}()}
 }

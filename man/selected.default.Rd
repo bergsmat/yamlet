@@ -56,6 +56,7 @@ Other interface:
 \code{\link{promote.list}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.decorated}()},
+\code{\link{scripted.default}()},
 \code{\link{write_yamlet}()}
 }
 \concept{interface}

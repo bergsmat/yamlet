@@ -12,7 +12,7 @@
 
 <meta name="author" content="Tim Bergsma" />
 
-<meta name="date" content="2023-07-17" />
+<meta name="date" content="2024-02-03" />
 
 <title>An Introduction to Yamlet</title>
 
@@ -436,7 +436,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">An Introduction to Yamlet</h1>
 <h4 class="author">Tim Bergsma</h4>
-<h4 class="date">2023-07-17</h4>
+<h4 class="date">2024-02-03</h4>
 
 
 <div id="TOC">
@@ -576,110 +576,110 @@ myself) is to have some stored metadata that we can read into R and
 apply to a data frame as column attributes. If typing square brackets
 isn’t your thing, you can actually do this backwards by supplying column
 attributes to a data frame and writing them out!</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(dplyr))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(yamlet)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> <span class="dv">1</span>, </span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">CONC =</span> <span class="dv">1</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">RACE =</span> <span class="dv">1</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>x<span class="sc">$</span>ID <span class="sc">%&lt;&gt;%</span> <span class="fu">structure</span>(<span class="at">label =</span> <span class="st">&#39;subject identifier&#39;</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>x<span class="sc">$</span>CONC <span class="sc">%&lt;&gt;%</span> <span class="fu">structure</span>(<span class="at">label =</span> <span class="st">&#39;concentration&#39;</span>, <span class="at">guide =</span> <span class="st">&#39;ng/mL&#39;</span>)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>x<span class="sc">$</span>RACE <span class="sc">%&lt;&gt;%</span> <span class="fu">structure</span>(<span class="at">label =</span> <span class="st">&#39;race&#39;</span>, <span class="at">guide =</span> <span class="fu">list</span>(<span class="at">white =</span> <span class="dv">0</span>, <span class="at">black =</span> <span class="dv">1</span>, <span class="at">asian =</span> <span class="dv">2</span>))</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>x <span class="sc">%&gt;%</span> as_yamlet <span class="sc">%&gt;%</span> as.character <span class="sc">%&gt;%</span> writeLines</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ID: subject identifier</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CONC: [ concentration, ng/mL ]</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; RACE: [ race, [ white: 0, black: 1, asian: 2 ]]</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>x <span class="sc">%&gt;%</span> as_yamlet <span class="sc">%&gt;%</span> as.character <span class="sc">%&gt;%</span> <span class="fu">writeLines</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;drug.yaml&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(dplyr))</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">library</span>(yamlet)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="at">ID =</span> <span class="dv">1</span>, </span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="at">CONC =</span> <span class="dv">1</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  <span class="at">RACE =</span> <span class="dv">1</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>)</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>x<span class="sc">$</span>ID <span class="sc">%&lt;&gt;%</span> <span class="fu">structure</span>(<span class="at">label =</span> <span class="st">&#39;subject identifier&#39;</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>x<span class="sc">$</span>CONC <span class="sc">%&lt;&gt;%</span> <span class="fu">structure</span>(<span class="at">label =</span> <span class="st">&#39;concentration&#39;</span>, <span class="at">guide =</span> <span class="st">&#39;ng/mL&#39;</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>x<span class="sc">$</span>RACE <span class="sc">%&lt;&gt;%</span> <span class="fu">structure</span>(<span class="at">label =</span> <span class="st">&#39;race&#39;</span>, <span class="at">guide =</span> <span class="fu">list</span>(<span class="at">white =</span> <span class="dv">0</span>, <span class="at">black =</span> <span class="dv">1</span>, <span class="at">asian =</span> <span class="dv">2</span>))</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>x <span class="sc">%&gt;%</span> as_yamlet <span class="sc">%&gt;%</span> as.character <span class="sc">%&gt;%</span> writeLines</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; ID: subject identifier</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; CONC: [ concentration, ng/mL ]</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; RACE: [ race, [ white: 0, black: 1, asian: 2 ]]</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>x <span class="sc">%&gt;%</span> as_yamlet <span class="sc">%&gt;%</span> as.character <span class="sc">%&gt;%</span> <span class="fu">writeLines</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;drug.yaml&#39;</span>))</span></code></pre></div>
 </div>
 </div>
 <div id="reading-and-binding-yamlet-in-r" class="section level2">
 <h2>Reading and Binding Yamlet in R</h2>
 <p>Let’s take advantage of that last example to show how we can read
 <strong>yamlet</strong> into R.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read_yamlet</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;drug.yaml&#39;</span>))</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>meta</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: subject identifier</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - CONC</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: concentration</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide: ng/mL</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - RACE</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: race</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read_yamlet</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;drug.yaml&#39;</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>meta</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt;  - label: subject identifier</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; - CONC</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt;  - label: concentration</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt;  - guide: ng/mL</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; - RACE</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt;  - label: race</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;  - guide</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
 <p><code>meta</code> is just a named list of column attributes.
 <code>decorate()</code> loads them onto columns of a data frame.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ID =</span> <span class="dv">1</span>, <span class="at">CONC =</span> <span class="dv">1</span>, <span class="at">RACE =</span> <span class="dv">1</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">decorate</span>(x, <span class="at">meta =</span> meta)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decorations</span>(x)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: subject identifier</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - CONC</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: concentration</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide: ng/mL</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - RACE</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: race</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ID =</span> <span class="dv">1</span>, <span class="at">CONC =</span> <span class="dv">1</span>, <span class="at">RACE =</span> <span class="dv">1</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">decorate</span>(x, <span class="at">meta =</span> meta)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="fu">decorations</span>(x)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt;  - label: subject identifier</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; - CONC</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt;  - label: concentration</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;  - guide: ng/mL</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; - RACE</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt;  - label: race</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt;  - guide</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
 <p>If you like, you can skip the external file and decorate directly
 with <code>yamlet</code> (instead of, say, structure() like we did
 above).</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ID =</span> <span class="dv">1</span>, <span class="at">CONC =</span> <span class="dv">1</span>, <span class="at">RACE =</span> <span class="dv">1</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">decorate</span>(x,<span class="st">&#39;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">ID: subject identifier</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">CONC: [ concentration, ng/mL ]</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">RACE: [ race, [white: 0, black: 1, asian: 2 ]]</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">decorations</span>(x)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: subject identifier</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - CONC</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: concentration</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide: ng/mL</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - RACE</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: race</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ID =</span> <span class="dv">1</span>, <span class="at">CONC =</span> <span class="dv">1</span>, <span class="at">RACE =</span> <span class="dv">1</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">decorate</span>(x,<span class="st">&#39;</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="st">ID: subject identifier</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="st">CONC: [ concentration, ng/mL ]</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="st">RACE: [ race, [white: 0, black: 1, asian: 2 ]]</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="st">&#39;</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="fu">decorations</span>(x)</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt;  - label: subject identifier</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; - CONC</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt;  - label: concentration</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;  - guide: ng/mL</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; - RACE</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;  - label: race</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;  - guide</span></span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
 </div>
 <div id="extracting-and-writing-yamlet-to-storage" class="section level2">
 <h2>Extracting and Writing Yamlet to Storage</h2>
 <p>We saw earlier that <code>as_yamlet()</code> can pull “decorations”
 off a data frame and present them as <strong>yamlet</strong>. this is
 the default behavior of <code>decorations()</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decorations</span>(x)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: subject identifier</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - CONC</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: concentration</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide: ng/mL</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - RACE</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: race</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">decorations</span>(x)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co">#&gt; - ID</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co">#&gt;  - label: subject identifier</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">#&gt; - CONC</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt;  - label: concentration</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt;  - guide: ng/mL</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt; - RACE</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#&gt;  - label: race</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt;  - guide</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt;   - white: 0</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt;   - black: 1</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt;   - asian: 2</span></span></code></pre></div>
 <p><code>write_yamlet()</code> calls <code>as_yamlet()</code> on its
 primary argument, and sends the result to a connection of our
 choice.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;out.yaml&#39;</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_yamlet</span>(x, <span class="at">con =</span> file )</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>file <span class="sc">%&gt;%</span> readLines <span class="sc">%&gt;%</span> writeLines</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ID: subject identifier</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CONC: [ concentration, ng/mL ]</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; RACE: [ race, [ white: 0, black: 1, asian: 2 ]]</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;out.yaml&#39;</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">write_yamlet</span>(x, <span class="at">con =</span> file )</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>file <span class="sc">%&gt;%</span> readLines <span class="sc">%&gt;%</span> writeLines</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#&gt; ID: subject identifier</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt; CONC: [ concentration, ng/mL ]</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; RACE: [ race, [ white: 0, black: 1, asian: 2 ]]</span></span></code></pre></div>
 </div>
 <div id="coordinated-input-and-output" class="section level2">
 <h2>Coordinated Input and Output</h2>
@@ -689,19 +689,19 @@ it describes, with the same name but the ‘yaml’ extension.
 file, it will look for a ’*.yaml’ file nearby. To “decorate” a CSV path
 means to read it, read its <code>yamlet</code> (if any) and apply the
 <code>yamlet</code> as attributes on the resulting data frame.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(csv)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># see ?Quinidine in package nlme</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">decorate</span>(file)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">as_yamlet</span>(a)[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - Subject</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: patient identifier</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - time</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: time since start of study</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide: h</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - conc</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - label: quinidine serum concentration</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - guide: mg/L</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">library</span>(csv)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co"># see ?Quinidine in package nlme</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">decorate</span>(file)</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="fu">as_yamlet</span>(a)[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; - Subject</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt;  - label: patient identifier</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; - time</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt;  - label: time since start of study</span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt;  - guide: h</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; - conc</span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt;  - label: quinidine serum concentration</span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt;  - guide: mg/L</span></span></code></pre></div>
 <p>Another way to achieve the same thing is with <code>io_csv()</code>.
 It is a toggle function that returns a path if given a file to store,
 and returns a decorated data frame if given a path to read (same for
@@ -709,27 +709,27 @@ and returns a decorated data frame if given a path to read (same for
 <code>read.table()</code> and <code>write.table()</code>). The path is
 just the path to the primary data, but the path to the metadata is
 implied as well.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">csv_source =</span> <span class="cn">FALSE</span>) <span class="co"># see ?as.csv</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">decorate</span>(file)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;out.csv&#39;</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">io_csv</span>(x, out)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">io_csv</span>(out)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(x, y) <span class="co"># lossless &#39;round-trip&#39;</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">file.exists</span>(out)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&#39;csv&#39;</span>,<span class="st">&#39;yaml&#39;</span>, out)</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="fu">file.exists</span>(meta)</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">%&gt;%</span> readLines <span class="sc">%&gt;%</span> head <span class="sc">%&gt;%</span> writeLines</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Subject: patient identifier</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; time: [ time since start of study, h ]</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; conc: [ quinidine serum concentration, mg/L ]</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dose: [ quinidine administered dose, mg ]</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; interval: [ inter-dose interval, h ]</span></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Age: [ baseline subject age, year ]</span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">csv_source =</span> <span class="cn">TRUE</span>) <span class="co"># restore</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">csv_source =</span> <span class="cn">FALSE</span>) <span class="co"># see ?as.csv</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">decorate</span>(file)</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;out.csv&#39;</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="fu">io_csv</span>(x, out)</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">io_csv</span>(out)</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="fu">identical</span>(x, y) <span class="co"># lossless &#39;round-trip&#39;</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="fu">file.exists</span>(out)</span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&#39;csv&#39;</span>,<span class="st">&#39;yaml&#39;</span>, out)</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="fu">file.exists</span>(meta)</span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a>meta <span class="sc">%&gt;%</span> readLines <span class="sc">%&gt;%</span> head <span class="sc">%&gt;%</span> writeLines</span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="co">#&gt; Subject: patient identifier</span></span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a><span class="co">#&gt; time: [ time since start of study, h ]</span></span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a><span class="co">#&gt; conc: [ quinidine serum concentration, mg/L ]</span></span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a><span class="co">#&gt; dose: [ quinidine administered dose, mg ]</span></span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="co">#&gt; interval: [ inter-dose interval, h ]</span></span>
+<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a><span class="co">#&gt; Age: [ baseline subject age, year ]</span></span>
+<span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a><span class="fu">options</span>(<span class="at">csv_source =</span> <span class="cn">TRUE</span>) <span class="co"># restore</span></span></code></pre></div>
 </div>
 <div id="using-yamlet-metadata" class="section level2">
 <h2>Using Yamlet Metadata</h2>
@@ -743,21 +743,21 @@ report elements such as figures and tables.</p>
 <p>For example, The <strong>yamlet</strong> package provides an
 experimental wrapper for ggplot that uses column attributes to
 automatically generate informative axis labels and legends.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">library</span>(ggplot2))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>file <span class="sc">%&gt;%</span> </span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  decorate <span class="sc">%&gt;%</span> </span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(conc)) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  resolve <span class="sc">%&gt;%</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> conc, <span class="at">color =</span> Heart)) <span class="sc">+</span> </span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
-<div class="figure">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgwAAAFRCAMAAAAvoAWJAAABF1BMVEUAAAAAADoAAGYAOmYAOpAAZrYAujgzMzM6AAA6ADo6AGY6OmY6OpA6ZpA6ZrY6kNtNTU1NTW5NTY5NbqtNjshhnP9mAABmADpmAGZmOgBmOjpmOpBmZjpmZmZmZrZmkJBmtrZmtv9uTU1uTW5uTY5ubo5ubqtuq+SOTU2OTW6OTY6Obk2ObquOyP+QOgCQOjqQOmaQZpCQkDqQkGaQtpCQ27aQ29uQ2/+rbk2rbm6rbo6rjk2r5OSr5P+2ZgC2Zjq2tma225C22/+2/9u2///Ijk3I///bkDrbkGbb25Db/7bb/9vb///kq27k///r6+vy8vL4dm3/tmb/yI7/25D/27b/29v/5Kv//7b//8j//9v//+T///8zYEftAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAZn0lEQVR4nO2dC3vbRnaGKTdkZNWtGDu0d3tdxtnYSSul3XgrJ63Y7q4sdrOWXdLc1Q3//3cUc8UZcHAZzDlDgDrf80gkMAMMcc6LuWFmMMpYLK3Rrn8Aqz9iGFhWDAPLimFgWTEMLCuGgWUVDsNHKHdrW03h0SfoXwIETkolhgE7AQInpRLDgJ0AgZNSiWHAToDASanEMGAnQOCkVGIYsBMgcFIqMQzYCRA4KZUYBuwECJyUSgwDdgIETkolhgE7AQInpRLDgJ0AgZNSaRgwTCYT2gS6hzMMdKb0hk8mlTQwDIhiGCLDGQY6U3rDGYY0GgQMXGdIo2HAMKQECJyUSgwDdgIETkolhgE7AQInpRLDgJ0AgZNSiWHAToDASanEMGAnQOCkVHJgWI6kjmuPoDUldjjDEKAChpvnhoLl6OCs+ghaU2KHMwwBsjDc/OKi2OtslERrSuxwhiFAXGfAToDASankgWH9qDpbyBiGpghUnkoghgE7ASpPJRDDgJ0AlacSiGHAToDKUwnEMGAnQOWpBAqHgbW3KvoZno+MOGeISYDeZ2TifgbsBAiclEogZ/jsfasjaE2JHc4wBAjkDJvDpmdUUrSmxA5nGAJUKiaWo9qHVEK0psQOZxgCtF1nuDvlCmRMAmSuohdXILETIHBSKkEYitbluOYIWlNihzMMAXJHOokC4ub58d1pDQ20psQOZxgC5OYMc/GxfnRR1wlJa0rscIYhQAwDdgLUHiOUt5jIljUdULSmxA5nGALktibWovY4z5Y8ILZ7AsQOoxQ3LbETIHBSKjEM2AkQOCmVHBjE0wl+hB2ZAK2/SAVhqO1esKI1JXY4wxAgT9OyQbSmxA5nGALk5gwMQ3wCVJ5KIKfO0Gr0I60pscMZhgBxBRI7AVp/kcotJloMdGIYGiJQeSqBuAKJnQCVpxKIK5DYCVB5KoHcOsMRVyCjE6DyVAL5RjpxBTImAWKHUYqfTWAnQOCkVGIYsBMgcFIq8ZpO2AmQuotWzmpvujHBq73FJEDsMEo5xcSC14GMT4DUXbTiOgN2AgROSqVqGK6mQifm69NLvZ/WlNjhDEOA6nOGT88+iI93J2AfrSmxwxmGANXCcPvtufi4//Ec7KQ1JXY4wxCgWhiuvpQft69NefF5rgQ/irUb1cGgM4bs+uU5yB1o7yvscM4ZAlQ3uEXXGJRsvYHWlNjhDEOA6kZHv3sFNxiGdhGoPUaomsEttmQQOcT9T9y0bBchjd9IVDO4RVUZrr++FP0MX9gGBa0pscMZhgDx6GjsBKg8lUA8uAU7AWKHUYqfTWAnQOCkVGIYsBMgcFIquTAsm59gMwwNEQidRS3/Mj51ojUldjjDECD/Al91R9CaEjucYQgQw4CdAKm7aMXFBHYCpO6iFVcgsRMgdBa1eta0nM1mYSdgGBDVLxhmszINDENCgdcSzXffHc0w7FScM2AnQOCkVOpZ05LrDLtUz2BAD2cYAlTAsLQvOa1fGtS98q1bOdKU2OEMQ4Ai13TaLuQjTYkdzjAEKLICyTDsLQzh60AyDPsKw93p8d3pvKmwcK+c6wx7CoPAYHGcretfiu1eOcOwxzAsx0FNSy4m9hWGbCFJqHtbWcYwNEWg9RepHBjE4tGLpjejO1fOMOwtDK3kXjnXGfYUBl47GiMBKk8lUFwP5GQyQTYldvhgYfjz77PNY1+B7d8LDpMCyzfmB9QfY+WOgayvOiqB655Mmmjon6/IE2hj9WZVu6/WsSawdF93gCF4cAvD4InQxurNioShFKlLztBK4LoZBk+ECrPdnarHwfpz8/jNoXjTtLgDD94cXcj94i6UjwTm4v/x5vF/yHcDLR9dmFDp2B/kO6rdI46zzdFv7JKuYtfYBshiQvIgPvNozvkqYGg3ngEqZ6Ft1AcusSqOsK/4FH+bw7xIzr0sJibcPBfeGctiWvnscC4+8z9RcMunBGNbiJsjzT7ptXx7czh2cwYb4MIgosHzAfHgFuwE/FYzXpLGXQvXzeVOuZ17bK2mrMzN+180DPrDhCoYwJH5vr+8z7SX5y4MNqAEw1z/iu32QuzgFmxTYof3BQZzh8kHP8A38vbMCViaZbsXyv6aAtENmEexoQYrcaTdt84/DuwZAXs2AMIgPuH5vDDwC8twEugIQ5Fn57UImbdLj64/+5PiwZ7JOVJGPziDZ7SRQMAWDP5mY79GR+OH9wUGW0yI5v9aOdtm9vm/NXwIIIoLDcPNC1G7hKH2SL1P4rX25AwgoAzD2v/IIfolp/xsorztlak42gqk9k1Rgcxdl/tIwiH3z1WcxUhW+FQohMEeIe7/Qw2DydwlDEWATujuVEeD56uAobwOZBsYGp5U9c9X5AlUmG2raXlmMvPRwQ+PVNNS5hoj9ZlDoG5i+UoYEwpgsPvyWsbBb1VeotnJDEcmQOYz+Z3+qxe6MxKcrwKGLnUGhgGh06lhOFEyxT6oYhjiYBB5dbscOYGi14HkOkN5O0zLxrZ8OkWvA+mBYbVadTYldnjvYeiTEAa3lGlYrQoa+ucr8gQInJRKDAN2AgROSqWtZXzmTYMa3CtnGPYVhsVnPz+fN9VtS5aoZaGHviJPgNRdtCr1M4iuhsinlgyDT//nF6InEcQwYCfgt9rgYMiWopiIXgcSsNBDX5En4Lfa8GCQHeO8DmRcAn6rDRCGNoIX3jCFpo++Ik/Ab7X9h6Fpcl0ffUWegN9qw4NBDLJqfGoCrpth8ETwW214MCzUA/fW/QwFDLDSGGVK7HCGIUBxo6MBC34a+ucr8gT8VquHQQ5ZzszI6Fx3378RQ9qzxaOLfK8OaDfEIEI4Q+UZBrDtVeH/3FIeGORotwKGzZM/Pv6b99nN38ldu4Ch8/smVgwD2PYKsgBo0KGbo/8ZK5/LodH5DTneHP3DWbb5xyOTM+QBf/XLlDB07GeoZqGHviJPwG+1JhguFnMJg15TazHP+Zhn//vGwiACRklhaKNtS1Sz0ENfkSfgt1ojDDd//178/0WeB7w4u/v+bHP0u7+9+7ffGRhEQNpiopW2LcEwONteNdQZ8lt/eazzAEHCk5yMP/z7z/+0MTDIasMiJQxd5k0IVbLQQ1+RJ+C3WkNrQjLwxuYM67HY9d8/HG92ljN0mTeBbUrs8OHAoJoUqs6gKhBiNtTO6gw81xIjAb/VWsAgG3OyNZEXFBksIDZq/YakrQle4AsjAb/V6mHoiWrmTVxNp9Onl+Lb7evpsw9mN60pscMZhgDVzJt4d6L33789ya6+NLFoTYkdzjAEqLppef/juf52+91ldv31pd6iNSV2OMMQoGoY8rJhOpWZw/U3H7LbbwUan+dqferZbBb98/ZGA4QBvv74+uW5zh0+PTMwCLW9b+Tz7f7duOQJ+O08PBi2H1TJekORMwi1NRXDADU4GDyPsCUM3eoMDAPUwGEQhcP9TwKB+7evurQmxMiX/vmKPAG/nQcHQ6mYuJpOvziXWQL3MwRE8Nt5eDA4FcgqOVe+25ePiAVqSRNoEb6/MLQRvPDZbJfL+DQvXR2ZQJtwhsGIYdhfGELnTTAMngh+qw0PhtB5E5KGWn9wnUFrcDB0GCrfdHP2z1fkCfitVg/DxkySAEd4BxSA0fQEwoChBof++Yo8Ab/VCv/n5tqGAUySMNoxDF3mTTTQ0D9fkSfgtxpkAdCgQ+0kCTNvQs+SUFubv/6leEHFaDSX2zoKgeLnTTAMpW2vmmDQkyTsvAk14jH/WI7l5LubF2YknN5Jodih8vLatkZH2x398xV5An6rNcGgJ0no0dF6LLQgIP9qygb1Ve/s6O9aRcJgWHBpKHb0z1fkCfit1lBnAJMk5LwJNUtCDj07UFtijXg5C1fv7OzxGjEM2An4rdbQmjCTJEo5g8oA1FTLeVbMoCASw4CdgN9qjTCoSRLbdYZ8S+yXf49hFAJhwLA9o4rrDGU1wlBMthZNBT1LQryZ5Ey1J5cjsefuVLYmaEoJHBgQTYkdPgwYeqLIuZYGhqoHFP3zFXkCfqsNDoYOcy01DJWPq/rnK/IE/FYbHAwd5lrmlYPZbCX/V8NQPUmbYeiV4uZaWhbEZ5WlapZvYBh6pbh3VEEYKi3FMGRDhCG4Aglg+OitRWYfdT8ElS8YBkS5xUTDMyop58otDR/9tUjz7ILMFwwDoiIrkBKACfhetkxsRwTDkFCRFcjc0wxDadurwcHQbhwNuO7VxCkFquoMlL5gGBAV9ZLTlX80Q4wpscMZhgBFPZuwMLRtLGzHZBh6pMiXj5gH2O3WgfTEZBh6pKhiQlYZGYbStlcNMAjTE41yDdB2ziDG2NUJXLdqWE5W1ZXEIrbAgGHIlZtsCwbZqG961TC9PMVE+2E04vGUblFMmqIKif+hP3BPBFkANOhQ2YyTI13F2JbNk/diICQYJ083Ot6RD4b2rQmh2pkTmROV4MYcXM7gheHuVN+Achi8XCD2yftinDzh6HhHHhgW9TkDuG6GwRPBb7V6GOSMlYOzTA+DX+a+Pwbj5AlHxzvyVCAbBtiB6540sVCqMxD4YnAweOsMUpvHZ2Zs/JM/fX8GxskTjo53FNW0nEzqUeijr8gT8FutvjWxlmXAwoyNv/v+zZP3cJx8glxBKOrZxEQ2JkRfg1mqIdqU2OHDgEG2JkRhoIfBL8Ucx2KcPOHoeEdRTy1103Kihr15H1SFmhI7fBgwyIJAlAN6GHxeYmRwnDzd6HhH7izsNvSB61Yw6FFvDIPe9qoBhn4ovgdyGwZQV+yfr8gT8FttcDC0E7huWWdYqceWDguWhv75ijwBv9UeAAxiaMsMbMlP2S/Z1ZTY4QxDgLYWBZ03VRzAdUsWDA22jQnrDv3zFXkCfqsND4bFZz8/nwes9rZiGNrCMAiVmpaidRnybEJXG1emw0HsZRiGqkgYSjSo3aAe0T9fkSdA7DBKlfoZfhY8tF7tzYXBN6eqf74iT4DUXbSKWu2t6GFwmhUmrIspscMZhgDFDYg1NIjqwhYLgob++Yo8AQInpRICDCtVd2QY9PZw5cAga5BNA6zAdbeDoXYaTel0WzEZhoQqryq/fHTRMMAKXDcsJsrVR1tnaD3gQY2bCvQFw4CoUtNS9DgFNC11F2T1awYYhiFpq5/hOAgG87Bytj3vVm5lus+6jSkHC4MLO7HDKFVan2F9cKZeQVItaAidL8xmAAoYJE3pHQLls/VA6wylrI/WX6Qqr9wybhocvQ3DBAsGinCGIUAYLyybrAoYVk4QwzAoRU681QSsim+QBm3KlnUGknCuMwQIF4atmTJ98FXiBAiclEpxMKwqYdC5Qf98RZ4AgZNSKa472iCghzZ8hCxIGvrnK/IECJyUSggwyAVBS3MpGYYhKmoMpFkRdDaBMIj6lFnDo3++Ik+A0lvEihoDaVYKdl5AYt9HUreiC5ovGAZE1Qx7u/5qOj2R366m0+nTSx0LXLe+/912NsMwWFXDcPvteXb98lx8fXcCYoHr1rOpJqpg0J0JckfvYbA/l2EoVD0G8tOXmcbg/sdzEAlct5pza1hw51P1u85Q9IoyDIXqx0CK3CH//3qqC4zPc4HoYhiDHdMglJnFm0xwxC+LO7pB6teqX8wyqm1a3r99JT5EYVHkDuAmsCxYGmAbs2nZ6PobTx9NmTMoIrATIHcZnepguH39qtiw9QZo0sHCIOsMDENJNS8fuf4K1hu9MMwKGD5CGCQNJRjKj6tWpbH0pdomMQz6FzEMUNVvrytY+PTsQ3b/k6dpuZrBlxLBGqShoYhdfpANRszC7UKKJNKmpXnIjppAGr+RqHoZH9G5kNcbr7++FF+/sA0KcN1Fl9PH8t4tSwXD0M4X/WuupPMduqIW+FJVhZVeq0Ps0U+rtFsL9+tKhXMsw9A3xb29zj641q52n2MX/tdVTMdoDXUGKl+RJ0DlqQSKWtMpCAZ/ZyR3R/dIkWMg4VhYCIP0vNq58i8nX2lrNwdhGBIq8k00kIWVWfEL0qA5qHxKsWXrUt2CYUgoC4OaZxn6jqqCBOlu8MTSWKrhcRXD0CNhDHuDFQfw+FpZimEYjlBGRysa1IfocyhoyCqXk6+0NdcZdiZQTIyMAleIdZAoBjXwyi2Dkzue4dFF83Li4LphjmBhkB2SJRiqcweGoUfydEe3n4UNOxnMIl/6AZOtMwjV1BsYhh4pEgbp5omuQcoiwn1WyTAMSb5iovXSfwoGnTFMJAyaDddSq2oatmxdisgwJJRn2FvD0ypw3RMws07lBytDh2upahrKpixHZBgSKnJV+ZVdB7IWhuqCgmHokeJggC2JordpC4ZVQ84AwhiGHSquO9ptVBqfl+sMNSzICE4o1xl2J4Tu6Il57YTH5QUMNaZsCg9xBfoJ6sLN8xj3gOEKYxa2A4NnsY59hUG1q8tjwAmclEo1o6MrBK57okbE2rcTVcBQ93iiXGcI8EWrcIYhQNWjo6sErnuiaLArPXpgqH9MNexOp72GIfglp05rQpvHYy8iX7QK5zpDgOJef1yGwWeuPYbBG4HKUwkUNTq6GoZZ40hYJF8wDIiKGh09ATQ4BrF79rrO4I9A7DBKxb7kdHt2jFABQ6gpscMZhgBFv/7YzRdmdmLVgGCoqvB0S4DASakU1R1dVBhKyz9a+w4Bhurqb6cE6H1GJqQBsWUYOpsSO5xhCBDW6GiwI8qU2OEMQ4DCWxNAcGC02jMb4ipJg/zRFNrOGW5enNUeAW4CO/ix8tYaQs6AnACVpxLIU0ys69cLBtetYZgwDHB7uPLB0H5K/kRmDIIGLFNihzMMAfLA0PCSKufK1RCGVm8q7BaBYUgoTwXyoHWdwawkXr3IX4gpveegg6Flt9hDhaGdoD0BC34aAkzpPwcZDKZByTAUQoBhxjA428OVr5+hvqsBGhRmDB4YglaIZRh2Lnc8g6guBEyv+1hfSrRZL5jrDD1S1MTbAgbvmNZAGEjCuTURoCgYivqjd0QTwzAwRc3CtjBUDG+LWVUeKZxhCNDW2+tCZmEX8+aqxjr2z1fkCRA6i1qRE28tA3XzamNszTAkFBYMWKbEDmcYAoQBw6pYDxZK1Bj65yvyBAiclErxi3WY7KE8YEi2JfrnK/IECJyUSrFD5YtmJcOgt4er+HkTK4bB3R6u4l4xAFjgOoPZHq7iYGicS9k/X5EnQOCkVIqDobRWy/ZQSDRfYYyeIQlnGLRgIfHRM2sCz1cYAyZowhkGLYbBE4HASanEMESGMwxGXGdgGAhNiR3OMASIYcBOgMBJqcQwYCdA4KRUYhiwEyBwUioxDNgJEDgplRgG7AQInJRKNTDcvp4++1D6ljEMTRHIXUanahju355kV1+634RoTYkdzjAEqBqG2+8us+uvL51vQrSmxA5nGAJUDcP1Nx+y22/PnW+f50r201ipVQ3Dp2cGgeLblqLRiD3Bzn9A/An6o7CcYUs7N+XOf8DDgKGqzuBo56bc+Q94GDDcv31lWxOvQGvC0c5NufMf8DBg0L0LIktw+hlYe6vwHkjW3ophYFkxDCwrhoFlFQNDx3rl9VfT6Yk92v1oJ/GwJOL4+7fTL85jTpBfwdPLqCvopyJgcJ9ftZbovrp+ea6Pdj9a6iqHKeL4dyeiU7X7CcQVXMWcoK+KgKGmL6pOn4TF3p3oo92Pdme4/vW/nGTdjxdxi5/f4QSyR/a7y4gr6KkiYKjppW5Sfpg+2v1odfD9j/+V34Xdj7/+5j9FMdH9BDpn6H6CvioChprnVw0SXZr6aPej1dFXr0SW3P34668kSt1PoKsHESfoqXaRM9y+fpV1vzHzqPeROYPnyKATvDzPPj295JwBqGspKe7MiCL7air0KqLO8K/Sbd1PoDMBrjMA1Ty/qpNiwRztfrRO+STm+HcnKnvpegKdM8RcQT+Vvp9B3dknO+xnyOPGdRN8mkZ2VPRU3APJsmIYWFYMA8uKYWBZMQwsK4aBZZUOhj//Pts8rn9lplCbOPp09TuWpRd0lsPLL9y5O52btJteB76vSgZDWyd3PV15h37HUvUBZRiW4yJOw+vA91V7C0PTdhkGkRvYOHkugfMzh6VUMGwOR6Pj3Nibx2/kt0P5+qO70+IVmmJXvs/G0cHjzBdNnk59zz+OfiNfxqneraUOEkHj8gHS2eLfzfPRwQ+PLhYixlJFW+aZwebxD/q1TA8za0iaMwhHH+ZmXo7Ev0cXd6dj5QUdnjtubuOoYJHbV0RTJUEeb3M4Lu58EVn8mW14gIFBvJPt5vmjC5E56Ezg7vRYRFMJo+djA1F6GObSN3LHWr0tT3pjc3Rh4plg45GKaNlf3rvxi8j5PwsDOMDAIOPkThfn1OHy9MWJyjWOh6HkMJicWvxbjkD2vlD5OohjSvWKaPn/db77AJwz0xk8IAkeYNOVcXIK8iJClxIKBnsimVE8OO0WBrdkzktyeUdvweCPln85KJ0z88AADtiCYXP0B11VZBiyHcOwPiiVzLlLQBzrX3805fd1OWcQkUExAQ9wKFMVhn/WpUgJBi4mSCXL5xIMd6e5O7Wr17reBuKYuqAvmjid2LU51DAY95UrkPAAUXG8Oz3Iv49lBVKUQGP9+xbHEAauQNJqMRqXYZDNQHPbq/LfAQY2LUvRxOlEdeDgt891x+FC+1UfVHQggQNEA/NXL2zTUlcZVTTZtDQ/bslNy4cn09YodUFzp9ND1LKoJy7Hxe6H2ef0sGGQnUxGIDfgB1WsBy+GgWXFMLCsGAaWFcPAsmIYWFYMA8vq/wHKP9XZx5o2ogAAAABJRU5ErkJggg==" alt />
-<p class="caption">Automatic axis labels and legends using curated
-metadata as column attributes.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">library</span>(ggplot2))</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&#39;yamlet&#39;</span>, <span class="st">&#39;extdata&#39;</span>,<span class="st">&#39;quinidine.csv&#39;</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>file <span class="sc">%&gt;%</span> </span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>  decorate <span class="sc">%&gt;%</span> </span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(conc)) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>  resolve <span class="sc">%&gt;%</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> conc, <span class="at">color =</span> Heart)) <span class="sc">+</span> </span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<div class="float">
+<img src="data:image/png;base64,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" alt="Automatic axis labels and legends using curated metadata as column attributes." />
+<div class="figcaption">Automatic axis labels and legends using curated
+metadata as column attributes.</div>
 </div>
 </div>
 <div id="example-table" class="section level3">
@@ -766,13 +766,13 @@ metadata as column attributes.</p>
 attributes to enrich table output. In the example below, we use
 <code>resolve()</code> to re-implement guides as units and factor
 levels, which is what <code>table1()</code> needs.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(table1))</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>file <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  decorate <span class="sc">%&gt;%</span> </span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  resolve <span class="sc">%&gt;%</span> </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Subject) <span class="sc">%&gt;%</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table1</span>(<span class="sc">~</span> Age <span class="sc">+</span> Weight <span class="sc">+</span> Race <span class="sc">|</span> Heart, .)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(table1))</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>file <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  decorate <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  resolve <span class="sc">%&gt;%</span> </span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  <span class="fu">group_by</span>(Subject) <span class="sc">%&gt;%</span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>  <span class="fu">table1</span>(<span class="sc">~</span> Age <span class="sc">+</span> Weight <span class="sc">+</span> Race <span class="sc">|</span> Heart, .)</span></code></pre></div>
 <div class="Rtable1"><table class="Rtable1">
 <thead>
 <tr>

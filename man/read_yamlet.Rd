@@ -57,6 +57,7 @@ Other interface:
 \code{\link{modify.default}()},
 \code{\link{promote.list}()},
 \code{\link{resolve.decorated}()},
+\code{\link{scripted.default}()},
 \code{\link{selected.default}()},
 \code{\link{write_yamlet}()}
 }
