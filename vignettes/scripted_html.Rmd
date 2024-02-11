@@ -15,11 +15,16 @@ editor_options:
 
 The point of this exercise is to demonstrate flexible rendering of 
 subscripts and superscripts.  We want to write expressions for 
-column labels an units that are fairly readable as they are, and
+column labels and units that are fairly readable as they are, and
 yet can be easily rendered with equivalent results in 
 plotmath, html, or pdf.
 
 First we load some packages.
+
+```{r include = FALSE}
+knitr::opts_chunk$set(dpi = 600, out.width = '50%')
+
+```
 
 ```{r}
 library(magrittr)
@@ -39,14 +44,14 @@ x %<>% decorate('
 x %>% decorations
 ```
 
-Notice that the label for "work" has nested subscripts:  "obs" is
-subordinate to "total", and the result is subordinate to "Work".
+Notice that the label for column ```work``` has nested subscripts:  *obs* is
+subordinate to *total*, and the result is subordinate to *Work*.
 
-For "time", the word "Time" is followed by a subscript "cum".
-Then, "cum" is followed by the superscript "alpha".
-In this case "alpha" to be the superscript of "Time_cum" not just "cum".
-We include the dot to explicitly terminate the "cum"
-subscript, which causes "alpha" to be the superscript of
+For the column ```time```, the word *Time* is followed by a subscript *cum*.
+Then, *cum* is followed by the superscript *alpha*.
+In this case *alpha* intends to be the superscript of *Time_cum* not just *cum*.
+We include the dot to explicitly terminate the *cum*
+subscript, which causes *alpha* to be the superscript of
 the combined result.
 
 How does this look when we plot it?
@@ -54,9 +59,9 @@ How does this look when we plot it?
 x %>% resolve %>% ggplot(aes(time, work)) + geom_point()
 ```
 
-We get verbatim labels and units as substitutes for column names.
+By default, we get verbatim labels and units as substitutes for column names.
 
-Next, we use scripted() instead of resolve() to indicate 
+Next, we use ```scripted()``` instead of ```resolve()``` to indicate 
 that the labels should be understood as
 potentially having subscripts and superscripts.
 For this to work well, units should be constructed
@@ -67,8 +72,8 @@ package supports other encodings).
 x %>% scripted %>% ggplot(aes(time, work)) + geom_point()
 ```
 
-In the background, scripted() is writing "expression" attributes
-(consumed by ggplot() ) and "title" attributes (consumed by tablet() ).
+In the background, ```scripted()``` is writing __expression__ attributes
+(consumed by ```ggplot()``` ) and __title__ attributes (consumed by ```tablet()``` ).
 We illustrate the latter.
 
 ```{r}
