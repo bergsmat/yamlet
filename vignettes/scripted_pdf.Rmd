@@ -18,7 +18,8 @@ output:
       threeparttable,
       threeparttablex,
       makecell,
-      xcolor
+      xcolor,
+      upgreek
 vignette: >
   %\VignetteIndexEntry{Scripted PDF}
   %\VignetteEncoding{UTF-8}
