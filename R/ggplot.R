@@ -185,10 +185,21 @@ print.decorated_ggplot <- function(
     ),
     discrete = getOption(
       'yamlet_decorated_ggplot_discrete',
-      c('colour', 'fill', 'size', 'shape', 'linetype', 'alpha')
+      c('colour', 'fill', 'size', 'shape', 'linetype', 'linewidth', 'alpha')
     ),
     drop = getOption('yamlet_decorated_ggplot_drop', TRUE)
 ){
+  # support for plotmath levels
+  parseable <- character(0)
+  for(col in x$labels){
+    plotmath <- attr(col, 'plotmath')
+    if(!is.null(plotmath)){
+      parseable <- c(parseable, col) # accumulate to guide scale building
+      # number of levels should exactly match length of plotmath
+      levels(x$data[[col]]) <- plotmath
+    }
+  }
+  
   # support for discrete manual scales
   labelnames <- names(x$labels)
   aesthetics <- intersect(discrete, labelnames)
@@ -290,9 +301,19 @@ ggplot_build.decorated_ggplot <- function(plot){
   )
   discrete = getOption(
     'yamlet_decorated_ggplot_discrete',
-    c('colour', 'fill', 'size', 'shape', 'linetype', 'alpha')
+    c('colour', 'fill', 'size', 'shape', 'linetype', 'linewidth', 'alpha')
   )
   drop = getOption('yamlet_decorated_ggplot_drop', TRUE)
+  # support for plotmath levels
+  parseable <- character(0)
+  for(col in x$labels){
+    plotmath <- attr(col, 'plotmath')
+    if(!is.null(plotmath)){
+      parseable <- c(parseable, col) # accumulate to guide scale building
+      # number of levels should exactly match length of plotmath
+      levels(x$data[[col]]) <- plotmath
+    }
+  }
   # support for discrete manual scales
   labelnames <- names(plot$labels)
   aesthetics <- intersect(discrete, labelnames)

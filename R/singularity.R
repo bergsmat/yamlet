@@ -152,7 +152,10 @@ promote.list <- function(
     for(nm in nms){
       this <- attr[[nm]]
       cond <- names(this)
-      if(!is.null(cond)){ # only meaningful for attributes whose values have names
+      if(
+        !is.null(cond) & # only meaningful for attributes whose values have names
+        !any(cond %in% c('TRUE','FALSE')) # TRUE and FALSE are unconditional; @1.0.1 to ignore yaml::yaml.load("x: [answer, [ No: 0, Yes: 1]]")
+      ){ 
         verdict <- singularity(cond, x)
         if(!is.na(verdict)){
           if(verdict > 0){

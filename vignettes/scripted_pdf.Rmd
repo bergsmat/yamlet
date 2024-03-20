@@ -4,6 +4,8 @@ author: "Tim Bergsma"
 date: "`r Sys.Date()`"
 output: 
   pdf_document:
+    keep_md: true
+    keep_tex: true
     toc: true
     extra_dependencies:
       booktabs,

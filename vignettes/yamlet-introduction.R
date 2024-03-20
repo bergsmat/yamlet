@@ -1,11 +1,11 @@
-## ----setup, include = FALSE-----------------------------------------------------
+## ----setup, include = FALSE------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 knitr::opts_chunk$set(package.startup.message = FALSE)
 
-## ---- package.startup.message = FALSE-------------------------------------------
+## ---- package.startup.message = FALSE--------------------------------
 suppressMessages(library(dplyr))
 library(magrittr)
 library(yamlet)
@@ -26,16 +26,16 @@ x %>% as_yamlet %>% as.character %>% writeLines
 x %>% as_yamlet %>% as.character %>% writeLines(file.path(tempdir(), 'drug.yaml'))
 
 
-## -------------------------------------------------------------------------------
+## --------------------------------------------------------------------
 meta <- read_yamlet(file.path(tempdir(), 'drug.yaml'))
 meta
 
-## -------------------------------------------------------------------------------
+## --------------------------------------------------------------------
 x <- data.frame(ID = 1, CONC = 1, RACE = 1)
 x <- decorate(x, meta = meta)
 decorations(x)
 
-## -------------------------------------------------------------------------------
+## --------------------------------------------------------------------
 x <- data.frame(ID = 1, CONC = 1, RACE = 1)
 x <- decorate(x,'
 ID: subject identifier
@@ -44,22 +44,22 @@ RACE: [ race, [white: 0, black: 1, asian: 2 ]]
 ')
 decorations(x)
 
-## -------------------------------------------------------------------------------
+## --------------------------------------------------------------------
 decorations(x)
 
-## -------------------------------------------------------------------------------
+## --------------------------------------------------------------------
 file <- file.path(tempdir(), 'out.yaml')
 write_yamlet(x, con = file )
 file %>% readLines %>% writeLines
 
-## -------------------------------------------------------------------------------
+## --------------------------------------------------------------------
 library(csv)
 # see ?Quinidine in package nlme
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 a <- decorate(file)
 as_yamlet(a)[1:3]
 
-## -------------------------------------------------------------------------------
+## --------------------------------------------------------------------
 options(csv_source = FALSE) # see ?as.csv
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
 x <- decorate(file)
@@ -87,7 +87,7 @@ file %>%
   geom_point()
 
 
-## -------------------------------------------------------------------------------
+## --------------------------------------------------------------------
 suppressMessages(library(table1))
 file %>%
   decorate %>% 

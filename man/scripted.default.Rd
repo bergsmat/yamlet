@@ -35,15 +35,20 @@ The goal here is to render labels and units (where present)
 in a way that supports subscripts and superscripts 
 for both plots and tables in either html or latex contexts.
 
-The current implementation writes an expression attribute
-to support figure labels and a title attribute to support
+The current implementation writes an 'expression' attribute
+to support figure labels and a 'title' attribute to support
 tables. \code{\link{print.decorated_ggplot}} will attempt
 to honor the expression attribute if it exists.
 \code{\link[tablet]{tablet.data.frame}} will attempt to honor
 the title attribute if it exists (see Details there).
 An attempt is made to guess the output format (html or latex).
 
-To flexibly support plotmath, html, and latex, this function
+In addition to the title and expression attributes, scripted() writes
+a 'plotmath' attribute to store plotmath versions of factor levels, 
+where present. \code{\link{print.decorated_ggplot}} should prefer
+these over their latex and html counterparts.
+
+To flexibly support latex, html, and plotmath, this function
 expects column labels and units to be encoded in "spork" syntax.
 See \code{\link[spork]{as_spork}} for details and examples.
 Briefly, "_" precedes a subscript, "^" precedes a superscript,

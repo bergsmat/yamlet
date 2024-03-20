@@ -85,6 +85,8 @@ into a single line for lists that have no (nested) names
 and have the same length when unlisted. True by default.
 Can be misleading for lists with fine detail, but in
 most cases fine detail will likely have names.
+\item \strong{yamlet_format}: \code{\link{scripted.default}}.
+Choice of 'html' or 'latex', guessed if not supplied.
 }
 }
 \examples{
