@@ -3,8 +3,9 @@ title: "Scripted HTML"
 author: "Tim Bergsma"
 date: "`r Sys.Date()`"
 output: 
-  rmarkdown::html_vignette:
-    toc: true
+  html_document:
+    keep_md: true
+    toc: FALSE
 vignette: >
   %\VignetteIndexEntry{Scripted HTML}
   %\VignetteEncoding{UTF-8}
@@ -23,40 +24,47 @@ First we load some packages.
 
 ```{r include = FALSE}
 knitr::opts_chunk$set(dpi = 600, out.width = '50%')
-
 ```
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 library(magrittr)
 library(ggplot2)
 library(tablet)
 library(yamlet)
+library(dplyr)
+library(kableExtra)
 ```
 
-We create some toy data.
+We create some example data.
 
 ```{r}
-x <- data.frame(time = 1:10, work = (1:10)^1.5)
+x <- data.frame(
+  time = 1:10, 
+  work = (1:10)^1.5, 
+  group = 1:2, 
+  set = c(rep('delta',5), rep('gamma', 5))
+)
 x %<>% decorate('
  time: [ Time_cum.^alpha, h ]
  work: [ Work_total_obs, kg*m^2/s^2 ]
+ group: [ Group, [ Second^\\*: 2, First^#: 1 ]]
+ set: [ Set, [ gamma, delta ]]
 ')
 x %>% decorations
 ```
 
-Notice that the label for column ```work``` has nested subscripts:  *obs* is
-subordinate to *total*, and the result is subordinate to *Work*.
+The label for column ```work``` has nested subscripts suggesting
+Work<sub>total<sub>obs</sub></sub>. The label for column ```time``` suggests
+Time<sub>cum</sub><sup>&#945;</sup>.  The dot closes the subscript to distinguish
+this from Time<sub>cum<sup>&#945;</sup></sub>.
 
-For the column ```time```, the word *Time* is followed by a subscript *cum*.
-Then, *cum* is followed by the superscript *alpha*.
-In this case *alpha* intends to be the superscript of *Time_cum* not just *cum*.
-We include the dot to explicitly terminate the *cum*
-subscript, which causes *alpha* to be the superscript of
-the combined result.
 
 How does this look when we plot it?
-```{r}
-x %>% resolve %>% ggplot(aes(time, work)) + geom_point()
+```{r, fig.width = 3.73, fig.height = 2.52}
+x %>% 
+  resolve %>% 
+  ggplot(aes(time, work, color = group, shape = set)) + 
+  geom_point()
 ```
 
 By default, we get verbatim labels and units as substitutes for column names.
@@ -68,22 +76,30 @@ For this to work well, units should be constructed
 using *, /, and ^ (even though the "units"
 package supports other encodings).
 
-```{r}
-x %>% scripted %>% ggplot(aes(time, work)) + geom_point()
+```{r, fig.width = 3.73, fig.height = 2.52}
+x %>% 
+  scripted %>% 
+  ggplot(aes(time, work, color = group, shape = set)) + 
+  geom_point()
+
 ```
 
-In the background, ```scripted()``` is writing __expression__ attributes
+In the background, ```scripted()``` is writing __expression__ and __plotmath__ attributes
 (consumed by ```ggplot()``` ) and __title__ attributes (consumed by ```tablet()``` ).
 We illustrate the latter.
 
 ```{r}
-x %>% scripted %>% tablet %>% as_kable
+x %>% 
+  scripted %>% 
+  group_by(group, set) %>%
+  tablet %>%
+  as_kable
 ```
 
+<br/>
 In summary, we have decorated our data with labels and 
 units containing markup for subscripts and superscripts.
 If everything goes well, these render similarly 
 in figures and tables.  They also render similarly in
 html and pdf.  Please see the pdf version of this document.
 
-```

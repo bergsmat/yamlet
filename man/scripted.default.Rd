@@ -43,7 +43,7 @@ to honor the expression attribute if it exists.
 the title attribute if it exists (see Details there).
 An attempt is made to guess the output format (html or latex).
 
-In addition to the title and expression attributes, scripted() writes
+In addition to the 'title' and 'expression' attributes, scripted() writes
 a 'plotmath' attribute to store plotmath versions of factor levels, 
 where present. \code{\link{print.decorated_ggplot}} should prefer
 these over their latex and html counterparts.
@@ -56,7 +56,10 @@ and "." is used to force the termination of either a
 superscript or a subscript where necessary. For best results,
 units should be written using *, /, and ^; e.g. "kg*m^2/s^2"
 not "kg m2 s-2" (although both are valid:  
-see \code{\link{is_parseable}}). 
+see \code{\link{is_parseable}}). A literal backslash followed by "n"
+represents a newline. Greek letters are represented by their names,
+except where names are enclosed in backticks.
+
 
 \code{scripted()} always calls \code{resolve()} for the indicated
 columns, to make units present where appropriate.

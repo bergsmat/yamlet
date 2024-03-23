@@ -107,13 +107,13 @@ scripted.default <- function(
     
     # render factor levels where present
     if(!is.null(levels(x[[var]]))){
-      attr(x[[var]], 'plotmath') <- levels(x[[var]]) %>% as_spork %>% as_plotmath
+      attr(x[[var]], 'plotmath') <- as_plotmath(as_spork(levels(x[[var]])))
       if(format == 'latex'){
-        levels(x[[var]]) %<>% as_spork %>% as_latex
+        levels(x[[var]]) <- as_latex(as_spork(levels(x[[var]])))
         class(x[[var]]) <- c(class(x[[var]]), 'latex')
       }
       if(format == 'html'){
-        levels(x[[var]]) %<>% as_spork %>% as_html
+        levels(x[[var]]) <- as_html(as_spork(levels(x[[var]])))
         class(x[[var]]) <- c(class(x[[var]]), 'html')
       }
     }

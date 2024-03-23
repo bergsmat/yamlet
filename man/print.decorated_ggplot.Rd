@@ -9,7 +9,7 @@
   ...,
   search = getOption("yamlet_decorated_ggplot_search", c("expression", "title", "label")),
   discrete = getOption("yamlet_decorated_ggplot_discrete", c("colour", "fill", "size",
-    "shape", "linetype", "alpha")),
+    "shape", "linetype", "linewidth", "alpha")),
   drop = getOption("yamlet_decorated_ggplot_drop", TRUE)
 )
 }
@@ -41,8 +41,9 @@ level of the corresponding variable.  Levels are defined
 in increasing priority by
 \code{sort(unique(x))},
 any guide attribute,
-any factor levels, or
-any codelist attribute.
+any factor levels,
+any codelist attribute, or
+any plotmath attribute.
 }
 \examples{
 example(ggplot.decorated)
