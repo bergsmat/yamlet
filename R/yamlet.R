@@ -698,8 +698,13 @@ to_yamlet.list <- function(x, ..., bracket_all = FALSE){
     }
   }
   # separate members with commas
-  out <- unlist(out) # converts empty list to NULL
-  if(is.null(out)) out <- ''
+  if(
+    length(unlist(x)) == length(unlist(out)) |
+    identical(x, list(NULL))
+  ){
+    out <- unlist(out) # converts empty list to NULL
+    if(is.null(out)) out <- ''
+  }
 
   if(length(out) == 1){ # a singlet
 
@@ -712,7 +717,11 @@ to_yamlet.list <- function(x, ..., bracket_all = FALSE){
      }
    }
 
-   if(bracket_all | has_name){
+   if(
+     bracket_all 
+     | has_name 
+     | is.list(out)
+    ){
      out <-paste0('[ ', out, ' ]') # named singlets may need brackets
    }
   }
@@ -723,6 +732,7 @@ to_yamlet.list <- function(x, ..., bracket_all = FALSE){
     out <- paste0('[ ', out, ' ]')
   }
   out <- gsub('] ',']', out)
+  out <- gsub('\\[ \\[','[[', out)
   names(out) <- NULL # should not have names
   out
 }

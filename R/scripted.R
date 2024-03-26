@@ -137,7 +137,7 @@ scripted.default <- function(
     if(!is.null(result)) attr(x[[var]], 'title') <- title # ready to use
     plotm <- as.expression(plotm)
     attr(plotm, 'srcref') <- NULL
-    attr(plotm, 'srfile') <- NULL
+    attr(plotm, 'srcfile') <- NULL
     attr(plotm, 'wholeSrcref') <- NULL
     if(!is.null(result)) attr(x[[var]], 'expression') <- plotm #as.expression(plotm)
   }

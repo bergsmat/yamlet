@@ -159,7 +159,6 @@ test_that('bind_rows respects column type of first argument', {
  
   expect_warning(
   bind_rows(dm %>% redecorate(persistence = F), dm2) %>% decorations
-    
   )
   
   # here also attributes are preserved
@@ -173,7 +172,7 @@ test_that('bind_rows respects column type of first argument', {
   # self-redecorating with persistence turned on (default).
   
   dm %<>% redecorate
-  dm %<>% bind_rows(dm2)
+  expect_warning(dm %<>% bind_rows(dm2))
   expect_identical(attr(dm$RACE, 'label'), 'Race')
   
 })
