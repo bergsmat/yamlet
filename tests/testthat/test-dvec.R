@@ -666,6 +666,47 @@ test_that('resolve is idempotent on classifiable dvec',{
   expect_silent(a <- resolve(a))
 })
 
+test_that('[ can be part of a code or decode', {
+  library(magrittr)
+  x <- data.frame(col = '[')
+  x %<>% decorate( 'col: [ column, ["[foo]": "[" ]]')
+  tmp <- tempfile(fileext = '.csv')
+  x %>% io_csv(tmp)
+  tmp %>% io_csv %>% resolve
+  tmp %>% sub('csv$','yaml', .) %>% readLines -> foo
+  expect_identical(foo, "col: [ column, [ '[foo]': '[' ]]")
+  
+})
+
+test_that('dvec can be combined with character, etc.', {
+  library(magrittr)
+  library(tidyr)
+  x <- as_dvec('a', label = 'foo')
+  y <- 'b'
+  str(c(x, y))
+  str(c(y, x)) # could this do better?
+  str(vctrs::vec_c(y, x))
+  
+  # what happens when we pivot_longer on a mixed table?
+  x <- data.frame(
+    ID = c(1,1,2,2),
+    OBS1 = c(3,4,5,6),
+    OBS2 = c(7,8,9,10)
+  )
+  x %<>% decorate('OBS2: foo')
+  x %<>% pivot_longer(c(OBS1, OBS2)) # works great
+  x %>% decorations # combined column is dvec! Even if OBS1 is decorated instead.
+  x <- data.frame(
+    ID = c(1,1,2,2),
+    OBS1 = c(3,4,5,6),
+    OBS2 = c('a','b','c','d')
+  )
+  #x %<>% decorate('OBS1: foo')
+  x %<>% pivot_longer(c(OBS1, OBS2)) # does not work, with or w/o the decoration
+  
+
+})
+
 ### errors at dplyr 1.0.10, but not for dev version
 
 # test_that('ifelse() returns dvec if true or false is dvec',{
