@@ -34,7 +34,11 @@ scripted <- function(x, ...)UseMethod('scripted')
 #' In addition to the 'title' and 'expression' attributes, scripted() writes
 #' a 'plotmath' attribute to store plotmath versions of factor levels, 
 #' where present. \code{\link{print.decorated_ggplot}} should prefer
-#' these over their latex and html counterparts.
+#' these over their latex and html counterparts. Furthermore,
+#' factor levels (and codelists, where present) are converted
+#' to their latex or html equivalents. None of this happens
+#' if a 'plotmath' attribute already exists, thus preventing 
+#' the same variable from being accidentally transformed twice.
 #' 
 #' To flexibly support latex, html, and plotmath, this function
 #' expects column labels and units to be encoded in "spork" syntax.
@@ -60,7 +64,7 @@ scripted <- function(x, ...)UseMethod('scripted')
 #' @export
 #' @importFrom knitr is_latex_output
 #' @importFrom spork as_html as_latex as_plotmath concatenate htmlToken as_spork
-#' @return same class as x
+#' @return 'scripted', a superclass of x
 #' @family scripted
 #' @family interface
 #' @examples
@@ -76,6 +80,7 @@ scripted <- function(x, ...)UseMethod('scripted')
 #' x %>% ggplot(aes(time, work)) + geom_point()
 #' x %>% scripted %>% ggplot(aes(time, work)) + geom_point()
 #' x %>% scripted(format = 'html') %$% work %>% attr('title')
+#' testthat::expect_equal(scripted(x), scripted(scripted(x)))
 
 scripted.default <- function(
     x, 
@@ -96,42 +101,95 @@ scripted.default <- function(
   stopifnot(length(open) %in% 0:1)
   stopifnot(length(close) %in% 0:1)
   
-  x <- resolve(x, ...)
+  x <- resolve(x, ...) # removes html or latex tail where present
   vars <- selected(x, ...)
   for(var in vars){
     label <- attr(x[[var]], 'label')
     units <- attr(x[[var]], 'units')
     
-    # https://github.com/r-quantities/units/issues/221
-    # explicitly spork-terminate all superscripts immediately following the integer
     
-    # render factor levels where present
-    if(!is.null(levels(x[[var]]))){
+    
+    # render factor levels where present and untouched
+    # for idempotency, use presence of plotmath attribute
+    # as evidence of prior rendering
+    if(
+      !is.null(levels(x[[var]])) & 
+      is.null(attr(x[[var]], 'plotmath'))
+    ){
       attr(x[[var]], 'plotmath') <- as_plotmath(as_spork(levels(x[[var]])))
       if(format == 'latex'){
         levels(x[[var]]) <- as_latex(as_spork(levels(x[[var]])))
-        class(x[[var]]) <- c(class(x[[var]]), 'latex')
+        class(x[[var]]) <- union(class(x[[var]]), 'latex')
       }
       if(format == 'html'){
         levels(x[[var]]) <- as_html(as_spork(levels(x[[var]])))
-        class(x[[var]]) <- c(class(x[[var]]), 'html')
+        class(x[[var]]) <- union(class(x[[var]]), 'html')
+      }
+      # need to maintain internal consistency of 'classified'
+      # ideally, there should be a method for this
+      if(inherits(x[[var]], 'classified')){
+        for(i in seq_along(levels(x[[var]]))){
+          attr(x[[var]], 'codelist')[[i]] <- levels(x[[var]])[[i]]
+        }
       }
     }
     
+    # for idempotency, ensure tail is restored for factor-like vars
+    if(!is.null(levels(x[[var]]))){
+      if(format == 'latex'){
+        class(x[[var]]) <- union(class(x[[var]]), 'latex')
+      } else {
+        class(x[[var]]) <- union(class(x[[var]]), 'html')
+      }
+    }
+    
+    # explicitly spork-terminate all sub, super in label
+    if(!is.null(label)){
+      dots <- gsub('\\\\.','',label)
+      dots <- gsub('[^.]', '', dots)
+      dots <- nchar(dots)
+      
+      subs <- gsub('\\\\_','',label)
+      subs <- gsub('[^_]', '', subs)
+      subs <- nchar(subs)
+      
+      sups <- gsub('\\\\^','',label)
+      sups <- gsub('[^^]', '', sups)
+      sups <- nchar(sups)
+      
+      need <- subs + sups - dots
+      need <- max(0, need)
+      
+      tail <- rep('.', need)
+      tail <- paste(tail, collapse = '')
+      
+      label <- paste0(label, tail)
+    }
+    
+    # https://github.com/r-quantities/units/issues/221
+    # explicitly spork-terminate all superscripts 
+    # immediately following the integer
     if(!is.null(units)){
       units <- gsub('(\\^[-]?[0-9]+)','\\1.', units)
     }
+    
+    
     if(!is.null(units)) units <- c(open, units, close) # nulls disappear!
     result <- c(label, units) # nulls disappear!
     usable <- result
     if(is.null(result)) usable <- ''
+    usable <- paste(usable, collapse = '') # new
+    usable <- as_spork(usable)
     if(format == 'latex'){
-      title = concatenate(spork::as_latex(as_spork(usable)))
+      # title = concatenate(spork::as_latex(usable))
+      title = spork::as_latex(usable)
     }
     if(format == 'html'){
-      title = concatenate(spork::as_html(as_spork(usable)))
+      # title = concatenate(spork::as_html(usable))
+      title = spork::as_html(usable)
     }
-    plotm = concatenate(as_plotmath(as_spork(usable)))
+    # plotm = concatenate(as_plotmath(usable))
+    plotm = as_plotmath(usable)
     
     # token not null, title not null, plotm not null
     if(!is.null(result)) attr(x[[var]], 'title') <- title # ready to use
@@ -141,8 +199,24 @@ scripted.default <- function(
     attr(plotm, 'wholeSrcref') <- NULL
     if(!is.null(result)) attr(x[[var]], 'expression') <- plotm #as.expression(plotm)
   }
+  #class(x) <- c('scripted', class(x))
   x
 }
+
+# Render Scripted Attributes of Scripted Object
+#
+# Renders the scripted attributes of indicated components.
+# As currently implemented, scripted() intends to be idempotent.
+# To call scripted() on a scripted object is a non-operation.
+# @param x object
+# @param ... passed arguments
+# @export
+# @keywords internal
+# @return scripted
+# @family scripted
+# scripted.scripted <- function(x, ...)x
+
+
 
 # @importFrom spork htmlToken
 # @export

@@ -1876,7 +1876,7 @@ test_that('modify supports nonstandard column names',{
   expect_silent(modify(a, 'has space', name = name))
 })
 
-test_that('scripted() is stable', {
+test_that('scripted() is stable and idempotent', {
   x <- data.frame(
     time = 1:10, 
     work = (1:10)^1.5, 
@@ -1885,15 +1885,21 @@ test_that('scripted() is stable', {
   )
   x %<>% decorate('
  time: [ Time_cum.^alpha, h ]
- work: [ Work_total_obs, kg*m^2/s^2 ]
+ work: [ Work_total_obs\\n, kg*m^2/s^2 ]
  group: [ Group, [ Second^\\*: 2, First^#: 1 ]]
  set: [ Set, [ gamma, delta ]]
 ')
   x %>% decorations
   expect_equal_to_reference(file = '121.rds', scripted(x))
-
+  options(yamlet_default_keys = c('label', 'guide', 'title', 'expression', 'plotmath', 'levels', 'codelist'))
+  expect_equal(canonical(scripted(x)), canonical(scripted(scripted(x))))
 })
 
+test_that('resolve() and desolve() accommodate anonymous arguments', {
+x <- data.frame(foo = 1)
+expect_silent(resolve(x, foo))
+expect_silent(desolve(x, foo))
+})
 
 
 

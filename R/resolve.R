@@ -121,4 +121,11 @@ resolve.classified <- function(x, ...){
 #' @family resolve
 #' @examples
 #' head(resolve(Theoph))
-resolve.data.frame <- function(x, ...)resolve(as_decorated(x, ...), ...)
+resolve.data.frame <- function(x, ...){
+  #resolve(as_decorated(x, ...), ...)
+  # @ 1.0.3: above, first use of dots 
+  # can pass anonymous args to decorate.list,
+  # which apparently understands one of them
+  # as 'meta' and issues an error
+  resolve(as_decorated(x), ...)
+}

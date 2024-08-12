@@ -125,4 +125,11 @@ desolve.dvec <- function(x, ...){
 #' @family resolve
 #' @examples
 #' head(desolve(Theoph))
-desolve.data.frame <- function(x, ...)desolve(as_decorated(x, ...), ...)
+desolve.data.frame <- function(x, ...){
+  #desolve(as_decorated(x, ...), ...)
+  # @ 1.0.3: above, first use of dots 
+  # can pass anonymous args to decorate.list,
+  # which may understand one of them
+  # as 'meta' and issue an error
+  desolve(as_decorated(x), ...)
+}

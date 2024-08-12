@@ -39,8 +39,6 @@ First we load some packages.
 
 ```{r include = FALSE}
 knitr::opts_chunk$set(dpi = 600, out.width = '50%')
-
-
 ```
 
 ```{r, message = FALSE, warning = FALSE}
@@ -63,8 +61,8 @@ x <- data.frame(
 )
 x %<>% decorate('
  time: [ Time_cum.^alpha, h ]
- work: [ Work_total_obs, kg*m^2/s^2 ]
- group: [ Group, [ Second^\\*: 2, First^#: 1 ]]
+ work: [ Work_total_obs\\n, kg*m^2/s^2 ]
+ group: [ Group, [ Second\\nGroup^\\*: 2, First\\nGroup^#: 1 ]]
  set: [ Set, [ gamma, delta ]]
 ')
 x %>% decorations
@@ -73,11 +71,11 @@ x %>% decorations
 The label for column ```work``` has nested subscripts suggesting
 $\sf{Work_{total_{obs}}}$. The label for column ```time``` suggests
 $\sf{Time_{cum}{}^{\alpha}}$.  The dot closes the subscript to distinguish
-this from $\sf{Time_{cum^{\alpha}}}$.
+this from $\sf{Time_{cum^{\alpha}}}$. Backslash-n requests a line break.
 
 
 How does this look when we plot it?
-```{r, fig.width = 3.73, fig.height = 2.52}
+```{r, fig.width = 4.43, fig.height = 2.77}
 x %>% 
   resolve %>% 
   ggplot(aes(time, work, color = group, shape = set)) + 
@@ -93,12 +91,11 @@ For this to work well, units should be constructed
 using *, /, and ^ (even though the "units"
 package supports other encodings).
 
-```{r, fig.width = 3.73, fig.height = 2.52}
+```{r, , fig.width = 4.33, fig.height = 2.82}
 x %>% 
   scripted %>% 
   ggplot(aes(time, work, color = group, shape = set)) + 
   geom_point()
-
 ```
 
 In the background, ```scripted()``` is writing __expression__ and __plotmath__ attributes
@@ -111,8 +108,8 @@ x %>%
   group_by(group, set) %>%
   tablet %>%
   as_kable
-
 ```
+
 
 In summary, we have decorated our data with labels and 
 units containing markup for subscripts and superscripts.

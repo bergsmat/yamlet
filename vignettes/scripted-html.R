@@ -18,24 +18,23 @@ x <- data.frame(
 )
 x %<>% decorate('
  time: [ Time_cum.^alpha, h ]
- work: [ Work_total_obs, kg*m^2/s^2 ]
- group: [ Group, [ Second^\\*: 2, First^#: 1 ]]
+ work: [ Work_total_obs\\n, kg*m^2/s^2 ]
+ group: [ Group, [ Second\\nGroup^\\*: 2, First\\nGroup^#: 1 ]]
  set: [ Set, [ gamma, delta ]]
 ')
 x %>% decorations
 
-## ---- fig.width = 3.73, fig.height = 2.52------------------------------
+## ---- fig.width = 4.43, fig.height = 2.77------------------------------
 x %>% 
   resolve %>% 
   ggplot(aes(time, work, color = group, shape = set)) + 
   geom_point()
 
-## ---- fig.width = 3.73, fig.height = 2.52------------------------------
+## ---- , fig.width = 4.33, fig.height = 2.82----------------------------
 x %>% 
   scripted %>% 
   ggplot(aes(time, work, color = group, shape = set)) + 
   geom_point()
-
 
 ## ----------------------------------------------------------------------
 x %>% 

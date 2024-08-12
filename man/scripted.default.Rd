@@ -24,7 +24,7 @@
 \item{format}{one of 'latex' or 'html'}
 }
 \value{
-same class as x
+'scripted', a superclass of x
 }
 \description{
 Modifies specific attributes of each indicated element
@@ -46,7 +46,11 @@ An attempt is made to guess the output format (html or latex).
 In addition to the 'title' and 'expression' attributes, scripted() writes
 a 'plotmath' attribute to store plotmath versions of factor levels, 
 where present. \code{\link{print.decorated_ggplot}} should prefer
-these over their latex and html counterparts.
+these over their latex and html counterparts. Furthermore,
+factor levels (and codelists, where present) are converted
+to their latex or html equivalents. None of this happens
+if a 'plotmath' attribute already exists, thus preventing 
+the same variable from being accidentally transformed twice.
 
 To flexibly support latex, html, and plotmath, this function
 expects column labels and units to be encoded in "spork" syntax.
@@ -77,6 +81,7 @@ x \%>\% decorations
 x \%>\% ggplot(aes(time, work)) + geom_point()
 x \%>\% scripted \%>\% ggplot(aes(time, work)) + geom_point()
 x \%>\% scripted(format = 'html') \%$\% work \%>\% attr('title')
+testthat::expect_equal(scripted(x), scripted(scripted(x)))
 }
 \seealso{
 Other scripted: 
