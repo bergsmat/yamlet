@@ -28,8 +28,8 @@ example(ggready)
 }
 \seealso{
 Other ggready: 
-\code{\link{ggready.decorated}()},
-\code{\link{ggready}()}
+\code{\link{ggready}()},
+\code{\link{ggready.decorated}()}
 }
 \concept{ggready}
 \keyword{internal}

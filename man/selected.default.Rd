@@ -30,8 +30,8 @@ selected(b:c)
 }
 \seealso{
 Other modify: 
-\code{\link{modify.default}()},
 \code{\link{modify}()},
+\code{\link{modify.default}()},
 \code{\link{named}()},
 \code{\link{selected}()}
 

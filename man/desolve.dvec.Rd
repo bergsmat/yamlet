@@ -32,15 +32,15 @@ x \%>\% resolve \%>\% desolve \%>\% str
 }
 \seealso{
 Other resolve: 
+\code{\link{desolve}()},
 \code{\link{desolve.classified}()},
 \code{\link{desolve.data.frame}()},
 \code{\link{desolve.decorated}()},
-\code{\link{desolve}()},
+\code{\link{resolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.data.frame}()},
 \code{\link{resolve.decorated}()},
-\code{\link{resolve.dvec}()},
-\code{\link{resolve}()}
+\code{\link{resolve.dvec}()}
 
 Other dvec: 
 \code{\link{[.dvec}()},
@@ -48,13 +48,13 @@ Other dvec:
 \code{\link{[[.dvec}()},
 \code{\link{[[<-.dvec}()},
 \code{\link{as.data.frame.dvec}()},
+\code{\link{as_dvec}()},
 \code{\link{as_dvec.character}()},
 \code{\link{as_dvec.complex}()},
 \code{\link{as_dvec.dvec}()},
 \code{\link{as_dvec.integer}()},
 \code{\link{as_dvec.logical}()},
 \code{\link{as_dvec.numeric}()},
-\code{\link{as_dvec}()},
 \code{\link{c.dvec}()},
 \code{\link{classified.dvec}()},
 \code{\link{explicit_guide.data.frame}()},

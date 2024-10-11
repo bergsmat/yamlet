@@ -4,12 +4,14 @@
 \alias{implicit_guide.data.frame}
 \title{Coerce Data Frame Guide to Something More Implicit}
 \usage{
-\method{implicit_guide}{data.frame}(x, ...)
+\method{implicit_guide}{data.frame}(x, ..., collapse = getOption("yamlet_collapse_codelist", 10))
 }
 \arguments{
 \item{x}{data.frame}
 
 \item{...}{named arguments ignored; un-named arguments limit scope}
+
+\item{collapse}{numeric: substitute empty codelist if number of levels exceeds this. Set to Inf to ensure levels are always stored explicitly; if zero, empty codelist will always be substituted if codelist elements are un-named and exactly match \code{sort(unique(x))}.}
 }
 \value{
 data.frame
@@ -46,12 +48,12 @@ x \%>\% explicit_guide(simplify = FALSE) \%>\% implicit_guide \%>\% decorations
 }
 \seealso{
 Other explicit_guide: 
+\code{\link{explicit_guide}()},
 \code{\link{explicit_guide.data.frame}()},
 \code{\link{explicit_guide.dvec}()},
 \code{\link{explicit_guide.yamlet}()},
-\code{\link{explicit_guide}()},
-\code{\link{implicit_guide.dvec}()},
 \code{\link{implicit_guide}()},
+\code{\link{implicit_guide.dvec}()},
 \code{\link{infer_guide}()}
 }
 \concept{explicit_guide}

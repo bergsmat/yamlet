@@ -25,10 +25,10 @@ as_unit_string('kg m2 s-2')
 Other unit_string: 
 \code{\link{[.unit_string}()},
 \code{\link{[[.unit_string}()},
+\code{\link{as_unit_string}()},
 \code{\link{as_unit_string.factor}()},
 \code{\link{as_unit_string.symbolic_units}()},
-\code{\link{as_unit_string.units}()},
-\code{\link{as_unit_string}()}
+\code{\link{as_unit_string.units}()}
 }
 \concept{unit_string}
 \keyword{internal}

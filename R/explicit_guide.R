@@ -38,6 +38,7 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 #' @param x yamlet
 #' @param ... passed to \code{\link[dplyr]{select}} to limit scope
 #' @param test function or function name; supply non-default or globally set \code{options(yamlet_infer_guide = )}.
+#' @param expand whether to expand empty guide list using sorted unique values. NA likely excluded.
 #' @param data optional data.frame for testing guides with length > 1
 #' @export
 #' @keywords internal
@@ -57,6 +58,7 @@ explicit_guide <- function(x,...)UseMethod('explicit_guide')
 explicit_guide.yamlet <- function(
   x, ...,
   test = getOption('yamlet_infer_guide', yamlet::infer_guide),
+  expand = getOption('yamlet_expand_codelist', TRUE),
   data = NULL
 ){
   if(!is.null(data))stopifnot(is.list(data))
@@ -70,6 +72,16 @@ explicit_guide.yamlet <- function(
       if(length(nms) >= j){
         if(nms[[j]] == 'guide'){
           val <- x[[i]][[j]]
+          if(expand){
+            if(!is.null(val)){
+              if(is.list(val)){
+                if(length(val) == 0){
+                  val <- as.list(sort(unique(data[[i]])))
+                  x[[i]][[j]] <- val
+                }
+              }
+            }
+          }
           if(length(val) > 1){ # may be a conditional
             if(!is.null(data)){
               if(isConditional(val, data)){
@@ -147,6 +159,12 @@ infer_guide <- function(
   stopifnot(is.atomic(data)||is.null(data))
   stopifnot(length(token) == 1)
   token <- as.character(token)
+  # TTB @1.1.3 to support % test on empty list
+  formatted <- function(x){
+    if(length(x) == 0) return(FALSE)
+    percents <- function(x)nchar(gsub('[^%]', '', x))
+    all(percents(x) > 1)
+  }
   res <- case_when(
 
     # a list is clearly an attempt to supply a codelist
@@ -161,7 +179,8 @@ infer_guide <- function(
     all(is_parseable(x)) ~ 'units',
 
     # two percent signs?
-    length(gregexpr(pattern = '%', x)[[1]]) > 1 ~ 'format',
+    #length(gregexpr(pattern = '%', x)[[1]]) > 1 ~ 'format',
+    formatted(x) ~ 'format',
 
     # qualifies as encoding?
     all(encoded(x)) ~ 'encoding',
@@ -199,6 +218,7 @@ infer_guide <- function(
 #' @param ... named arguments passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}; un-named arguments limit scope
 #' @param overwrite passed as TRUE
 #' @param simplify whether to remove guide attribute
+#' @param expand whether to expand empty guide list using sorted unique values. NA likely excluded.
 #' @export
 #' @keywords internal
 #' @importFrom dplyr case_when
@@ -227,12 +247,15 @@ explicit_guide.data.frame <- function(
     x,
     ...,
     overwrite = getOption('yamlet_explicit_guide_overwrite',TRUE),
-    simplify = getOption('yamlet_explicit_guide_simplify', TRUE)
+    simplify = getOption('yamlet_explicit_guide_simplify', TRUE),
+    expand = getOption('yamlet_expand_codelist', TRUE)
 ){
+  stopifnot(is.logical(overwrite), length(overwrite) == 1)
+  stopifnot(is.logical(simplify), length(simplify) == 1)
   y <- do.call(as_yamlet, c(list(x), named(...)))
   nms <- selected(x, ...)
   y <- y[as.character(nms)] # selected may have incompatible class path
-  y <- do.call(explicit_guide, c(list(y, data = x), named(...)))
+  y <- do.call(explicit_guide, c(list(y, expand = expand, data = x), named(...)))
   if(simplify){
     for(nm in nms){
       attr(x[[nm]], 'guide') <- NULL
@@ -254,6 +277,7 @@ explicit_guide.data.frame <- function(
 #' @param ... named arguments passed to \code{\link{as_yamlet}}, \code{\link{explicit_guide}}, and \code{\link{decorate}}; un-named arguments ignored
 #' @param overwrite whether to overwrite attributes
 #' @param simplify whether to remove guide attribute
+#' @param expand whether to expand empty guide list using sorted unique values. NA likely excluded.
 #' @export
 #' @keywords internal
 #' @importFrom dplyr case_when
@@ -281,9 +305,13 @@ explicit_guide.data.frame <- function(
 explicit_guide.dvec <- function(
     x,
     ...,
-    overwrite = getOption('explicit_guide_overwrite',TRUE),
-    simplify = getOption('explicit_guide_simplify', TRUE)
+    overwrite = getOption('yamlet_explicit_guide_overwrite',TRUE),
+    simplify = getOption('yamlet_explicit_guide_simplify', TRUE),
+    expand = getOption('yamlet_expand_codelist', TRUE)
 ){
+  stopifnot(is.logical(overwrite), length(overwrite) == 1)
+  stopifnot(is.logical(simplify), length(simplify) == 1)
+  stopifnot(is.logical(expand), length(expand) == 1)
   y <- data.frame(x = x)
   y <- do.call(
     explicit_guide,
@@ -291,7 +319,8 @@ explicit_guide.dvec <- function(
       list(
         x = y, 
         overwrite = overwrite, 
-        simplify = simplify
+        simplify = simplify,
+        expand = expand
       ),
       named(...)
     )
@@ -330,6 +359,7 @@ implicit_guide <- function(x,...)UseMethod('implicit_guide')
 #'
 #' @param x data.frame
 #' @param ... named arguments ignored; un-named arguments limit scope
+#' @param collapse numeric: substitute empty codelist if number of levels exceeds this. Set to Inf to ensure levels are always stored explicitly; if zero, empty codelist will always be substituted if codelist elements are un-named and exactly match \code{sort(unique(x))}.
 #' @export
 #' @keywords internal
 #' @importFrom dplyr case_when
@@ -359,8 +389,11 @@ implicit_guide <- function(x,...)UseMethod('implicit_guide')
 
 implicit_guide.data.frame <- function(
     x,
-    ...
+    ...,
+    collapse = getOption('yamlet_collapse_codelist', 10)
 ){
+  stopifnot(is.numeric(collapse), length(collapse) == 1)
+  
   nms <- selected(x, ...)
   for(nm in nms){
     attr <- attributes(x[[nm]])
@@ -373,9 +406,39 @@ implicit_guide.data.frame <- function(
         names(attributes(x[[nm]]))[names(attributes(x[[nm]])) == anm] <- 'guide'
       }
     }
+    # we now have a guide attribute for this column, if possible
+    guide <- attr(x[[nm]], 'guide')
+    if(!is.null(guide)){
+      if(is.list(guide)){
+        if(length(guide) > 0){
+          nms <- names(guide)
+          if(is.null(nms)){
+            vals <- sort(unique(x[[nm]]))
+            have <- unlist(guide)
+            if(length(have) == length(guide)){ # i.e. unstructured
+              if(length(vals) == length(have)){
+                if(all(vals == have)){
+                  # guide of x[[nm]] is completely inferred from its values
+                  if(length(vals) > collapse) {
+                    message(
+                      'substituting list() for codelist since ', length(vals), 
+                      ' values exceeds collapse = ',
+                      collapse, ' (see ?yamlet_options : yamlet_collapse_codelist)'
+                    )
+                    attr(x[[nm]], 'guide') <- list()
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
   x
 }
+
+
 
 #' Coerce Decorated Vector Guide to Something More Implicit
 #'

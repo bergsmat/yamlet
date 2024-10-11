@@ -27,11 +27,11 @@ as_yamlet(x)
 Other yamlet: 
 \code{\link{[.yamlet}()},
 \code{\link{as.character.yamlet}()},
+\code{\link{as_yamlet}()},
 \code{\link{as_yamlet.character}()},
 \code{\link{as_yamlet.list}()},
-\code{\link{as_yamlet.yamlet}()},
 \code{\link{as_yamlet.yam}()},
-\code{\link{as_yamlet}()},
+\code{\link{as_yamlet.yamlet}()},
 \code{\link{print.yamlet}()}
 }
 \concept{yamlet}

@@ -695,14 +695,15 @@ test_that('dvec can be combined with character, etc.', {
   )
   x %<>% decorate('OBS2: foo')
   x %<>% pivot_longer(c(OBS1, OBS2)) # works great
+  expect_equal_to_reference(file = '133.rds', x)
   x %>% decorations # combined column is dvec! Even if OBS1 is decorated instead.
   x <- data.frame(
     ID = c(1,1,2,2),
     OBS1 = c(3,4,5,6),
     OBS2 = c('a','b','c','d')
   )
-  #x %<>% decorate('OBS1: foo')
-  x %<>% pivot_longer(c(OBS1, OBS2)) # does not work, with or w/o the decoration
+  # x %<>% decorate('OBS1: foo')
+  # x %<>% pivot_longer(c(OBS1, OBS2)) # does not work, with or w/o the decoration
   
 
 })

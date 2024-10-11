@@ -16,7 +16,7 @@
 \arguments{
 \item{x}{object}
 
-\item{...}{passed to \code{\link{as_latex}}, \code{\link{as_plotmath}}}
+\item{...}{passed to \code{\link[spork]{as_latex}}, \code{\link[spork]{as_plotmath}}}
 
 \item{open}{character to precede units}
 
@@ -36,7 +36,7 @@ Result is assigned to \code{target} attribute
 (default: 'label').
 If style is 'latex' or 'plotmath',
 all elements are treated as spork
-(\code{\link{as_spork}}) and coerced
+(\code{\link[spork]{as_spork}}) and coerced
 to canonical form before concatenation.
 }
 \examples{
@@ -59,16 +59,16 @@ x \%>\% append_units(style = 'latex')
 \seealso{
 Other labels: 
 \code{\link{alias.data.frame}()},
-\code{\link{append_units.data.frame}()},
 \code{\link{append_units}()},
+\code{\link{append_units.data.frame}()},
+\code{\link{drop_title}()},
 \code{\link{drop_title.decorated}()},
 \code{\link{drop_title.default}()},
 \code{\link{drop_title.dvec}()},
-\code{\link{drop_title}()},
+\code{\link{make_title}()},
 \code{\link{make_title.decorated}()},
 \code{\link{make_title.default}()},
 \code{\link{make_title.dvec}()},
-\code{\link{make_title}()},
 \code{\link{sub_units}()}
 }
 \concept{labels}

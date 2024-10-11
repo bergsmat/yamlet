@@ -18,8 +18,8 @@ and currently returns an unmodified object.
 }
 \seealso{
 Other parsimonious: 
-\code{\link{parsimonious.list}()},
-\code{\link{parsimonious}()}
+\code{\link{parsimonious}()},
+\code{\link{parsimonious.list}()}
 }
 \concept{parsimonious}
 \keyword{internal}

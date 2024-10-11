@@ -35,9 +35,9 @@ Other classified:
 \code{\link{classified.dvec}()},
 \code{\link{classified.factor}()},
 \code{\link{desolve.classified}()},
+\code{\link{unclassified}()},
 \code{\link{unclassified.classified}()},
-\code{\link{unclassified.data.frame}()},
-\code{\link{unclassified}()}
+\code{\link{unclassified.data.frame}()}
 }
 \concept{classified}
 \keyword{internal}

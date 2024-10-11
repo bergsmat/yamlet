@@ -69,6 +69,10 @@ parsimonious <- function(x, ...)UseMethod('parsimonious')
 #' # Works for NULL:
 #' yaml.load('-')
 #' yaml.load('-', handlers = list(seq = parsimonious))
+#' 
+#' # And for empty list:
+#' yaml.load('[]')
+#' yaml.load('[]', handlers = list(seq = parsimonious))
 #'
 #' # Limited to first (most deeply nested) encounter:
 #' '[[[a: 1]]]' %>% yaml.load
@@ -79,6 +83,15 @@ parsimonious <- function(x, ...)UseMethod('parsimonious')
 #' 'ITEM: [ label: item, [ foo: bar, hey: baz ]]' %>% yaml.load(handlers = list(seq = parsimonious))
 
 parsimonious.list <- function(x, ...){
+  # TTB @ 1.1.3 
+  # sapply below returns list() not logical for empty list.
+  # trap empty list here.
+  if(length(x) == 0){
+    # parsimonious by definition
+    class(x) <- union('parsimonious', class(x))
+    return(x)
+  }
+  
   # are any of these lists parsimonious?
   parsimonious <- sapply(x, inherits, 'parsimonious')
 

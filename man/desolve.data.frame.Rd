@@ -23,15 +23,15 @@ head(desolve(Theoph))
 }
 \seealso{
 Other resolve: 
+\code{\link{desolve}()},
 \code{\link{desolve.classified}()},
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.dvec}()},
-\code{\link{desolve}()},
+\code{\link{resolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.data.frame}()},
 \code{\link{resolve.decorated}()},
-\code{\link{resolve.dvec}()},
-\code{\link{resolve}()}
+\code{\link{resolve.dvec}()}
 }
 \concept{resolve}
 \keyword{internal}

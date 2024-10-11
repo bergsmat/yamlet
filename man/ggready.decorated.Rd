@@ -36,8 +36,8 @@ example(ggready)
 }
 \seealso{
 Other ggready: 
-\code{\link{ggready.data.frame}()},
-\code{\link{ggready}()}
+\code{\link{ggready}()},
+\code{\link{ggready.data.frame}()}
 }
 \concept{ggready}
 \keyword{internal}

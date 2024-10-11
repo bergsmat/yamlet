@@ -2,8 +2,8 @@
 % Please edit documentation in R/package.R
 \docType{package}
 \name{yamlet}
-\alias{yamlet}
 \alias{yamlet-package}
+\alias{yamlet}
 \title{yamlet: Versatile Curation of Table Metadata}
 \description{
 The \pkg{yamlet} package supports storage and retrieval of table
@@ -104,5 +104,9 @@ Useful links:
 \itemize{
   \item Report bugs at \url{https://github.com/bergsmat/yamlet/issues}
 }
+
+}
+\author{
+\strong{Maintainer}: Tim Bergsma \email{bergsmat@gmail.com}
 
 }

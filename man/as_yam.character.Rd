@@ -54,8 +54,8 @@ as_yam('ID:\nTIME:')
 \seealso{
 Other yam: 
 \code{\link{as.character.yam}()},
-\code{\link{as_yam.yamlet}()},
-\code{\link{as_yam}()}
+\code{\link{as_yam}()},
+\code{\link{as_yam.yamlet}()}
 }
 \concept{yam}
 \keyword{internal}

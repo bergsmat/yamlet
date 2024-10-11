@@ -30,7 +30,7 @@
 
 \item{default_keys}{passed to \code{\link{io_yamlet}}}
 
-\item{...}{passed to \code{\link{as.csv}} and to \code{\link{io_yamlet}}}
+\item{...}{passed to \code{\link[csv]{as.csv}} and to \code{\link{io_yamlet}}}
 }
 \value{
 invisible(file)
@@ -53,18 +53,18 @@ example(io_csv)
 }
 \seealso{
 Other io: 
-\code{\link{io_csv.character}()},
 \code{\link{io_csv}()},
+\code{\link{io_csv.character}()},
+\code{\link{io_res}()},
 \code{\link{io_res.character}()},
 \code{\link{io_res.decorated}()},
-\code{\link{io_res}()},
+\code{\link{io_table}()},
 \code{\link{io_table.character}()},
 \code{\link{io_table.data.frame}()},
-\code{\link{io_table}()},
+\code{\link{io_yamlet}()},
 \code{\link{io_yamlet.character}()},
 \code{\link{io_yamlet.data.frame}()},
-\code{\link{io_yamlet.yamlet}()},
-\code{\link{io_yamlet}()}
+\code{\link{io_yamlet.yamlet}()}
 
 Other interface: 
 \code{\link{canonical.decorated}()},

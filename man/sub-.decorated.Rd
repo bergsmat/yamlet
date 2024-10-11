@@ -48,9 +48,9 @@ attributes(a)
 \seealso{
 Other promote: 
 \code{\link{filter.decorated}()},
+\code{\link{promote}()},
 \code{\link{promote.data.frame}()},
 \code{\link{promote.list}()},
-\code{\link{promote}()},
 \code{\link{singularity}()}
 
 Other decorated: 

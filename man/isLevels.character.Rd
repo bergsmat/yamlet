@@ -24,8 +24,8 @@ respecting underlying data types (character 0 can match integer 0, etc.).
 }
 \seealso{
 Other levels: 
-\code{\link{isLevels.default}()},
-\code{\link{isLevels}()}
+\code{\link{isLevels}()},
+\code{\link{isLevels.default}()}
 }
 \concept{levels}
 \keyword{internal}

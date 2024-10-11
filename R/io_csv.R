@@ -104,7 +104,7 @@ io_csv.character <- function(
 #' @param gz logical; guessed by default from \code{x}; if TRUE, '.gz' extension enforced present for (character) \code{file} and absent for default \code{meta}
 #' @param useBytes passed to \code{\link{io_yamlet}}
 #' @param default_keys passed to \code{\link{io_yamlet}}
-#' @param ... passed to \code{\link{as.csv}} and to \code{\link{io_yamlet}}
+#' @param ... passed to \code{\link[csv]{as.csv}} and to \code{\link{io_yamlet}}
 #' @export
 #' @keywords internal
 #' @importFrom csv as.csv

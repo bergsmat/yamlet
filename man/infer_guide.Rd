@@ -63,13 +63,13 @@ infer_guide('//a/1//b/2//c/3//')        # encoding
 }
 \seealso{
 Other explicit_guide: 
+\code{\link{explicit_guide}()},
 \code{\link{explicit_guide.data.frame}()},
 \code{\link{explicit_guide.dvec}()},
 \code{\link{explicit_guide.yamlet}()},
-\code{\link{explicit_guide}()},
+\code{\link{implicit_guide}()},
 \code{\link{implicit_guide.data.frame}()},
-\code{\link{implicit_guide.dvec}()},
-\code{\link{implicit_guide}()}
+\code{\link{implicit_guide.dvec}()}
 }
 \concept{explicit_guide}
 \keyword{internal}

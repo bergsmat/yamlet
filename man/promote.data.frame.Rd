@@ -24,8 +24,8 @@ example(promote.list)
 Other promote: 
 \code{\link{[.decorated}()},
 \code{\link{filter.decorated}()},
-\code{\link{promote.list}()},
 \code{\link{promote}()},
+\code{\link{promote.list}()},
 \code{\link{singularity}()}
 }
 \concept{promote}

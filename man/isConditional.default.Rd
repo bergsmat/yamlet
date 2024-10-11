@@ -19,8 +19,8 @@ Tests whether object is conditional by default. Coerces to list.
 }
 \seealso{
 Other conditional: 
-\code{\link{isConditional.list}()},
-\code{\link{isConditional}()}
+\code{\link{isConditional}()},
+\code{\link{isConditional.list}()}
 }
 \concept{conditional}
 \keyword{internal}

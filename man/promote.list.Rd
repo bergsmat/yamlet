@@ -56,8 +56,8 @@ filter.decorated [.decorated
 Other promote: 
 \code{\link{[.decorated}()},
 \code{\link{filter.decorated}()},
-\code{\link{promote.data.frame}()},
 \code{\link{promote}()},
+\code{\link{promote.data.frame}()},
 \code{\link{singularity}()}
 
 Other interface: 

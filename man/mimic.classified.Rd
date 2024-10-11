@@ -63,8 +63,8 @@ str(x)
 }
 \seealso{
 Other mimic: 
-\code{\link{mimic.default}()},
-\code{\link{mimic}()}
+\code{\link{mimic}()},
+\code{\link{mimic.default}()}
 }
 \concept{mimic}
 \keyword{internal}

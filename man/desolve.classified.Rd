@@ -40,15 +40,15 @@ x \%>\% resolve \%>\% desolve \%>\% str
 }
 \seealso{
 Other resolve: 
+\code{\link{desolve}()},
 \code{\link{desolve.data.frame}()},
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.dvec}()},
-\code{\link{desolve}()},
+\code{\link{resolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.data.frame}()},
 \code{\link{resolve.decorated}()},
-\code{\link{resolve.dvec}()},
-\code{\link{resolve}()}
+\code{\link{resolve.dvec}()}
 
 Other classified: 
 \code{\link{[.classified}()},
@@ -57,15 +57,15 @@ Other classified:
 \code{\link{[[<-.classified}()},
 \code{\link{as.integer.classified}()},
 \code{\link{c.classified}()},
+\code{\link{classified}()},
 \code{\link{classified.classified}()},
 \code{\link{classified.data.frame}()},
 \code{\link{classified.default}()},
 \code{\link{classified.dvec}()},
 \code{\link{classified.factor}()},
-\code{\link{classified}()},
+\code{\link{unclassified}()},
 \code{\link{unclassified.classified}()},
-\code{\link{unclassified.data.frame}()},
-\code{\link{unclassified}()}
+\code{\link{unclassified.data.frame}()}
 }
 \concept{classified}
 \concept{resolve}

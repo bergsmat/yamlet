@@ -37,15 +37,15 @@ x \%>\% resolve(glyco) \%>\% decorations(Age, glyco)
 }
 \seealso{
 Other resolve: 
+\code{\link{desolve}()},
 \code{\link{desolve.classified}()},
 \code{\link{desolve.data.frame}()},
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.dvec}()},
-\code{\link{desolve}()},
+\code{\link{resolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.data.frame}()},
-\code{\link{resolve.dvec}()},
-\code{\link{resolve}()}
+\code{\link{resolve.dvec}()}
 
 Other interface: 
 \code{\link{canonical.decorated}()},

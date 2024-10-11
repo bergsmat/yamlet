@@ -90,8 +90,8 @@ x \%>\% modify(location = 'attributes', where = .data$location) \%>\% decoration
 Other modify: 
 \code{\link{modify}()},
 \code{\link{named}()},
-\code{\link{selected.default}()},
-\code{\link{selected}()}
+\code{\link{selected}()},
+\code{\link{selected.default}()}
 
 Other interface: 
 \code{\link{canonical.decorated}()},

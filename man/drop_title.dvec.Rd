@@ -33,16 +33,16 @@ desolve
 \seealso{
 Other labels: 
 \code{\link{alias.data.frame}()},
+\code{\link{append_units}()},
 \code{\link{append_units.data.frame}()},
 \code{\link{append_units.default}()},
-\code{\link{append_units}()},
+\code{\link{drop_title}()},
 \code{\link{drop_title.decorated}()},
 \code{\link{drop_title.default}()},
-\code{\link{drop_title}()},
+\code{\link{make_title}()},
 \code{\link{make_title.decorated}()},
 \code{\link{make_title.default}()},
 \code{\link{make_title.dvec}()},
-\code{\link{make_title}()},
 \code{\link{sub_units}()}
 }
 \concept{labels}

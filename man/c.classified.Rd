@@ -4,12 +4,18 @@
 \alias{c.classified}
 \title{Combine Classified}
 \usage{
-\method{c}{classified}(..., recursive = TRUE)
+\method{c}{classified}(
+  ...,
+  recursive = TRUE,
+  warn_conflicted = getOption("yamlet_warn_conflicted", FALSE)
+)
 }
 \arguments{
 \item{...}{passed to next method}
 
 \item{recursive}{passed to unlist() internally}
+
+\item{warn_conflicted}{logical: warn if any duplicated codelist names?}
 }
 \value{
 class 'classified' 'factor'
@@ -21,8 +27,9 @@ from the first argument.  Attribute 'levels' is
 supplied by next method.  Attribute 'codelist'
 is the combined codelists in sequence of
 all (dots) arguments, after silently removing
-exact duplicates, and then removing
-duplicated names with warning.
+exact duplicates. If any names are duplicated,
+the entire codelist is replaced by the effective levels,
+with optional warning.
 }
 \examples{
 a <- classified(letters[1:3])
@@ -39,16 +46,16 @@ Other classified:
 \code{\link{[[.classified}()},
 \code{\link{[[<-.classified}()},
 \code{\link{as.integer.classified}()},
+\code{\link{classified}()},
 \code{\link{classified.classified}()},
 \code{\link{classified.data.frame}()},
 \code{\link{classified.default}()},
 \code{\link{classified.dvec}()},
 \code{\link{classified.factor}()},
-\code{\link{classified}()},
 \code{\link{desolve.classified}()},
+\code{\link{unclassified}()},
 \code{\link{unclassified.classified}()},
-\code{\link{unclassified.data.frame}()},
-\code{\link{unclassified}()}
+\code{\link{unclassified.data.frame}()}
 }
 \concept{classified}
 \keyword{internal}

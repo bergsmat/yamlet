@@ -29,10 +29,10 @@ as_unit_string(x, canonical = FALSE)
 Other unit_string: 
 \code{\link{[.unit_string}()},
 \code{\link{[[.unit_string}()},
+\code{\link{as_unit_string}()},
 \code{\link{as_unit_string.character}()},
 \code{\link{as_unit_string.factor}()},
-\code{\link{as_unit_string.symbolic_units}()},
-\code{\link{as_unit_string}()}
+\code{\link{as_unit_string.symbolic_units}()}
 }
 \concept{unit_string}
 \keyword{internal}

@@ -25,8 +25,8 @@ example(modify.default)
 Other modify: 
 \code{\link{modify.default}()},
 \code{\link{named}()},
-\code{\link{selected.default}()},
-\code{\link{selected}()}
+\code{\link{selected}()},
+\code{\link{selected.default}()}
 }
 \concept{modify}
 \keyword{internal}

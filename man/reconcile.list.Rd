@@ -13,16 +13,18 @@
 }
 \value{
 list (of attributes)
-library(magrittr)
-library(dplyr)
-a <- data.frame(study = 1) %>% decorate('study: [Study, [A: 1]]')
-b <- data.frame(study = 2) %>% decorate('study: [Study, [B: 2]]')
-bind_rows(a, b) %>% decorations
-c(a$study, b$study)
-reconcile(list(a$study, b$study))
 }
 \description{
 Reconciles attributes of list members. Recursively arbitrates
 list members pairwise, returning the accumulated attributes.
+}
+\examples{
+library(magrittr)
+library(dplyr)
+a <- data.frame(study = 1) \%>\% decorate('study: [Study, [A: 1]]')
+b <- data.frame(study = 2) \%>\% decorate('study: [Study, [B: 2]]')
+bind_rows(a, b) \%>\% decorations
+c(a$study, b$study)
+reconcile(list(a$study, b$study))
 }
 \keyword{internal}

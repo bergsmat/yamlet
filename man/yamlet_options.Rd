@@ -87,6 +87,17 @@ Can be misleading for lists with fine detail, but in
 most cases fine detail will likely have names.
 \item \strong{yamlet_format}: \code{\link{scripted.default}}.
 Choice of 'html' or 'latex', guessed if not supplied.
+\item \strong{yamlet_warn_conflicted}: \code{\link{c.classified}}.
+Whether to warn when codelists for combined classified
+factors have conflicting names (which will be dropped).
+\item \strong{yamlet_expand_codelist}: \code{\link{explicit_guide.yamlet}}.
+If TRUE (default) an empty list as a guide attribute
+is short-hand for \code{sort(unique(x))}.
+\item \strong{yamlet_collapse_codelist}: \code{\link{implicit_guide.data.frame}}.
+An integer (default: 10) giving the maximum number of (un-named)
+codelist elements to store explicitly. Else, if \code{sort(unique(x))}
+has exactly the same values as codelist, \code{implicit_guide} will
+substitute an empty list.
 }
 }
 \examples{

@@ -35,19 +35,19 @@ Theoph \%>\% group_by(Subject, Time) \%>\% decorate_groups \%>\% decorations # s
 }
 \seealso{
 Other decorate: 
-\code{\link{as_decorated.default}()},
 \code{\link{as_decorated}()},
+\code{\link{as_decorated.default}()},
+\code{\link{decorate}()},
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{decorate.list}()},
 \code{\link{decorate_groups}()},
-\code{\link{decorate}()},
-\code{\link{decorations.data.frame}()},
-\code{\link{decorations_groups.data.frame}()},
-\code{\link{decorations_groups}()},
 \code{\link{decorations}()},
-\code{\link{group_by_decorations.data.frame}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations_groups}()},
+\code{\link{decorations_groups.data.frame}()},
 \code{\link{group_by_decorations}()},
+\code{\link{group_by_decorations.data.frame}()},
 \code{\link{redecorate}()}
 }
 \concept{decorate}

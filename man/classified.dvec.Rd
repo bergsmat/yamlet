@@ -51,15 +51,15 @@ Other classified:
 \code{\link{[[<-.classified}()},
 \code{\link{as.integer.classified}()},
 \code{\link{c.classified}()},
+\code{\link{classified}()},
 \code{\link{classified.classified}()},
 \code{\link{classified.data.frame}()},
 \code{\link{classified.default}()},
 \code{\link{classified.factor}()},
-\code{\link{classified}()},
 \code{\link{desolve.classified}()},
+\code{\link{unclassified}()},
 \code{\link{unclassified.classified}()},
-\code{\link{unclassified.data.frame}()},
-\code{\link{unclassified}()}
+\code{\link{unclassified.data.frame}()}
 
 Other dvec: 
 \code{\link{[.dvec}()},
@@ -67,13 +67,13 @@ Other dvec:
 \code{\link{[[.dvec}()},
 \code{\link{[[<-.dvec}()},
 \code{\link{as.data.frame.dvec}()},
+\code{\link{as_dvec}()},
 \code{\link{as_dvec.character}()},
 \code{\link{as_dvec.complex}()},
 \code{\link{as_dvec.dvec}()},
 \code{\link{as_dvec.integer}()},
 \code{\link{as_dvec.logical}()},
 \code{\link{as_dvec.numeric}()},
-\code{\link{as_dvec}()},
 \code{\link{c.dvec}()},
 \code{\link{desolve.dvec}()},
 \code{\link{explicit_guide.data.frame}()},

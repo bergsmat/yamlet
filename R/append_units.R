@@ -25,12 +25,12 @@ append_units <- function(x, ...)UseMethod('append_units')
 #' (default: 'label').
 #' If style is 'latex' or 'plotmath',
 #' all elements are treated as spork
-#' (\code{\link{as_spork}}) and coerced
+#' (\code{\link[spork]{as_spork}}) and coerced
 #' to canonical form before concatenation.
 #'
 #'
 #' @param x object
-#' @param ... passed to \code{\link{as_latex}}, \code{\link{as_plotmath}}
+#' @param ... passed to \code{\link[spork]{as_latex}}, \code{\link[spork]{as_plotmath}}
 #' @param open character to precede units
 #' @param close character to follow units
 #' @param style one of 'plain', 'latex', or 'plotmath'

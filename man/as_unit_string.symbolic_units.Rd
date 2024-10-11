@@ -38,10 +38,10 @@ library(magrittr)
 Other unit_string: 
 \code{\link{[.unit_string}()},
 \code{\link{[[.unit_string}()},
+\code{\link{as_unit_string}()},
 \code{\link{as_unit_string.character}()},
 \code{\link{as_unit_string.factor}()},
-\code{\link{as_unit_string.units}()},
-\code{\link{as_unit_string}()}
+\code{\link{as_unit_string.units}()}
 }
 \concept{unit_string}
 \keyword{internal}

@@ -52,19 +52,19 @@ stopifnot(identical(a, b))
 }
 \seealso{
 Other decorate: 
-\code{\link{as_decorated.default}()},
 \code{\link{as_decorated}()},
+\code{\link{as_decorated.default}()},
+\code{\link{decorate}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{decorate.list}()},
-\code{\link{decorate_groups.data.frame}()},
 \code{\link{decorate_groups}()},
-\code{\link{decorate}()},
-\code{\link{decorations.data.frame}()},
-\code{\link{decorations_groups.data.frame}()},
-\code{\link{decorations_groups}()},
+\code{\link{decorate_groups.data.frame}()},
 \code{\link{decorations}()},
-\code{\link{group_by_decorations.data.frame}()},
+\code{\link{decorations.data.frame}()},
+\code{\link{decorations_groups}()},
+\code{\link{decorations_groups.data.frame}()},
 \code{\link{group_by_decorations}()},
+\code{\link{group_by_decorations.data.frame}()},
 \code{\link{redecorate}()}
 
 Other interface: 

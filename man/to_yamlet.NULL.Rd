@@ -22,12 +22,12 @@ to_yamlet(NULL)
 }
 \seealso{
 Other to_yamlet: 
+\code{\link{to_yamlet}()},
 \code{\link{to_yamlet.character}()},
 \code{\link{to_yamlet.default}()},
 \code{\link{to_yamlet.list}()},
 \code{\link{to_yamlet.numeric}()},
-\code{\link{to_yamlet.yamlet}()},
-\code{\link{to_yamlet}()}
+\code{\link{to_yamlet.yamlet}()}
 }
 \concept{to_yamlet}
 \keyword{internal}

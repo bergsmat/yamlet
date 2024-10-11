@@ -10,7 +10,7 @@
 #' @param open character to precede units
 #' @param close character to follow units
 #' @param style one of 'plain', 'latex', or 'plotmath'
-#' @param math_open,math_close,label_open,label_close,newline passed to \code{\link{as_latex.spar}} if style = 'latex'
+#' @param math_open,math_close,label_open,label_close,newline passed to \code{\link[spork]{as_latex.spar}} if style = 'latex'
 #' @export
 #' @keywords internal
 #' @family labels

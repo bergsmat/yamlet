@@ -45,9 +45,9 @@ x \%>\% filter(event == 'conc') \%>\% decorations(value)
 \seealso{
 Other promote: 
 \code{\link{[.decorated}()},
+\code{\link{promote}()},
 \code{\link{promote.data.frame}()},
 \code{\link{promote.list}()},
-\code{\link{promote}()},
 \code{\link{singularity}()}
 }
 \concept{promote}

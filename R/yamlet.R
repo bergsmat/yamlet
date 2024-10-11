@@ -918,10 +918,12 @@ print.yamlet <- function(x, ..., simplify = getOption('yamlet_print_simplify', T
     if(
       simplify &&
       length(x) == length(simplified) && 
-      is.null(names(simplified)) 
+      is.null(names(simplified)) &&
+      length(x) > 0
     )return(render(simplified, indent = indent, name = name))
     margin <-  paste(rep(' ',indent), collapse = '')
     leader <- paste0(margin, '- ',name)
+    if(!length(x)) leader <- paste0(leader, ': []')
     writeLines(leader)
     for(i in seq_along(x)){
       render(x[[i]], indent = indent + 1, name = names(x)[[i]])

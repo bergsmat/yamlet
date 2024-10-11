@@ -20,8 +20,8 @@ unnest(yaml::yaml.load('ITEM:'))
 }
 \seealso{
 Other unnest: 
-\code{\link{unnest.list}()},
-\code{\link{unnest}()}
+\code{\link{unnest}()},
+\code{\link{unnest.list}()}
 }
 \concept{unnest}
 \keyword{internal}

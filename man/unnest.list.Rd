@@ -31,8 +31,8 @@ as_yamlet(a)
 }
 \seealso{
 Other unnest: 
-\code{\link{unnest.default}()},
-\code{\link{unnest}()}
+\code{\link{unnest}()},
+\code{\link{unnest.default}()}
 }
 \concept{unnest}
 \keyword{internal}

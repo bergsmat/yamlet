@@ -58,8 +58,8 @@ x \%>\% as_decorated \%>\% resolve
 }
 \seealso{
 Other mimic: 
-\code{\link{mimic.classified}()},
-\code{\link{mimic}()}
+\code{\link{mimic}()},
+\code{\link{mimic.classified}()}
 
 Other interface: 
 \code{\link{canonical.decorated}()},

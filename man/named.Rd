@@ -21,10 +21,10 @@ named(a = 1, b = 2 + 3, 4, 'd')
 }
 \seealso{
 Other modify: 
-\code{\link{modify.default}()},
 \code{\link{modify}()},
-\code{\link{selected.default}()},
-\code{\link{selected}()}
+\code{\link{modify.default}()},
+\code{\link{selected}()},
+\code{\link{selected.default}()}
 }
 \concept{modify}
 \keyword{internal}

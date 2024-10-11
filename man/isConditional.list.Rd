@@ -25,8 +25,8 @@ to number of rows in data.
 }
 \seealso{
 Other conditional: 
-\code{\link{isConditional.default}()},
-\code{\link{isConditional}()}
+\code{\link{isConditional}()},
+\code{\link{isConditional.default}()}
 }
 \concept{conditional}
 \keyword{internal}

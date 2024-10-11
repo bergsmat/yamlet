@@ -315,6 +315,7 @@ reconcile <- function(x, ...)UseMethod('reconcile')
 #' @export
 #' @keywords internal
 #' @return list (of attributes)
+#' @examples
 #' library(magrittr)
 #' library(dplyr)
 #' a <- data.frame(study = 1) %>% decorate('study: [Study, [A: 1]]')

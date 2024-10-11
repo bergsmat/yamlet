@@ -47,8 +47,8 @@ canonical(decorations(x))
 }
 \seealso{
 Other canonical: 
-\code{\link{canonical.yamlet}()},
-\code{\link{canonical}()}
+\code{\link{canonical}()},
+\code{\link{canonical.yamlet}()}
 
 Other interface: 
 \code{\link{classified.data.frame}()},

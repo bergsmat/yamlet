@@ -28,7 +28,7 @@ sub_units(
 
 \item{style}{one of 'plain', 'latex', or 'plotmath'}
 
-\item{math_open, math_close, label_open, label_close, newline}{passed to \code{\link{as_latex.spar}} if style = 'latex'}
+\item{math_open, math_close, label_open, label_close, newline}{passed to \code{\link[spork]{as_latex.spar}} if style = 'latex'}
 }
 \value{
 see methods for \code{\link{append_units}}
@@ -66,17 +66,17 @@ add(geom_point())
 \seealso{
 Other labels: 
 \code{\link{alias.data.frame}()},
+\code{\link{append_units}()},
 \code{\link{append_units.data.frame}()},
 \code{\link{append_units.default}()},
-\code{\link{append_units}()},
+\code{\link{drop_title}()},
 \code{\link{drop_title.decorated}()},
 \code{\link{drop_title.default}()},
 \code{\link{drop_title.dvec}()},
-\code{\link{drop_title}()},
+\code{\link{make_title}()},
 \code{\link{make_title.decorated}()},
 \code{\link{make_title.default}()},
-\code{\link{make_title.dvec}()},
-\code{\link{make_title}()}
+\code{\link{make_title.dvec}()}
 }
 \concept{labels}
 \keyword{internal}

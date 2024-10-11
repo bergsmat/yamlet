@@ -392,11 +392,13 @@ classified.default <- function(
 #' supplied by next method.  Attribute 'codelist'
 #' is the combined codelists in sequence of
 #' all (dots) arguments, after silently removing
-#' exact duplicates, and then removing
-#' duplicated names with warning.
+#' exact duplicates. If any names are duplicated,
+#' the entire codelist is replaced by the effective levels,
+#' with optional warning.
 #'
 #' @param ... passed to next method
 #' @param recursive passed to unlist() internally
+#' @param warn_conflicted logical: warn if any duplicated codelist names?
 #' @export
 #' @keywords internal
 #' @family classified
@@ -409,7 +411,11 @@ classified.default <- function(
 #' class(c)
 #'
 
-`c.classified` <- function( ..., recursive = TRUE ){
+`c.classified` <- function( 
+    ..., 
+    recursive = TRUE, 
+    warn_conflicted = getOption('yamlet_warn_conflicted', FALSE) 
+){
   c_factor <- function (..., recursive = TRUE) { # i.e. c.factor() from R 4.1.0
     x <- list(...)
     y <- unlist(x, recursive = recursive)
@@ -441,8 +447,13 @@ classified.default <- function(
   # codelist names can be be NA but not blank
   names(codelist)[which(names(codelist) == '')] <- unlist(codelist)[which(names(codelist) == '')]
   codelist <- codelist[!duplicated(codelist)] # silently remove exact dups
-  if(any(duplicated(names(codelist))))warning('conflicting codelist specifications')
-  codelist <- codelist[!duplicated(names(codelist))]
+  if(any(duplicated(names(codelist)))){
+    if(warn_conflicted)warning('conflicting codelist specifications')
+    lev <- levels(y)
+  # codelist <- codelist[!duplicated(names(codelist))]
+    codelist <- structure(as.list(lev, names = lev)) # @ 1.1.1
+   }
+  
   #if(all(names(codelist) == unlist(codelist))){
   if(identical(names(codelist), as.character(unlist(codelist)))){
     names(codelist) <- NULL
