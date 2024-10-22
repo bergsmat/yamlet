@@ -4,14 +4,14 @@
 \alias{implicit_guide.data.frame}
 \title{Coerce Data Frame Guide to Something More Implicit}
 \usage{
-\method{implicit_guide}{data.frame}(x, ..., collapse = getOption("yamlet_collapse_codelist", 10))
+\method{implicit_guide}{data.frame}(x, ..., collapse = getOption("yamlet_collapse_codelist", Inf))
 }
 \arguments{
 \item{x}{data.frame}
 
 \item{...}{named arguments ignored; un-named arguments limit scope}
 
-\item{collapse}{numeric: substitute empty codelist if number of levels exceeds this. Set to Inf to ensure levels are always stored explicitly; if zero, empty codelist will always be substituted if codelist elements are un-named and exactly match \code{sort(unique(x))}.}
+\item{collapse}{numeric: substitute empty codelist if number of levels exceeds this. Set to Inf (default) to ensure levels are always stored explicitly; if zero, empty codelist will always be substituted if codelist elements are un-named and exactly match \code{sort(unique(x))}.}
 }
 \value{
 data.frame

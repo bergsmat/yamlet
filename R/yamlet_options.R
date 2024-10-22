@@ -85,7 +85,7 @@
 #'   If TRUE (default) an empty list as a guide attribute 
 #'   is short-hand for \code{sort(unique(x))}.
 #' * **yamlet_collapse_codelist**: \code{\link{implicit_guide.data.frame}}.
-#'   An integer (default: 10) giving the maximum number of (un-named) 
+#'   An integer (default: Inf) giving the maximum number of (un-named) 
 #'   codelist elements to store explicitly. Else, if \code{sort(unique(x))}
 #'   has exactly the same values as codelist, \code{implicit_guide} will 
 #'   substitute an empty list.

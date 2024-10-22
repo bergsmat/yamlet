@@ -359,7 +359,7 @@ implicit_guide <- function(x,...)UseMethod('implicit_guide')
 #'
 #' @param x data.frame
 #' @param ... named arguments ignored; un-named arguments limit scope
-#' @param collapse numeric: substitute empty codelist if number of levels exceeds this. Set to Inf to ensure levels are always stored explicitly; if zero, empty codelist will always be substituted if codelist elements are un-named and exactly match \code{sort(unique(x))}.
+#' @param collapse numeric: substitute empty codelist if number of levels exceeds this. Set to Inf (default) to ensure levels are always stored explicitly; if zero, empty codelist will always be substituted if codelist elements are un-named and exactly match \code{sort(unique(x))}.
 #' @export
 #' @keywords internal
 #' @importFrom dplyr case_when
@@ -390,7 +390,7 @@ implicit_guide <- function(x,...)UseMethod('implicit_guide')
 implicit_guide.data.frame <- function(
     x,
     ...,
-    collapse = getOption('yamlet_collapse_codelist', 10)
+    collapse = getOption('yamlet_collapse_codelist', Inf)
 ){
   stopifnot(is.numeric(collapse), length(collapse) == 1)
   
