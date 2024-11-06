@@ -32,6 +32,7 @@ num <- as.numeric(int)
 fac <- factor(let)
 css <- classified(let)
 
+mimic(LET)
 mimic(LET, let)
 mimic(let, let)
 mimic(num, let)

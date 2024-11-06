@@ -89,7 +89,10 @@ mimic.default <- function(x, y = x, ...){
       paste(nms) == paste(unlist(lev))
     )
   ){
-    lev <- unlist(lev)
+    # lev <- unlist(lev) # @1.1.5 don't unlist, e.g. mimic(1:5) should have list guide
+    if(!length(lev)){
+      lev <- NULL
+    }
   } else {
     lev <- setNames(lev, nms)
   }
@@ -122,6 +125,7 @@ mimic.default <- function(x, y = x, ...){
 #' fac <- factor(let)
 #' css <- classified(let)
 #'
+#' mimic(LET)
 #' mimic(LET, let)
 #' mimic(let, let)
 #' mimic(num, let)
