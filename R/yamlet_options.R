@@ -76,7 +76,7 @@
 #'   and have the same length when unlisted. True by default.
 #'   Can be misleading for lists with fine detail, but in
 #'   most cases fine detail will likely have names.
-#' * **yamlet_format**: \code{\link{scripted.default}}.
+#' * **yamlet_format**: \code{\link{enscript.default}}.
 #'   Choice of 'html' or 'latex', guessed if not supplied.
 #' * **yamlet_warn_conflicted**: \code{\link{c.classified}}.
 #'   Whether to warn when codelists for combined classified

@@ -191,18 +191,28 @@ print.decorated_ggplot <- function(
     ),
     drop = getOption('yamlet_decorated_ggplot_drop', TRUE)
 ){
-  # # support for plotmath levels
-  # parseable <- character(0)
-  # for(col in x$labels){
-  #   plotmath <- attr(x$data[[col]], 'plotmath')
-  #   if(is.null())
-  #   if(!is.null(plotmath)){
-  #     parseable <- c(parseable, col) # accumulate to inform scales below
-  #     # number of levels should exactly match length of plotmath
-  #     levels(x$data[[col]]) <- plotmath
-  #   }
-  # }
-  
+  x <- .decorated_ggplot(
+    x = x,
+    search = search,
+    discrete = discrete,
+    drop = drop
+  )
+  NextMethod()
+}
+
+.decorated_ggplot <- function(
+    x,
+    search = getOption(
+      'yamlet_decorated_ggplot_search',
+      c('expression', 'title', 'label')
+    ),
+    discrete = getOption(
+      'yamlet_decorated_ggplot_discrete',
+      c('colour', 'fill', 'size', 'shape', 'linetype', 'linewidth', 'alpha')
+    ),
+    drop = getOption('yamlet_decorated_ggplot_drop', TRUE)
+){
+
   # support for discrete manual scales
   labelnames <- names(x$labels)
   aesthetics <- intersect(discrete, labelnames)
@@ -245,7 +255,7 @@ print.decorated_ggplot <- function(
         if(!is.null(this)){this <- rep(this, length.out = length(levels))}
         if(!is.null(this)){names(this) <- levels}
         this <- unlist(this)
- 
+        
         # calculate breaks
         breaks <- waiver()
         if(drop) breaks <- sort(unique(col))
@@ -270,12 +280,6 @@ print.decorated_ggplot <- function(
         }
         theScale <- do.call(fun, args)
         x <- x + theScale
-        # x <- x + scale_discrete_manual(
-        #   aesthetics = a,
-        #   values = this,
-        #   breaks = breaks,
-        #   labels = scales::label_parse()
-        # )
       }
     }
   }
@@ -312,35 +316,52 @@ print.decorated_ggplot <- function(
       }
     }
   }
-  NextMethod()
+  
+  # above, support for aesthetics has the side effect
+  # of transforming the underlying data where 
+  # plotmath versions of factor levels are available.
+  # scales are created with matching levels.
+  # scales::label_parse() does the markup.
+  
+  # But when variables are used in facets,
+  # their names show up not in x$labels
+  # but in names(x$facet$params$facets) (facet_wrap())
+  # or  in mames(x$facet$params$rows)
+  # or  in mames(x$facet$params$cols).
+  # we need to check whether these are cols in $data
+  # and whether they have plotmath attributes
+  # and are actually factors.
+  # If so, we assign plotmath to levels(col), possibly redundant.
+  # Additionally, if x$facet$params$labeller is just ggplot2::label_value (default)
+  # we assign ggplot2::label_parsed().
+  
+  cols <- c(
+    names(x$facet$params$facets),
+    names(x$facet$params$rows),
+    names(x$facet$params$cols)
+  )
+  
+  hits <- 0L
+  for(col in cols){
+    if(!(col %in% names(x$data))) next
+    this <- x$data[[col]]
+    if(!inherits(this, 'factor')) next
+    plotmath <- attr(this, 'plotmath')
+    if(is.null(plotmath)) next
+    levels(x$data[[col]]) <- plotmath
+    hits <- hits + 1L
+  }
+  if(hits){
+    if(
+      identical( # default is unperturbed
+        x$facet$params$labeller,
+        ggplot2::label_value
+      )
+    ){
+      # treat levels as expressions
+      x$facet$params$labeller <- ggplot2::label_parsed
+    }
+  }
+  return(x)
 }
 
-#' Determine Scale Type for dvec
-#' 
-#' Determines scale type for dvec.
-#' @param x dvec
-#' @export
-#' @keywords internal
-#' @importFrom ggplot2 scale_type
-#' @method scale_type dvec
-scale_type.dvec <- function(x)scale_type(unclass(x))
-
-#' Rescale dvec
-#' 
-#' Rescales dvec
-#' @param x dvec
-#' @param to numeric
-#' @param from numeric
-#' @param ... passed arguments
-#' @export
-#' @keywords internal
-#' @importFrom scales rescale
-#' @method rescale dvec
-rescale.dvec <- function(
-    x, 
-    to = c(0, 1),
-    from = range(x, na.rm = TRUE, finite = TRUE), 
-    ...
-){
-  rescale(unclass(x), to = to, from = from, ...)
-}

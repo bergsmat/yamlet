@@ -117,7 +117,7 @@ test_that('print method for decorated_ggplot supports colour, fill, size, shape,
   x %<>% decorate('z: [shape: [20, 21, 22, 23, 24, 25]]')
   x %<>% decorate('z: [linetype: [6, 5, 4, 3, 2, 1]]')
   x %<>% decorate('z: [alpha: [ .9, .8, .7, .6, .5, .4]]')
-  x %<>% decorate('z: [size: [1, 1.5, 2, 2.5, 3, 3.5]]')
+  x %<>% decorate('z: [linewidth: [1, 1.5, 2, 2.5, 3, 3.5]]')
 
   # undebug(yamlet:::print.decorated_ggplot)
   
@@ -127,15 +127,67 @@ test_that('print method for decorated_ggplot supports colour, fill, size, shape,
     fill = z,
     shape = z,
     linetype = z, 
-    alpha = z,
-    size = z,
+    alpha = z
   )) + 
     geom_point() +
-    geom_line(size = 1)
+    geom_line(linewidth = 1)
   })
 # notice that all aesthetics are supported.  Seems like under certain circumstances,
 # there is a warning not to use discrete scale for continuous vars.
 
 test_that('print method for decorate_ggplot respects aesthetics with assignment priority of sort-unique, guide, factor levels, codelist',{
+  
+})
+
+test_that('print.decorated_ggplot correctly handles spork for x axis, y axis, facet labels, and legends',{
+  library(magrittr)
+  library(ggplot2)
+  library(tablet)
+  library(yamlet)
+  library(dplyr)
+ 
+  x <- data.frame(
+    time = 1:10, 
+    work = (1:10)^1.5, 
+    group = 1:2, 
+    set = c(rep('delta',5), rep('gamma', 5))
+  )
+  x %<>% decorate('
+ time: [ Time_cum.^alpha, h ]
+ work: [ Work_total_obs\\n, kg*m^2/s^2 ]
+ group: [ Group, [ Second\\nGroup^\\*: 2, First\\nGroup^#: 1 ]]
+ set: [ Set, [ gamma, delta ]]
+')
+  
+  # note the special headers and group levels
+  x %>% 
+    enscript %>% 
+    group_by(group, set) %>%
+    tablet %>%
+    as_kable
+  
+  # note the literal axes and legends
+  x %>% 
+    resolve %>% 
+    ggplot(aes(time, work, color = group, shape = set)) + 
+    geom_point()
+  
+  # note the special axes and legends
+  x %>% 
+    enscript %>% 
+    ggplot(aes(time, work, color = group, shape = set)) + 
+    geom_point()
+
+  # must work for facet_wrap and facet_grid
+  x %>% 
+    enscript %>% 
+    ggplot(aes(time, work, color = group, shape = set)) + 
+    geom_point() +
+    facet_grid(set~group)
+  x %>% 
+    enscript %>% 
+    ggplot(aes(time, work, color = group, shape = set)) + 
+    geom_point() +
+    facet_wrap(~ set + group)
   
 })

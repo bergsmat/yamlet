@@ -153,6 +153,7 @@ Other interface:
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{desolve.decorated}()},
+\code{\link{enscript.default}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
 \code{\link{io_res.character}()},
@@ -167,7 +168,6 @@ Other interface:
 \code{\link{promote.list}()},
 \code{\link{read_yamlet}()},
 \code{\link{resolve.decorated}()},
-\code{\link{scripted.default}()},
 \code{\link{selected.default}()},
 \code{\link{write_yamlet}()}
 }

@@ -84,7 +84,7 @@ x %>%
 
 By default, we get verbatim labels and units as substitutes for column names.
 
-Next, we use ```scripted()``` instead of ```resolve()``` to indicate 
+Next, we use ```enscript()``` instead of ```resolve()``` to indicate 
 that the labels should be understood as
 potentially having subscripts and superscripts.
 For this to work well, units should be constructed
@@ -93,18 +93,18 @@ package supports other encodings).
 
 ```{r, , fig.width = 4.33, fig.height = 2.82}
 x %>% 
-  scripted %>% 
+  enscript %>% 
   ggplot(aes(time, work, color = group, shape = set)) + 
   geom_point()
 ```
 
-In the background, ```scripted()``` is writing __expression__ and __plotmath__ attributes
+In the background, ```enscript()``` is writing __expression__ and __plotmath__ attributes
 (consumed by ```ggplot()``` ) and __title__ attributes (consumed by ```tablet()``` ).
 We illustrate the latter.
 
 ```{r}
 x %>% 
-  scripted %>% 
+  enscript %>% 
   group_by(group, set) %>%
   tablet %>%
   as_kable

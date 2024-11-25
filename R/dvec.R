@@ -701,3 +701,33 @@ vctrs::vec_ptype_abbr
 is_dvec <- function(x){
   inherits(x, 'dvec')
 }
+
+#' Determine Scale Type for dvec
+#' 
+#' Determines scale type for dvec.
+#' @param x dvec
+#' @export
+#' @keywords internal
+#' @importFrom ggplot2 scale_type
+#' @method scale_type dvec
+scale_type.dvec <- function(x)scale_type(unclass(x))
+
+#' Rescale dvec
+#' 
+#' Rescales dvec
+#' @param x dvec
+#' @param to numeric
+#' @param from numeric
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @importFrom scales rescale
+#' @method rescale dvec
+rescale.dvec <- function(
+    x, 
+    to = c(0, 1),
+    from = range(x, na.rm = TRUE, finite = TRUE), 
+    ...
+){
+  rescale(unclass(x), to = to, from = from, ...)
+}

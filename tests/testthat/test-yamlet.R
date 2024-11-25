@@ -1876,7 +1876,7 @@ test_that('modify supports nonstandard column names',{
   expect_silent(modify(a, 'has space', name = name))
 })
 
-test_that('scripted() is stable and idempotent', {
+test_that('enscript() is stable and idempotent', {
   x <- data.frame(
     time = 1:10, 
     work = (1:10)^1.5, 
@@ -1890,9 +1890,9 @@ test_that('scripted() is stable and idempotent', {
  set: [ Set, [ gamma, delta ]]
 ')
   x %>% decorations
-  expect_equal_to_reference(file = '121.rds', scripted(x))
+  expect_equal_to_reference(file = '121.rds', enscript(x))
   options(yamlet_default_keys = c('label', 'guide', 'title', 'expression', 'plotmath', 'levels', 'codelist'))
-  expect_equal(canonical(scripted(x)), canonical(scripted(scripted(x))))
+  expect_equal(canonical(enscript(x)), canonical(enscript(enscript(x))))
 })
 
 test_that('resolve() and desolve() accommodate anonymous arguments', {

@@ -53,6 +53,7 @@ Other interface:
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{desolve.decorated}()},
+\code{\link{enscript.default}()},
 \code{\link{ggplot.decorated}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},
@@ -67,7 +68,6 @@ Other interface:
 \code{\link{modify.default}()},
 \code{\link{promote.list}()},
 \code{\link{read_yamlet}()},
-\code{\link{scripted.default}()},
 \code{\link{selected.default}()},
 \code{\link{write_yamlet}()}
 }

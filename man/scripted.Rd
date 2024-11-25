@@ -16,18 +16,6 @@ see methods
 }
 \description{
 Renders the scripted attributes of indicated components.
-Generic, with method \code{\link{scripted.default}}.
+Generic: an alias for \code{\link{enscript}}.
 }
-\examples{
-example(scripted.default)
-}
-\seealso{
-modify.default
-
-as_spork
-
-Other scripted: 
-\code{\link{scripted.default}()}
-}
-\concept{scripted}
 \keyword{internal}
