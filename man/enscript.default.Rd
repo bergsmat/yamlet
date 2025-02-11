@@ -45,11 +45,11 @@ An attempt is made to guess the output format (html or latex).
 
 In addition to the 'title' and 'expression' attributes, enscript() writes
 a 'plotmath' attribute to store plotmath versions of factor levels, 
-where present. \code{\link{print.decorated_ggplot}} should prefer
-these over their latex and html counterparts. Furthermore,
-factor levels (and codelists, where present) are converted
-to their latex or html equivalents. None of this happens
-if a 'plotmath' attribute already exists, thus preventing 
+where present. By default, factor levels are converted to their 
+latex or html equivalents.  However, \code{\link{print.decorated_ggplot}}
+will use the plotmath versions of factor labels for legends and 
+facet labels. If a 'plotmath' attribute already exists, it is not
+overwritten, preventing 
 the same variable from being accidentally transformed twice.
 
 To flexibly support latex, html, and plotmath, this function
