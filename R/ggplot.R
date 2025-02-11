@@ -326,8 +326,8 @@ print.decorated_ggplot <- function(
   # But when variables are used in facets,
   # their names show up not in x$labels
   # but in names(x$facet$params$facets) (facet_wrap())
-  # or  in mames(x$facet$params$rows)
-  # or  in mames(x$facet$params$cols).
+  # or  in names(x$facet$params$rows)
+  # or  in names(x$facet$params$cols).
   # we need to check whether these are cols in $data
   # and whether they have plotmath attributes
   # and are actually factors.
