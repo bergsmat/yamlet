@@ -365,3 +365,38 @@ print.decorated_ggplot <- function(
   return(x)
 }
 
+#' Get Labels
+#' 
+#' Gets labels for a ggplot object.  Not exported, to avoid confusion.
+#' Development version of ggplot2 implements new get_labs() and get_strip_labels()
+#' interfaces. This function is an abstraction that supports new vs old approaches.
+#' See https://github.com/tidyverse/ggplot2/pull/6078.
+#' 
+#' @param plot the ggplot
+#' 
+get_labs <- if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+  ggplot2::get_labs
+} else {
+  function(plot) plot$labels
+}
+
+#' Get Strip Labels
+#' 
+#' Gets strip labels for a ggplot object.  Not exported, to avoid confusion.
+#' Development version of ggplot2 implements new get_labs() and get_strip_labels()
+#' interfaces. This function is an abstraction that supports new vs old approaches.
+#' See https://github.com/bergsmat/yamlet/issues/5.
+#' 
+#' @param plot the ggplot
+#' 
+get_strip_labels <- if ("get_strip_labels" %in% getNamespaceExports("ggplot2")) {
+  ggplot2::get_strip_labels
+} else {
+  function(plot){
+    c(
+      plot$facet$params$facets,
+      plot$facet$params$rows,
+      plot$facet$params$cols
+    )
+  }
+}

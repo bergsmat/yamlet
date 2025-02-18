@@ -840,7 +840,8 @@ expect_equal_to_reference(file = '085.rds',x %>% decorations(value))
   #'
 # The print method defaults to the first, with warning.
 map <- aes(x = time, y = value, color = event)
-expect_warning(print(x %>% ggplot(map) + geom_point()))
+#expect_warning(print(x %>% ggplot(map) + geom_point()))
+# with ggplot2_3.5.1.9000, this is no longer a warning
 
 # If we subset appropriately, the relevant value is substituted.
 expect_silent(print(x %>% filter(event == 'conc') %>% ggplot(map) + geom_point()))

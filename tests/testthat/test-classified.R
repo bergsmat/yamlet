@@ -25,7 +25,7 @@ V:   [ V/F, L ]
 ')
 
   # works, but gives appropriate warnings:
-  x %>% pivot_longer(c(coh, sex)) 
+  expect_warning(x %>% pivot_longer(c(coh, sex)))
 
   # should succeed by casting to factor if attr not compatible:
   x %>% resolve %>% pivot_longer(c(coh, sex))

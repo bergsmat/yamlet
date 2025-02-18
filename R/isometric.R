@@ -24,7 +24,7 @@ isometric <- function()structure(list(), class = 'ggplot_isometric')
 #' @seealso isometric
 #' @export
 #' @keywords internal
-#' @importFrom ggplot2 ggplot_add theme geom_blank aes
+#' @importFrom ggplot2 ggplot_add theme geom_blank aes 
 #' @importFrom rlang sym
 #' @method ggplot_add ggplot_isometric
 #' @family isometric
@@ -32,25 +32,26 @@ isometric <- function()structure(list(), class = 'ggplot_isometric')
 #' example(isometric)
 ggplot_add.ggplot_isometric <- function(object, plot, object_name){
   # https://stackoverflow.com/questions/42588238/setting-individual-y-axis-limits-with-facet-wrap-not-with-scales-free-y
-  stopifnot('x' %in% names(plot$labels))
-  stopifnot('y' %in% names(plot$labels))
-  wrap_facet <- plot$facet$params$facets
-  grid_facet_col <- names(plot$facet$params$rows)
-  grid_facet_row <- names(plot$facet$params$cols)
+  theLabels <- get_labs(plot)
+  stopifnot('x' %in% names(theLabels))
+  stopifnot('y' %in% names(theLabels))
+  theStrips <- get_strip_labels(plot)
+  wrap_facet <- theStrips$facets
+  grid_facet_col <- names(theStrips$rows)
+  grid_facet_row <- names(theStrips$cols)
   grid_facets <- c(grid_facet_col, grid_facet_row)
-  facets <- character(0)
   if(!is.null(wrap_facet)){
     plot$data <-  group_by(plot$data, !!!wrap_facet)
   }
   if(!is.null(grid_facets)){
-    plot$data <- group_by(plot$data, !!!sapply(facets, sym))
+    plot$data <- group_by(plot$data, !!!sapply(grid_facets, sym))
   }
   # calculate x,y min,max by group if any
   # https://stackoverflow.com/questions/46131829/unquote-the-variable-name-on-the-right-side-of-mutate-function-in-dplyr
-  plot$data <- mutate(plot$data, `_yamlet_ymin` = min(na.rm = TRUE, !!rlang::sym(plot$labels$y)))
-  plot$data <- mutate(plot$data, `_yamlet_ymax` = max(na.rm = TRUE, !!rlang::sym(plot$labels$y)))
-  plot$data <- mutate(plot$data, `_yamlet_xmin` = min(na.rm = TRUE, !!rlang::sym(plot$labels$x)))
-  plot$data <- mutate(plot$data, `_yamlet_xmax` = max(na.rm = TRUE, !!rlang::sym(plot$labels$x)))
+  plot$data <- mutate(plot$data, `_yamlet_ymin` = min(na.rm = TRUE, !!rlang::sym(theLabels$y)))
+  plot$data <- mutate(plot$data, `_yamlet_ymax` = max(na.rm = TRUE, !!rlang::sym(theLabels$y)))
+  plot$data <- mutate(plot$data, `_yamlet_xmin` = min(na.rm = TRUE, !!rlang::sym(theLabels$x)))
+  plot$data <- mutate(plot$data, `_yamlet_xmax` = max(na.rm = TRUE, !!rlang::sym(theLabels$x)))
  
   plot <- plot + geom_blank(aes(y = `_yamlet_xmin`))
   plot <- plot + geom_blank(aes(y = `_yamlet_xmax`))
@@ -90,9 +91,10 @@ symmetric <- function()structure(list(), class = 'ggplot_symmetric')
 #' example(symmetric)
 
 ggplot_add.ggplot_symmetric <- function(object, plot, object_name){
-  nms <- names(plot$labels)
+  theLabels <- get_labs(plot)
+  nms <- names(theLabels)
   stopifnot('y' %in% nms)
-  yrange <- range(na.rm = TRUE, plot$data[,plot$labels$y])
+  yrange <- range(na.rm = TRUE, plot$data[,theLabels$y])
   plot <- plot + expand_limits(y = -yrange)
   plot
 }

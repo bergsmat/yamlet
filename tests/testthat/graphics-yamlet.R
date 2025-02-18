@@ -99,6 +99,7 @@ test_that('subplots respect metadata assignments',{
 
   grid.arrange(x, y)
   # note informative axis labels in first panel
+  # 2025-02-18 as of ggplot2_3.5.1.9000, we see informative axis labels also in y.
   
   p <- x %>% ggplot_build
   q <- p %>% ggplot_gtable
@@ -134,6 +135,7 @@ test_that('print method for decorated_ggplot supports colour, fill, size, shape,
   })
 # notice that all aesthetics are supported.  Seems like under certain circumstances,
 # there is a warning not to use discrete scale for continuous vars.
+# 2025-02-18 As of ggplot2_3.5.1.9000 it appears to be working.
 
 test_that('print method for decorate_ggplot respects aesthetics with assignment priority of sort-unique, guide, factor levels, codelist',{
   
@@ -183,7 +185,7 @@ test_that('print.decorated_ggplot correctly handles spork for x axis, y axis, fa
     enscript %>% 
     ggplot(aes(time, work, color = group, shape = set)) + 
     geom_point() +
-    facet_grid(set~group)
+    facet_grid(set~group) 
   x %>% 
     enscript %>% 
     ggplot(aes(time, work, color = group, shape = set)) + 
