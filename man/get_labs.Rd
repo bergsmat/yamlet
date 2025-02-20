@@ -4,7 +4,10 @@
 \alias{get_labs}
 \title{Get Labels}
 \usage{
-get_labs(plot = get_last_plot())
+get_labs(plot)
+}
+\arguments{
+\item{plot}{the ggplot}
 }
 \description{
 Gets labels for a ggplot object.  Not exported, to avoid confusion.

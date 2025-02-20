@@ -176,7 +176,7 @@ test_that('print.decorated_ggplot correctly handles spork for x axis, y axis, fa
   
   # note the special axes and legends
   x %>% 
-    enscript %>% 
+    enscript %>%
     ggplot(aes(time, work, color = group, shape = set)) + 
     geom_point()
 

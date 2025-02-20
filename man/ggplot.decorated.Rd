@@ -4,12 +4,18 @@
 \alias{ggplot.decorated}
 \title{Create a New ggplot for a Decorated Data Frame}
 \usage{
-\method{ggplot}{decorated}(data, ...)
+\method{ggplot}{decorated}(
+  data,
+  ...,
+  search = getOption("yamlet_decorated_ggplot_search", c("expression", "title", "label"))
+)
 }
 \arguments{
 \item{data}{decorated, see \code{\link{decorate}}}
 
 \item{...}{passed to \code{\link[ggplot2]{ggplot}}}
+
+\item{search}{attribute names from which to seek label substitutes}
 }
 \value{
 return value like \code{\link[ggplot2]{ggplot}} but inheriting 'decorated_ggplot'

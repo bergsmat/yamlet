@@ -148,16 +148,15 @@ ggplot.decorated <- function(
     c('expression', 'title', 'label')
   )
 ){
-    # newer versions of ggplot2 use label attribute as default label
-    # old versions: see .decorated_ggplot
-    if(gg_new()){ 
-      for(s in rev(search)){
-        # store old label
-        suppressMessages(data %<>% modify(`_label` = label))
-        # never any reason to assign 'label' to 'label'
-        if(s == 'label') next
-        suppressMessages(data %<>% modify(label = `$`(.data, s)))
-      }
+  # newer versions of ggplot2 use label attribute as default label
+  # old versions: see .decorated_ggplot
+  if(gg_new()){ 
+    for(s in rev(search)){
+      # store old label
+      suppressWarnings(data %<>% modify(`_label` = label))
+      # never any reason to assign 'label' to 'label'
+      if(s == 'label') next
+      suppressWarnings(data %<>% modify(label = `$`(.data, s)))
     }
   }
   p <- NextMethod()
@@ -313,7 +312,7 @@ print.decorated_ggplot <- function(
     }
   }
   if(!gg_new()){                              # for gg_new(), see ggplot.decorated
-  for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
+    for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
     lab <- x$labels[[i]]                   # handle one label
     if(length(lab)){                       # i.e. not null or empty expression
       if(length(lab) == 1){
@@ -345,7 +344,7 @@ print.decorated_ggplot <- function(
       }
     }
   }
-  
+  }
   # above, support for aesthetics has the side effect
   # of transforming the underlying data where 
   # plotmath versions of factor levels are available.
@@ -410,9 +409,26 @@ gg_new <- function()"get_labs" %in% getNamespaceExports("ggplot2")
 #' 
 #' @param plot the ggplot
 #' 
-get_labs <- if (gg_new()) {
+get_labs <- function(plot)UseMethod('get_labs')
+
+#' Get Labels for ggplot_decorated
+#' 
+#' Gets labels for a ggplot_decorated.  Calls next method to
+#' avoid endless loop (since ggplot_build.ggplot_decorated calls get_labs() indirectly).
+#' 
+#' @param plot the ggplot
+#' 
+get_labs.ggplot_decorated <- function(plot)NextMethod()
+
+#' Get Labels for ggplot
+#' 
+#' Gets labels for a ggplot. Returns plot$labels for 3.5.1 and earlier,
+#' else returns ggplot2::get_labs.
+#' 
+#' @param plot the ggplot
+#' 
+get_labs.ggplot <- if (gg_new()) {
   ggplot2::get_labs
 } else {
   function(plot) plot$labels
 }
-
