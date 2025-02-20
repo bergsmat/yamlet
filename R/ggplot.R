@@ -150,13 +150,14 @@ ggplot.decorated <- function(
 ){
   # newer versions of ggplot2 use label attribute as default label
   # old versions: see .decorated_ggplot
-  if(gg_new()){ 
+  if(gg_new()){
+    # about to overwrite label
+    # store original as _label
+    suppressWarnings(data %<>% modify(`_label` = label))
+    # no point in ever assigning label to label:
+    search <- setdiff(search, 'label')
     for(s in rev(search)){
-      # store old label
-      suppressWarnings(data %<>% modify(`_label` = label))
-      # never any reason to assign 'label' to 'label'
-      if(s == 'label') next
-      suppressWarnings(data %<>% modify(label = `$`(.data, s)))
+      suppressWarnings(data %<>% modify(label = `$`(.data, !!s)))
     }
   }
   p <- NextMethod()
@@ -403,32 +404,18 @@ gg_new <- function()"get_labs" %in% getNamespaceExports("ggplot2")
 #' Get Labels
 #' 
 #' Gets labels for a ggplot object.  Not exported, to avoid confusion.
-#' Development version of ggplot2 implements new get_labs() and get_strip_labels()
-#' interfaces. This function is an abstraction that supports new vs old approaches.
+#' Development version of ggplot2 implements new get_labs() interface.
+#' This function is an abstraction that supports new vs old approaches.
 #' See https://github.com/tidyverse/ggplot2/pull/6078.
 #' 
 #' @param plot the ggplot
 #' 
-get_labs <- function(plot)UseMethod('get_labs')
-
-#' Get Labels for ggplot_decorated
-#' 
-#' Gets labels for a ggplot_decorated.  Calls next method to
-#' avoid endless loop (since ggplot_build.ggplot_decorated calls get_labs() indirectly).
-#' 
-#' @param plot the ggplot
-#' 
-get_labs.ggplot_decorated <- function(plot)NextMethod()
-
-#' Get Labels for ggplot
-#' 
-#' Gets labels for a ggplot. Returns plot$labels for 3.5.1 and earlier,
-#' else returns ggplot2::get_labs.
-#' 
-#' @param plot the ggplot
-#' 
-get_labs.ggplot <- if (gg_new()) {
-  ggplot2::get_labs
-} else {
-  function(plot) plot$labels
+get_labs <- function(plot) {
+  if (gg_new()) {
+    # partial unclass to avoid other methods ...
+    class(plot) <- setdiff(class(plot), 'decorated_ggplot')
+    return(ggplot2::get_labs(plot))
+  }
+  # else old style labels
+  return(plot$labels)
 }

@@ -104,7 +104,9 @@ test_that('subplots respect metadata assignments',{
   p <- x %>% ggplot_build
   q <- p %>% ggplot_gtable
   plot(q)
-  expect_equal_to_reference(file = '098.rds', p)
+  file <- '098.rds'
+  if(yamlet:::gg_new()) file <- '098.1.rds'
+  expect_equal_to_reference(file = file, p)
   
   foo <- ggplot_build(x)
   bar <- print(x)
@@ -128,6 +130,7 @@ test_that('print method for decorated_ggplot supports colour, fill, size, shape,
     fill = z,
     shape = z,
     linetype = z, 
+    size = z,
     alpha = z
   )) + 
     geom_point() +
@@ -182,7 +185,7 @@ test_that('print.decorated_ggplot correctly handles spork for x axis, y axis, fa
 
   # must work for facet_wrap and facet_grid
   x %>% 
-    enscript %>% 
+    enscript %>%
     ggplot(aes(time, work, color = group, shape = set)) + 
     geom_point() +
     facet_grid(set~group) 
