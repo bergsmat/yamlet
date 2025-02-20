@@ -19,7 +19,6 @@
 #'
 #' @param data decorated, see \code{\link{decorate}}
 #' @param ... passed to \code{\link[ggplot2]{ggplot}}
-#' @param search attribute names from which to seek label substitutes
 #' @return return value like \code{\link[ggplot2]{ggplot}} but inheriting 'decorated_ggplot'
 #' @export
 #' @importFrom ggplot2 ggplot
@@ -150,6 +149,9 @@ ggplot.decorated <- function(
 ){
   # newer versions of ggplot2 use label attribute as default label
   # old versions: see .decorated_ggplot
+  # here we defeat the value-added labels
+  # by suppressing the label information.
+  
   if(gg_new()){
     # about to overwrite label
     # store original as _label
