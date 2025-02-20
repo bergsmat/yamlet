@@ -139,29 +139,7 @@
 
 
 
-ggplot.decorated <- function(
-  data, 
-  ...,
-  search = getOption(
-    'yamlet_decorated_ggplot_search',
-    c('expression', 'title', 'label')
-  )
-){
-  # newer versions of ggplot2 use label attribute as default label
-  # old versions: see .decorated_ggplot
-  # here we defeat the value-added labels
-  # by suppressing the label information.
-  
-  if(gg_new()){
-    # about to overwrite label
-    # store original as _label
-    suppressWarnings(data %<>% modify(`_label` = label))
-    # no point in ever assigning label to label:
-    search <- setdiff(search, 'label')
-    for(s in rev(search)){
-      suppressWarnings(data %<>% modify(label = `$`(.data, !!s)))
-    }
-  }
+ggplot.decorated <- function(data, ...){
   p <- NextMethod()
   class(p) <- c('decorated_ggplot',class(p))
   p
@@ -236,22 +214,13 @@ print.decorated_ggplot <- function(
 ){
 
   # support for discrete manual scales
-  theLabels <- x$labels
-  if(gg_new()){
-    theLabels <- get_labs(x)
-    # ignore labels that were explicitly set
-    candidates <- names(theLabels)
-    userdefined <- x$labels
-    keep <- setdiff(candidates, userdefined)
-    theLabels <- theLabels[keep]
-  }
-  labelnames <- names(theLabels)
+  labelnames <- names(x$labels)
   aesthetics <- intersect(discrete, labelnames)
   scaletypes <- sapply(x$scales$scales, `[[`, 'aesthetics')
   # don't redefine existing scales:
   aesthetics <- setdiff(aesthetics, scaletypes)
   for(a in aesthetics){                 # color, fill, size, etc
-    src <- theLabels[[a]]               # the corresponding label
+    src <- x$labels[[a]]                # the corresponding label
     if(length(src) == 1){               # needs to be singular
       if(src %in% names(x$data)){       # and present in data
         col <- x$data[[src]]            # the column name
@@ -314,8 +283,8 @@ print.decorated_ggplot <- function(
       }
     }
   }
-  if(!gg_new()){                              # for gg_new(), see ggplot.decorated
-    for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
+  
+  for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
     lab <- x$labels[[i]]                   # handle one label
     if(length(lab)){                       # i.e. not null or empty expression
       if(length(lab) == 1){
@@ -347,7 +316,7 @@ print.decorated_ggplot <- function(
       }
     }
   }
-  }
+  
   # above, support for aesthetics has the side effect
   # of transforming the underlying data where 
   # plotmath versions of factor levels are available.
@@ -396,28 +365,3 @@ print.decorated_ggplot <- function(
   return(x)
 }
 
-#' Detect Revised Label Strategy
-#' 
-#' Detects the existence of qqplot's updated label strategy after v. 3.5.1,
-#' e.g. ggplot2_3.5.1.9000. For internal use to accommodate breaking changes.
-#' 
-gg_new <- function()"get_labs" %in% getNamespaceExports("ggplot2")
-
-#' Get Labels
-#' 
-#' Gets labels for a ggplot object.  Not exported, to avoid confusion.
-#' Development version of ggplot2 implements new get_labs() interface.
-#' This function is an abstraction that supports new vs old approaches.
-#' See https://github.com/tidyverse/ggplot2/pull/6078.
-#' 
-#' @param plot the ggplot
-#' 
-get_labs <- function(plot) {
-  if (gg_new()) {
-    # partial unclass to avoid other methods ...
-    class(plot) <- setdiff(class(plot), 'decorated_ggplot')
-    return(ggplot2::get_labs(plot))
-  }
-  # else old style labels
-  return(plot$labels)
-}
