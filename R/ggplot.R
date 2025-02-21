@@ -210,7 +210,7 @@ print.decorated_ggplot <- function(
     # thus we need to suppress label attributes here
     # to defeat their new-style uptake.
     decoy <- x
-    decoy$data %<>% modify(label = NULL)
+    decoy$data <- modify(decoy$data, label = NULL)
     theLabels <- get_labs(decoy)
     # ignore labels that were explicitly set
     candidates <- names(theLabels)
@@ -292,7 +292,10 @@ print.decorated_ggplot <- function(
     lab <- theLabels[[i]]                   # handle one label
     aesthetic <- names(theLabels)[[i]]
     if(length(lab)){                       # i.e. not null or empty expression
-      #if(length(lab) == 1){               # indeterminate after 3.5.1
+      if(length(lab) > 1){
+        warning('length of labels for ', aesthetic, ' is longer than 1; using first value: ', lab[[1]] )
+        lab <- lab[[1]]
+      }
         if(lab %in% names(x$data)){            # if this is just a bare column name
           col <- x$data[[lab]]
           atr <- attributes(col)

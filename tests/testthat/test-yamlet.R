@@ -609,13 +609,6 @@ test_that('the data.frame method for modify() gives a warning if the assignment 
     expect_warning(x %<>% modify(class = 'numeric', Subject))
 })
 
-test_that('the data.frame method for modify() fails gracefully if assignment cannot be made',{
-    file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
-    x <- decorate(file)
-    if(exists('foo'))rm(foo)
-    expect_warning(x %<>% modify(title = foo, time))
-
-})
 
 test_that('the default method for modify() supports lists',{
   file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -1659,32 +1652,6 @@ test_that('yamlet warns if row_bind gives overlapping codelist',{
   expect_warning(bind_rows(x, y))
 })
 
-test_that('print.decorated_ggplot() warns if label has length > 1',{
-  library(magrittr)
-  library(ggplot2)
-  library(yamlet)
-  
-  a <- Theoph %>%
-    as.data.frame %>%
-    decorate('
-    conc: Concentration
-    Time: Time
-    ') %>%
-    mutate(source = 'Theoph')
-
-  b <- a %>%
-    ggplot(
-      aes(
-        x = Time, 
-        y = conc
-      )
-    ) + 
-    geom_point() +
-    ggtitle(a$source)
-  b$labels
-  expect_warning(print(b))
-
-})
 
 test_that('yamlet can decorate n and N', {
   x <- data.frame(a = 0, n = 0, N = 0)
@@ -1902,7 +1869,40 @@ expect_silent(resolve(x, foo))
 expect_silent(desolve(x, foo))
 })
 
+test_that('the data.frame method for modify() fails gracefully if assignment cannot be made',{
+  file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
+  x <- decorate(file)
+  if(exists('foo'))rm(foo)
+  expect_warning(x %<>% modify(title = foo, time))
+  
+})
 
+test_that('print.decorated_ggplot() warns if label has length > 1',{
+  library(magrittr)
+  library(ggplot2)
+  library(yamlet)
+  
+  a <- Theoph %>%
+    as.data.frame %>%
+    decorate('
+    conc: Concentration
+    Time: Time
+    ') %>%
+    mutate(source = 'Theoph')
+  
+  b <- a %>%
+    ggplot(
+      aes(
+        x = Time, 
+        y = conc
+      )
+    ) + 
+    geom_point() +
+    ggtitle(a$source)
+  
+  expect_warning(print(b))
+  
+})
 
 
 
