@@ -100,6 +100,7 @@ test_that('subplots respect metadata assignments',{
   grid.arrange(x, y)
   # note informative axis labels in first panel
   # 2025-02-18 as of ggplot2_3.5.1.9000, we see informative axis labels also in y.
+  # this is expected, because updated ggplot honors label attributes.
   
   p <- x %>% ggplot_build
   q <- p %>% ggplot_gtable
@@ -120,7 +121,7 @@ test_that('print method for decorated_ggplot supports colour, fill, size, shape,
   x %<>% decorate('z: [shape: [20, 21, 22, 23, 24, 25]]')
   x %<>% decorate('z: [linetype: [6, 5, 4, 3, 2, 1]]')
   x %<>% decorate('z: [alpha: [ .9, .8, .7, .6, .5, .4]]')
-  x %<>% decorate('z: [linewidth: [1, 1.5, 2, 2.5, 3, 3.5]]')
+  x %<>% decorate('z: [size: [1, 1.5, 2, 2.5, 3, 3.5]]')
 
   # undebug(yamlet:::print.decorated_ggplot)
   
@@ -135,10 +136,12 @@ test_that('print method for decorated_ggplot supports colour, fill, size, shape,
   )) + 
     geom_point() +
     geom_line(linewidth = 1)
-  })
+  
 # notice that all aesthetics are supported.  Seems like under certain circumstances,
 # there is a warning not to use discrete scale for continuous vars.
 # 2025-02-18 As of ggplot2_3.5.1.9000 it appears to be working.
+  
+})
 
 test_that('print method for decorate_ggplot respects aesthetics with assignment priority of sort-unique, guide, factor levels, codelist',{
   
@@ -171,6 +174,19 @@ test_that('print.decorated_ggplot correctly handles spork for x axis, y axis, fa
     tablet %>%
     as_kable
   
+  # undebug(ggplot2:::ggplot.default)
+  # undebug(yamlet:::ggplot.decorated)
+  # undebug(ggplot2:::ggplot_build.ggplot)
+  # undebug(yamlet:::ggplot_build.decorated_ggplot)
+  # undebug(yamlet:::.decorated_ggplot)
+  # undebug(ggplot2:::print.ggplot)
+  # undebug(yamlet:::print.decorated_ggplot)
+  
+  # note column names (3.5.1) or labels (later) as axis titles
+  x %>% 
+    ggplot(aes(time, work, color = group, shape = set)) + 
+    geom_point()
+
   # note the literal axes and legends
   x %>% 
     resolve %>% 

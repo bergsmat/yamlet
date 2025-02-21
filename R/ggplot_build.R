@@ -29,10 +29,12 @@ ggplot_build.decorated_ggplot <- function(plot){
   drop = getOption('yamlet_decorated_ggplot_drop', TRUE)
   
   plot <- .decorated_ggplot(
-    x = plot, 
-    search = search, 
-    discrete = discrete, 
+    x = plot,
+    search = search,
+    discrete = discrete,
     drop = drop
   )
-  NextMethod()
+
+  built <- NextMethod()
+  return(built)
 }

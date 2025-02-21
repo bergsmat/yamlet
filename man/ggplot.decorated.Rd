@@ -4,18 +4,12 @@
 \alias{ggplot.decorated}
 \title{Create a New ggplot for a Decorated Data Frame}
 \usage{
-\method{ggplot}{decorated}(
-  data,
-  ...,
-  search = getOption("yamlet_decorated_ggplot_search", c("expression", "title", "label"))
-)
+\method{ggplot}{decorated}(data, ...)
 }
 \arguments{
 \item{data}{decorated, see \code{\link{decorate}}}
 
 \item{...}{passed to \code{\link[ggplot2]{ggplot}}}
-
-\item{search}{attribute names from which to seek label substitutes}
 }
 \value{
 return value like \code{\link[ggplot2]{ggplot}} but inheriting 'decorated_ggplot'
@@ -51,6 +45,7 @@ class(data.frame(x))
 class(as_decorated(data.frame(x)))
 
 # The bare data.frame gives boring labels and un-ordered groups.
+# (After ggplot2 v. 3.5.1 label attributes are honored as axis labels.)
 map <- aes(x = time, y = conc, color = Heart)
 data.frame(x) \%>\% ggplot(map) + geom_point()
 
@@ -59,53 +54,41 @@ data.frame(x) \%>\% ggplot(map) + geom_point()
 x \%>\% ggplot(map) + geom_point()
 
 # If we resolve Heart, CHF levels are ordered.
-x \%<>\% resolve(Heart)
-x \%>\% ggplot(map) + geom_point()
+x \%>\% resolve(Heart) \%>\% ggplot(map) + geom_point()
 
 # We can map aesthetics as decorations.
-x \%<>\% decorate('Heart: [ color: [gold, purple, green]]')
-x \%>\% ggplot(map) + geom_point()
+x \%>\% 
+  decorate('Heart: [ color: [gold, purple, green]]') \%>\%
+  ggplot(map) + geom_point()
 
 # Colors are matched to particular levels. Purple drops out here:
-x \%>\% filter(Heart != 'Moderate') \%>\% ggplot(map) + geom_point()
+x \%>\% 
+  decorate('Heart: [ color: [gold, purple, green]]') \%>\%
+  filter(Heart != 'Moderate') \%>\%
+  ggplot(map) + geom_point()
 
 # We can resolve other columns for a chance to enrich the output with units.
-x \%<>\% resolve
-suppressWarnings( # because this complains for columns with no units
-  x <- modify(x, title = paste0(label, '\n(', units, ')'))
-)
-x \%>\% ggplot(map) + geom_point()
+x \%>\%
+  resolve \%>\%
+  ggplot(map) + geom_point()
 
-# Or something fancier.
-x \%<>\% modify(conc, title = 'conc_serum. (mg*L^-1.)')
-x \%>\% ggplot(map) + geom_point()
+# Underscore and circumflex imply subscript and superscript:
+x \%>\% 
+  redecorate("conc: [ conc_serum, mg*L^-1 ]") \%>\%
+  ggplot(map) + geom_point()
 
-# The y-axis title is deliberately given in spork syntax for elegant coercion:
-library(spork)
-x \%<>\% modify(conc, expression = as.expression(as_plotmath(as_spork(title))))
-x \%>\% ggplot(map) + geom_point()
-# Add a fancier label for Heart, and facet by a factor:
-x \%<>\% modify(Heart, expression = as.expression(as_plotmath(as_spork('CHF^\\\\*'))))
-x \%>\% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
-
-# ggready handles the units and plotmath implicitly for a 'standard' display:
-x \%>\% ggready \%>\% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
-
-# Notice that instead of over-writing the label
-# attribute, we are creating a stack of label
-# substitutes (title, expression) so that
-# label is still available as an argument
-# if we want to try something else.  The
-# print method by default looks for all of these.
-# Precedence is expression, title, label, column name.
-# Precedence can be controlled using
-# options(decorated_ggplot_search = c(a, b, ...) ).
+# If we invoke enscript(), the subscripts and superscripts are rendered: 
+x \%>\% 
+  redecorate("conc: [ conc_serum, mg*L^-1 ]") \%>\%
+  redecorate("Heart: [ CHF^\\\\* ]") \%>\%
+  enscript \%>\%
+  ggplot(map) + geom_point()
 
 # Here we try a dataset with conditional labels and units.
 
 file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
 x <- file \%>\% decorate \%>\% resolve
-# Note that value has two elements for label and guide.
+# Note that value has two elements for label, etc.
 x \%>\% decorations(value)
 
 # The print method defaults to the first, with warning.

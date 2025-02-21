@@ -41,6 +41,7 @@
 #' class(as_decorated(data.frame(x)))
 #'
 #' # The bare data.frame gives boring labels and un-ordered groups.
+#' # (After ggplot2 v. 3.5.1 label attributes are honored as axis labels.)
 #' map <- aes(x = time, y = conc, color = Heart)
 #' data.frame(x) %>% ggplot(map) + geom_point()
 #'
@@ -49,54 +50,41 @@
 #' x %>% ggplot(map) + geom_point()
 #' 
 #' # If we resolve Heart, CHF levels are ordered.
-#' x %<>% resolve(Heart)
-#' x %>% ggplot(map) + geom_point()
+#' x %>% resolve(Heart) %>% ggplot(map) + geom_point()
 #' 
 #' # We can map aesthetics as decorations.
-#' x %<>% decorate('Heart: [ color: [gold, purple, green]]')
-#' x %>% ggplot(map) + geom_point()
+#' x %>% 
+#'   decorate('Heart: [ color: [gold, purple, green]]') %>%
+#'   ggplot(map) + geom_point()
 #' 
 #' # Colors are matched to particular levels. Purple drops out here:
-#' x %>% filter(Heart != 'Moderate') %>% ggplot(map) + geom_point()
+#' x %>% 
+#'   decorate('Heart: [ color: [gold, purple, green]]') %>%
+#'   filter(Heart != 'Moderate') %>%
+#'   ggplot(map) + geom_point()
 #'
 #' # We can resolve other columns for a chance to enrich the output with units.
-#' x %<>% resolve
-#' suppressWarnings( # because this complains for columns with no units
-#'   x <- modify(x, title = paste0(label, '\n(', units, ')'))
-#' )
-#' x %>% ggplot(map) + geom_point()
+#' x %>%
+#'   resolve %>%
+#'   ggplot(map) + geom_point()
 #'
-#' # Or something fancier.
-#' x %<>% modify(conc, title = 'conc_serum. (mg*L^-1.)')
-#' x %>% ggplot(map) + geom_point()
+#' # Underscore and circumflex imply subscript and superscript:
+#' x %>% 
+#'   redecorate("conc: [ conc_serum, mg*L^-1 ]") %>%
+#'   ggplot(map) + geom_point()
 #'
-#' # The y-axis title is deliberately given in spork syntax for elegant coercion:
-#' library(spork)
-#' x %<>% modify(conc, expression = as.expression(as_plotmath(as_spork(title))))
-#' x %>% ggplot(map) + geom_point()
-
-#' # Add a fancier label for Heart, and facet by a factor:
-#' x %<>% modify(Heart, expression = as.expression(as_plotmath(as_spork('CHF^\\*'))))
-#' x %>% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
-#'
-#' # ggready handles the units and plotmath implicitly for a 'standard' display:
-#' x %>% ggready %>% ggplot(map) + geom_point() + facet_wrap(~Creatinine)
-#'
-#' # Notice that instead of over-writing the label
-#' # attribute, we are creating a stack of label
-#' # substitutes (title, expression) so that
-#' # label is still available as an argument
-#' # if we want to try something else.  The
-#' # print method by default looks for all of these.
-#' # Precedence is expression, title, label, column name.
-#' # Precedence can be controlled using
-#' # options(decorated_ggplot_search = c(a, b, ...) ).
+#' # If we invoke enscript(), the subscripts and superscripts are rendered: 
+#' x %>% 
+#'   redecorate("conc: [ conc_serum, mg*L^-1 ]") %>%
+#'   redecorate("Heart: [ CHF^\\* ]") %>%
+#'   enscript %>%
+#'   ggplot(map) + geom_point()
 #'
 #' # Here we try a dataset with conditional labels and units.
 #'
 #' file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
 #' x <- file %>% decorate %>% resolve
-#' # Note that value has two elements for label and guide.
+#' # Note that value has two elements for label, etc.
 #' x %>% decorations(value)
 #'
 #' # The print method defaults to the first, with warning.
@@ -191,12 +179,12 @@ print.decorated_ggplot <- function(
     ),
     drop = getOption('yamlet_decorated_ggplot_drop', TRUE)
 ){
-  x <- .decorated_ggplot(
-    x = x,
-    search = search,
-    discrete = discrete,
-    drop = drop
-  )
+  # x <- .decorated_ggplot(
+  #   x = x,
+  #   search = search,
+  #   discrete = discrete,
+  #   drop = drop
+  # )
   NextMethod()
 }
 
@@ -214,13 +202,29 @@ print.decorated_ggplot <- function(
 ){
 
   # support for discrete manual scales
-  labelnames <- names(x$labels)
+  theLabels <- x$labels
+  if(gg_new()){
+    # get_labs builds the plot to assess the labels.
+    # we need to know the old-style labels so that
+    # we can locate value-added metadata by column.
+    # thus we need to suppress label attributes here
+    # to defeat their new-style uptake.
+    decoy <- x
+    decoy$data %<>% modify(label = NULL)
+    theLabels <- get_labs(decoy)
+    # ignore labels that were explicitly set
+    candidates <- names(theLabels)
+    userdefined <- x$labels
+    keep <- setdiff(candidates, userdefined)
+    theLabels <- theLabels[keep]
+  }
+  labelnames <- names(theLabels)
   aesthetics <- intersect(discrete, labelnames)
   scaletypes <- sapply(x$scales$scales, `[[`, 'aesthetics')
   # don't redefine existing scales:
   aesthetics <- setdiff(aesthetics, scaletypes)
   for(a in aesthetics){                 # color, fill, size, etc
-    src <- x$labels[[a]]                # the corresponding label
+    src <- theLabels[[a]]               # the corresponding label
     if(length(src) == 1){               # needs to be singular
       if(src %in% names(x$data)){       # and present in data
         col <- x$data[[src]]            # the column name
@@ -284,36 +288,59 @@ print.decorated_ggplot <- function(
     }
   }
   
-  for(i in seq_along(x$labels)){           # x (gg object) stores names of used columns as $labels
-    lab <- x$labels[[i]]                   # handle one label
+  for(i in seq_along(theLabels)){           # x (gg object) stores names of used columns as $labels
+    lab <- theLabels[[i]]                   # handle one label
+    aesthetic <- names(theLabels)[[i]]
     if(length(lab)){                       # i.e. not null or empty expression
-      if(length(lab) == 1){
+      #if(length(lab) == 1){               # indeterminate after 3.5.1
         if(lab %in% names(x$data)){            # if this is just a bare column name
           col <- x$data[[lab]]
           atr <- attributes(col)
           for( s in rev(search)){              # end with first
             label <- atr[[s]]                  # retrieve label
             if(!is.null(label)){
-              x$labels[[i]] <- label           # overwrite default label with one from data attributes
+              # note well:
+              # for 3.5.1 and before, x$label is being overwritten, as "theLabels" is essentially x$labels.
+              # In later versions, x$labels represents manual user specifications and therefore
+              # has been filtered from "theLabels" to *prevent* overwriting.
+              # Therefore, this is a new assignment.
+              if(length(label) > 1){ # expecting scalar labels for these aesthetics
+                theFirst <- label[[1]]
+                if(length(names(label)))label = paste(
+                  paste0(
+                    '(',
+                    names(label),
+                    ')'
+                  ),
+                  label
+                )
+                label <- paste(label, collapse = '\n')
+                msg <- paste('using first of', label, sep = '\n')
+                warning(msg)
+                # and finally, the substitution:
+                label <- theFirst
+              }
+              x$labels[[aesthetic]] <- label  # assign default label with one from data attributes
             }
           }
         } 
-      }
+      # } # end if length(lab) == 1
       # done with search.  Plural labels? Note x$labels unchanged, lab unchanged
-      if(length(lab) > 1){
-        if(length(names(lab)))lab = paste(
-          paste0(
-            '(',
-            names(lab),
-            ')'
-          ),
-          lab
-        )
-        lab <- paste(lab, collapse = '\n')
-        msg <- paste('using first of', lab, sep = '\n')
-        warning(msg)
-        x$labels[[i]] <- x$labels[[i]][[1]]
-      }
+      # if(length(lab) > 1){
+      #   theFirst <- lab[[1]]
+      #   if(length(names(lab)))lab = paste(
+      #     paste0(
+      #       '(',
+      #       names(lab),
+      #       ')'
+      #     ),
+      #     lab
+      #   )
+      #   lab <- paste(lab, collapse = '\n')
+      #   msg <- paste('using first of', lab, sep = '\n')
+      #   warning(msg)
+      #   x$labels[[aesthetic]] <- theFirst
+      # }
     }
   }
   
@@ -365,3 +392,29 @@ print.decorated_ggplot <- function(
   return(x)
 }
 
+#' Detect Revised Label Strategy
+#' 
+#' Detects the existence of qqplot's updated label strategy after v. 3.5.1,
+#' e.g. ggplot2_3.5.1.9000. For internal use to accommodate breaking changes.
+#' 
+gg_new <- function()"get_labs" %in% getNamespaceExports("ggplot2")
+
+#' Get Labels
+#' 
+#' Gets labels for a ggplot object.  Not exported, to avoid confusion.
+#' Development version of ggplot2 implements new get_labs() interface.
+#' This function is an abstraction that supports new vs old approaches.
+#' See https://github.com/tidyverse/ggplot2/pull/6078.
+#' 
+#' @param plot the ggplot
+#' 
+get_labs <- function(plot) {
+  if (gg_new()) {
+    # ggplot_build.decorated_ggplot calls get_labs
+    # partial unclass to avoid circularity ...
+    class(plot) <- setdiff(class(plot), 'decorated_ggplot')
+    return(ggplot2::get_labs(plot))
+  }
+  # else old style labels
+  return(plot$labels)
+}
