@@ -147,6 +147,28 @@ test_that('print method for decorate_ggplot respects aesthetics with assignment 
   
 })
 
+test_that('isometric() and symmetric execute without error on decorated ggplots',{
+  
+  set.seed(0)
+  x <- 1:100
+  y <- rnorm(x)
+  z <- rnorm(x)
+  d <- data.frame(x, y, z)
+  ggplot(d, aes(x,y)) + geom_point() + symmetric()
+  ggplot(d, aes(z,y)) + geom_point() + isometric()
+  
+  d <- decorate(d, '
+    x: Abcissa
+    "y": Ordinate
+    z: Abcissa 2
+  ')
+  
+  ggplot(d, aes(x,y)) + geom_point() + symmetric()
+  ggplot(d, aes(z,y)) + geom_point() + isometric()
+  
+  
+})
+
 test_that('print.decorated_ggplot correctly handles spork for x axis, y axis, facet labels, and legends',{
   library(magrittr)
   library(ggplot2)
