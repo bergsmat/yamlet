@@ -4,7 +4,7 @@
 \alias{ggplot_add.ggplot_symmetric}
 \title{Add Symmetry to Plot Object}
 \usage{
-\method{ggplot_add}{ggplot_symmetric}(object, plot, object_name)
+\method{ggplot_add}{ggplot_symmetric}(object, plot, object_name, ...)
 }
 \value{
 gg

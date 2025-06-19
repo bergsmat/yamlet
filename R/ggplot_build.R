@@ -17,7 +17,7 @@
 #' @keywords internal
 #' @family decorated_ggplot
 
-ggplot_build.decorated_ggplot <- function(plot){
+ggplot_build.decorated_ggplot <- function(plot, ...){
   search = getOption(
     'yamlet_decorated_ggplot_search',
     c('expression', 'title', 'label')
@@ -32,7 +32,8 @@ ggplot_build.decorated_ggplot <- function(plot){
     x = plot,
     search = search,
     discrete = discrete,
-    drop = drop
+    drop = drop,
+    ...
   )
 
   built <- NextMethod()

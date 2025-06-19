@@ -4,7 +4,7 @@
 \alias{ggplot_add.ggplot_isometric}
 \title{Add Isometry to Plot Object}
 \usage{
-\method{ggplot_add}{ggplot_isometric}(object, plot, object_name)
+\method{ggplot_add}{ggplot_isometric}(object, plot, object_name, ...)
 }
 \value{
 gg

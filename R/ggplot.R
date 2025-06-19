@@ -198,7 +198,8 @@ print.decorated_ggplot <- function(
       'yamlet_decorated_ggplot_discrete',
       c('colour', 'fill', 'size', 'shape', 'linetype', 'linewidth', 'alpha')
     ),
-    drop = getOption('yamlet_decorated_ggplot_drop', TRUE)
+    drop = getOption('yamlet_decorated_ggplot_drop', TRUE),
+    ...
 ){
 
   # support for discrete manual scales

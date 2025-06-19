@@ -4,7 +4,7 @@
 \alias{ggplot_build.decorated_ggplot}
 \title{Enable Automatic Labels and Units for ggplot}
 \usage{
-\method{ggplot_build}{decorated_ggplot}(plot)
+\method{ggplot_build}{decorated_ggplot}(plot, ...)
 }
 \arguments{
 \item{plot}{class 'decorated_ggplot' from \code{\link{ggplot.decorated}}}

@@ -30,7 +30,7 @@ isometric <- function()structure(list(), class = 'ggplot_isometric')
 #' @family isometric
 #' @examples
 #' example(isometric)
-ggplot_add.ggplot_isometric <- function(object, plot, object_name){
+ggplot_add.ggplot_isometric <- function(object, plot, object_name, ...){
   # https://stackoverflow.com/questions/42588238/setting-individual-y-axis-limits-with-facet-wrap-not-with-scales-free-y
   theLabels <- get_labs(plot)
   stopifnot('x' %in% names(theLabels))
@@ -90,7 +90,7 @@ symmetric <- function()structure(list(), class = 'ggplot_symmetric')
 #' @examples
 #' example(symmetric)
 
-ggplot_add.ggplot_symmetric <- function(object, plot, object_name){
+ggplot_add.ggplot_symmetric <- function(object, plot, object_name, ...){
   theLabels <- get_labs(plot)
   nms <- names(theLabels)
   stopifnot('y' %in% nms)
