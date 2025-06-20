@@ -23,7 +23,7 @@ below to see their documentation.
 
   \item{encode}{\code{\link[encode]{encode}}}
 
-  \item{ggplot2}{\code{\link[ggplot2:update_ggplot]{ggplot_add}}}
+  \item{ggplot2}{\code{\link[ggplot2]{ggplot_add}}}
 
   \item{pillar}{\code{\link[pillar]{type_sum}}}
 

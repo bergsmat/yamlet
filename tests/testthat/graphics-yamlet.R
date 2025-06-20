@@ -147,7 +147,7 @@ test_that('print method for decorate_ggplot respects aesthetics with assignment 
   
 })
 
-test_that('isometric() and symmetric execute without error on decorated ggplots',{
+test_that('isometric() and symmetric() execute without error on decorated ggplots',{
   
   set.seed(0)
   x <- 1:100

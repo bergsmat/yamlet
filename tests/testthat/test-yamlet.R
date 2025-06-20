@@ -1878,9 +1878,24 @@ test_that('the data.frame method for modify() fails gracefully if assignment can
 })
 
 test_that('print.decorated_ggplot() warns if label has length > 1',{
+
+  skip_if(gg_new())
+  
+  # under the new paradigm,
+  # ggplot2 only uses the first line
+  # of a multi-line label,
+  # and in any case an attribute
+  # such as the ggtitle below
+  # will be considered inviolable
+  # by yamlet, and thus not even tested
+  # making the warning unreachable.
+  # see related discussion in 
+  # code for yamlet:::get_labs().
+  
   library(magrittr)
   library(ggplot2)
   library(yamlet)
+  library(dplyr)
   
   a <- Theoph %>%
     as.data.frame %>%
