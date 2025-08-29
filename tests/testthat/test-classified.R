@@ -101,3 +101,18 @@ test_that('items with an empty list as guide resolve to classified',{
   expect_true(length(attr(x$ID, 'guide')) == 0)
   decorations(x)
 })
+test_that('decorated factor honors codelist',{
+  library(magrittr)
+  x <- factor(1:3)
+  attr(x, 'guide') <- list(a = 1, b = 2, c = 3)
+  expect_identical(type.convert(x, as.is=TRUE), 1:3)
+  expect_identical(type.convert(resolve(x), as.is=TRUE), c('a','b','c'))
+  x <- data.frame(bar = x)
+  x
+  resolve(x)
+  expect_identical(
+    c('a','b','c'),
+    x %>% resolve %$% bar %>% type.convert(as.is=TRUE)
+  )
+  
+})

@@ -35,11 +35,14 @@ Other resolve:
 \code{\link{desolve.classified}()},
 \code{\link{desolve.data.frame}()},
 \code{\link{desolve.decorated}()},
+\code{\link{desolve.default}()},
 \code{\link{desolve.dvec}()},
 \code{\link{resolve}()},
 \code{\link{resolve.data.frame}()},
 \code{\link{resolve.decorated}()},
-\code{\link{resolve.dvec}()}
+\code{\link{resolve.default}()},
+\code{\link{resolve.dvec}()},
+\code{\link{resolve.factor}()}
 
 Other dvec: 
 \code{\link{[.dvec}()},
@@ -60,9 +63,11 @@ Other dvec:
 \code{\link{explicit_guide.data.frame}()},
 \code{\link{format.dvec}()},
 \code{\link{implicit_guide.dvec}()},
+\code{\link{implicit_guide.factor}()},
 \code{\link{length.dvec}()},
 \code{\link{print.dvec}()},
 \code{\link{resolve.dvec}()},
+\code{\link{resolve.factor}()},
 \code{\link{unclassified.dvec}()}
 }
 \concept{dvec}

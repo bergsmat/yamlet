@@ -29,12 +29,15 @@ Other resolve:
 \code{\link{desolve.classified}()},
 \code{\link{desolve.data.frame}()},
 \code{\link{desolve.decorated}()},
+\code{\link{desolve.default}()},
 \code{\link{desolve.dvec}()},
 \code{\link{resolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.data.frame}()},
 \code{\link{resolve.decorated}()},
-\code{\link{resolve.dvec}()}
+\code{\link{resolve.default}()},
+\code{\link{resolve.dvec}()},
+\code{\link{resolve.factor}()}
 }
 \concept{resolve}
 \keyword{internal}

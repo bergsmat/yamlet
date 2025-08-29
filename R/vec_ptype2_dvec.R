@@ -141,9 +141,9 @@ vec_ptype2.double.dvec <- function(x, y, ...){
   p
 }
 
-#' Find Common Type for dvec, dvec
+#' Find Common Type for dvec, character
 #' 
-#' Find common type for dvec, dvec.
+#' Find common type for dvec, character
 #' @param x dvec
 #' @param y dvec
 #' @param ... ignored

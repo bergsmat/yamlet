@@ -43,10 +43,12 @@ Other dvec:
 \code{\link{explicit_guide.data.frame}()},
 \code{\link{format.dvec}()},
 \code{\link{implicit_guide.dvec}()},
+\code{\link{implicit_guide.factor}()},
 \code{\link{length.dvec}()},
 \code{\link{print.dvec}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.dvec}()},
+\code{\link{resolve.factor}()},
 \code{\link{unclassified.dvec}()}
 }
 \concept{dvec}

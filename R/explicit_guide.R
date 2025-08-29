@@ -252,6 +252,7 @@ explicit_guide.data.frame <- function(
 ){
   stopifnot(is.logical(overwrite), length(overwrite) == 1)
   stopifnot(is.logical(simplify), length(simplify) == 1)
+  stopifnot(is.logical(expand), length(expand) == 1)
   y <- do.call(as_yamlet, c(list(x), named(...)))
   nms <- selected(x, ...)
   y <- y[as.character(nms)] # selected may have incompatible class path

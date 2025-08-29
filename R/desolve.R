@@ -15,6 +15,17 @@
 #' example(resolve.decorated)
 desolve <- function(x, ...)UseMethod('desolve')
 
+#' Desolve Default
+#' 
+#' By default, desolves by returning the unmodified object.
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @return class of x
+#' @family resolve
+desolve.default <- function(x, ...)x
+
 #' Desolve Guide for Decorated
 #'
 #' Un-resolves explicit usage of default key 'guide' to

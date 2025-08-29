@@ -14,6 +14,17 @@
 #' example(resolve.decorated)
 resolve <- function(x, ...)UseMethod('resolve')
 
+#' Resolve Default
+#'
+#' By default, resolves by returning the unmodified object.
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @return class of x
+#' @family resolve
+resolve.default <- function(x, ...)x
+
 #' Resolve Guide for Decorated
 #'
 #' Resolves implicit usage of default key 'guide' to
@@ -47,6 +58,7 @@ resolve.decorated <- function(x, ...){
   x <- make_title(x, ...)
   x
 }
+
 #' Resolve Guide for Decorated Vector
 #'
 #' Resolves implicit usage of default key 'guide' to
@@ -76,6 +88,47 @@ resolve.dvec <- function(x, ...){
   if('codelist' %in% names(attributes(x))){
     x <- classified(x, ...)
   }
+  if('units' %in% names(attributes(x))){
+    x <- make_title(x, ...)
+  }
+  x
+}
+
+#' Resolve Guide for Factor
+#'
+#' Resolves implicit usage of default key 'guide' to
+#' explicit usage for factor.
+#' Calls \code{\link{explicit_guide}}
+#' followed by \code{\link{classified}}.
+#' If option \code{yamlet_with_title} is not NULL, and if 'units'
+#' present, label and units will be concatenated by default to create
+#' a title attribute (but this is generally unexpected).
+#' 
+#' If decorating a factor with a guide, it is recommended to 
+#' supply one that resolves to a codelist. An even safer practice
+#' is to convert the factor first to character, so that there are 
+#' no factor levels to disagree with the (somewhat equivalent) codelist.
+#' 
+#' @param x factor
+#' @param ... passed to \code{\link{explicit_guide}}, \code{\link{classified}}, and \code{\link{make_title}}
+#' @export
+#' @keywords internal
+#' @return classified
+#' @family resolve
+#' @family dvec
+#' @examples
+#' library(magrittr)
+#' x <- factor(1:3)
+#' attr(x, 'guide') <- list(a = 1, b = 2, c = 3)
+#' x
+#' resolve(x)
+#' x <- data.frame(bar = x)
+#' x
+#' resolve(x)
+#' 
+resolve.factor <- function(x, ...){
+  x <- explicit_guide(x, ...)
+  x <- classified(x, ...)
   if('units' %in% names(attributes(x))){
     x <- make_title(x, ...)
   }
@@ -129,3 +182,5 @@ resolve.data.frame <- function(x, ...){
   # as 'meta' and issues an error
   resolve(as_decorated(x), ...)
 }
+
+

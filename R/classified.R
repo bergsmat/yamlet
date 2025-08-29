@@ -49,15 +49,34 @@ classified.factor <- function(
   if(missing(labels)) labels <- levels
   stopifnot(identical(length(levels), length(labels)))
   if(any(duplicated(labels)))(stop(paste( collapse = ': ', c(token, 'duplicated labels not supported in this context'))))
-  y <- classified.default(
-    x,
-    levels = levels,
-    labels = labels,
-    exclude = exclude,
-    ordered = ordered,
-    nmax = NA,
-    ...
-  )
+  
+  # @ 1.3.0 to support decorated factors (incl. resolve.factor())
+  at <- attributes(x)
+  at$class <- NULL
+  at$levels <- NULL
+  x <- type.convert(x, as.is = TRUE)
+  attributes(x) <- at
+  
+  # if x has a codelist attribute, don't pass levels and labels)
+  
+  args <- list(x)
+  if(!('codelist' %in% names(attributes(x)))){
+    args <- c(args, list(levels = levels, labels = labels))
+  }
+  args <- c(args, list(exclude = exclude, ordered = ordered, nmax = nmax))
+  args <- c(args, list(...))
+  
+  # y <- classified.default(
+  #   x,
+  #   levels = levels,
+  #   labels = labels,
+  #   exclude = exclude,
+  #   ordered = ordered,
+  #   nmax = NA,
+  #   ...
+  # )
+  
+  y <- do.call(classified.default, args)
   y
 }
 
