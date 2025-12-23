@@ -17,6 +17,14 @@ globalVariables(c('x','y'))
 #' and 'decorated' using \code{\link{as_decorated}}
 #' (supplies null decorations) and \code{\link{as.data.frame}}
 #' (preserves decorations).
+#' 
+#' As of version 1.2.7, an attempt is made to support
+#' decorations in successive layers. If more than 
+#' one dataset is involved, decorations accumulate in
+#' layer order (beginning with the default data, if any)
+#' and are enforced on successive layers. For finer
+#' control, limit "competing" datasets to those variables
+#' used in the layer.
 #'
 #' @param data decorated, see \code{\link{decorate}}
 #' @param ... passed to \code{\link[ggplot2]{ggplot}}
@@ -162,6 +170,7 @@ ggplot.decorated <- function(data, ...){
 #' @param drop should unused factor levels be omitted from data-driven discrete scales?
 #' @return see \code{\link[ggplot2]{print.ggplot}}
 #' @importFrom ggplot2 scale_discrete_manual waiver
+#' @importFrom dplyr bind_rows
 #' @export
 #' @family decorated_ggplot
 #' @examples
@@ -202,6 +211,21 @@ print.decorated_ggplot <- function(
     drop = getOption('yamlet_decorated_ggplot_drop', TRUE),
     ...
 ){
+  
+  # In 1.2.7, we harmonize decorations across layers
+  # following ggplot convention, last definition trumps earlier
+  theDecorations <- data.frame()
+
+  for(i in rev(seq_along(x$layers))){
+    if(length(x$layers[[i]]$data)){
+      theDecorations <- bind_rows(theDecorations, slice(x$layers[[i]]$data, 0))
+      x$layers[[i]]$data <- redecorate(x$layers[[i]]$data, theDecorations)
+    }
+  }
+    if(length(x$data)){
+    theDecorations <- bind_rows(theDecorations, slice(x$data, 0))
+    x$data <- redecorate(x$data, theDecorations)
+  }
 
   # support for discrete manual scales
   
@@ -434,7 +458,7 @@ get_labs <- function(plot) {
     
     # ggplot_build.decorated_ggplot calls get_labs
     # as do the ggplot_symmetric and ggplot_isometric methods
-    #  for ggplot_add()
+    # for ggplot_add()
     
     # get_labs builds the plot to assess the labels.
     # we need to know the old-style labels so that
@@ -453,13 +477,22 @@ get_labs <- function(plot) {
     # is being used for that aesthetic (e.g., x)
     # so we can't go back and find other clever attributes
     # such as units, colors, and what not.
-    # If we yeet the the labels, get_labels() gives us
+    # If we yeet the labels, get_labels() gives us
     # boring but useful mappings with which to work.
     # we practice on a decoy so that we don't really
     # make 'plot' less informative.
     
     decoy <- plot
-    decoy$data <- modify(decoy$data, label = NULL)
+    if(length(decoy$data)){ # maybe no default data
+      decoy$data <- modify(decoy$data, label = NULL)
+    }
+    
+    # TTB 12/18/2025 do this also for each layer
+    for(i in seq_along(decoy$layers)){
+      if(length(decoy$layers[[i]]$data)){ # maybe NULL, maybe class 'waiver': list()
+        decoy$layers[[i]]$data <-  modify(decoy$layers[[i]]$data, label = NULL)
+      }
+    }
     
     # partial unclass to avoid circularity ...
     class(decoy) <- setdiff(class(decoy), 'decorated_ggplot')

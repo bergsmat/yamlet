@@ -1,3 +1,38 @@
+#' Undecorate Something
+#'
+#' Undecorates something.
+#' Generic, with method \code{\link{undecorate.default}}.
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @family decorate
+#' @return a list-like object, typically data.frame
+undecorate <- function(x, ...)UseMethod('undecorate')
+
+#' Undecorate by Default
+#'
+#' Undecorates by default method. Calls \code{\link{type.convert}} to 
+#' each element, with \code{as.is = TRUE} by default.
+#' 
+#' @param x object
+#' @param as.is passed to \code{\link{type.convert}}
+#' @param ... passed arguments
+#' @export
+#' @family decorate
+#' @return a list-like object, typically data.frame
+#' @examples
+#' file <- system.file(package = 'yamlet', 'extdata','xanomeline.csv.gz')
+#' x <- io_csv(file)
+#' head(decorations(x))
+#' head(decorations(undecorate(x)))
+
+undecorate.default <- function(x, as.is = TRUE, ...){
+  y <- type.convert(x, as.is = TRUE, ...)
+  class(y) <- setdiff(class(y), 'decorated')
+  return(y)
+}
+
 #' Redecorate a List-like Object
 #'
 #' Redecorates a list-like object.

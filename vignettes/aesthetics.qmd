@@ -1,0 +1,117 @@
+---
+title: "Yamlet Cascading Aesthetics"
+format: 
+  html:
+    self-contained: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Behavior
+
+Plotting a decorated data.frame in ggplot() has special behavior for aesthetics
+defined using yamlet decorations.  If there is only one dataset (typical), the 
+aesthetics are coordinated with the (levels of the) corresponding variable.
+
+If one or more additional layers provide non-default data, any decorations therein
+override decorations previously specified for the same variable and aesthetic.
+This is consistent with how ggplot() handles repeated definitions for labels:
+the last provided label "wins". 
+
+## Example
+
+In the example below, points are plotted using the observed data, then 
+summary data is plotted as a separate layer, supplying its own data.
+the plot is rendered with decorations (left) and without (right).
+
+ * Notice that the y axis label is 'y' not 'z' (as in summary), consistent
+   with default ggplot behavior where no label is supplied.
+ * Notice that the label for color and shape 'Groups', not 'Subset', 
+   because the last layer wins; default ggplot behavior where label is supplied.
+ * Likewise, colors are blue and magenta, not green and yellow, because the 
+   summary layer was supplied last.
+ * The summary layer respects the linetype defined earlier, having
+   no such definition (decoration) in its own data.
+ * The observations layer respects the shapes defined with the summary
+   layer, which in fact are not even used by the summary layer.
+   
+This example is a bit contrived for heuristic value.  It makes more sense
+to define aesthetics in the data supplied to the layer that uses them. 
+As a best practice, consider specifying all aesthetics in the default data only.
+
+
+```{r message = FALSE}
+#| label: Layered Aesthetics
+#| fig.width: 5.02
+#| fig.height: 3.28
+#| out.width: 200%
+
+library(magrittr)
+library(ggplot2)
+library(yamlet)
+library(dplyr)
+library(metaplot)
+
+set.seed(10)
+x <- data.frame(
+  x = 1:100,
+  group = c('a','b'),
+  y = rnorm(100)
+)
+
+# observed data
+x %<>% decorate('
+  group: [ 
+    Subset, 
+    [ a, b ], 
+    color: [ green, yellow ] , 
+    linetype: [ dashed, dotdash ]
+  ]
+')
+
+# summary data
+y <- x %>% group_by(group) %>% summarize(z = mean(y))
+y %<>% redecorate('
+  group: [ 
+    Group, 
+    [ a, b ], 
+    color: [ blue, magenta ], 
+    shape: [ 15, 19 ]
+  ]
+')
+
+
+p <- x %>%
+  resolve %>%
+  ggplot(aes(x, y)) +
+  geom_point(aes(color = group, shape = group)) +
+  geom_hline(
+    data = resolve(y), 
+    aes(
+      yintercept = z, 
+      color = group, 
+      linetype = group
+    )
+  ) + 
+  theme(legend.position = "top") +
+  labs(subtitle = 'with decorations')
+
+q <- x %>%
+  undecorate %>%
+  ggplot(aes(x, y)) +
+  geom_point(aes(color = group, shape = group)) +
+  geom_hline(
+    data = undecorate(y), 
+    aes(
+      yintercept = z, 
+      color = group, 
+      linetype = group
+    )
+  ) + 
+  theme(legend.position = "top") +
+  labs(subtitle = 'without decorations')
+
+multiplot(p, q) # %>% devsize(2,2)
+
+sessionInfo()
+```

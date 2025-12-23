@@ -1919,7 +1919,12 @@ test_that('print.decorated_ggplot() warns if label has length > 1',{
   
 })
 
-
+test_that('yaml package result is stable',{
+  file <- system.file(package = 'yamlet', 'extdata','xanomeline.csv.gz')
+  x <- io_csv(file)
+  expect_equal_to_reference(file = '134.rds', decorations(undecorate(x)))
+  expect_equal_to_reference(file = '135.rds', decorations(undecorate(resolve(x))))
+})
 
 
 

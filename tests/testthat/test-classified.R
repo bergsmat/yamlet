@@ -116,3 +116,4 @@ test_that('decorated factor honors codelist',{
   )
   
 })
+

@@ -67,7 +67,9 @@ Other decorate:
 \code{\link{decorations_groups}()},
 \code{\link{decorations_groups.data.frame}()},
 \code{\link{group_by_decorations}()},
-\code{\link{group_by_decorations.data.frame}()}
+\code{\link{group_by_decorations.data.frame}()},
+\code{\link{undecorate}()},
+\code{\link{undecorate.default}()}
 }
 \concept{decorate}
 \keyword{internal}

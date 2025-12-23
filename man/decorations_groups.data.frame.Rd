@@ -52,6 +52,8 @@ Other decorate:
 \code{\link{decorations_groups}()},
 \code{\link{group_by_decorations}()},
 \code{\link{group_by_decorations.data.frame}()},
-\code{\link{redecorate}()}
+\code{\link{redecorate}()},
+\code{\link{undecorate}()},
+\code{\link{undecorate.default}()}
 }
 \concept{decorate}

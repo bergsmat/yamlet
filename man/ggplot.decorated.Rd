@@ -28,6 +28,14 @@ For fine control, you can switch between 'data.frame'
 and 'decorated' using \code{\link{as_decorated}}
 (supplies null decorations) and \code{\link{as.data.frame}}
 (preserves decorations).
+
+As of version 1.2.7, an attempt is made to support
+decorations in successive layers. If more than 
+one dataset is involved, decorations accumulate in
+layer order (beginning with the default data, if any)
+and are enforced on successive layers. For finer
+control, limit "competing" datasets to those variables
+used in the layer.
 }
 \examples{
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
