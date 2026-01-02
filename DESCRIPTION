@@ -1,7 +1,7 @@
 Package: yamlet
 Type: Package
 Title: Versatile Curation of Table Metadata
-Version: 1.2.8
+Version: 1.2.9
 Authors@R: person(given = "Tim",
                   family = "Bergsma",
                   role = c("aut", "cre"),
@@ -23,4 +23,4 @@ Imports: yaml, csv (>= 0.6.2), encode, units, spork (>= 0.3.3),
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Suggests: testthat (>= 2.1.0), magrittr, table1, rmarkdown, gridExtra, 
- haven, tablet (>= 0.6.8), kableExtra
+ haven, tablet (>= 0.6.8), kableExtra, metaplot

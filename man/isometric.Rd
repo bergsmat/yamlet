@@ -4,7 +4,10 @@
 \alias{isometric}
 \title{Enforce Isometry}
 \usage{
-isometric()
+isometric(expand = 0)
+}
+\arguments{
+\item{expand}{amount of scale expansion to allow, e.g. 0.05 (default 0 for best fidelity)}
 }
 \value{
 ggplot_isometric

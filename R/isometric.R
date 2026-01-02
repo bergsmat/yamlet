@@ -9,13 +9,14 @@ globalVariables(c('_yamlet_ymin','_yamlet_ymax','_yamlet_xmin','_yamlet_xmax'))
 #' @export
 #' @keywords internal
 #' @family isometric
+#' @param expand amount of scale expansion to allow, e.g. 0.05 (default 0 for best fidelity)
 #' @examples
 #' library(magrittr)
 #' library(ggplot2)
 #' data.frame(x = 1:5, y = 3:7) %>%
 #' ggplot(aes(x, y)) + geom_point() + isometric()
 
-isometric <- function()structure(list(), class = 'ggplot_isometric')
+isometric <- function(expand = 0)structure(list(expand = expand), class = 'ggplot_isometric')
 
 #' Add Isometry to Plot Object
 #' 
@@ -24,42 +25,66 @@ isometric <- function()structure(list(), class = 'ggplot_isometric')
 #' @seealso isometric
 #' @export
 #' @keywords internal
-#' @importFrom ggplot2 ggplot_add theme geom_blank aes
+#' @importFrom ggplot2 ggplot_add theme geom_blank aes ggplot_build coord_fixed
 #' @importFrom rlang sym
 #' @method ggplot_add ggplot_isometric
 #' @family isometric
 #' @examples
 #' example(isometric)
-ggplot_add.ggplot_isometric <- function(object, plot, object_name, ...){
-  # https://stackoverflow.com/questions/42588238/setting-individual-y-axis-limits-with-facet-wrap-not-with-scales-free-y
-  theLabels <- get_labs(plot)
-  stopifnot('x' %in% names(theLabels))
-  stopifnot('y' %in% names(theLabels))
-  wrap_facet <- plot$facet$params$facets
-  grid_facet_col <- names(plot$facet$params$rows)
-  grid_facet_row <- names(plot$facet$params$cols)
-  grid_facets <- c(grid_facet_col, grid_facet_row)
-  facets <- character(0)
-  if(!is.null(wrap_facet)){
-    plot$data <-  group_by(plot$data, !!!wrap_facet)
+ggplot_add.ggplot_isometric <- function(object, plot, object_name, ...) {
+  # as suggested by chatgpt 5
+  # Build the plot to learn trained panel ranges (includes stats like geom_smooth)
+  b <- ggplot2::ggplot_build(plot)
+  
+  # panel_params holds the trained ranges; there is one entry per panel
+  pp <- b$layout$panel_params
+  
+  # helper to extract range across ggplot2 versions
+  get_range <- function(panel, axis = c("x", "y")) {
+    axis <- match.arg(axis)
+    # new-ish ggplot2 uses <axis>.range; older uses range$range
+    if (!is.null(panel[[paste0(axis, ".range")]])) {
+      panel[[paste0(axis, ".range")]]
+    } else if (!is.null(panel[[axis]]$range$range)) {
+      panel[[axis]]$range$range
+    } else {
+      stop("Could not extract trained panel ranges from ggplot build.")
+    }
   }
-  if(!is.null(grid_facets)){
-    plot$data <- group_by(plot$data, !!!sapply(grid_facets, sym))
+  
+  x_ranges <- lapply(pp, get_range, axis = "x")
+  y_ranges <- lapply(pp, get_range, axis = "y")
+  
+  # If facets have free scales, these ranges differ panel-to-panel.
+  # Base ggplot2 can’t set coord limits per panel.
+  same_x <- length(unique(vapply(x_ranges, paste, "", collapse = ","))) == 1
+  same_y <- length(unique(vapply(y_ranges, paste, "", collapse = ","))) == 1
+  if (!(same_x && same_y) && length(pp) > 1) {
+    stop(
+      "isometric(): Facets appear to use free scales (panel ranges differ).\n",
+      "Base ggplot2 can't enforce different x/y limits per panel.\n",
+      "Options:\n",
+      "  * Use fixed scales (the default), or\n",
+      "  * Use ggh4x::facetted_pos_scales() to set per-facet limits, or\n",
+      "  * Split by facet and combine plots (patchwork/cowplot)."
+    )
   }
-  # calculate x,y min,max by group if any
-  # https://stackoverflow.com/questions/46131829/unquote-the-variable-name-on-the-right-side-of-mutate-function-in-dplyr
-  plot$data <- mutate(plot$data, `_yamlet_ymin` = min(na.rm = TRUE, !!rlang::sym(theLabels$y)))
-  plot$data <- mutate(plot$data, `_yamlet_ymax` = max(na.rm = TRUE, !!rlang::sym(theLabels$y)))
-  plot$data <- mutate(plot$data, `_yamlet_xmin` = min(na.rm = TRUE, !!rlang::sym(theLabels$x)))
-  plot$data <- mutate(plot$data, `_yamlet_xmax` = max(na.rm = TRUE, !!rlang::sym(theLabels$x)))
- 
-  plot <- plot + geom_blank(aes(y = `_yamlet_xmin`))
-  plot <- plot + geom_blank(aes(y = `_yamlet_xmax`))
-  plot <- plot + geom_blank(aes(x = `_yamlet_ymin`))
-  plot <- plot + geom_blank(aes(x = `_yamlet_ymax`))
-  plot <- plot + theme(aspect.ratio = 1)
-  plot
+  
+  # Compute one common limit that matches BOTH axes.
+  xr <- range(unlist(x_ranges), finite = TRUE)
+  yr <- range(unlist(y_ranges), finite = TRUE)
+  lim <- range(c(xr, yr), finite = TRUE)
+  
+  # Apply: fixed aspect + same numeric limits on both axes.
+  plot +
+    ggplot2::coord_fixed(
+      ratio  = 1,
+      xlim   = lim,
+      ylim   = lim,
+      expand = object$expand
+    )
 }
+
 
 #' Enforce Symmetry
 #' 
@@ -69,13 +94,14 @@ ggplot_add.ggplot_isometric <- function(object, plot, object_name, ...){
 #' @export
 #' @keywords internal
 #' @family isometric
+#' @param expand amount of scale expansion to allow, e.g. 0.05 (default 0 for best fidelity)
 #' @examples
 #' library(magrittr)
 #' library(ggplot2)
 #' data.frame(x = 1:10, y = c(-2, 5, 0, -1, 4, 0, 1, -3, 3, 0)) %>%
 #' ggplot(aes(x, y)) + geom_point() + symmetric()
 #' 
-symmetric <- function()structure(list(), class = 'ggplot_symmetric')
+symmetric <- function(expand = c(top = FALSE, bottom = FALSE))structure(list(expand = expand), class = 'ggplot_symmetric')
 
 #' Add Symmetry to Plot Object
 #' 
@@ -91,12 +117,41 @@ symmetric <- function()structure(list(), class = 'ggplot_symmetric')
 #' example(symmetric)
 
 ggplot_add.ggplot_symmetric <- function(object, plot, object_name, ...){
-  theLabels <- get_labs(plot)
-  nms <- names(theLabels)
-  stopifnot('y' %in% nms)
-  yrange <- range(na.rm = TRUE, plot$data[,theLabels$y])
-  plot <- plot + expand_limits(y = -yrange)
-  plot
+  
+  b  <- ggplot2::ggplot_build(plot)
+  pp <- b$layout$panel_params
+  
+  get_y_range <- function(panel) {
+    # ggplot2 version compatibility
+    if (!is.null(panel[["y.range"]])) {
+      panel[["y.range"]]
+    } else if (!is.null(panel[["y"]]$range$range)) {
+      panel[["y"]]$range$range
+    } else {
+      stop("Could not extract trained y-range from ggplot build.")
+    }
+  }
+  
+  y_ranges <- lapply(pp, get_y_range)
+  
+  # If facets have free y scales, panel ranges differ; base ggplot2
+  # can't apply different coord limits per panel.
+  same_y <- length(unique(vapply(y_ranges, paste, "", collapse = ","))) == 1
+  if (!same_y && length(pp) > 1) {
+    stop(
+      "symmetric(): facets appear to use free y scales (panel ranges differ).\n",
+      "Base ggplot2 can't enforce per-panel symmetric y-limits.\n",
+      "Use fixed scales, or split+combine plots, or use an extension that supports per-facet scales."
+    )
+  }
+  
+  yr <- range(unlist(y_ranges), finite = TRUE)
+  M  <- max(abs(yr), finite = TRUE)
+  
+  # Degenerate case: all y are 0/NA
+  if (!is.finite(M) || M == 0) M <- 1
+  
+  plot + ggplot2::coord_cartesian(ylim = c(-M, M), expand = object$expand)
 }
 
 #' @export 
