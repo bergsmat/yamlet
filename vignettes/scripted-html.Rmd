@@ -3,9 +3,8 @@ title: "Scripted HTML"
 author: "Tim Bergsma"
 date: "`r Sys.Date()`"
 output: 
-  html_document:
-    keep_md: true
-    toc: FALSE
+  rmarkdown::html_vignette:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Scripted HTML}
   %\VignetteEncoding{UTF-8}
