@@ -18,15 +18,18 @@ override decorations previously specified for the same variable and aesthetic.
 This is consistent with how ggplot() handles repeated definitions for labels:
 the last provided label "wins". 
 
+Furthermore, additional default decorations are propagated to secondary 
+datasets where undefined.
+
 ## Example
 
 In the example below, points are plotted using the observed data, then 
 summary data is plotted as a separate layer, supplying its own data.
-the plot is rendered with decorations (left) and without (right).
+the plot is rendered _without_ decorations (left) and _with_ decorations (right).
 
- * Notice that the y axis label is 'y' not 'z' (as in summary), consistent
-   with default ggplot behavior where no label is supplied.
- * Notice that the label for color and shape 'Groups', not 'Subset', 
+ * Notice that the y axis label is 'concentration' (or similar) not 'mean', 
+   consistent with default ggplot behavior where no label is supplied.
+ * Notice that the label for color and shape is 'Subset', not 'Groups', 
    because the last layer wins; default ggplot behavior where label is supplied.
  * Likewise, colors are blue and magenta, not green and yellow, because the 
    summary layer was supplied last.
@@ -53,16 +56,18 @@ library(dplyr)
 library(metaplot)
 
 set.seed(10)
-x <- data.frame(
-  x = 1:100,
+obs <- data.frame(
+  time = 1:100,
   group = c('a','b'),
-  y = rnorm(100)
+  concentration = rnorm(100)
 )
 
 # observed data
-x %<>% decorate('
+obs %<>% decorate('
+  time: [ Time, h ]
+  concentration: [ Concentration, ng/mL ]
   group: [ 
-    Subset, 
+    Group, 
     [ a, b ], 
     color: [ green, yellow ] , 
     linetype: [ dashed, dotdash ]
@@ -70,10 +75,10 @@ x %<>% decorate('
 ')
 
 # summary data
-y <- x %>% group_by(group) %>% summarize(z = mean(y))
-y %<>% redecorate('
+sum <- obs %>% group_by(group) %>% summarize(mean = mean(concentration))
+sum %<>% undecorate %>% decorate('
   group: [ 
-    Group, 
+    Subset, 
     [ a, b ], 
     color: [ blue, magenta ], 
     shape: [ 15, 19 ]
@@ -81,37 +86,40 @@ y %<>% redecorate('
 ')
 
 
-p <- x %>%
-  resolve %>%
-  ggplot(aes(x, y)) +
-  geom_point(aes(color = group, shape = group)) +
-  geom_hline(
-    data = resolve(y), 
-    aes(
-      yintercept = z, 
-      color = group, 
-      linetype = group
-    )
-  ) + 
-  theme(legend.position = "top") +
-  labs(subtitle = 'with decorations')
-
-q <- x %>%
+q <- obs %>%
   undecorate %>%
-  ggplot(aes(x, y)) +
+  ggplot(aes(time, concentration)) +
   geom_point(aes(color = group, shape = group)) +
   geom_hline(
-    data = undecorate(y), 
+    data = undecorate(sum), 
     aes(
-      yintercept = z, 
+      yintercept = mean, 
       color = group, 
       linetype = group
     )
   ) + 
   theme(legend.position = "top") +
-  labs(subtitle = 'without decorations')
+  labs(subtitle = 'without decorations') +
+  symmetric()
 
-multiplot(p, q) # %>% devsize(2,2)
+p <- obs %>%
+  resolve %>%
+  ggplot(aes(time, concentration)) +
+  geom_point(aes(color = group, shape = group)) +
+  geom_hline(
+    data = resolve(sum), 
+    aes(
+      yintercept = mean, 
+      color = group, 
+      linetype = group
+    )
+  ) + 
+  theme(legend.position = "top") +
+  labs(subtitle = 'with decorations') + 
+  symmetric()
+
+
+multiplot(q, p) # %>% devsize(2,2)
 
 sessionInfo()
 ```

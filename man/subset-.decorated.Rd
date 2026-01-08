@@ -28,6 +28,8 @@ Other decorated:
 \code{\link{[.decorated}()},
 \code{\link{[[.decorated}()},
 \code{\link{[[<-.decorated}()},
+\code{\link{as_categorical}()},
+\code{\link{as_categorical.decorated}()},
 \code{\link{merge.decorated}()},
 \code{\link{names<-.decorated}()}
 }

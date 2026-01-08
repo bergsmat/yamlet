@@ -25,7 +25,7 @@ enscript <- function(x, ...)UseMethod('enscript')
 #' 
 #' The current implementation writes an 'expression' attribute
 #' to support figure labels and a 'title' attribute to support
-#' tables. \code{\link{print.decorated_ggplot}} will attempt
+#' tables. \code{\link{ggplot_build.decorated_ggplot}} will attempt
 #' to honor the expression attribute if it exists.
 #' \code{\link[tablet]{tablet.data.frame}} will attempt to honor
 #' the title attribute if it exists (see Details there).
@@ -34,7 +34,7 @@ enscript <- function(x, ...)UseMethod('enscript')
 #' In addition to the 'title' and 'expression' attributes, enscript() writes
 #' a 'plotmath' attribute to store plotmath versions of factor levels, 
 #' where present. By default, factor levels are converted to their 
-#' latex or html equivalents.  However, \code{\link{print.decorated_ggplot}}
+#' latex or html equivalents.  However, \code{\link{ggplot_build.decorated_ggplot}}
 #' will use the plotmath versions of factor labels for legends and 
 #' facet labels. If a 'plotmath' attribute already exists, it is not
 #' overwritten, preventing 

@@ -18,24 +18,14 @@ return value like \code{\link[ggplot2]{ggplot}} but inheriting 'decorated_ggplot
 Creates a new ggplot object for a decorated data.frame.
 This is the ggplot() method for class 'decorated'.
 It creates a ggplot object using the default method,
-but reclassifies it as 'decorated_ggplot' so that a custom print method
-is invoked; see \code{\link{print.decorated_ggplot}}.
+but reclassifies it as 'decorated_ggplot' so that a custom build method
+is invoked; see \code{\link{ggplot_build.decorated_ggplot}}.
 }
 \details{
-This approach is similar to but more flexible than
-the method for \code{\link{ggready}}.
 For fine control, you can switch between 'data.frame'
 and 'decorated' using \code{\link{as_decorated}}
 (supplies null decorations) and \code{\link{as.data.frame}}
 (preserves decorations).
-
-As of version 1.2.7, an attempt is made to support
-decorations in successive layers. If more than 
-one dataset is involved, decorations accumulate in
-layer order (beginning with the default data, if any)
-and are enforced on successive layers. For finer
-control, limit "competing" datasets to those variables
-used in the layer.
 }
 \examples{
 file <- system.file(package = 'yamlet', 'extdata','quinidine.csv')
@@ -117,7 +107,7 @@ geom_point() +
 scale_y_log10() +
 scale_color_gradientn(colours = rainbow(4))
 
-# print.decorated_ggplot will attempt to honor coordinated aesthetics.
+# ggplot_build.decorated_ggplot will attempt to honor coordinated aesthetics.
 x <- data.frame(x = c(1:6, 3:8), y = c(1:6,1:6), z = letters[c(1:6,1:6)])
 x \%<>\% decorate('z: [color: ["red", "blue", "green", "gold", "black", "magenta"]]')
 x \%<>\% decorate('z: [fill: ["red", "blue", "green", "gold", "black", "magenta"]]')
@@ -141,8 +131,12 @@ x \%>\% ggplot(aes(
 decorate resolve ggready
 
 Other decorated_ggplot: 
+\code{\link{data_context}()},
+\code{\link{data_context.ggplot}()},
 \code{\link{ggplot_build.decorated_ggplot}()},
-\code{\link{print.decorated_ggplot}()}
+\code{\link{mapframe}()},
+\code{\link{mapframe.default}()},
+\code{\link{mapframe.ggplot}()}
 
 Other interface: 
 \code{\link{canonical.decorated}()},

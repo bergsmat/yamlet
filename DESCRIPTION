@@ -1,7 +1,7 @@
 Package: yamlet
 Type: Package
 Title: Versatile Curation of Table Metadata
-Version: 1.2.9
+Version: 1.3.1
 Authors@R: person(given = "Tim",
                   family = "Bergsma",
                   role = c("aut", "cre"),
@@ -19,7 +19,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: yaml, csv (>= 0.6.2), encode, units, spork (>= 0.3.3),
- ggplot2, scales, dplyr (>= 1.1.0), rlang, xtable, tidyr, vctrs, pillar, knitr
+ ggplot2 (>= 4.0.1), scales, dplyr (>= 1.1.0), rlang, xtable, tidyr, vctrs, pillar, knitr
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Suggests: testthat (>= 2.1.0), magrittr, table1, rmarkdown, gridExtra, 

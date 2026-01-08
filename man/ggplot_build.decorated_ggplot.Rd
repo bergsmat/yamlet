@@ -2,30 +2,46 @@
 % Please edit documentation in R/ggplot_build.R
 \name{ggplot_build.decorated_ggplot}
 \alias{ggplot_build.decorated_ggplot}
-\title{Enable Automatic Labels and Units for ggplot}
+\title{Substitute Expressions, Titles, Labels and Aesthetics in ggplots}
 \usage{
 \method{ggplot_build}{decorated_ggplot}(plot, ...)
 }
 \arguments{
 \item{plot}{class 'decorated_ggplot' from \code{\link{ggplot.decorated}}}
+
+\item{...}{ignored}
 }
 \value{
 see \code{\link[ggplot2]{ggplot_build}}
 }
 \description{
-Enable automatic labels and units for ggplot.
-Substitutes column label, if present, for default.
-Supports arrangements of ggplot objects.
-Defined similarly to \code{\link{print.decorated_ggplot}}
-and respects global options 
-yamlet_decorated_ggplot_search,
-yamlet_decorated_ggplot_discrete, and
-yamlet_decorated_ggplot_drop.
+Substitutes expressions, titles, labels and aesthetics in decorated ggplots.
+Default labels (mappings for \code{x}, \code{y},)
+will be replaced (if possible)
+the first available of corresponding data attributes in
+\code{get_option('yamlet_decorated_ggplot_search', c('expression', 'title', 'label'))}.  
+Likewise, if mappings for 
+\code{getOption('yamlet_decorated_ggplot_discrete',c('colour', 'fill', 'size', 'shape', 'linetype', 'linewidth', 'alpha'))}
+indicate columns that have these defined as attributes, 
+an attempt is made to add a corresponding discrete scale if
+one does not exist already. Values are recycled if necessary
+and are specific by ordinal position to the corresponding
+level of the corresponding variable.  Levels are defined
+in increasing priority by
+* \code{sort(unique(x))} (if \code{getOption('yamlet_decorated_ggplot_drop', TRUE)}),
+* any guide attribute,
+* any factor levels,
+* any codelist attribute, or
+* any plotmath attribute.
 }
 \seealso{
 Other decorated_ggplot: 
+\code{\link{data_context}()},
+\code{\link{data_context.ggplot}()},
 \code{\link{ggplot.decorated}()},
-\code{\link{print.decorated_ggplot}()}
+\code{\link{mapframe}()},
+\code{\link{mapframe.default}()},
+\code{\link{mapframe.ggplot}()}
 }
 \concept{decorated_ggplot}
 \keyword{internal}

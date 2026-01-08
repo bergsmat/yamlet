@@ -49,12 +49,12 @@
 #' * **yamlet_explicit_guide_simplify**: \code{\link{explicit_guide.data.frame}}
 #'   and \code{\link{explicit_guide.dvec}}. Ordinarily, the 'guide' attribute
 #'   is removed if something more useful can be inferred.
-#' * **yamlet_decorated_ggplot_search**: see \code{\link{print.decorated_ggplot}}.
-#'   The print method for decorated_ggplot populates axis labels by searching
+#' * **yamlet_decorated_ggplot_search**: see \code{\link{ggplot_build.decorated_ggplot}}.
+#'   The build method for decorated_ggplot populates axis labels by searching
 #'   first for attributes named 'expression', 'title', and 'label'.  Customizable.
-#' * **yamlet_decorated_ggplot_discrete**: see \code{\link{print.decorated_ggplot}}.
+#' * **yamlet_decorated_ggplot_discrete**: see \code{\link{ggplot_build.decorated_ggplot}}.
 #'   Discrete aesthetics to map from data decorations where available.
-#' * **yamlet_decorated_ggplot_drop**: see \code{\link{print.decorated_ggplot}}.
+#' * **yamlet_decorated_ggplot_drop**: see \code{\link{ggplot_build.decorated_ggplot}}.
 #'   Should unused factor levels be omitted from data-driven discrete scales?
 #' * **yamlet_ggready_parse**: see \code{\link{ggready.data.frame}}, 
 #'   \code{\link{ggready.decorated}}. Whether to parse axis labels.
