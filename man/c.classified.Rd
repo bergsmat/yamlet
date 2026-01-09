@@ -7,7 +7,8 @@
 \method{c}{classified}(
   ...,
   recursive = TRUE,
-  warn_conflicted = getOption("yamlet_warn_conflicted", FALSE)
+  warn_conflicted = getOption("yamlet_warn_conflicted", FALSE),
+  reconcile_attributes = getOption("yamlet_reconcile_attributes", TRUE)
 )
 }
 \arguments{
@@ -16,6 +17,8 @@
 \item{recursive}{passed to unlist() internally}
 
 \item{warn_conflicted}{logical: warn if any duplicated codelist names?}
+
+\item{reconcile_attributes}{logical: reconcile attribute lists (other than levels and attributes) if TRUE (default as of 1.3.1); else take attributes from first argument (former behavior)}
 }
 \value{
 class 'classified' 'factor'
@@ -23,7 +26,9 @@ class 'classified' 'factor'
 \description{
 Combines classified factor, retaining attributes.
 Attributes other than levels and codelist are taken
-from the first argument.  Attribute 'levels' is
+from the first argument if \code{reconcile_attributes} is FALSE;
+otherwise remaining attributes are reconciled (default as of 1.3.1).
+Attribute 'levels' is
 supplied by next method.  Attribute 'codelist'
 is the combined codelists in sequence of
 all (dots) arguments, after silently removing

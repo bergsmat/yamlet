@@ -275,8 +275,8 @@ length.dvec <- function(x)NextMethod()
 #' @family dvec
 #' @return dvec
 #' @examples
-#' a <- as_dvec(letters[1:3], label = 'foo')
-#' b <- as_dvec(letters[3:5], label = 'foo')
+#' a <- as_dvec(letters[1:3], label = 'foo', priority = 1)
+#' b <- as_dvec(letters[3:5], label = 'foo', case = 'lower')
 #' c <- c(a,b)
 #' c
 #' class(c)

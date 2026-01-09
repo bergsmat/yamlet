@@ -32,8 +32,8 @@ are removed.  If the result has only blank names,
 these are removed as well.
 }
 \examples{
-a <- as_dvec(letters[1:3], label = 'foo')
-b <- as_dvec(letters[3:5], label = 'foo')
+a <- as_dvec(letters[1:3], label = 'foo', priority = 1)
+b <- as_dvec(letters[3:5], label = 'foo', case = 'lower')
 c <- c(a,b)
 c
 class(c)

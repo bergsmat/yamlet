@@ -1,5 +1,5 @@
 ---
-title: "Yamlet Cascading Aesthetics"
+title: "Yamlet Plot Aesthetics"
 format: 
   html:
     self-contained: true
@@ -13,34 +13,16 @@ Plotting a decorated data.frame in ggplot() has special behavior for aesthetics
 defined using yamlet decorations.  If there is only one dataset (typical), the 
 aesthetics are coordinated with the (levels of the) corresponding variable.
 
-If one or more additional layers provide non-default data, any decorations therein
-override decorations previously specified for the same variable and aesthetic.
-This is consistent with how ggplot() handles repeated definitions for labels:
-the last provided label "wins". 
-
-Furthermore, additional default decorations are propagated to secondary 
-datasets where undefined.
+If one or more additional layers provide non-default data, a single set of
+consensus decorations is accumulated, with each successive dataset overriding
+all previous decorations where conflicts exist; then, consensus decorations
+are enforced on all datasets.
 
 ## Example
 
 In the example below, points are plotted using the observed data, then 
 summary data is plotted as a separate layer, supplying its own data.
 the plot is rendered _without_ decorations (left) and _with_ decorations (right).
-
- * Notice that the y axis label is 'concentration' (or similar) not 'mean', 
-   consistent with default ggplot behavior where no label is supplied.
- * Notice that the label for color and shape is 'Subset', not 'Groups', 
-   because the last layer wins; default ggplot behavior where label is supplied.
- * Likewise, colors are blue and magenta, not green and yellow, because the 
-   summary layer was supplied last.
- * The summary layer respects the linetype defined earlier, having
-   no such definition (decoration) in its own data.
- * The observations layer respects the shapes defined with the summary
-   layer, which in fact are not even used by the summary layer.
-   
-This example is a bit contrived for heuristic value.  It makes more sense
-to define aesthetics in the data supplied to the layer that uses them. 
-As a best practice, consider specifying all aesthetics in the default data only.
 
 
 ```{r message = FALSE}
@@ -120,6 +102,20 @@ p <- obs %>%
 
 
 multiplot(q, p) # %>% devsize(2,2)
+```
 
+ * Notice that the label (on the left) for color and shape is 'Subset', not 'Groups',
+   because the last layer wins.
+ * Likewise, colors are blue and magenta, not green and yellow, because the 
+   summary layer was supplied last.
+ * The summary layer respects the linetype defined earlier, having
+   no such decoration in its own data.
+ * The observations layer respects the shapes defined with the summary
+   layer, which in fact are not even used by the summary layer.
+   
+This example is a bit contrived for heuristic value. 
+As a best practice, consider specifying all aesthetics in the default data only.
+
+```{r}
 sessionInfo()
 ```

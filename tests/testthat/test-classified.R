@@ -6,6 +6,7 @@ test_that('classified factors can be combined with each other and with vanilla f
   library(tidyr)
   library(ggplot2)
   library(vctrs)
+  library(testthat)
   x <- data.frame(id = 1:4)
   x %<>% mutate(wt  = 78:81)
   x %<>% mutate(age = 18:21)
@@ -15,13 +16,13 @@ test_that('classified factors can be combined with each other and with vanilla f
   x %<>% mutate(V   = rnorm(id, 3, 0.25) %>% signif)
   
   x %<>% decorate('
-id: Subject ID
-wt:  [ Body Weight, kg]
-age: [ Age, year]
-sex: [ Sex, [ Female: 0, Male: 1 ]]
-coh: [ Cohort, [ Cohort 1: 1, Cohort 2: 2, Cohort 3: 3]]
-CL:  [ CL/F, L/h]
-V:   [ V/F, L ]
+    id: Subject ID
+    wt:  [ Body Weight, kg]
+    age: [ Age, year]
+    sex: [ Sex, [ Female: 0, Male: 1 ]]
+    coh: [ Cohort, [ Cohort 1: 1, Cohort 2: 2, Cohort 3: 3]]
+    CL:  [ CL/F, L/h]
+    V:   [ V/F, L ]
 ')
 
   # works, but gives appropriate warnings:
@@ -47,7 +48,7 @@ V:   [ V/F, L ]
   bind_rows(y, x) %>% decorations
   
   vec_c(x$sex, y$sex)
-  vec_c(y$sex, x$sex) # no label for y$sex
+  vec_c(y$sex, x$sex) # no label for y$sex; new behavior in 1.3.1
   
   
   z <- y %>% rename(coh = sex, sex = coh)
@@ -114,6 +115,17 @@ test_that('decorated factor honors codelist',{
     c('a','b','c'),
     x %>% resolve %$% bar %>% type.convert(as.is=TRUE)
   )
+  
+})
+
+test_that('by default, combining classified reconciles attributes',{
+  a <- classified(letters[1:3])
+  b <- classified(letters[3:5])
+  attr(a, 'priority') <- 1
+  attr(b, 'priority') <- 2
+  attr(b, 'case') <- 'lower'
+  c <- c(a,b)
+  expect_equal_to_reference(file = '136.rds', c)
   
 })
 

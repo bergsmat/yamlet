@@ -81,6 +81,10 @@
 #' * **yamlet_warn_conflicted**: \code{\link{c.classified}}.
 #'   Whether to warn when codelists for combined classified
 #'   factors have conflicting names (which will be dropped).
+#' * **yamlet_reconcile_attributes**: \code{\link{c.classified}}.
+#'   Whether to reconcile attribute lists when combining classified.
+#'   Set FALSE for old behavior (pre 1.3.1) of adopting attributes
+#'   (other than levels and codelists).
 #' * **yamlet_expand_codelist**: \code{\link{explicit_guide.yamlet}}.
 #'   If TRUE (default) an empty list as a guide attribute 
 #'   is short-hand for \code{sort(unique(x))}.

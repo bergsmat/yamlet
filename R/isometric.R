@@ -34,7 +34,9 @@ isometric <- function(expand = 0)structure(list(expand = expand), class = 'ggplo
 ggplot_add.ggplot_isometric <- function(object, plot, object_name, ...) {
   # as suggested by chatgpt 5
   # Build the plot to learn trained panel ranges (includes stats like geom_smooth)
+  suppressMessages(suppressWarnings(
   b <- ggplot2::ggplot_build(plot)
+  ))
   
   # panel_params holds the trained ranges; there is one entry per panel
   pp <- b$layout$panel_params
@@ -118,7 +120,9 @@ symmetric <- function(expand = c(top = FALSE, bottom = FALSE))structure(list(exp
 
 ggplot_add.ggplot_symmetric <- function(object, plot, object_name, ...){
   
-  b  <- ggplot2::ggplot_build(plot)
+  suppressMessages(suppressWarnings(
+    b <- ggplot2::ggplot_build(plot)
+  ))
   pp <- b$layout$panel_params
   
   get_y_range <- function(panel) {
