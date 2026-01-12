@@ -1,8 +1,12 @@
 ---
 title: "Yamlet Plot Aesthetics"
-format: 
-  html:
-    self-contained: true
+author: "Tim Bergsma"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Yamlet Plot Aesthetics}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
 ---
@@ -29,7 +33,6 @@ the plot is rendered _without_ decorations (left) and _with_ decorations (right)
 #| label: Layered Aesthetics
 #| fig.width: 5.02
 #| fig.height: 3.28
-#| out.width: 200%
 
 library(magrittr)
 library(ggplot2)
@@ -104,7 +107,7 @@ p <- obs %>%
 multiplot(q, p) # %>% devsize(2,2)
 ```
 
- * Notice that the label (on the left) for color and shape is 'Subset', not 'Groups',
+ * Notice that the label (on the right) for color and shape is 'Subset', not 'Groups',
    because the last layer wins.
  * Likewise, colors are blue and magenta, not green and yellow, because the 
    summary layer was supplied last.

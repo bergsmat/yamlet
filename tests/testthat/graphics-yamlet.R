@@ -74,6 +74,35 @@ plotgroup: [ engine\\ntransmission, [v-shaped\n\nautomatic,v-shaped\n\nmanual,st
   # note that x axis labels are 2-line, as is x-axis category labels
 })
 
+test_that('resolve supports axis label line breaks',{
+  library(yamlet)
+  library(ggplot2)
+  library(magrittr)
+  library(dplyr)
+  library(encode)
+  data(mtcars)
+  mtcars %>%
+    select(mpg, vs, am) %>%
+    data.frame %>%
+    mutate(
+      plotgroup = case_when(
+        vs == 0 & am == 0 ~ 'v-shaped\nautomatic',
+        vs == 0 & am == 1 ~ 'v-shaped\nmanual',
+        vs == 1 & am == 0 ~ 'straight\nautomatic',
+        vs == 1 & am == 1 ~ 'straight\nmanual'
+      )
+    ) %>%
+    redecorate("
+mpg: [ milage, mi/gal ]
+plotgroup: [ engine\n\ntransmission, [v-shaped\n\nautomatic,v-shaped\n\nmanual,straight\n\nautomatic,straight\n\nmanual]]
+") %>%
+    resolve %>%
+    ggplot(aes(x = plotgroup, y = mpg)) +
+    geom_boxplot()
+  # note that x axis labels are 2-line, as is x-axis category labels
+})
+
+
 test_that('subplots respect metadata assignments',{
   library(ggplot2)
   library(magrittr)
@@ -246,7 +275,7 @@ test_that('yamlet aesthetics work in the presence of layers',{
   x <- data.frame(
     x = 1:100,
     group = c('a','b'),
-    y = rnorm(100)
+    y = rnorm(100),
   )
   
   # observed data
@@ -271,24 +300,24 @@ test_that('yamlet aesthetics work in the presence of layers',{
 ')
   
   
-  p <- x %>%
-    resolve %>%
-    ggplot(aes(x, y)) +
-    geom_point(aes(color = group, shape = group)) +
-    geom_hline(
-      data = resolve(y), 
-      aes(
-        yintercept = z, 
-        color = group, 
-        linetype = group
-      )
+p <- x %>%
+  resolve %>%
+  ggplot(aes(x, y)) +
+  geom_point(aes(color = group, shape = group)) +
+  geom_hline(
+    data = resolve(y), 
+    aes(
+      yintercept = z, 
+      color = group, 
+      linetype = group
     )
+  )
 # p should have
-# should have 
 # blue/magenta color, 
 # dashed/dotdash linetype,
 # square/circle shape,
 # y axis labeled 'y' not 'z'
+# legend title 'Group'
   
 q <- x %>%
   undecorate %>%
@@ -305,6 +334,33 @@ q <- x %>%
 library(metaplot)
 multiplot(q, p)
 
+# should work when facetted
+x %>%
+  resolve %>%
+  ggplot(aes(x, y)) +
+  geom_point(aes(color = group, shape = group)) +
+  geom_hline(
+    data = resolve(y), 
+    aes(
+      yintercept = z, 
+      color = group, 
+      linetype = group
+    )
+  ) +
+  facet_wrap(~group)
+x %>%
+  resolve %>%
+  ggplot(aes(x, y)) +
+  geom_point(aes(color = group, shape = group)) +
+  geom_hline(
+    data = resolve(y), 
+    aes(
+      yintercept = z, 
+      color = group, 
+      linetype = group
+    )
+  ) +
+  facet_grid(rows = vars(group))
 
 })
 
