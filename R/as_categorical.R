@@ -36,7 +36,7 @@ as_categorical <- function(x, ...) UseMethod('as_categorical')
 #'   tablet %>% 
 #'   as_kable %>%
 #'   kable_classic
-as_categorical.decorated <- function(x, ...)modify(x, ..., guide = .as_categorical(x, guide))
-
-.as_categorical <- function(x, guide)structure(guide, names = paste(as.list(sort(unique(x)))))
+#'   
+as_categorical.decorated <- function(x, ...)modify(x, ..., guide = .as_categorical(., guide))
+.as_categorical <- function(x, guide)structure(names = paste(as.list(sort(unique(x)), guide)))
 

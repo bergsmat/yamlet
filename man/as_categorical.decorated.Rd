@@ -31,6 +31,7 @@ x \%>\%
   tablet \%>\% 
   as_kable \%>\%
   kable_classic
+  
 }
 \seealso{
 Other decorated: 

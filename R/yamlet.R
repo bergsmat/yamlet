@@ -130,7 +130,7 @@ as_yam.character <- function(
 #' that DOES have a name should become that element
 #' and have that name (recursively, from depth).
 #' Collapses uninformative levels of nested lists.
-#' Formerly used in as_yam; now superceded by \code{\link{parsimonious.list}}.
+#' Formerly used in as_yam; now superseded by \code{\link{parsimonious.list}}.
 #'
 #' @param x object
 #' @return named list
