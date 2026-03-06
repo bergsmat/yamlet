@@ -708,7 +708,10 @@ file <- system.file(package = 'yamlet', 'extdata','phenobarb.csv')
 x <- file %>% decorate
 expect_equal_to_reference(
   file = '068.rds',
-  x %>% dplyr:::filter.data.frame(event == 'dose') %>% promote(event) %>% decorations(value)
+  x %>% 
+    dplyr:::filter.data.frame(event == 'dose') %>% 
+    promote(event) %>% 
+    decorations(value)
 )
 expect_equal_to_reference(
   file = '069.rds',
@@ -731,6 +734,38 @@ expect_equal_to_reference(
   x[x$event == 'conc',] %>% decorations(event, value)
 )
 
+})
+
+test_that('promote() preserves labels on categorical target elements', {
+  library(magrittr)
+  x <- data.frame(
+    id = 1:6,
+    dv = c(1,2,3,1,2,3),
+    type = c('a','a','a','b','b','b')
+  )
+  
+  # dv values have different meanings by type.
+  x %<>% decorate("
+    dv:
+      -
+        - type == 'a': EASI Category
+        - type == 'b': IGA Category
+      - 
+        - type == 'a':
+          - EASI75: 1
+          - EASI50: 2
+          - <EASI50: 3
+        - type == 'b':
+          - IGA0: 1
+          - IGA1: 2
+          - IGA2: 3
+  ")
+  
+  x %>% decorations
+  x %>% filter(type == "a") %>% decorations
+  x %>% filter(type == 'a') %$% dv %>% attr('guide') %>% names
+  expect_true(is.character(x %>% filter(type == 'a') %$% dv %>% attr('guide') %>% names))
+  
 })
 
 test_that('ggready is stable',{

@@ -162,7 +162,14 @@ promote.list <- function(
             # verdict is now the index of the singularity
             # promote that element to attribute, removing names
             this <- this[[verdict]]
-            names(this) <- NULL
+            
+            # 2026-03-06 TTB
+            # commenting next,
+            # which has no effect for label
+            # but is lossy for, say, categorical guide
+            # names(this) <- NULL
+            
+            
             # restore this value to x
             attr(x[[var]], nm) <- this
           }

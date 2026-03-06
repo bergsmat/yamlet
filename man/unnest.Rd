@@ -18,7 +18,7 @@ and does not have a name but has exactly one element
 that DOES have a name should become that element
 and have that name (recursively, from depth).
 Collapses uninformative levels of nested lists.
-Formerly used in as_yam; now superceded by \code{\link{parsimonious.list}}.
+Formerly used in as_yam; now superseded by \code{\link{parsimonious.list}}.
 }
 \examples{
 
