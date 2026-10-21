@@ -370,6 +370,7 @@ decorations.data.frame <- function(
   nms <- selected(x, ...)
   x <- x[, as.character(nms), drop = FALSE] # selected may have incompatible class path
   out <- lapply(x, attributes)
+  out <- lapply(out, function(a) a[names(a) != 'haven_meta']) # haven S7 metadata
   levs_key <- 'guide'
   # if(!is.logical(coerce)){
   #   if(is.character(coerce))
