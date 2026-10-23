@@ -29,7 +29,9 @@ as_categorical <- function(x, ...) UseMethod('as_categorical')
 #' library(tablet)
 #' library(kableExtra)
 #' library(yamlet)
-#' x <- data.frame(DOSE = c(12, 1.2, 2.4, 6, 12, 1.2)) %>% decorate('DOSE: [ Dose, mg ]')
+#' x <- 
+#'   data.frame(DOSE = c(12, 1.2, 2.4, 6, 12, 1.2)) %>% 
+#'   decorate('DOSE: [ Dose, mg ]')
 #' x %>% 
 #'   as_categorical(DOSE) %>%
 #'   resolve %>% 
@@ -38,5 +40,16 @@ as_categorical <- function(x, ...) UseMethod('as_categorical')
 #'   kable_classic
 #'   
 as_categorical.decorated <- function(x, ...)modify(x, ..., guide = .as_categorical(., guide))
-.as_categorical <- function(x, guide)structure(names = paste(as.list(sort(unique(x)), guide)))
+
+# this does not work.
+# .as_categorical <- function(x, guide)structure(names = paste(as.list(sort(unique(x)), guide)))
+# this works, but requires %>%
+# .as_categorical <-  \(x, guide)as.list(sort(unique(x)) %>% structure(names = paste(., guide))) # works
+# re-write without pipe
+.as_categorical <- function(x, guide){
+  su <- sort(unique(x))
+  st <- structure(su, names = paste(su, guide))
+  sv <- as.list(st)
+  sv
+}
 

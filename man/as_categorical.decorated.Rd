@@ -24,7 +24,9 @@ library(magrittr)
 library(tablet)
 library(kableExtra)
 library(yamlet)
-x <- data.frame(DOSE = c(12, 1.2, 2.4, 6, 12, 1.2)) \%>\% decorate('DOSE: [ Dose, mg ]')
+x <- 
+  data.frame(DOSE = c(12, 1.2, 2.4, 6, 12, 1.2)) \%>\% 
+  decorate('DOSE: [ Dose, mg ]')
 x \%>\% 
   as_categorical(DOSE) \%>\%
   resolve \%>\% 

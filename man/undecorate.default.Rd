@@ -17,7 +17,7 @@
 a list-like object, typically data.frame
 }
 \description{
-Undecorates by default method. Calls \code{\link{type.convert}} to 
+Undecorates by default method. Calls \code{\link{type.convert}} for 
 each element, with \code{as.is = TRUE} by default.
 }
 \examples{

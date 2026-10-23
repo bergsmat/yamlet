@@ -2021,6 +2021,22 @@ test_that('yaml package result is stable',{
   expect_equal_to_reference(file = '135.rds', decorations(undecorate(resolve(x))))
 })
 
-
+test_that('as_categorical is stable', {
+  library(magrittr)
+  library(tablet)
+  library(kableExtra)
+  library(yamlet)
+  
+  
+  x <- 
+    data.frame(DOSE = c(12, 1.2, 2.4, 6, 12)) %>% 
+    decorate('DOSE: [ Dose, mg ]')
+  
+  result <- x %>% 
+    as_categorical(DOSE) %>%
+    resolve %>% 
+    tablet 
+  expect_equal_to_reference(file = '137.rds', result)
+})
 
 
