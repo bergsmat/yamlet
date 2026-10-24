@@ -129,3 +129,19 @@ test_that('by default, combining classified reconciles attributes',{
   
 })
 
+test_that('codify converts character to decorated integer', {
+  expect_equal_to_reference(
+    file = '138.rds',
+    codify(c('knife','fork','spoon'))
+  )
+  expect_equal_to_reference(
+    file = '139.rds',
+    codify(c('knife','fork','spoon'), -1)
+  )
+  expect_equal_to_reference(
+    file = '140.rds',
+    codify(
+      c('knife','fork','spoon'), 
+      levels = c('spoon', 'knife', 'fork'))
+  )
+})

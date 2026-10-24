@@ -73,6 +73,7 @@ Other classified:
 \code{\link{classified.data.frame}()},
 \code{\link{classified.dvec}()},
 \code{\link{classified.factor}()},
+\code{\link{codify.default}()},
 \code{\link{desolve.classified}()},
 \code{\link{unclassified}()},
 \code{\link{unclassified.classified}()},

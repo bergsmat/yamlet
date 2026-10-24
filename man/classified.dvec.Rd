@@ -56,6 +56,7 @@ Other classified:
 \code{\link{classified.data.frame}()},
 \code{\link{classified.default}()},
 \code{\link{classified.factor}()},
+\code{\link{codify.default}()},
 \code{\link{desolve.classified}()},
 \code{\link{unclassified}()},
 \code{\link{unclassified.classified}()},

@@ -609,6 +609,8 @@ classified.dvec <- function(
 #' @export
 #' @family classified
 #' @return integer (possibly of class dvec)
+#' @keywords internal
+#' @seealso codify.default
 #' @examples
 #' library(magrittr)
 #' 
@@ -680,6 +682,84 @@ as.integer.classified <- function(
     r <- unclass(r)
   }
   r
+}
+
+#' Convert to Codes
+#'
+#' Converts to Codes.
+#' Generic, with method \code{\link{codify.default}}
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @return see methods
+#' @family codify
+#' @examples
+#' example(codify.default)
+codify <- function(x, ...)UseMethod('codify')
+
+#' Convert to Codes by Default
+#'
+#' Reduces x integer codes with appropriate decorations.
+#' Result is like \code{as.integer(as.numeric(x)) + offset}
+#' but has a guide attribute: a list of integers 
+#' whose names are the original levels of x.
+#' A wrapper for \code{as.integer(classified(x)}.
+#'
+#' @param x anything for which there is a 'classified' method; see \code{\link{classified}}
+#' @param offset an integer value to add to intermediate result
+#' @param ... passed to \code{\link{classified}}; for relevance, see \code{\link{classified.default}}
+#  no point in passing ... to desolve, because as.integer() doesn't work
+#  on list-like objects, and desolve only uses unnamed dots args to select columns.
+#' @param persistence whether to return 'dvec' (is.integer(): TRUE) or just integer.
+#' @export
+#' @family classified
+#' @seealso as.integer.classified mimic
+#' @return integer (possibly of class dvec)
+#' @examples
+#' library(magrittr)
+#' 
+#' # convert to decorated integer
+#' c('knife','fork','spoon') %>% codify
+#' 
+#' # implement offset
+#' c('knife','fork','spoon') %>% codify(-1)
+#' 
+#' # globally defeat the 'persistence' paradigm
+#' options(yamlet_persistence = FALSE)
+#' c('knife','fork','spoon') %>% 
+#'   codify %>% 
+#'   class # integer
+#'   
+#' # remove option to restore default persistence paradigm
+#' options(yamlet_persistence = NULL)
+#' c('knife','fork','spoon') %>% 
+#'   codify %>%
+#'   class # dvec
+#'   
+#' # locally defeat persistence paradigm
+#' c('knife','fork','spoon') %>% 
+#'   codify(persistence = FALSE) %>% 
+#'   class # integer
+#'   
+#' # pass levels
+#' c('knife','fork','spoon') %>%
+#'   codify(levels = c('spoon', 'knife', 'fork'))
+#' 
+
+codify.default <- function(
+    x, 
+    offset = 0L, 
+    ..., 
+    persistence = getOption('yamlet_persistence', TRUE)
+){
+  y <- as.integer(
+    classified(x, ...), 
+    offset = offset, 
+    ..., 
+    persistence = persistence
+  )
+  return(y)
 }
 
 #' Create Classified from Classified
