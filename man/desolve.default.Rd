@@ -24,6 +24,8 @@ Other resolve:
 \code{\link{desolve.data.frame}()},
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.dvec}()},
+\code{\link{enscript.data.frame}()},
+\code{\link{enscript.default}()},
 \code{\link{resolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.data.frame}()},

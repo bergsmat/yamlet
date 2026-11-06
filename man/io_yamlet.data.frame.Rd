@@ -53,7 +53,7 @@ Other interface:
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{desolve.decorated}()},
-\code{\link{enscript.default}()},
+\code{\link{enscript.decorated}()},
 \code{\link{ggplot.decorated}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},

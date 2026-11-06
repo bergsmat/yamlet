@@ -14,6 +14,34 @@
 #' example(enscript.default)
 enscript <- function(x, ...)UseMethod('enscript')
 
+#' Enscript Default
+#'
+#' By default, enscripts by returning the unmodified object.
+#' @param x object
+#' @param ... passed arguments
+#' @export
+#' @keywords internal
+#' @return class of x
+#' @family resolve
+enscript.default <- function(x, ...)x
+
+#' Enscript Data Frame
+#' 
+#' Enscripts data.frame.
+#' Coerces first using as_decorated().
+#' 
+#' @param x data.frame
+#' @param ... ignored
+#' @export
+#' @keywords internal
+#' @return decorated
+#' @family resolve
+#' @examples
+#' head(enscript(Theoph))
+enscript.data.frame <- function(x, ...){
+  enscript(as_decorated(x), ...)
+}
+
 #' Render Scripted Attributes of Indicated Components by Default
 #'
 #' Modifies specific attributes of each indicated element
@@ -61,6 +89,7 @@ enscript <- function(x, ...)UseMethod('enscript')
 #' @param open character to precede units
 #' @param close character to follow units
 #' @param format one of 'latex' or 'html'
+#' @param scripted logical; always passed to \code{\link{resolve.decorated}} as FALSE (avoids circularity)
 #' @export
 #' @importFrom knitr is_latex_output
 #' @importFrom spork as_html as_latex as_plotmath concatenate htmlToken as_spork
@@ -82,12 +111,13 @@ enscript <- function(x, ...)UseMethod('enscript')
 #' x %>% enscript(format = 'html') %$% work %>% attr('title')
 #' testthat::expect_equal(enscript(x), enscript(enscript(x)))
 
-enscript.default <- function(
+enscript.decorated <- function(
     x, 
     ...,
     open = getOption("yamlet_append_units_open", " ("),
     close = getOption("yamlet_append_units_close", ")"),
-    format = getOption("yamlet_format", ifelse(knitr::is_latex_output(), 'latex','html'))
+    format = getOption("yamlet_format", ifelse(knitr::is_latex_output(), 'latex','html')),
+    scripted = FALSE
     
 ){
   stopifnot(
@@ -101,7 +131,7 @@ enscript.default <- function(
   stopifnot(length(open) %in% 0:1)
   stopifnot(length(close) %in% 0:1)
   
-  x <- resolve(x, ...) # removes html or latex tail where present
+  x <- resolve(x, ..., scripted = FALSE) # removes html or latex tail where present
   vars <- selected(x, ...)
   for(var in vars){
     label <- attr(x[[var]], 'label')

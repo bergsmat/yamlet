@@ -4,12 +4,14 @@
 \alias{resolve.decorated}
 \title{Resolve Guide for Decorated}
 \usage{
-\method{resolve}{decorated}(x, ...)
+\method{resolve}{decorated}(x, ..., scripted = FALSE)
 }
 \arguments{
 \item{x}{decorated}
 
 \item{...}{passed to \code{\link{explicit_guide}}, \code{\link{classified}}, and \code{\link{make_title}}}
+
+\item{scripted}{logical; invokes \code{\link{enscript.decorated}} if TRUE}
 }
 \value{
 decorated
@@ -43,6 +45,8 @@ Other resolve:
 \code{\link{desolve.decorated}()},
 \code{\link{desolve.default}()},
 \code{\link{desolve.dvec}()},
+\code{\link{enscript.data.frame}()},
+\code{\link{enscript.default}()},
 \code{\link{resolve}()},
 \code{\link{resolve.classified}()},
 \code{\link{resolve.data.frame}()},
@@ -56,7 +60,7 @@ Other interface:
 \code{\link{decorate.character}()},
 \code{\link{decorate.data.frame}()},
 \code{\link{desolve.decorated}()},
-\code{\link{enscript.default}()},
+\code{\link{enscript.decorated}()},
 \code{\link{ggplot.decorated}()},
 \code{\link{io_csv.character}()},
 \code{\link{io_csv.data.frame}()},

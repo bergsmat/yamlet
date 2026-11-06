@@ -1958,6 +1958,25 @@ test_that('enscript() is stable and idempotent', {
   expect_equal(canonical(enscript(x)), canonical(enscript(enscript(x))))
 })
 
+test_that('resolve(scripted = TRUE) behaves like enscript()', {
+  x <- data.frame(
+    time = 1:10, 
+    work = (1:10)^1.5, 
+    group = 1:2, 
+    set = c(rep('delta',5), rep('gamma', 5))
+  )
+  x %<>% decorate('
+ time: [ Time_cum.^alpha, h ]
+ work: [ Work_total_obs\\n, kg*m^2/s^2 ]
+ group: [ Group, [ Second^\\*: 2, First^#: 1 ]]
+ set: [ Set, [ gamma, delta ]]
+')
+  x %>% decorations
+  expect_equal_to_reference(file = '121.rds', enscript(x))
+  options(yamlet_default_keys = c('label', 'guide', 'title', 'expression', 'plotmath', 'levels', 'codelist'))
+  expect_equal(canonical(enscript(x)), canonical(resolve(x, scripted = TRUE)))
+})
+
 test_that('resolve() and desolve() accommodate anonymous arguments', {
 x <- data.frame(foo = 1)
 expect_silent(resolve(x, foo))

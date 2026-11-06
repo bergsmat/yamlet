@@ -27,7 +27,7 @@ modify.default
 as_spork
 
 Other enscript: 
-\code{\link{enscript.default}()}
+\code{\link{enscript.decorated}()}
 }
 \concept{enscript}
 \keyword{internal}

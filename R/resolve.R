@@ -35,6 +35,7 @@ resolve.default <- function(x, ...)x
 #' \code{\link{make_title}}.
 #' @param x decorated
 #' @param ... passed to \code{\link{explicit_guide}}, \code{\link{classified}}, and \code{\link{make_title}}
+#' @param scripted logical; invokes \code{\link{enscript.decorated}} if TRUE
 #' @export
 #' @return decorated
 #' @family resolve
@@ -52,11 +53,13 @@ resolve.default <- function(x, ...)x
 #' # resolve selectively, and show selected decorations
 #' x %>% resolve(glyco) %>% decorations(Age, glyco)
 
-resolve.decorated <- function(x, ...){
+resolve.decorated <- function(x, ..., scripted = FALSE){
+  stopifnot(length(scripted) == 1, is.logical(scripted))
   x <- explicit_guide(x, ...)
   x <- classified(x, ...)
   x <- make_title(x, ...)
-  x
+  if(!scripted) return(x)
+  enscript(x, ...)
 }
 
 #' Resolve Guide for Decorated Vector

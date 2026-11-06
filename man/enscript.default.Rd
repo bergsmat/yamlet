@@ -2,114 +2,37 @@
 % Please edit documentation in R/enscript.R
 \name{enscript.default}
 \alias{enscript.default}
-\title{Render Scripted Attributes of Indicated Components by Default}
+\title{Enscript Default}
 \usage{
-\method{enscript}{default}(
-  x,
-  ...,
-  open = getOption("yamlet_append_units_open", " ("),
-  close = getOption("yamlet_append_units_close", ")"),
-  format = getOption("yamlet_format", ifelse(knitr::is_latex_output(), "latex", "html"))
-)
+\method{enscript}{default}(x, ...)
 }
 \arguments{
 \item{x}{object}
 
-\item{...}{indicated columns, or name-value pairs; passed to \code{\link{resolve}} and \code{\link{selected}}}
-
-\item{open}{character to precede units}
-
-\item{close}{character to follow units}
-
-\item{format}{one of 'latex' or 'html'}
+\item{...}{passed arguments}
 }
 \value{
-'enscript', a superclass of x
+class of x
 }
 \description{
-Modifies specific attributes of each indicated element
-(all elements by default).
-}
-\details{
-The goal here is to render labels and units (where present)
-in a way that supports subscripts and superscripts 
-for both plots and tables in either html or latex contexts.
-
-The current implementation writes an 'expression' attribute
-to support figure labels and a 'title' attribute to support
-tables. \code{\link{ggplot_build.decorated_ggplot}} will attempt
-to honor the expression attribute if it exists.
-\code{\link[tablet]{tablet.data.frame}} will attempt to honor
-the title attribute if it exists (see Details there).
-An attempt is made to guess the output format (html or latex).
-
-In addition to the 'title' and 'expression' attributes, enscript() writes
-a 'plotmath' attribute to store plotmath versions of factor levels, 
-where present. By default, factor levels are converted to their 
-latex or html equivalents.  However, \code{\link{ggplot_build.decorated_ggplot}}
-will use the plotmath versions of factor labels for legends and 
-facet labels. If a 'plotmath' attribute already exists, it is not
-overwritten, preventing 
-the same variable from being accidentally transformed twice.
-
-To flexibly support latex, html, and plotmath, this function
-expects column labels and units to be encoded in "spork" syntax.
-See \code{\link[spork]{as_spork}} for details and examples.
-Briefly, "_" precedes a subscript, "^" precedes a superscript,
-and "." is used to force the termination of either a 
-superscript or a subscript where necessary. For best results,
-units should be written using *, /, and ^; e.g. "kg*m^2/s^2"
-not "kg m2 s-2" (although both are valid:  
-see \code{\link{is_parseable}}). A literal backslash followed by "n"
-represents a newline. Greek letters are represented by their names,
-except where names are enclosed in backticks.
-
-
-\code{enscript()} always calls \code{resolve()} for the indicated
-columns, to make units present where appropriate.
-}
-\examples{
-library(magrittr)
-library(ggplot2)
-x <- data.frame(time = 1:10, work = (1:10)^1.5)
-x \%<>\% decorate('
-  time: [ Time_elapsed, h ]
-  work: [ Work_total_observed, kg*m^2/s^2 ]
-')
-
-x \%>\% decorations
-x \%>\% ggplot(aes(time, work)) + geom_point()
-x \%>\% enscript \%>\% ggplot(aes(time, work)) + geom_point()
-x \%>\% enscript(format = 'html') \%$\% work \%>\% attr('title')
-testthat::expect_equal(enscript(x), enscript(enscript(x)))
+By default, enscripts by returning the unmodified object.
 }
 \seealso{
-Other enscript: 
-\code{\link{enscript}()}
-
-Other interface: 
-\code{\link{canonical.decorated}()},
-\code{\link{classified.data.frame}()},
-\code{\link{decorate.character}()},
-\code{\link{decorate.data.frame}()},
+Other resolve: 
+\code{\link{desolve}()},
+\code{\link{desolve.classified}()},
+\code{\link{desolve.data.frame}()},
 \code{\link{desolve.decorated}()},
-\code{\link{ggplot.decorated}()},
-\code{\link{io_csv.character}()},
-\code{\link{io_csv.data.frame}()},
-\code{\link{io_res.character}()},
-\code{\link{io_res.decorated}()},
-\code{\link{io_table.character}()},
-\code{\link{io_table.data.frame}()},
-\code{\link{io_yamlet.character}()},
-\code{\link{io_yamlet.data.frame}()},
-\code{\link{is_parseable.default}()},
-\code{\link{mimic.default}()},
-\code{\link{modify.default}()},
-\code{\link{promote.list}()},
-\code{\link{read_yamlet}()},
+\code{\link{desolve.default}()},
+\code{\link{desolve.dvec}()},
+\code{\link{enscript.data.frame}()},
+\code{\link{resolve}()},
+\code{\link{resolve.classified}()},
+\code{\link{resolve.data.frame}()},
 \code{\link{resolve.decorated}()},
-\code{\link{selected.default}()},
-\code{\link{write_yamlet}()}
+\code{\link{resolve.default}()},
+\code{\link{resolve.dvec}()},
+\code{\link{resolve.factor}()}
 }
-\concept{enscript}
-\concept{interface}
+\concept{resolve}
+\keyword{internal}
