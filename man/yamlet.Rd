@@ -102,6 +102,7 @@ with some reorganization.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://bergsmat.github.io/yamlet/}
   \item Report bugs at \url{https://github.com/bergsmat/yamlet/issues}
 }
 

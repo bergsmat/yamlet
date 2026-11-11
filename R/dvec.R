@@ -559,7 +559,7 @@ format.dvec <- function(x, ...){
 print.dvec <- function(x, ...){
   x <- unclass(x)
   x <- NextMethod()
-  x
+  invisible(x)
 }
 
 #' Coerce Decorated Vector to Data Frame

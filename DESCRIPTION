@@ -1,7 +1,7 @@
 Package: yamlet
 Type: Package
 Title: Versatile Curation of Table Metadata
-Version: 1.5.0
+Version: 1.5.1
 Authors@R: person(given = "Tim",
                   family = "Bergsma",
                   role = c("aut", "cre"),
@@ -24,3 +24,4 @@ RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Suggests: testthat (>= 2.1.0), magrittr, table1, rmarkdown, gridExtra, 
  haven, tablet (>= 0.6.8), kableExtra, metaplot
+URL: https://bergsmat.github.io/yamlet/
